@@ -62,6 +62,7 @@ class Dates extends Component {
         obj['month'] = item.data().month;
         obj['year'] = item.data().year;
         obj['id'] = item.id;
+        obj['privacy'] = item.data().privacy;
         dateArr.push(obj);
         this.setState({
           date: dateArr
@@ -70,21 +71,19 @@ class Dates extends Component {
     });
 
     this.props.firebase.getUserCategories(this.props.match.params.id).then(snapshot => {
-        const catArr = [...this.state.categories]
-        // console.log('cat arr', catArr)
-        snapshot.docs.map((category, index) => {
-            console.log("ID", category.data().categories);
-            category.data()['mainId'] = category.id;
-            catArr.push(category.data())
-            console.log('catArr', catArr);
-        })
-        this.setState({
-          categories: catArr,
-          currentCategories: catArr
-        })
-      })
-
-
+      const catArr = [...this.state.categories];
+      // console.log('cat arr', catArr)
+      snapshot.docs.map((category, index) => {
+        console.log('ID', category.data().categories);
+        category.data()['mainId'] = category.id;
+        catArr.push(category.data());
+        console.log('catArr', catArr);
+      });
+      this.setState({
+        categories: catArr,
+        currentCategories: catArr
+      });
+    });
   }
 
   //*** START OF CATEGORY METHODS ***/
@@ -95,20 +94,19 @@ class Dates extends Component {
       removedCategories: [...this.state.removedCategories, name]
     });
 
-    this.props.firebase.removeCategory(this.props.match.params.id, name)
+    this.props.firebase.removeCategory(this.props.match.params.id, name);
 
     // console.log(this.state.removedCategories, 'removed categories');
-  }
+  };
 
   showCategories = e => {
     e.preventDefault();
     this.setState({
       showCat: !this.state.showCat
-    })
-  }
+    });
+  };
 
   //** END OF CATEGORY METHODS ***/
-
 
   toggleAddDate() {
     this.setState({
@@ -195,14 +193,14 @@ class Dates extends Component {
     const currentCat = [...this.state.categories];
     arr.map(item => {
       currentCat.push(item);
-    })
+    });
 
     this.setState({
       showCat: !this.state.showCat,
       categories: currentCat
-    })
+    });
     this.props.firebase.sendCategories(this.props.match.params.id, arr2);
-  }
+  };
 
   render() {
     const renderDates = this.state.date.map((item, index) => (
@@ -238,21 +236,24 @@ class Dates extends Component {
 
     return this.state.isLoading && this.state.date.length > 0 ? (
       <div>
+        <Link to={`dates/${this.props.match.params.clientId}`}>Back To All Clients</Link>
         <h2 className="text-center" id="client-heading">
           Client A-Game’s Calendars
         </h2>
         <div>
           {this.state.showCat && (
             <div>
-                <SelectCategory
+              <SelectCategory
                 className="selected-categoryComponent"
                 userId={this.props.match.params.clientId}
                 getCategories={this.sendCategories}
                 removeCategory={() => this.removeCategory}
-                />
+              />
             </div>
           )}
-          <button onClick={this.showCategories} id="add-category-button">Add Categories</button>
+          <button onClick={this.showCategories} id="add-category-button">
+            <span className="plus">+</span>Create Category
+          </button>
           <CategoryList colors={this.state.categories} removeCategory={this.removeCategory} />
         </div>
         <p className="text-center">Select a month to view it’s calendar.</p>

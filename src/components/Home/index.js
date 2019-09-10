@@ -255,18 +255,13 @@ class Home extends Component {
                     this.state.users.map((user, index) => {
                       return (
                         <div data-id={user.userId} className="client-wrapper flex-column d-flex" key={index}>
-                          <button className="delete-button" onClick={() => this.deleteUser(user.urlName, index)}>
-                            <Fab disabled aria-label="Delete">
-                              <DeleteIcon />
-                            </Fab>
-                          </button>
-                          <Link to={`/dates/${user.urlName}`}>
-                            <img src={user.logo} className="user-background" />
-                          </Link>
-                          <Link to={`/dates/${user.urlName}`}>
-                            {user.name}
-                          </Link>
-                          <button onClick={() => this.archiveClient(user.urlName, index)}>X</button>
+                            <Link to={`/dates/${user.urlName}`}>
+                              <img src={user.logo} className="user-background" />
+                            </Link>
+                            <Link to={`/dates/${user.urlName}`}>
+                              {user.name}
+                            </Link>
+                            <button onClick={() => this.archiveClient(user.urlName, index)}>X</button>
                         </div>
                       )
                     })

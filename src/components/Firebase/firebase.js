@@ -105,10 +105,10 @@ class Firebase {
       .get();
 
   sendCategories = (user, categories) => {
-
     categories.forEach(function(category) {
-        console.log('category', category)
-        app.firestore()
+      console.log('category', category);
+      app
+        .firestore()
         .collection('users')
         .doc(user)
         .collection('categories')
@@ -240,7 +240,7 @@ class Firebase {
       .add({
         month: month,
         year: year,
-        private:true
+        private: true
       });
 
   getUID = urlName =>
@@ -405,21 +405,22 @@ class Firebase {
       });
   };
 
-  removeCategory = (id, name)=> {
+  removeCategory = (id, name) => {
     //   alert('ran removed');
     //   console.log('ran remove')
-      this.db.collection('users')
+    this.db
+      .collection('users')
       .doc(id)
       .collection('categories')
       .doc(name)
       .delete()
-      .then(function(){
-          console.log("Successfully Deleted")
+      .then(function() {
+        console.log('Successfully Deleted');
       })
       .catch(err => {
-          console.log('Err', err)
-      })
-  }
+        console.log('Err', err);
+      });
+  };
 
   user = uid =>
     this.db
@@ -443,16 +444,35 @@ class Firebase {
         console.log('Err', err);
       });
 
+  updatePrivate = (id, privacy, privateId) =>
+    this.db
+      .collection('users')
+      .doc(id)
+      .collection('dates')
+      .doc(privateId)
+      .update({
+        private: privacy
+      });
+
   deleteClient = id =>
     this.db
       .collection('users')
       .doc(id)
-      .then(function(){
-          console.log('deleted client')
+      .then(function() {
+        console.log('deleted client');
       })
       .catch(err => {
-          console.log('There was an error deleting client', err)
-      })
+        console.log('There was an error deleting client', err);
+      });
+
+  getPrivacy = (id, year, month) =>
+    this.db
+      .collection('users')
+      .doc(id)
+      .collection('dates')
+      .where('month', '==', month)
+      .where('year', '==', year)
+      .get();
 }
 
 export default Firebase;

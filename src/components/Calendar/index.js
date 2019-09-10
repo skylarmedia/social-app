@@ -40,16 +40,14 @@ class Calendar extends React.Component {
       clientId: '',
       currentMonth: 0,
       currentYear: 0,
-      posts: []
-      // showCat: false,
-      // categories: [],
-      // newColors: [],
-      // isLoading: false,
-      // removedCategories: []
+      posts: [],
+      private: true,
+      oldPrivate: true,
+      privateId: 0
     };
 
-    this.onDoubleClick = this.handleDoubleClickItem.bind(this);
     this.showCategories = this.showCategories.bind(this);
+    this.handleSwitch = this.handleSwitch.bind(this);
   }
 
   weekdayshort = moment.weekdaysShort();
@@ -63,26 +61,30 @@ class Calendar extends React.Component {
         });
       });
 
-      // this.props.firebase.getUserCategories(this.props.match.params.clientId).then(snapshot => {
-      //   const catArr = [...this.state.categories]
+      console.log('year', typeof(this.props.match.params.year))
+      console.log('month', typeof(this.props.match.params.month))
+      console.log('Client', this.props.match.params.clientId)
 
-      //   snapshot.docs.map((category, index) => {
-      //     catArr.push(category.data())
-      //   })
-      //   this.setState({
-      //     categories: catArr,
-      //     currentCategories: catArr
-      //   })
-      // })
+      this.props.firebase.getPrivacy(this.props.match.params.clientId, parseInt(this.props.match.params.year), this.props.match.params.month)
+      .then(snapshot => {
+        console.log('document', snapshot.docs)
+        snapshot.docs.map(item => {
+          this.setState({
+            private:item.data().private,
+            oldPrivate:item.data().private,
+            privateId: item.id
+          }, 
+          () => {
+            console.log('state privacy', this.state.private)
+          }
+          )
+        })
+      })
     }
 
     this.setState({
       authUser: JSON.parse(localStorage.getItem('authUser')).email
     });
-  }
-
-  handleDoubleClickItem(event) {
-    alert('I got double-clicked!');
   }
 
   daysInMonth = () => {
@@ -169,10 +171,6 @@ class Calendar extends React.Component {
       showCalendarTable: !this.state.showCalendarTable
     });
   };
-
-  // handleChange = name => event => {
-  //   setState({ ...state, [name]: event.target.checked });
-  // };
 
   onPrev = () => {
     let curr = '';
@@ -307,21 +305,18 @@ class Calendar extends React.Component {
     return c;
   };
 
-  // removeCategory = (index, name) => {
-  //   this.setState({
-  //     categories: this.state.categories.filter((_, i) => i !== index),
-  //     removedCategories: [...this.state.removedCategories, name]
-  //   });
-
-  //   console.log(this.state.removedCategories, 'removed categories');
-  // }
-
   showCategories = e => {
     e.preventDefault();
     this.setState({
       showCat: !this.state.showCat
     });
   };
+
+  handleSwitch = () => {
+    this.setState({
+      private: !this.state.private
+    })
+  }
 
   // sendCategories = (arr, arr2) => {
   //   const currentCat = [...this.state.categories];
@@ -358,10 +353,15 @@ class Calendar extends React.Component {
     //   this.props.firebase.updateCategories(this.props.match.params.clientId, this.state.removedCa)
     // }
 
+    if(this.state.private !== this.state.oldPrivate){
+      this.props.firebase.updatePrivate(this.props.match.params.clientId, this.state.private, this.state.privateId)
+    }
+
     console.log(this.state.categories, 'categories in unmount');
   }
 
   render() {
+    console.log('privacy', this.state)
     let weekdayshortname = this.weekdayshort.map(day => {
       return <th key={day}>{day}</th>;
     });
@@ -415,13 +415,15 @@ class Calendar extends React.Component {
 
     return (
       <React.Fragment>
-        <Link to={`/dates/${this.props.match.params.clientId}`}>Back to All Calendar Months</Link>
+        <Link to={`/home`}>Back to All Calendar Months</Link>
         <img src={require('../assets/skylar_Icon_wingPortion.svg')} id="wing-logo" />
         <div>
           {this.state.isLoading ? (
             <div className="tail-datetime-calendar">
               <Switch
-                value="private"
+                value={this.state.private}
+                checked={this.state.private}
+                onChange={this.handleSwitch}
               />
               <div className="calendar-heading">
                 <h2 className="text-center">Client {this.props.match.params.clientId} Calendar </h2>
