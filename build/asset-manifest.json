@@ -1,0 +1,23 @@
+{
+  "files": {
+    "main.css": "/social-app-deploy/static/css/main.95a6dabc.chunk.css",
+    "main.js": "/social-app-deploy/static/js/main.95899df2.chunk.js",
+    "main.js.map": "/social-app-deploy/static/js/main.95899df2.chunk.js.map",
+    "runtime~main.js": "/social-app-deploy/static/js/runtime~main.7a0b50cb.js",
+    "runtime~main.js.map": "/social-app-deploy/static/js/runtime~main.7a0b50cb.js.map",
+    "static/css/2.d51cfa62.chunk.css": "/social-app-deploy/static/css/2.d51cfa62.chunk.css",
+    "static/js/2.0c255a1f.chunk.js": "/social-app-deploy/static/js/2.0c255a1f.chunk.js",
+    "static/js/2.0c255a1f.chunk.js.map": "/social-app-deploy/static/js/2.0c255a1f.chunk.js.map",
+    "index.html": "/social-app-deploy/index.html",
+    "precache-manifest.fec0a841ffa5a7065c5a6c0e69e64dce.js": "/social-app-deploy/precache-manifest.fec0a841ffa5a7065c5a6c0e69e64dce.js",
+    "service-worker.js": "/social-app-deploy/service-worker.js",
+    "static/css/2.d51cfa62.chunk.css.map": "/social-app-deploy/static/css/2.d51cfa62.chunk.css.map",
+    "static/css/main.95a6dabc.chunk.css.map": "/social-app-deploy/static/css/main.95a6dabc.chunk.css.map",
+    "static/media/arrow.svg": "/social-app-deploy/static/media/arrow.cab4dd14.svg",
+    "static/media/check.svg": "/social-app-deploy/static/media/check.5d1fa9cf.svg",
+    "static/media/index.css": "/social-app-deploy/static/media/pantonskylar-semibold-webfont.c1e3922d.svg",
+    "static/media/not-read.svg": "/social-app-deploy/static/media/not-read.2b36b776.svg",
+    "static/media/repeat-grid.svg": "/social-app-deploy/static/media/repeat-grid.1b3a5737.svg",
+    "static/media/skylar_Icon_wingPortion.svg": "/social-app-deploy/static/media/skylar_Icon_wingPortion.b1ca3ff5.svg"
+  }
+}

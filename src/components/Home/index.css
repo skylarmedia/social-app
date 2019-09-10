@@ -1,0 +1,101 @@
+#avatar-upload{
+    height: 178px;
+    width: 261px;
+    text-align: center;
+    border: 3px dashed #EF463B;
+}
+
+#add-new-form-wrapper{
+    height: 100vh;
+    width: 100vw;
+    position: fixed;
+    background: rgba(0,0,0,0.8);
+    z-index: 999999;
+    top: 0;
+    display: flex;
+    flex-direction: column;
+    left:0;
+    align-items: center;
+    justify-content: center;
+}
+
+#x-add-new{
+  z-index: 9999999999;
+  color:#ee463a;
+}
+
+#add-new-form .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline{
+    border-color:#fff;
+}
+
+#add-new-form .MuiInputLabel-outlined{
+    color:#fff;
+}
+
+#add-new-form .MuiInputBase-input{
+    color:#fff;
+    width:235px;
+}
+
+#add-file{
+    margin-top: 13px;
+    width:260px;
+}
+
+#client-list{
+    margin-top:61px;
+}
+
+.user-background{
+    height:178px;
+    width:100%;
+    object-fit: cover;
+}
+
+.uncomplete.add-date-btn{
+    background:#b2bec3;
+}
+
+.client-wrapper{
+    height: 178px;
+    width: 23%;
+    margin-right: 20px;
+    position: relative;
+}
+
+.delete-button{
+    position:absolute;
+    top:50px;
+    background:transparent;
+    border:none;
+    padding-left: 20px;
+}
+
+.delete-button button{
+    width: 40px;
+    height: 40px;
+}
+
+.client-wrapper a{
+    text-decoration:none;
+    color:#002D5B;
+    margin-bottom: 10px;
+}
+
+.dashed{
+    border:3px dashed #002D5B;
+    height:178px;
+    width:24%;
+}
+
+.container{
+    max-width:1140px;
+}
+
+#home-page .add-date-btn{
+    margin-top:88px;
+}
+
+.empty-state .text-center{
+    margin-top:14px;
+}

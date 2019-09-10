@@ -1,0 +1,24 @@
+.category-color{
+    margin-bottom: 5px;
+    width: 185px;
+    padding-left: 12px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    padding: 15px 20px;
+    position:relative;
+}
+
+.category-color button{
+    position: absolute;
+    right: 0;
+    border: none;
+    background: transparent;
+    color: #002D5B;
+    font-size: 27px;
+    font-weight: bold;
+}
+
+button:focus{
+    outline:none;
+}

@@ -1,0 +1,94 @@
+.react-time-picker__clock{
+    display:none;
+}
+
+.add-post .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline {
+    border-color: #002D5B;
+    border-width: 2px;
+}
+
+.add-post .MuiInputLabel-outlined{
+    color: #002D5B;
+    text-transform: uppercase;
+}
+
+.react-time-picker{
+    height: 56px;
+    border: 2px solid #002D5B;
+    border-radius: 4px;
+}
+
+.add-post .MuiFormControl-root{
+    margin-bottom:0;
+}
+
+.react-time-picker__wrapper{
+    border:none;
+    padding:0 20px;
+}
+
+.add-post .MuiFab-label{
+    color:#fff;
+}
+
+.outlined-title.MuiFormControl-root{
+    width:100%;
+    max-width:310px;
+}
+
+.add-post .outlined-title.hash-field{
+    margin-bottom:10px;
+}
+.heading{
+    font-size: 20px;
+    font-weight: 600;
+    margin-top: 25px;
+}
+
+.outter-form-wrap{
+    width:50%;
+}
+
+.outlined-copy{
+    height: 219px;
+    width:100%;
+}
+
+.outlined-copy .PrivateNotchedOutline-root-55{
+    height: 219px;
+}
+.remove-hash{
+    background: transparent;
+    border: none;
+    font-weight: bold;
+    font-size: 24px;
+}
+
+.add-post .add-date-btn{
+    margin-top:48px;
+}
+
+.add-post-heading.heading{
+    margin-top: 40px;
+    margin-bottom: 110px;
+}
+
+.tail-datetime-calendar .calendar-date table tbody tr > *.today:after{
+    display:none;
+}
+
+.add-post .outlined-copy .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline{
+    height:219px;
+}
+
+.sign-out-btn{
+    border: none;
+    box-shadow: none;
+    background: transparent;
+    color: #fff;
+    padding: 0;
+}
+
+#nav-id li {
+    color:#fff;
+}

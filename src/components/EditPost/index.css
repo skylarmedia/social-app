@@ -1,0 +1,9 @@
+.delete-post-button{
+    position: absolute;
+    background: transparent;
+    border: none;
+}
+
+.edit-post .outlined-title{
+    margin-top:0;
+}

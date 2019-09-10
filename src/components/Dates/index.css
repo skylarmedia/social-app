@@ -1,0 +1,191 @@
+@font-face {
+  font-family: 'Panton';
+  src: url('../assets/fonts/pantonskylar-bold-webfont.eot');
+  src: url('../assets/fonts/pantonskylar-bold-webfont.eot?#iefix') format('embedded-opentype'),
+       url('../assets/fonts/pantonskylar-bold-webfont.woff2') format('woff2'),
+       url('../assets/fonts/pantonskylar-bold-webfont.woff') format('woff'),
+       url('../assets/fonts/pantonskylar-bold-webfont.ttf') format('truetype'),
+       url('../assets/fonts/pantonskylar-bold-webfont.svg#panton_skylarbold') format('svg');
+  font-weight: 700;
+  font-style: normal;
+
+}
+
+
+
+
+@font-face {
+  font-family: 'Panton';
+  src: url('../assets/fonts/pantonskylar-light-webfont.eot');
+  src: url('../assets/fonts/pantonskylar-light-webfont.eot?#iefix') format('embedded-opentype'),
+       url('../assets/fonts/pantonskylar-light-webfont.woff2') format('woff2'),
+       url('../assets/fonts/pantonskylar-light-webfont.woff') format('woff'),
+       url('../assets/fonts/pantonskylar-light-webfont.ttf') format('truetype'),
+       url('../assets/fonts/pantonskylar-light-webfont.svg#panton_skylarlight') format('svg');
+  font-weight: 300;
+  font-style: normal;
+
+}
+
+
+
+
+@font-face {
+  font-family: 'Panton';
+  src: url('../assets/fonts/pantonskylar-regular-webfont.eot');
+  src: url('../assets/fonts/pantonskylar-regular-webfont.eot?#iefix') format('embedded-opentype'),
+       url('../assets/fonts/pantonskylar-regular-webfont.woff2') format('woff2'),
+       url('../assets/fonts/pantonskylar-regular-webfont.woff') format('woff'),
+       url('../assets/fonts/pantonskylar-regular-webfont.ttf') format('truetype'),
+       url('../assets/fonts/pantonskylar-regular-webfont.svg#panton_skylarregular') format('svg');
+  font-weight: normal;
+  font-style: normal;
+
+}
+
+@font-face {
+  font-family: 'Panton';
+  src: url('../assets/fonts/pantonskylar-semibold-webfont.eot');
+  src: url('../assets/fonts/pantonskylar-semibold-webfont.eot?#iefix') format('embedded-opentype'),
+       url('../assets/fonts/pantonskylar-semibold-webfont.woff2') format('woff2'),
+       url('../assets/fonts/pantonskylar-semibold-webfont.woff') format('woff'),
+       url('../assets/fonts/pantonskylar-semibold-webfont.ttf') format('truetype'),
+       url('../assets/fonts/pantonskylar-semibold-webfont.svg#panton_skylarsemibold') format('svg');
+  font-weight: 600;
+  font-style: normal;
+}
+
+*{
+  font-family:'Panton' !important;
+}
+
+
+
+#no-date-calendar{
+    width:100%;
+}
+
+.toggle-close{
+  background: transparent;
+  color: #EF463B;
+  font-weight: bold;
+  border: none;
+  font-size: 41px;
+}
+
+.add-date-form{
+    height: 100vh;
+    width: 100vw;
+    background: rgba(0,0,0,0.9);
+    position: fixed;
+    top: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    left:0;
+    z-index:1;
+    right:0;
+  }
+
+  .add-date-form .add-date-btn{
+    margin-top:58px;
+  }
+
+  .add-date-btn{
+    background: #EF463B;
+    text-transform: uppercase;
+    color: #fff;
+    border: none;
+    height: 48px;
+    width: 149px;
+    border-radius: 11px;
+  }
+
+  .react-time-picker__inputGroup__input{
+    width:18px !important;
+  }
+
+
+  select{
+    background:#fff;
+  }
+
+  .single-calendar-wrapper{
+    background-image:url('../assets/grouped-single-calendar.svg');
+    height: 240px;
+    width: 23%;
+    margin-left: 1%;
+    display: block;
+    background-size: cover;
+    position: relative;
+    background-size: 100% 100%;
+  }
+
+  #client-heading{
+    margin-top: 123px; 
+    margin-bottom:23px;
+  }
+
+  .client-text{
+    margin-top:20px;
+  }
+
+  .date-wrapper{
+    margin:0 auto;
+  }
+
+  .delete-date{
+    font-weight: bold;
+    box-shadow: none;
+    border: none;
+    background: transparent;
+    position: absolute;
+    top: 5px;
+    right: 6px;
+    font-size: 31px;
+    cursor:pointer;
+  }
+
+  #arrow{
+    position:absolute;
+  }
+
+  .arrow-wrapper .add-date-btn{
+    margin-top:63px;
+  }
+
+  .date-wrapper a{
+    color:#002D5B;
+    text-decoration:none;
+  }
+
+  .inner-date-wrapper{
+    width:600px;
+  }
+
+  .month-wrapper{
+    width:600px;
+  }
+
+
+  .date-wrapper select{
+    width:150px;
+  }
+
+  body .bm-menu{
+    background: #093e73;
+  }
+
+  #main-menu{
+    top:0;
+  }
+
+  #nav-id{
+    padding:0;
+    list-style:none;
+  }
+
+  #nav-id li a{
+    color:#fff;
+  }

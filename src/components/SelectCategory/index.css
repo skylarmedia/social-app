@@ -1,0 +1,30 @@
+.hex-color{
+    width: 50px;
+    height: 50px;
+    margin-left: 40px;
+    border-radius:11px;
+    margin: 0 11px 15px 40px;
+}
+
+#selected-categories{
+    list-style:none;
+    padding:0;
+}
+
+.delete-category{
+    border: none;
+    box-shadow: none;
+}
+
+.category-list-item{
+    position:relative;  
+}
+ 
+.category-list-item button{
+    box-shadow:none;
+    border:none;
+    position:absolute;
+    right: 0;
+    left: 0;
+    background: transparent;
+}

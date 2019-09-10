@@ -1,0 +1,82 @@
+.hidden-post{
+    position: absolute;
+    border: 2px solid #002D5B;
+    z-index: 99999;
+    box-shadow: 4px 14px 12px -1px rgba(0,0,0,0.2);
+    right: -415px;
+    top: -155px;
+    background: #fff;
+    width: 409px;
+    padding: 20px;
+}
+
+.label-button{
+    position:relative;
+}
+
+.not-read{
+    position: absolute;
+    right: 0;
+    width: 20px;
+    top:0;
+}
+
+
+.tail-datetime-calendar .calendar-date table tbody tr > *{
+    width:249px;
+}
+
+.dialog-enter {
+    opacity: 0.01;
+    transform: scale(1.1);
+  }
+  
+  .dialog-enter-active {
+    opacity: 1;
+    transform: scale(1);
+    transition: all 300ms;
+  }
+  
+  .dialog-exit {
+    opacity: 1;
+    transform: scale(1);
+  }
+  
+  .dialog-exit-active {
+    opacity: 0.01;
+    transform: scale(1.1);
+    transition: all 300ms;
+  }
+
+
+
+  /* SLIDE ANIMATION */
+
+
+
+  /* .slide-enter {
+    opacity: 0.01;
+    transform: translateX(-100vw);
+    position:fixed;
+    
+  }
+  
+  .slide-enter-active {
+    opacity: 1;
+    transform: translateX(0);;
+    transition: all 2000ms linear;
+    position:fixed;
+  }
+  
+  .slide-exit {
+    opacity: 1;
+    position:fixed;
+    transform: translateX(0);;
+  }
+  
+  .slide-exit-active {
+    opacity: 0.01;
+    transform: translateX(-100vw);;
+    position:fixed;
+    transition: all 300ms;
+  } */
