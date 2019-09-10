@@ -367,8 +367,6 @@ class Home extends Component {
   }
 }
 
-
-
 const mapDispatchToProps = dispatch => ({
   getAllClients: clients => dispatch({
     type: 'GET_ALL_CLIENTS', clients

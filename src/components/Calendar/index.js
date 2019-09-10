@@ -11,6 +11,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import { withAuthorizationAdmin } from '../Session';
 import { AuthUserContext } from '../Session';
 import Switch from '@material-ui/core/Switch';
+import Legend from '../Legend';
 
 import { withAuthorization } from '../Session';
 
@@ -454,13 +455,16 @@ class Calendar extends React.Component {
 
               {/* <button onClick={this.showCategories} id="add-category-button">Add Categories</button> */}
               {/* <CategoryList colors={this.state.categories} removeCategory={this.removeCategory} /> */}
+              
             </div>
           ) : (
             <div className="progress-wrapper">
               <CircularProgress />
             </div>
           )}
+          
         </div>
+        <Legend />
       </React.Fragment>
     );
   }

@@ -239,7 +239,8 @@ class Firebase {
       .collection('dates')
       .add({
         month: month,
-        year: year
+        year: year,
+        private:true
       });
 
   getUID = urlName =>

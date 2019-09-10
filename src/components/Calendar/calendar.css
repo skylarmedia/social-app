@@ -14,7 +14,7 @@
   width: 85%;
   margin: 0 auto;
   z-index: 1;
-  position: absolute;
+  /* position: absolute; */
   left: 0;
   right: 0;
   }
@@ -324,4 +324,10 @@
   text-transform: uppercase;
   border-radius: 11px;
   margin: 20px 0;
+}
+
+.border{
+  height:14px;
+  width:100%;
+  background:#002D5B;
 }
