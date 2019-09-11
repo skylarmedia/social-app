@@ -77,7 +77,7 @@ class HiddenCalendarSingle extends Component {
         const friendlyUrlTitle = this.props.title.replace(/\s+/g, '-') + '-' + this.props.month + '-' + this.props.day
         const hiddenPost = () => (
             <div>
-                <p>{this.props.title}</p>
+                <h4 className="text-center">{this.props.title}</h4>
                 <p>{this.truncate(this.props.copy)}</p>
                 <p>{this.props.time}</p>
                 <p className="mb-0">{this.props.hashtags.map(item => (

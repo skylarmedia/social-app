@@ -329,3 +329,25 @@
   width:100%;
   background:#002D5B;
 }
+
+.circle{
+  height:20px;
+  width:20px;
+  border-radius:50%;
+}
+
+.red{
+  background:#EF463B;
+}
+
+.orange{
+  background:#EFB83B;
+}
+
+.green{
+  background:#3BEF3B;
+}
+
+.hollow-orange{
+  border:2px solid #FFCF03;
+}

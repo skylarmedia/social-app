@@ -1,13 +1,27 @@
 .hidden-post{
-    position: absolute;
-    border: 2px solid #002D5B;
-    z-index: 99999;
-    box-shadow: 4px 14px 12px -1px rgba(0,0,0,0.2);
-    right: -415px;
-    top: -155px;
-    background: #fff;
-    width: 409px;
-    padding: 20px;
+  position: fixed;
+  border: 2px solid #002D5B;
+  z-index: 99999;
+  box-shadow: 4px 14px 12px -1px rgba(0,0,0,0.2);
+  right: -415px;
+  top: -155px;
+  background: rgba(0,0,0,0.8);
+  width: 100vw;
+  padding: 20px;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hidden-post div{
+  background: #fff;
+  width: 558px;
+  
 }
 
 .label-button{
