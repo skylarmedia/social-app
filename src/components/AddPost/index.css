@@ -46,7 +46,7 @@
 }
 
 .outter-form-wrap{
-    width:50%;
+    width:100%;
 }
 
 .outlined-copy{
@@ -91,4 +91,8 @@
 
 #nav-id li {
     color:#fff;
+}
+
+.grey-background{
+    background:#F0F0F0;
 }
