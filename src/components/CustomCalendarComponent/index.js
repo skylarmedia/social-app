@@ -4,7 +4,6 @@ export default class CustomCalendarComponent extends React.Component{
         return (
             <div>
                 <br/>
-                <span>CUSTOM DATE {this.props.ipDate}</span>
                 <br/>
                 <input
                     onClick={this.props.onClick}

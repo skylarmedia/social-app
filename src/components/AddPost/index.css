@@ -54,6 +54,10 @@
     width:100%;
 }
 
+.category-wrapper::nth-child(n+1){
+    display:none;
+}
+
 .outlined-copy .PrivateNotchedOutline-root-55{
     height: 219px;
 }

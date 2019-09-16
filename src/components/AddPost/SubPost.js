@@ -1,47 +1,37 @@
 import React, { Component } from 'react';
-import { withFirebase } from '../Firebase';
-import { compose } from 'redux';
-import FileUploader from 'react-firebase-file-uploader';
 import TimePicker from 'antd/es/time-picker';
-import 'antd/dist/antd.css';
-import { SketchPicker } from 'react-color';
-import * as ROUTES from '../../constants/routes';
-import { bigIntLiteral } from '@babel/types';
-import './index.css';
-import TextField from '@material-ui/core/TextField';
 import EditCategoryForm from '../EditCategoryForm';
+import CustomCalendarComponent from '../CustomCalendarComponent';
+import DatePicker from 'react-datepicker';
 import moment from 'moment';
-import SubPost from './SubPost';
-
+import TextField from '@material-ui/core/TextField';
 
 import EmojiField from 'emoji-picker-textfield';
-import 'emoji-mart/css/emoji-mart.css'
-import { Picker } from 'emoji-mart'
+import 'emoji-mart/css/emoji-mart.css';
+import { Picker } from 'emoji-mart';
 
-//Date Picker for DD-MM-YYYY
-
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
-import CustomCalendarComponent from '../CustomCalendarComponent';
-
-// const momentDateFormat = "MM/DD/YYYY";
-
-// Time Picker
-
-// const { TimePicker } = 'antd/es/time-picker';
-// import DatePicker as TimePicker from 'antd/es/date-picker'; // for js
-// import 'antd/es/date-picker/style/css'; // for css
-
-import Fab from '@material-ui/core/Fab';
-import AddIcon from '@material-ui/icons/Add';
-
-class AddPost extends Component {
+class SubPost extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      subPosts: [{ subPosts: null }],
-
+      title: '',
+      copy: '',
+      postDate: new Date(),
+      currentPost: [],
+      showDatePicker: true,
+      postTime: null,
+      postMedium: '',
+      ad: false,
+      postHashTag: '',
+      values: [{ value: null }],
+      facebook: false,
+      twitter: false,
+      instagram: false,
+      linkedin: false,
+      other: false,
+      dpDate: moment().toDate(),
+      ipDate: moment().format('MM/DD/YYYY')
     };
 
     this.addForm = this.addForm.bind(this);
@@ -49,54 +39,40 @@ class AddPost extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.showDate = this.showDate.bind(this);
     this.handlePostTime = this.handlePostTime.bind(this);
-    this.getValues = this.getValues.bind(this);
-    this.receivedValues = this.receivedValues.bind(this);
   }
-
-  getValues = (postArr) => {
-   console.log('posts arr', postArr);
-   alert('ran')
-  //    this.setState(prevState => ({
-  //     subPosts: [...prevState.subPosts, postArr]
-  //   }));
-  
-  }
-
   onSubmitForm = e => {
     e.preventDefault();
 
-    this.refs.child.getValues();
+    // console.log(this.props.match.params.clientId);
 
-    // // console.log(this.props.match.params.clientId);
+    let lastPost = {};
+    // postArr.push(this.state.title, this.state.copy)
+    lastPost['title'] = this.state.title;
+    lastPost['copy'] = this.state.copy;
+    lastPost['postTime'] = this.state.postTime;
+    lastPost['postMedium'] = this.state.postMedium;
+    lastPost['ad'] = this.state.ad;
+    lastPost['postHashtag'] = this.state.postHashtag;
+    lastPost['values'] = this.state.values;
+    lastPost['facebook'] = this.state.facebook;
+    lastPost['twitter'] = this.state.twitter;
+    lastPost['instagram'] = this.state.instagram;
+    lastPost['linkedin'] = this.state.linkedin;
+    lastPost['other'] = this.state.other;
+    lastPost['postDate'] = this.state.postDate;
 
-    // let lastPost = {};
-    // // postArr.push(this.state.title, this.state.copy)
-    // lastPost['title'] = this.state.title;
-    // lastPost['copy'] = this.state.copy;
-    // lastPost['postTime'] = this.state.postTime;
-    // lastPost['postMedium'] = this.state.postMedium;
-    // lastPost['ad'] = this.state.ad;
-    // lastPost['postHashtag'] = this.state.postHashtag;
-    // lastPost['values'] = this.state.values;
-    // lastPost['facebook'] = this.state.facebook;
-    // lastPost['twitter'] = this.state.twitter;
-    // lastPost['instagram'] = this.state.instagram;
-    // lastPost['linkedin'] = this.state.linkedin;
-    // lastPost['other'] = this.state.other;
-    // lastPost['postDate'] = this.state.postDate;
+    this.setState(
+      prevState => ({
+        subPosts: [...prevState.subPosts, lastPost]
+      }),
+      () => {
+        const friendlyUrl = this.state.title.toLowerCase().replace(/ /g, '-');
+        const formMonth = this.state.calendarMonth;
+        const clientId = this.props.match.params.clientId;
 
-    // this.setState(
-    //   prevState => ({
-    //     subPosts: [...prevState.subPosts, lastPost]
-    //   }),
-    //   () => {
-    //     const friendlyUrl = this.state.title.toLowerCase().replace(/ /g, '-');
-    //     const formMonth = this.state.calendarMonth;
-    //     const clientId = this.props.match.params.clientId;
-
-    //     this.props.firebase.addPost(clientId, this.state.subPosts);
-    //   }
-    // );
+        this.props.firebase.addPost(clientId, this.state.subPosts);
+      }
+    );
 
     // this.props.firebase.addPost(
     //   clientId,
@@ -168,30 +144,33 @@ class AddPost extends Component {
   //     return months[monthnum - 1] || '';
   //   };
 
-  addEmoji = (e) => {
+  getValues = () => {
+    this.props.receivedValues()
+  }
+
+  addEmoji = e => {
     //console.log(e.unified)
     if (e.unified.length <= 5) {
-        let emojiPic = String.fromCodePoint(`0x${e.unified}`)
-        this.setState({
-            copy: this.state.copy + emojiPic
-        })
+      let emojiPic = String.fromCodePoint(`0x${e.unified}`);
+      this.setState({
+        copy: this.state.copy + emojiPic
+      });
     } else {
+      let sym = e.unified.split('-');
+      let codesArray = [];
+      sym.forEach(el => codesArray.push('0x' + el));
+      //console.log(codesArray.length)
+      //console.log(codesArray)  // ["0x1f3f3", "0xfe0f"]
 
-        let sym = e.unified.split('-')
-        let codesArray = []
-        sym.forEach(el => codesArray.push('0x' + el))
-        //console.log(codesArray.length)
-        //console.log(codesArray)  // ["0x1f3f3", "0xfe0f"]
-
-        let emojiPic = String.fromCodePoint(...codesArray)
-        this.setState({
-            copy: this.state.copy + emojiPic
-        })
+      let emojiPic = String.fromCodePoint(...codesArray);
+      this.setState({
+        copy: this.state.copy + emojiPic
+      });
     }
-}
+  };
 
   handleChange = e => {
-    console.log('CHANGE', e.target.value)
+    console.log('CHANGE', e.target.value);
     this.setState({
       [e.target.name]: e.target.value
     });
@@ -285,9 +264,12 @@ class AddPost extends Component {
     // dpDate: moment().toDate(),
     // ipDate: moment().format('MM/DD/YYYY')
 
-    this.setState(prevState => ({
-      subPosts: [...prevState.subPosts, null]
-    }));
+    console.log('STATE IN POST', this.state);
+
+
+    // this.setState(prevState => ({
+    //   subPosts: [...prevState.subPosts, postArr]
+    // }));
 
     // console.log('STATE AFTER ADD FORM title', this.state.currentPost.get('title'))
     // console.log('STATE AFTER ADD copy', this.state.currentPost.get('copy'))
@@ -306,10 +288,6 @@ class AddPost extends Component {
     const item = e.target.name;
     const isChecked = e.target.checked;
     this.setState(prevState => ({ checkedItems: prevState.checkedItems.set(item, isChecked) }));
-  }
-
-  receivedValues = () => {
-    alert('received')
   }
 
   // BEGINNING OF SOCIAL METHODS
@@ -422,47 +400,168 @@ class AddPost extends Component {
     return this.state.subPosts.map((el, i) => (
       <div className="form-wrapper d-flex" key={i}>
         <div className="inner-form-wrapper col-sm-6">
-          <SubPost i={i} receivedValues={this.receivedValues} ref="child"/>
+          <SubPost i={i} subPosts={this.state.subPosts} />
         </div>
       </div>
     ));
   }
 
+//   componentWillUnmount(){
+     
+//   }
+
   render() {
-    const buttonStyles = {
-      backgroundColor: '#EF463B',
-      borderColor: '#007bff',
-      width: '40px',
-      height: '40px'
-    };
-    console.log('state for render', this.state);
+    console.log('this PROPS ', this.props)
+    // const { handleChange } = this.props;
     return (
-      <React.Fragment>
-        <div className="add-post">
-          <p className="heading text-center add-post-heading">
-            Client {this.props.match.params.clientId} Calendar
-            <br />
-          </p>
-          <div className="grey-background">
-            <div className="container">
-              <form onSubmit={this.onSubmitForm}>
-                {this.createForms()}
-                <input type="button" value="Add Platform" onClick={() => this.addForm()} />
-                <div className="text-center">
-                  <input type="submit" value="Submit" className="add-date-btn" />
-                </div>
-              </form>
-            </div>
-          </div>
-          <EditCategoryForm
-            clientId={this.props.match.params.clientId}
-            getSelectedCategory={this.getSelectedCategory}
-            category={this.state.selectedCategory}
+      <div>
+        <div>
+          <TextField
+            className="outlined-title"
+            label="Post Title"
+            name="title"
+            value={this.state.value}
+            onChange={this.handleChange}
+            required
+            margin="normal"
+            variant="outlined"
+          />
+          <span>
+            <Picker onSelect={this.addEmoji.bind(this)} />
+          </span>
+          <TextField
+            className="outlined-copy"
+            label="Copy"
+            name="copy"
+            multiline
+            value={this.state.copy}
+            onChange={this.handleChange}
+            required
+            margin="normal"
+            variant="outlined"
           />
         </div>
-      </React.Fragment>
+        <div className="inner-form-wrapper col-sm-6">
+          <div className="category-wrapper">
+            {/* {i < 1 && (
+              <EditCategoryForm
+                clientId={this.props.match.params.clientId}
+                getSelectedCategory={this.getSelectedCategory}
+                category={this.state.selectedCategory}
+              />
+            )} */}
+          </div>
+          <div className="d-flex">
+            <input
+              type="checkbox"
+              name="approved"
+              value="approved"
+              onChange={this.props.handleApproval}
+              id="approvePost"
+            />
+            <label for="approvePost">APPROVE POST</label>
+          </div>
+          <div>
+            <input
+              type="checkbox"
+              name="facebook"
+              value={this.state.facebook}
+              onChange={this.handleFacebook}
+              id="facebook"
+              checked={this.state.checked}
+            />
+            <label for="facebook">Facebook</label>
+            <input
+              type="checkbox"
+              name="instagram"
+              value={this.state.instagram}
+              onChange={this.handleInstagram}
+              id="instagram"
+            />
+            <label for="instagram">Instagram</label>
+            <input
+              type="checkbox"
+              name="twitter"
+              value={this.state.twitter}
+              onChange={this.handleTwitter}
+              id="twitter"
+            />
+            <label for="twitter">Twitter</label>
+            <input
+              type="checkbox"
+              name="linkedin"
+              value={this.state.linkedin}
+              onChange={this.handleLinkedin}
+              id="linkedin"
+            />
+            <label for="linkedin">LinkedIn</label>
+            <input
+              type="checkbox"
+              name="other"
+              value={this.state.other}
+              onChange={this.handleOther}
+              id="other"
+            />
+            <label for="other">Other</label>
+          </div>
+          <div class="date-button-wrapper d-flex">
+            {this.state.showDatePicker && (
+              <div id="choose-date-wrapper">
+                <DatePicker
+                  selected={this.state.dpDate}
+                  onChange={value => this.handleDPChange(value)}
+                  customInput={
+                    <CustomCalendarComponent
+                      ipDate={this.state.ipDate}
+                      handleIpChange={val => this.handleIpChange(val)}
+                    />
+                  }
+                  dateFormat={'MM/dd/yyyy'}
+                  showMonthDropdown
+                  showYearDropdown
+                  dropdownMode="select"
+                />
+              </div>
+            )}
+            <div>
+              <TimePicker onChange={this.handlePostTime} />
+            </div>
+            <div>
+              <input
+                type="text"
+                placeholder="POST MEDIUM"
+                name="postMedium"
+                value={this.state.postMedium}
+                onChange={this.handleChange}
+              />
+            </div>
+          </div>
+          {/* date-button-wrapper */}
+          <div>
+            <input type="checkbox" checked={this.state.checked} onChange={this.handleAd} id="ad" />
+            <label for="ad">Ad or Sponsored Post</label>
+          </div>
+          <div>
+            <textarea
+              value={this.state.postHashTag}
+              name="postHashTag"
+              onChange={this.handleChange}
+            />
+          </div>
+          <div>
+            {this.state.values.map((el, i) => (
+              <div key={i}>
+                <input type="text" value={el.value || ''} onChange={e => this.handleLinks(i, e)} />
+                <input type="button" value="remove" onClick={() => this.removeClick(i)} />
+              </div>
+            ))}
+            <input type="button" value="add more" onClick={() => this.addClick()} />
+          </div>
+          {/* <input type="button" value="Add Platform" onClick={() => this.addForm()} /> */}
+        </div>
+      </div>
     );
   }
 }
 
-export default compose(withFirebase(AddPost));
+export default SubPost;

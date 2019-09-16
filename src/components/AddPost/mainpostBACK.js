@@ -49,54 +49,50 @@ class AddPost extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.showDate = this.showDate.bind(this);
     this.handlePostTime = this.handlePostTime.bind(this);
-    this.getValues = this.getValues.bind(this);
-    this.receivedValues = this.receivedValues.bind(this);
+    this.getValues = this.getValues.bind(this)
   }
 
   getValues = (postArr) => {
    console.log('posts arr', postArr);
-   alert('ran')
-  //    this.setState(prevState => ({
-  //     subPosts: [...prevState.subPosts, postArr]
-  //   }));
-  
+   
+     this.setState(prevState => ({
+      subPosts: [...prevState.subPosts, postArr]
+    }));
   }
 
   onSubmitForm = e => {
     e.preventDefault();
 
-    this.refs.child.getValues();
+    // console.log(this.props.match.params.clientId);
 
-    // // console.log(this.props.match.params.clientId);
+    let lastPost = {};
+    // postArr.push(this.state.title, this.state.copy)
+    lastPost['title'] = this.state.title;
+    lastPost['copy'] = this.state.copy;
+    lastPost['postTime'] = this.state.postTime;
+    lastPost['postMedium'] = this.state.postMedium;
+    lastPost['ad'] = this.state.ad;
+    lastPost['postHashtag'] = this.state.postHashtag;
+    lastPost['values'] = this.state.values;
+    lastPost['facebook'] = this.state.facebook;
+    lastPost['twitter'] = this.state.twitter;
+    lastPost['instagram'] = this.state.instagram;
+    lastPost['linkedin'] = this.state.linkedin;
+    lastPost['other'] = this.state.other;
+    lastPost['postDate'] = this.state.postDate;
 
-    // let lastPost = {};
-    // // postArr.push(this.state.title, this.state.copy)
-    // lastPost['title'] = this.state.title;
-    // lastPost['copy'] = this.state.copy;
-    // lastPost['postTime'] = this.state.postTime;
-    // lastPost['postMedium'] = this.state.postMedium;
-    // lastPost['ad'] = this.state.ad;
-    // lastPost['postHashtag'] = this.state.postHashtag;
-    // lastPost['values'] = this.state.values;
-    // lastPost['facebook'] = this.state.facebook;
-    // lastPost['twitter'] = this.state.twitter;
-    // lastPost['instagram'] = this.state.instagram;
-    // lastPost['linkedin'] = this.state.linkedin;
-    // lastPost['other'] = this.state.other;
-    // lastPost['postDate'] = this.state.postDate;
+    this.setState(
+      prevState => ({
+        subPosts: [...prevState.subPosts, lastPost]
+      }),
+      () => {
+        const friendlyUrl = this.state.title.toLowerCase().replace(/ /g, '-');
+        const formMonth = this.state.calendarMonth;
+        const clientId = this.props.match.params.clientId;
 
-    // this.setState(
-    //   prevState => ({
-    //     subPosts: [...prevState.subPosts, lastPost]
-    //   }),
-    //   () => {
-    //     const friendlyUrl = this.state.title.toLowerCase().replace(/ /g, '-');
-    //     const formMonth = this.state.calendarMonth;
-    //     const clientId = this.props.match.params.clientId;
-
-    //     this.props.firebase.addPost(clientId, this.state.subPosts);
-    //   }
-    // );
+        this.props.firebase.addPost(clientId, this.state.subPosts);
+      }
+    );
 
     // this.props.firebase.addPost(
     //   clientId,
@@ -285,9 +281,9 @@ class AddPost extends Component {
     // dpDate: moment().toDate(),
     // ipDate: moment().format('MM/DD/YYYY')
 
-    this.setState(prevState => ({
-      subPosts: [...prevState.subPosts, null]
-    }));
+    // this.setState(prevState => ({
+    //   subPosts: [...prevState.subPosts, postArr]
+    // }));
 
     // console.log('STATE AFTER ADD FORM title', this.state.currentPost.get('title'))
     // console.log('STATE AFTER ADD copy', this.state.currentPost.get('copy'))
@@ -306,10 +302,6 @@ class AddPost extends Component {
     const item = e.target.name;
     const isChecked = e.target.checked;
     this.setState(prevState => ({ checkedItems: prevState.checkedItems.set(item, isChecked) }));
-  }
-
-  receivedValues = () => {
-    alert('received')
   }
 
   // BEGINNING OF SOCIAL METHODS
@@ -422,7 +414,7 @@ class AddPost extends Component {
     return this.state.subPosts.map((el, i) => (
       <div className="form-wrapper d-flex" key={i}>
         <div className="inner-form-wrapper col-sm-6">
-          <SubPost i={i} receivedValues={this.receivedValues} ref="child"/>
+          <SubPost i={i} getValues={this.getValues}/>
         </div>
       </div>
     ));
@@ -447,7 +439,7 @@ class AddPost extends Component {
             <div className="container">
               <form onSubmit={this.onSubmitForm}>
                 {this.createForms()}
-                <input type="button" value="Add Platform" onClick={() => this.addForm()} />
+                {/* <input type="button" value="Add Platform" onClick={() => this.addForm()} /> */}
                 <div className="text-center">
                   <input type="submit" value="Submit" className="add-date-btn" />
                 </div>
