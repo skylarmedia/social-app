@@ -16,7 +16,7 @@ class EditCategoryForm extends Component {
         this.props.firebase.getUserCategories(this.props.clientId).then(items => {
 
             const editCatArr = []
-            items.docs.map(item => {
+            items.docs.map((item, index) => {
                 console.log(item.data(), 'item in map')
                 let currentCat = {}
                 currentCat.color = item.data().categories.color;
@@ -37,15 +37,15 @@ class EditCategoryForm extends Component {
 
 
     render() {
-        const options = this.state.categories.map(item => {
+        const options = this.state.categories.map((item, index) => {
             // console.log(item, 'item in category ')
             if (this.handleText(this.props.category) == item.name) {
                 return (
-                    <option value={`${item.name}|||${item.color}`} selected>{item.name}</option>
+                    <option value={`${item.name}|||${item.color}`} selected key={index}>{item.name}</option>
                 )
             } else {
                 return (
-                    <option value={`${item.name}|||${item.color}`}>{item.name}</option>
+                    <option value={`${item.name}|||${item.color}`} key={index}>{item.name}</option>
                 )
             }
         })

@@ -41,7 +41,9 @@ class Dates extends Component {
         });
       }
     };
+
     this.submitForm = this.submitForm.bind(this);
+    this.closeCat = this.closeCat.bind(this);
   }
 
   componentWillMount() {
@@ -179,6 +181,12 @@ class Dates extends Component {
     console.log(this.props);
   }
 
+  closeCat = () => {
+    this.setState({
+      showCat: !this.state.showCat
+    });
+  }
+
   deleteDate = (id, index) => {
     if (this.props.match.params.id !== undefined) {
       this.props.firebase.deleteDate(this.props.match.params.id, id);
@@ -242,7 +250,8 @@ class Dates extends Component {
         </h2>
         <div>
           {this.state.showCat && (
-            <div>
+            <div className="category-main-wrapper">
+              <button onClick={() => this.closeCat()}>close</button>
               <SelectCategory
                 className="selected-categoryComponent"
                 userId={this.props.match.params.clientId}

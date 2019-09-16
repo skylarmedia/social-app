@@ -51,12 +51,12 @@ class SelectCategory extends Component {
         })
     }
 
-    // removeCategory = (event) => {
-    //     let index = event.target.getAttribute('data-index');
-    //     let setCategories = [...this.state.setCategories];
-    //     setCategories.splice(index, 1);
-    //     this.setState({ setCategories });
-    // }
+    removeCategory = (event) => {
+        let index = event.target.getAttribute('data-index');
+        let setCategories = [...this.state.setCategories];
+        setCategories.splice(index, 1);
+        this.setState({ setCategories });
+    }
 
     passCategories = (e) => {
         e.preventDefault();

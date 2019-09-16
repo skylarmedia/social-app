@@ -185,3 +185,18 @@
   #nav-id li a{
     color:#fff;
   }
+
+  .category-main-wrapper{
+    position: fixed;
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+    left: 0;
+    right: 0;
+    z-index: 2;
+    top: 0;
+    background: #fff;
+  }
