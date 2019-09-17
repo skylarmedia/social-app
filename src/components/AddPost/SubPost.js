@@ -38,7 +38,8 @@ class SubPost extends Component {
       ipDate: moment().format('MM/DD/YYYY'),
       completed: true,
       filesArr: [],
-      file: []
+      file: [],
+      metaImageFiles:[]
       
     };
 
@@ -50,6 +51,7 @@ class SubPost extends Component {
     this.getValues = this.getValues.bind(this);
     this.addFile = this.addFile.bind(this);
     this.uploadFiles = this.uploadFiles.bind(this);
+    this.openIcons = this.openIcons.bind(this)
   }
 
 
@@ -60,39 +62,32 @@ class SubPost extends Component {
     const firestorageRef = this.props.firebase.storage;
     const imageRefs = [];
     this.state.file.forEach(file => {
-      console.log('FILE NAME', file.name)
-      var type;
+    var type;
 
       switch (file.type) {
-        case 'video/mp4':
-          type = 'video';
-          break;
-        case 'image/png':
-          type = 'image';
-          break;
-        case 'image/jpeg':
-          type = 'image';
-          break;
-        default:
-          type = '';
+          case 'video/mp4':
+              type = 'video';
+              break;
+          case 'image/png':
+              type = 'image';
+              break;
+          case 'image/jpeg':
+              type = 'image';
+              break;
+          default:
+              type = '';
       }
-      var encodedURL =
-        encodeURIComponent(this.props.id) +
-        encodeURIComponent('/') +
-        '10' +
-        encodeURIComponent('-') +
-        '1' +
-        encodeURIComponent('/') +
-        file.name +
-        '?alt=media&type=' +
-        type;
-      var imageUrl = `https://firebasestorage.googleapis.com/v0/b/skylar-social-17190.appspot.com/o/${encodedURL}`;
-      imageRefs.push(imageUrl);
+
+        var encodedURL = encodeURIComponent(this.props.id) + encodeURIComponent('/') + this.props.month + encodeURIComponent('-') + this.props.day + encodeURIComponent('/') + file.name + '?alt=media&type=' + type;
+        var imageUrl = `https://firebasestorage.googleapis.com/v0/b/skylar-social-17190.appspot.com/o/${encodedURL}`
+        console.log('IMAGE URL', imageUrl)
+        imageRefs.push(imageUrl);
+  
 
       firestorageRef
         .ref()
         .child(
-          `${this.state.clientId}/${this.state.calendarMonth}-${this.state.calendarDay}/${
+          `${this.props.id}/${this.props.month}-${this.props.day}/${
             file.name
           }`
         )
@@ -106,15 +101,22 @@ class SubPost extends Component {
   };
 
   addFile = event => {
+    console.log('EVENT', event.target.files)
     const file = Array.from(event.target.files);
+    console.log('length', file.length)
+    if (file.length == 1) {
+      var emptyFileArr = [];
+      file.map(innerFile => {
+        emptyFileArr.push(innerFile);
+      });
 
-    if (file.length === 1) {
       this.setState({
-        file: [...this.state.file],
-        file
+        file: emptyFileArr
+      }, () => {
+        this.uploadFiles();
       });
     } else if (file.length > 1) {
-      const emptyFileArr = [];
+      var emptyFileArr = [];
       file.map(innerFile => {
         emptyFileArr.push(innerFile);
       });
@@ -127,7 +129,13 @@ class SubPost extends Component {
     }
   };
 
+
   // End of upload methods
+
+
+  openIcons = () =>  {
+    
+  }
 
 
 
@@ -545,12 +553,27 @@ class SubPost extends Component {
   createForms() {
     return this.state.subPosts.map((el, i) => (
       <div className="form-wrapper d-flex" key={i}>
-        <div className="inner-form-wrapper col-sm-6">
+        <div className="inner-form-wrapper">
           <SubPost i={i} subPosts={this.state.subPosts} />
         </div>
       </div>
     ));
   }
+
+  getType = (url) => {
+    if (url !== 'No Files') {
+        var checkUrl = new URL(url)
+
+        var query_string = checkUrl.search;
+
+        var search_params = new URLSearchParams(query_string);
+
+        var type = search_params.get('type');
+
+        return type
+    }
+
+}
 
   //   componentWillUnmount(){
 
@@ -559,9 +582,30 @@ class SubPost extends Component {
   render() {
     console.log('this PROPS ', this.props);
     // const { handleChange } = this.props;
+
+    // const renderMedia = this.state.metaImageFiles.map(media => {
+    //   return(
+    //     <div>TEST</div>
+    //   )
+    // });
+
+    const renderMedia = this.state.metaImageFiles.map((item) => {
+      if (this.getType(item) == 'video') {
+          return (
+              <video height="200" width="200" controls>
+                  <source src={item} />
+              </video>
+          )
+      } else {
+          return (
+              <img src={item} />
+          )
+
+      }
+  })
     return (
-      <div>
-        <div>
+      <div className="d-flex">
+        <div className="col-sm-6">
           <TextField
             className="outlined-title"
             label="Post Title"
@@ -572,15 +616,22 @@ class SubPost extends Component {
             variant="outlined"
           />
 
+          <div id="red-outline-wrapper">
+            <div class="red-center">
+                <input type="file" multiple onChange={this.addFile} className="red-dashed-input"/>
+            </div>
+          </div>
+
           <div className="upload-files-wrapper">
+            {renderMedia}
             <div />
             <input type="file" multiple onChange={this.addFile} />
-            <button onClick={this.uploadFiles}>Upload Files</button>
           </div>
 
           <span>
             <Picker onSelect={this.addEmoji.bind(this)} />
           </span>
+          <div className="copy-wrapper">
           <TextField
             className="outlined-copy"
             label="Copy"
@@ -591,16 +642,23 @@ class SubPost extends Component {
             margin="normal"
             variant="outlined"
           />
+          <button onClick={() => this.openIcons}><img src={require('../assets/smile.png')} className="logo" /></button>
+
+
+
+
+
+          </div>
         </div>
-        <div className="inner-form-wrapper col-sm-6">
+        <div className="inner-form-wrapper1 col-sm-6">
           <div className="category-wrapper">
-            {/* {i < 1 && (
+            {this.props.i < 1 && (
               <EditCategoryForm
-                clientId={this.props.match.params.clientId}
+                clientId={this.props.id}
                 getSelectedCategory={this.getSelectedCategory}
                 category={this.state.selectedCategory}
               />
-            )} */}
+            )}
           </div>
           <div className="d-flex">
             <input

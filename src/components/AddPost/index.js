@@ -436,7 +436,7 @@ class AddPost extends Component {
   createForms() {
     return this.state.subPosts.map((el, i) => (
       <div className="form-wrapper d-flex" key={i}>
-        <div className="inner-form-wrapper col-sm-6">
+        <div className="main-form-wrapper">
           <SubPost 
             i={i} ref={this.getValues} 
             receivedValues={this.receivedValues} 

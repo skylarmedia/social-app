@@ -31,9 +31,13 @@
     color:#fff;
 }
 
-.outlined-title.MuiFormControl-root{
+.outlined-title.MuiFormControl-root, .outlined-title.MuiFormControl-root .MuiInputBase-root{
     width:100%;
-    max-width:310px;
+    height: 37px;
+}
+
+.outlined-title .MuiFormLabel-root{
+    transform: translate(14px, 12px) scale(1);
 }
 
 .add-post .outlined-title.hash-field{
@@ -99,4 +103,34 @@
 
 .grey-background{
     background:#F0F0F0;
+}
+
+#red-outline-wrapper{
+    height: 280px;
+    border: 3px dashed #EF463B;
+}
+
+.MuiOutlinedInput-notchedOutline{
+    border-radius:0 !important;
+}
+
+.copy-wrapper{
+    position:relative;
+}
+
+.red-center{
+    width: 50%;
+    border-left: 3px dashed #EF463B;
+    height: 100%;
+    margin: 0 auto;
+    border-right: 3px dashed #EF463B;
+    position:relative;
+}
+
+.red-dashed-input{
+    position: absolute;
+    bottom: 10px;
+    left: 20px;
+    right: 0;
+    margin: 0 auto;
 }

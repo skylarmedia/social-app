@@ -24,6 +24,10 @@
   color:#ee463a;
 }
 
+.main-form-wrapper{
+    width:100%;
+}
+
 #add-new-form .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline{
     border-color:#fff;
 }
