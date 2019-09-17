@@ -41,7 +41,9 @@ class AddPost extends Component {
 
     this.state = {
       subPosts: [{ subPosts: null }],
-
+      postArr: [],
+      completed:false,
+      tempHold: []
     };
 
     this.addForm = this.addForm.bind(this);
@@ -49,23 +51,25 @@ class AddPost extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.showDate = this.showDate.bind(this);
     this.handlePostTime = this.handlePostTime.bind(this);
-    this.getValues = this.getValues.bind(this);
+    // this.getValues = this.getValues.bind(this);
     this.receivedValues = this.receivedValues.bind(this);
   }
 
-  getValues = (postArr) => {
-   console.log('posts arr', postArr);
-   alert('ran')
-  //    this.setState(prevState => ({
-  //     subPosts: [...prevState.subPosts, postArr]
-  //   }));
+  // getValues = (postArr) => {
+  //  console.log('posts arr', postArr);
+  //  alert('ran')
+  // //    this.setState(prevState => ({
+  // //     subPosts: [...prevState.subPosts, postArr]
+  // //}));
   
-  }
+  // }
 
   onSubmitForm = e => {
     e.preventDefault();
-
-    this.refs.child.getValues();
+    this.setState({
+      completed:!this.state.completed
+    })
+    
 
     // // console.log(this.props.match.params.clientId);
 
@@ -302,15 +306,26 @@ class AddPost extends Component {
   //   });
   // };
 
+
+  addPostToFirebase = () => {
+    this.props.firebase.addPost(this.props.match.params.clientId, this.state.postArr)
+  }
+
   handleSocialCheck(e) {
     const item = e.target.name;
     const isChecked = e.target.checked;
     this.setState(prevState => ({ checkedItems: prevState.checkedItems.set(item, isChecked) }));
   }
 
-  receivedValues = () => {
-    alert('received')
+  receivedValues = (postObj) => {
+    this.setState({ postArr: [...this.state.postArr, postObj] }, () => {
+      console.log("POST ARR", this.state)
+    })
   }
+
+  // componentWillUnmount(){
+  //   this.refs.child.getValues();
+  // }
 
   // BEGINNING OF SOCIAL METHODS
 
@@ -422,7 +437,16 @@ class AddPost extends Component {
     return this.state.subPosts.map((el, i) => (
       <div className="form-wrapper d-flex" key={i}>
         <div className="inner-form-wrapper col-sm-6">
-          <SubPost i={i} receivedValues={this.receivedValues} ref="child"/>
+          <SubPost 
+            i={i} ref={this.getValues} 
+            receivedValues={this.receivedValues} 
+            ref="child" 
+            completed={this.state.completed} 
+            id={this.props.match.params.clientId}
+            month={this.props.match.params.month}
+            day={this.props.match.params.day}
+            year={this.props.match.params.year}
+          />
         </div>
       </div>
     ));
@@ -436,6 +460,7 @@ class AddPost extends Component {
       height: '40px'
     };
     console.log('state for render', this.state);
+    // console.log('parent props', this.props)
     return (
       <React.Fragment>
         <div className="add-post">

@@ -340,14 +340,38 @@ class Firebase {
 
   addPost = (
     id,
-    subPosts
+    title,
+    copy,
+    postTime,
+    postMedium,
+    ad,
+    postHashtag,
+    values,
+    facebook,
+    twitter,
+    instagram,
+    linkedin,
+    other,
+    postDate
   ) =>
     this.db
       .collection('users')
       .doc(id)
       .collection('posts')
       .add({
-        subPosts:subPosts
+        title,
+        copy,
+        postTime,
+        postMedium,
+        ad,
+        postHashtag,
+        values,
+        facebook,
+        twitter,
+        instagram,
+        linkedin,
+        other,
+        postDate
       });
 
   // Get UID

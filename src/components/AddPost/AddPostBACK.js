@@ -280,6 +280,7 @@ class AddPost extends Component {
     const firestorageRef = this.props.firebase.storage;
     const imageRefs = [];
     this.state.file.forEach(file => {
+      console.log('FILE NAME', file.name)
       var type;
 
       switch (file.type) {
