@@ -49,7 +49,8 @@ class AddPost extends Component {
       selectedCategory:'',
       year: this.props.match.params.year,
       month: this.props.match.params.month,
-      day: this.props.match.params.day
+      day: this.props.match.params.day,
+      selectedCategoryName: ''
     };
 
     this.addForm = this.addForm.bind(this);
@@ -236,12 +237,13 @@ class AddPost extends Component {
 
   // END OF SOCIAL METHODS
 
-  getSelectedCategory = color => {
+  getSelectedCategory = (color, name) => {
 
     if(color !== undefined){
 
     this.setState({
-      selectedCategory: color
+      selectedCategory: color,
+      selectedCategoryName: name
     }, () => {
       alert(this.state.selectedColor)
     });
@@ -353,7 +355,7 @@ class AddPost extends Component {
     if(this.state.subPosts.length == this.state.tempHold.length){
 
       // Add Back
-        this.props.firebase.addPost(this.props.match.params.clientId, this.state.tempHold, this.state.draft, this.state.selectedCategory, parseInt(this.state.year), parseInt(this.state.month), parseInt(this.state.day))
+        this.props.firebase.addPost(this.props.match.params.clientId, this.state.tempHold, this.state.draft, this.state.selectedCategory, parseInt(this.state.year), parseInt(this.state.month), parseInt(this.state.day), this.state.selectedCategoryName)
     }
     console.log('state for render', this.state);
     // console.log('parent props', this.props)

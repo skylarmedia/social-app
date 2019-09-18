@@ -71,7 +71,7 @@ class CalendarSingle extends Component {
                                     {
                                         item.data().adminRead ? '' : <img src={require('../assets/not-read.svg')} className="not-read" />
                                     }
-                                    <h4>{item.data().post[0].title}</h4>
+                                    {/* <h4>{item.data().post[0].title}</h4> */}
                                     
                                     {/* <div>
                                         {item.data().post[0].facebook && (
@@ -101,17 +101,19 @@ class CalendarSingle extends Component {
                                         twitter={item.data().post[0].twitter}
                                         other={item.data().post[0].other}
                                         postDate={item.data().post[0].postDate}
-                                        
-                                        
+                                        ipDate={item.data().post[0].ipDate}
                                         copy={item.data().post[0].copy} 
+                                        hashtags={item.data().post[0].postHashTag}
+                                        postId={item.id}
+                                        clientId={this.props.clientId}
+
                                         time={item.data().time} 
-                                        hashtags={item.data().hashtags} 
                                         links={item.data().links} 
                                         day={item.data().day} 
                                         month={item.data().month} 
                                         itemId={item.id} 
                                         push={this.props.history} 
-                                        clientId={this.props.clientId} 
+                                       
                                         selectedCategory={item.data().selectedCategory} 
                                         adminRead={item.data().adminRead}
                                     />

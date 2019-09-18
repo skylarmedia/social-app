@@ -361,6 +361,7 @@ class Calendar extends React.Component {
   }
 
   render() {
+    // alert()
     console.log('privacy', this.state)
     let weekdayshortname = this.weekdayshort.map(day => {
       return <th key={day}>{day}</th>;

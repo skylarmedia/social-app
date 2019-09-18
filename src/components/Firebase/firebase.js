@@ -32,13 +32,27 @@ class Firebase {
 
   //***** Reactive Client *****//
 
-  reactivateClient = id =>
+  reactivateClient = id =>{
+    alert(id)
     this.db
-      .collection('users')
-      .doc(id)
-      .update({
-        archived: false
-      });
+    .collection('users')
+    .doc(id.toLowerCase().replace(/ /g, '-'))
+    .update({
+      archived: false
+    });
+  }
+
+  getSinglePost = (userId, id) => {
+    alert(id)
+    this.db
+    .collection('users')
+    .doc('skylar-lanto')
+    .collection('posts')
+    .doc(id)
+    .get()
+
+  }
+   
 
   getCurrentUser = () => {
     alert(this.auth.currentUser.uid);
@@ -62,14 +76,9 @@ class Firebase {
         approved: approve
       });
 
-  getSinglePost = (userId, month, day, title) =>
-    this.db
-      .collection('users')
-      .doc(userId)
-      .collection('posts')
-      .where('month', '==', month)
-      .where('day', '==', day)
-      .get();
+
+
+  
 
   getPostImages = () =>
     this.storage.refFromURL('gs://skylar-social-17190.appspot.com/test123/logo');
@@ -289,10 +298,12 @@ class Firebase {
   editPostFirebase = (id, postId) =>
     this.db
       .collection('users')
-      .doc(id)
-      .collection('posts')
       .doc(postId)
+      .collection('posts')
+      .doc(id)
       .get();
+    
+    
 
   editPostSubmit = (
     id,
@@ -345,7 +356,8 @@ class Firebase {
     color,
     year,
     month,
-    day
+    day,
+    selectedCategoryName
   ) =>
     this.db
       .collection('users')
@@ -357,7 +369,8 @@ class Firebase {
         color,
         year,
         month,
-        day
+        day,
+        selectedCategoryName
       });
 
   // Get UID
@@ -392,6 +405,19 @@ class Firebase {
         name: name
       });
   };
+
+  updatePost = (user, id, post) => {
+    alert('updated')
+    alert(id)
+    this.db
+    .collection('users')
+    .doc(user)
+    .collection('posts')
+    .doc(id)
+    .update({
+      post:post
+    })
+  }
 
   removeCategory = (id, name) => {
     //   alert('ran removed');
@@ -446,12 +472,7 @@ class Firebase {
     this.db
       .collection('users')
       .doc(id)
-      .then(function() {
-        console.log('deleted client');
-      })
-      .catch(err => {
-        console.log('There was an error deleting client', err);
-      });
+      .delete()
 
   getPrivacy = (id, year, month) =>
     this.db

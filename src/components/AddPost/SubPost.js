@@ -43,7 +43,8 @@ class SubPost extends Component {
       filesArr: [],
       file: [],
       metaImageFiles: [],
-      showEmoji: false
+      showEmoji: false,
+      approved: false
     };
 
     this.addForm = this.addForm.bind(this);
@@ -51,7 +52,7 @@ class SubPost extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.showDate = this.showDate.bind(this);
     this.handlePostTime = this.handlePostTime.bind(this);
-    this.getValues = this.getValues.bind(this);
+    // this.getValues = this.getValues.bind(this);
     this.addFile = this.addFile.bind(this);
     this.uploadFiles = this.uploadFiles.bind(this);
     this.openIcons = this.openIcons.bind(this);
@@ -155,55 +156,6 @@ class SubPost extends Component {
   onSubmitForm = e => {
     e.preventDefault();
 
-    // console.log(this.props.match.params.clientId);
-
-    // let lastPost = {};
-    // // postArr.push(this.state.title, this.state.copy)
-    // lastPost['title'] = this.state.title;
-    // lastPost['copy'] = this.state.copy;
-    // lastPost['postTime'] = this.state.postTime;
-    // lastPost['postMedium'] = this.state.postMedium;
-    // lastPost['ad'] = this.state.ad;
-    // lastPost['postHashtag'] = this.state.postHashtag;
-    // lastPost['values'] = this.state.values;
-    // lastPost['facebook'] = this.state.facebook;
-    // lastPost['twitter'] = this.state.twitter;
-    // lastPost['instagram'] = this.state.instagram;
-    // lastPost['linkedin'] = this.state.linkedin;
-    // lastPost['other'] = this.state.other;
-    // lastPost['postDate'] = this.state.postDate;
-
-    // this.setState(
-    //   prevState => ({
-    //     subPosts: [...prevState.subPosts, lastPost]
-    //   }),
-    //   () => {
-    //     const friendlyUrl = this.state.title.toLowerCase().replace(/ /g, '-');
-    //     const formMonth = this.state.calendarMonth;
-    //     const clientId = this.props.match.params.clientId;
-
-    //     this.props.firebase.addPost(clientId, this.state.subPosts);
-    //   }
-    // );
-
-    // this.props.firebase.addPost(
-    //   clientId,
-    //   this.state.title,
-    //   this.state.copy,
-    //   this.state.hashtags,
-    //   this.state.time,
-    //   parseInt(this.props.match.params.day),
-    //   parseInt(this.props.match.params.month),
-    //   this.state.values,
-    //   this.state.metaImageFiles,
-    //   friendlyUrl,
-    //   false,
-    //   this.state.selectedCategory
-    // );
-
-    // this.props.history.push(
-    //   `/calendar/2019/${this.props.match.params.month}/${this.props.match.params.clientId}`
-    // );
   };
 
   //   // File upload methods
@@ -256,25 +208,6 @@ class SubPost extends Component {
   //     return months[monthnum - 1] || '';
   //   };
 
-  getValues() {
-    alert('values');
-    let postObj = {};
-    postObj['title'] = this.state.title;
-    postObj['copy'] = this.state.copy;
-    postObj['postTime'] = this.state.postTime;
-    postObj['postMedium'] = this.state.postMedium;
-    postObj['ad'] = this.state.ad;
-    postObj['postHashTag'] = this.state.postHashTag;
-    postObj['values'] = this.state.values;
-    postObj['facebook'] = this.state.facebook;
-    postObj['twitter'] = this.state.twitter;
-    postObj['instagram'] = this.state.instagram;
-    postObj['linkedin'] = this.state.linkedin;
-    postObj['other'] = this.state.other;
-    postObj['postDate'] = this.state.postDate;
-    this.props.firebase.addPost(this.props.id, this.state.title, this.state.copy);
-  }
-
   componentDidUpdate(prevProps) {
     // Typical usage (don't forget to compare props):
     if (this.props.completed !== prevProps.completed) {
@@ -282,6 +215,7 @@ class SubPost extends Component {
       postObj['title'] = this.state.title;
       postObj['copy'] = this.state.copy;
       postObj['postTime'] = this.state.postTime;
+      postObj['approved'] = this.state.approved
       postObj['postMedium'] = this.state.postMedium;
       postObj['ad'] = this.state.ad;
       postObj['postHashTag'] = this.state.postHashTag;
@@ -291,7 +225,8 @@ class SubPost extends Component {
       postObj['instagram'] = this.state.instagram;
       postObj['linkedin'] = this.state.linkedin;
       postObj['other'] = this.state.other;
-      postObj['postDate'] = this.state.postDate;
+      postObj['postDate'] = this.state.dpDate;
+      postObj['ipDate'] = this.state.ipDate
 
       this.props.triggerValues(postObj)
 
@@ -343,6 +278,7 @@ class SubPost extends Component {
 
   handleChange = e => {
     console.log('CHANGE', e.target.value);
+    console.log('COPY STATe', this.state)
     this.setState({
       [e.target.name]: e.target.value
     });
@@ -393,6 +329,7 @@ class SubPost extends Component {
     postArr['postTime'] = this.state.postTime;
     postArr['postMedium'] = this.state.postMedium;
     postArr['ad'] = this.state.ad;
+    postArr['approved'] = this.state.approved
     postArr['postHashtag'] = this.state.postHashtag;
     postArr['values'] = this.state.values;
     postArr['facebook'] = this.state.facebook;
@@ -400,7 +337,8 @@ class SubPost extends Component {
     postArr['instagram'] = this.state.instagram;
     postArr['linkedin'] = this.state.linkedin;
     postArr['other'] = this.state.other;
-    postArr['postDate'] = this.state.postDate;
+    postArr['postDate'] = this.state.dpDate;
+    postArr['ipDate'] = this.state.ipDate;
 
     // .set('title', this.state.title)
     // .set('copy', this.state.copy)
@@ -502,20 +440,18 @@ class SubPost extends Component {
   // };
 
   handlePostTime = (time, timeString) => {
+    console.log('TIME', time)
+    console.log('TIMEString', timeString)
     this.setState(
       {
         postTime: timeString
-      },
-      () => {
-        console.log(timeString);
-        console.log('Time string', this.state.postTime);
       }
     );
   };
 
   // Beginning Of Link Methods
 
-  createUI() {
+  createUI() {  
     return this.state.values.map((el, i) => (
       <div key={i}>
         <input type="text" value={el.value || ''} onChange={this.handleLinks.bind(this, i)} />
@@ -554,6 +490,12 @@ class SubPost extends Component {
       }
     );
   };
+
+  handleApproval = () => {
+    this.setState({
+      approved:!this.state.approved
+    })
+  }
 
   handleDPChange(val) {
     this.setState({ dpDate: val, ipDate: moment(val).format('MM/DD/YYYY') });
@@ -675,8 +617,8 @@ class SubPost extends Component {
             <input
               type="checkbox"
               name="approved"
-              value="approved"
-              onChange={this.props.handleApproval}
+              value={this.state.approved}
+              onChange={this.handleApproval}
               id="approvePost"
             />
             <label for="approvePost">APPROVE POST</label>
@@ -765,7 +707,7 @@ class SubPost extends Component {
           </div>
           {/* date-button-wrapper */}
           <div>
-            <input type="checkbox" checked={this.state.checked} onChange={this.handleAd} id="ad" />
+            <input type="checkbox" checked={this.state.ad} onChange={this.handleAd} id="ad" />
             <label for="ad">Ad or Sponsored Post</label>
           </div>
           <div>

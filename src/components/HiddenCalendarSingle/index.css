@@ -21,7 +21,11 @@
 .hidden-post div{
   background: #fff;
   width: 558px;
-  
+}
+
+.props-copy{
+  max-width:500px;
+  word-break:break-all;
 }
 
 .label-button{

@@ -58,10 +58,10 @@ const App = () => (
         <Route exact path={ROUTES.HOME} component={HomePage} />
         <Route path={ROUTES.CLIENTS} component={Clients} />
         <Route path={ROUTES.DATES} component={Dates} />
-        <Route path="/edit-post/:month/:day/:postId/:clientId" component={EditPost} />
+        <Route path="/edit-post/:clientId/:postId" component={EditPost} />
         <Route exact path={`/calendar-single/:year/:month:day`} component={CalendarSingle} />
         <Route path="/client-calendar/:year/:month" component={ClientCalendar} />
-        <Route exact path="/view-post/:month/:day/:title" render={(props) => <ClientViewPost {...props} />} />
+        <Route exact path="/view-post/:month/:day/:id" render={(props) => <ClientViewPost {...props} />} />
         <Route path="/admin-view-post/:month/:day/:title/:client/:itemId" component={AdminViewPost} />
         <Route path="/calendar/:year/:month/:clientId" component={Calendar} />
         <Route path="/settings" component ={Settings} />

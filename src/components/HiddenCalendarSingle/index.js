@@ -79,8 +79,17 @@ class HiddenCalendarSingle extends Component {
 
   render() {
     const friendlyUrlTitle = 'test';
-    const hiddenPost = () => (
-      <div>
+
+
+    const hiddenPost = () => {
+        const date = new Date(this.props.ipDate)
+        let string = this.props.copy;
+        let maxLength = 200;
+        let trimmedString = string.substr(0, maxLength);
+        trimmedString = trimmedString.substr(0, Math.min(trimmedString.length, trimmedString.lastIndexOf(" ")))
+        console.log('NEW DATE', date.toString());
+        return(
+            <div>
         <h4 className="text-center">{this.props.title}</h4>
         <div class="social-wrapper">
         {this.props.facebook == true && (
@@ -99,22 +108,33 @@ class HiddenCalendarSingle extends Component {
             <p>Other</p>
         )}
         </div>
+        <p>{date.toString().split('00')[0]} @ {this.props.ipDate}</p>
 
-        <div>{this.props.postDate}</div>
+        <p className="props-copy">
+            {this.props.copy.substr(0, 200)}
+        </p>
+        <div>{this.props.hashtags}</div>
+        {/* {date.map(item => (
+            <p>{item}</p>
+        ))} */}
         {/* <p>{this.truncate(this.props.copy)}</p> */}
         {/* <p>{this.props.time}</p> */}
         {/* <p className="mb-0">{this.props.hashtags.map(item => (
                     <span>#{item} </span>
                 ))}</p> */}
         <Link
-          to={`/edit-post/${this.props.month}/${this.props.day}/${this.props.itemId}/${
-            this.props.clientId
-          }`}
+          to={`/edit-post/${this.props.postId}/${this.props.clientId}`}
         >
           Edit Post
         </Link>
       </div>
-    );
+        )
+    }
+
+    
+
+      
+    
 
     const buttonStyle = {
       background: this.handleColor(this.props.selectedCategory)

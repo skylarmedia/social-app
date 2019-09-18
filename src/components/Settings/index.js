@@ -1,17 +1,22 @@
 import React, { Component } from 'react';
 import { compose } from 'recompose';
 import { withFirebase } from '../Firebase';
+import MainButton  from '../MainButton';
 
 class Settings extends Component{
     constructor(props){
         super(props);
         
         this.state = {
-            clients: []
+            clients: [],
+            showDelete: false,
+            deleteClient:'',
+            deleteIndex: null
         }
 
         this.reactivateClient = this.reactivateClient.bind(this);
         this.deleteClient = this.deleteClient.bind(this);
+        this.confirmArchive = this.confirmArchive.bind(this);
     }
 
     componentWillMount(){
@@ -26,6 +31,18 @@ class Settings extends Component{
         })
     }
 
+    confirmArchive = (e) => {
+        if(e.target.value == 'true'){
+        this.props.firebase.deleteClient(this.state.deleteClient);
+        this.setState({ 
+            clients: this.state.clients.filter((_, i) => i !== this.state.deleteIndex)
+        });
+        }
+        this.setState({
+          showDelete:!this.state.showDelete
+        })
+      }
+
     reactivateClient = (id, index) => {
         alert('ran')
         this.props.firebase.reactivateClient(id)
@@ -35,11 +52,15 @@ class Settings extends Component{
     }
 
     deleteClient = (id, index) => {
-        alert('ran');
-        this.props.firebase.deleteClient(id);
-        this.setState({ 
-            clients: this.state.clients.filter((_, i) => i !== index )
-        });
+        this.setState({
+            showDelete: !this.state.showDelete,
+            deleteClient: id,
+            deleteIndex: index
+        })
+        // this.props.firebase.deleteClient(id);
+        // this.setState({ 
+        //     clients: this.state.clients.filter((_, i) => i !== index )
+        // });
     }
 
     render(){
@@ -62,6 +83,10 @@ class Settings extends Component{
                     )       
                 })}
                 </div>
+                {this.state.showDelete && (
+                    <MainButton title="Delete Client?" subtitle="Are you sure you would like to delete this client? This action is permanent and cannot be un-done." buttonText="Delete" confirmArchive={this.confirmArchive.bind(this)} index='lanto'/>
+                )}
+                
             </div>
         )
     }

@@ -178,8 +178,6 @@ class Home extends Component {
     this.setState({
       showButton:!this.state.showButton
     })
-
-
   }
 
   archiveClient = (user, index) => {

@@ -15,8 +15,9 @@ class EditCategoryForm extends Component {
     currentCategory = (e) => {
         if(e.target.value !== undefined){
             let color = e.target.value.split('|||')[1];
+            let name = e.target.value.split('|||')[0];
             
-            this.props.getSelectedCategory(color)
+            this.props.getSelectedCategory(color, name)
         }
     }
 
@@ -63,6 +64,10 @@ class EditCategoryForm extends Component {
             <React.Fragment>
                 <form>
                     <select name="options" onChange={this.currentCategory.bind(this)}>
+                    
+                        {this.props.currentCat ? 
+                            <option value={`${this.props.currentCat} ||| #fff`} selected>{this.props.currentCat}</option> : <option value={`No Category ||| #fff`} selected>No Category</option>
+                        }
                         <option value={`No Category ||| #fff`} selected>No Category</option>
                         {options}
                     </select>
