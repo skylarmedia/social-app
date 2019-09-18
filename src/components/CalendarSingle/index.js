@@ -57,8 +57,10 @@ class CalendarSingle extends Component {
                 {this.props.posts.map((item, index) => {
                     if (item.data().month == this.props.month) {
                         if (item.data().day === this.props.day) {
+                            console.log('ITEM IN CALENDAR', item.data())
                             return (
                                 <div class="hidden-calendar-wrapper d-flex flex-column">
+                                    { item.data().draft }
                                     {
                                         item.data().approved ?
                                             <img src={require('../assets/check.svg')} className="check" />
@@ -69,7 +71,50 @@ class CalendarSingle extends Component {
                                     {
                                         item.data().adminRead ? '' : <img src={require('../assets/not-read.svg')} className="not-read" />
                                     }
-                                    <HiddenCalendarSingle title={item.data().title} copy={item.data().copy} time={item.data().time} hashtags={item.data().hashtags} links={item.data().links} day={item.data().day} month={item.data().month} itemId={item.id} push={this.props.history} clientId={this.props.clientId} selectedCategory={item.data().selectedCategory} adminRead={item.data().adminRead} />
+                                    <h4>{item.data().post[0].title}</h4>
+                                    
+                                    {/* <div>
+                                        {item.data().post[0].facebook && (
+                                            <p>Facebook1</p>
+                                        )}
+                                        {item.data().post[0].instagram && (
+                                            <p>Instagram</p>
+                                        )}
+                                        {item.data().post[0].linkedin && (
+                                            <p>LinkedIn</p>
+                                        )}
+                                        {item.data().post[0].twitter && (
+                                            <p>Twitter</p>
+                                        )}
+                                        {item.data().post[0].other && (
+                                            <p>Other</p>
+                                        )}
+                                    </div> */}
+
+
+
+                                    <HiddenCalendarSingle 
+                                        title={item.data().post[0].title} 
+                                        facebook={item.data().post[0].facebook}
+                                        instagram={item.data().post[0].instagram}
+                                        linkedin={item.data().post[0].linkedin}
+                                        twitter={item.data().post[0].twitter}
+                                        other={item.data().post[0].other}
+                                        postDate={item.data().post[0].postDate}
+                                        
+                                        
+                                        copy={item.data().post[0].copy} 
+                                        time={item.data().time} 
+                                        hashtags={item.data().hashtags} 
+                                        links={item.data().links} 
+                                        day={item.data().day} 
+                                        month={item.data().month} 
+                                        itemId={item.id} 
+                                        push={this.props.history} 
+                                        clientId={this.props.clientId} 
+                                        selectedCategory={item.data().selectedCategory} 
+                                        adminRead={item.data().adminRead}
+                                    />
                                 </div>
                             )
                         }

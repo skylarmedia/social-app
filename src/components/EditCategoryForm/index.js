@@ -7,9 +7,17 @@ class EditCategoryForm extends Component {
         super(props)
 
         this.state = {
-            categories: []
+            categories: [],
+            selectedCategory: ''
         }
+    }
 
+    currentCategory = (e) => {
+        if(e.target.value !== undefined){
+            let color = e.target.value.split('|||')[1];
+            
+            this.props.getSelectedCategory(color)
+        }
     }
 
     componentWillMount() {
@@ -37,6 +45,7 @@ class EditCategoryForm extends Component {
 
 
     render() {
+        console.log(this.state, 'FINAL STATE    ')
         const options = this.state.categories.map((item, index) => {
             // console.log(item, 'item in category ')
             if (this.handleText(this.props.category) == item.name) {
@@ -53,7 +62,7 @@ class EditCategoryForm extends Component {
         return (
             <React.Fragment>
                 <form>
-                    <select name="options" onChange={this.props.getSelectedCategory}>
+                    <select name="options" onChange={this.currentCategory.bind(this)}>
                         <option value={`No Category ||| #fff`} selected>No Category</option>
                         {options}
                     </select>

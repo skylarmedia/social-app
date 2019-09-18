@@ -13,8 +13,6 @@ import EditCategoryForm from '../EditCategoryForm';
 import moment from 'moment';
 import SubPost from './SubPost';
 
-import { connect } from 'react-redux'
-
 
 import EmojiField from 'emoji-picker-textfield';
 import 'emoji-mart/css/emoji-mart.css'
@@ -45,7 +43,13 @@ class AddPost extends Component {
       subPosts: [{ subPosts: null }],
       postArr: [],
       completed:false,
-      tempHold: []
+      tempHold: [],
+      draft: false,
+      created:true,
+      selectedCategory:'',
+      year: this.props.match.params.year,
+      month: this.props.match.params.month,
+      day: this.props.match.params.day
     };
 
     this.addForm = this.addForm.bind(this);
@@ -55,7 +59,9 @@ class AddPost extends Component {
     this.handlePostTime = this.handlePostTime.bind(this);
     // this.getValues = this.getValues.bind(this);
     this.receivedValues = this.receivedValues.bind(this);
+    this.saveDraft = this.saveDraft.bind(this)
     // this.myRef = React.createRef();
+    // this.getSelectedCategory = this.getSelectedCategory.bind(this)
   }
 
   // getValues = (postArr) => {
@@ -68,30 +74,23 @@ class AddPost extends Component {
   // }
 
   onSubmitForm = e => {
+
     e.preventDefault();
     this.setState({
       completed:!this.state.completed
+    }, () => {
     })
 
-    // this.refs.child.getValues();
+    
   }
-
-  confirmPost = () => {
-    var r = window.confirm("Press a button!");
-
-    if(r == true){
-      alert(true);
-    }else{
-      alert(false);
-    }
-  }
-
 
   triggerValues = (state) => {
     
     this.setState(previousState => ({
       tempHold: [...previousState.tempHold, state]
-    }));
+    }), () => {
+      console.log(' TEMP HOLD ONE', this.state.tempHold[0]);
+    });
 
   }
 
@@ -237,11 +236,26 @@ class AddPost extends Component {
 
   // END OF SOCIAL METHODS
 
-  getSelectedCategory = event => {
+  getSelectedCategory = color => {
+
+    if(color !== undefined){
+
     this.setState({
-      selectedCategory: event.target.value
+      selectedCategory: color
+    }, () => {
+      alert(this.state.selectedColor)
     });
+    }
   };
+  
+
+  saveDraft = () => {
+    this.setState({
+      draft: true
+    })
+
+    alert(this.state.draft);
+  }
 
   handlePostTime = (time, timeString) => {
     this.setState(
@@ -335,11 +349,22 @@ class AddPost extends Component {
       width: '40px',
       height: '40px'
     };
+
+    if(this.state.subPosts.length == this.state.tempHold.length){
+
+      // Add Back
+        this.props.firebase.addPost(this.props.match.params.clientId, this.state.tempHold, this.state.draft, this.state.selectedCategory, parseInt(this.state.year), parseInt(this.state.month), parseInt(this.state.day))
+    }
     console.log('state for render', this.state);
     // console.log('parent props', this.props)
     return (
       <React.Fragment>
         <div className="add-post">
+        <EditCategoryForm
+            clientId={this.props.match.params.clientId}
+            getSelectedCategory={this.getSelectedCategory}
+            category={this.state.selectedCategory}
+          />
           <p className="heading text-center add-post-heading">
             Client {this.props.match.params.clientId} Calendar
             <br />
@@ -350,27 +375,17 @@ class AddPost extends Component {
                 {this.createForms()}
                 <input type="button" value="Add Platform" onClick={() => this.addForm()} />
                 <div className="text-center">
+                  <button className="save-draft-btn" onClick={this.saveDraft.bind(this)}>SAVE DRAFT</button>
                   <input type="submit" value="Submit" className="add-date-btn" />
                 </div>
               </form>
             </div>
           </div>
-          <EditCategoryForm
-            clientId={this.props.match.params.clientId}
-            getSelectedCategory={this.getSelectedCategory}
-            category={this.state.selectedCategory}
-          />
+         
         </div>
       </React.Fragment>
     );
   }
 }
 
-const mapStateToProps = (state)=>{
-  console.log('state REDUX', state)
-  // return{
-  //     items: state.addedItems
-  // }
-}
-
-export default withFirebase(connect(mapStateToProps, null)(AddPost))
+export default compose(withFirebase(AddPost));

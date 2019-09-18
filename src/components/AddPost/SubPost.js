@@ -15,7 +15,7 @@ import 'emoji-mart/css/emoji-mart.css';
 import { Picker } from 'emoji-mart';
 
 import { connect } from 'react-redux'
-import { pushPost } from '../actions/actions'
+import { pushPosts } from '../actions/actions'
 
 class SubPost extends Component {
   constructor(props) {
@@ -278,27 +278,22 @@ class SubPost extends Component {
   componentDidUpdate(prevProps) {
     // Typical usage (don't forget to compare props):
     if (this.props.completed !== prevProps.completed) {
+      let postObj = {};
+      postObj['title'] = this.state.title;
+      postObj['copy'] = this.state.copy;
+      postObj['postTime'] = this.state.postTime;
+      postObj['postMedium'] = this.state.postMedium;
+      postObj['ad'] = this.state.ad;
+      postObj['postHashTag'] = this.state.postHashTag;
+      postObj['values'] = this.state.values;
+      postObj['facebook'] = this.state.facebook;
+      postObj['twitter'] = this.state.twitter;
+      postObj['instagram'] = this.state.instagram;
+      postObj['linkedin'] = this.state.linkedin;
+      postObj['other'] = this.state.other;
+      postObj['postDate'] = this.state.postDate;
 
-      // alert("RAN");
-      this.props.pushPost("TEST1"); 
-
-
-      // let postObj = {};
-      // postObj['title'] = this.state.title;
-      // postObj['copy'] = this.state.copy;
-      // postObj['postTime'] = this.state.postTime;
-      // postObj['postMedium'] = this.state.postMedium;
-      // postObj['ad'] = this.state.ad;
-      // postObj['postHashTag'] = this.state.postHashTag;
-      // postObj['values'] = this.state.values;
-      // postObj['facebook'] = this.state.facebook;
-      // postObj['twitter'] = this.state.twitter;
-      // postObj['instagram'] = this.state.instagram;
-      // postObj['linkedin'] = this.state.linkedin;
-      // postObj['other'] = this.state.other;
-      // postObj['postDate'] = this.state.postDate;
-
-      // this.props.triggerValues(postObj)
+      this.props.triggerValues(postObj)
 
 
       // this.props.firebase.addPost(
@@ -500,11 +495,11 @@ class SubPost extends Component {
 
   // END OF SOCIAL METHODS
 
-  getSelectedCategory = event => {
-    this.setState({
-      selectedCategory: event.target.value
-    });
-  };
+  // getSelectedCategory = event => {
+  //   this.setState({
+  //     selectedCategory: event.target.value
+  //   });
+  // };
 
   handlePostTime = (time, timeString) => {
     this.setState(
@@ -667,7 +662,7 @@ class SubPost extends Component {
           )}
         </div>
         <div className="inner-form-wrapper1 col-sm-6">
-          <div className="category-wrapper">
+          {/* <div className="category-wrapper">
             {this.props.i < 1 && (
               <EditCategoryForm
                 clientId={this.props.id}
@@ -675,7 +670,7 @@ class SubPost extends Component {
                 category={this.state.selectedCategory}
               />
             )}
-          </div>
+          </div> */}
           <div className="d-flex">
             <input
               type="checkbox"
@@ -798,9 +793,7 @@ class SubPost extends Component {
 }
 
 const mapDispatchToProps= (dispatch) => {
-  return{
-    pushPost: (item)=>{dispatch(pushPost(item))}
-}
+
 }
 
 export default withFirebase(connect(null, mapDispatchToProps)(SubPost))
