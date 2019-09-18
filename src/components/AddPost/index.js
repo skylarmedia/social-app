@@ -13,6 +13,8 @@ import EditCategoryForm from '../EditCategoryForm';
 import moment from 'moment';
 import SubPost from './SubPost';
 
+import { connect } from 'react-redux'
+
 
 import EmojiField from 'emoji-picker-textfield';
 import 'emoji-mart/css/emoji-mart.css'
@@ -364,4 +366,11 @@ class AddPost extends Component {
   }
 }
 
-export default compose(withFirebase(AddPost));
+const mapStateToProps = (state)=>{
+  console.log('state REDUX', state)
+  // return{
+  //     items: state.addedItems
+  // }
+}
+
+export default withFirebase(connect(mapStateToProps, null)(AddPost))
