@@ -10,6 +10,7 @@ export default class CustomCalendarComponent extends React.Component{
                     value={this.props.ipDate}
                     onChange={(e)=>this.props.handleIpChange(e.target.value)}
                     type="input"
+                    placeholderText="Post Date"
                 />
             </div>
           );

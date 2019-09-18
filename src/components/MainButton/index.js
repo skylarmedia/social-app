@@ -8,10 +8,10 @@ const MainButton = ({title, subtitle, buttonText, confirmArchive}) => {
                 <h6>{title}</h6>
                 <p>{subtitle}</p>
                 <div>
-                    <button value={false} onClick={confirmArchive}>
+                    <button value={false} onClick={confirmArchive} className="main-button red-button">
                         Cancel
                     </button>
-                    <button value={true} onClick={confirmArchive}>
+                    <button value={true} onClick={confirmArchive} className="main-button white-button">
                         {buttonText}
                     </button>
                 </div>

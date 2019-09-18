@@ -3,6 +3,7 @@
     width: 261px;
     text-align: center;
     border: 3px dashed #EF463B;
+    margin:0 auto;
 }
 
 #add-new-form-wrapper{
@@ -24,6 +25,49 @@
   color:#ee463a;
 }
 
+.smile-logo, .smile-wrapper{
+    width:21px;
+    height:21px;
+}
+
+.inner-btn{
+    width: 558px;
+    height: 277px;
+    width: 600px;
+    height: 277px;
+    background: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background: #fff;
+}
+
+.main-button{
+    height:48px;
+    width:149px;
+    border-radius:11px;
+    font-size:16px;
+    border:none;
+    text-transform:uppercase;
+}
+
+.red-button{
+    background:#EF463B;
+    color:#fff;
+    margin-right:12px;
+}
+
+.white-button{
+    border:2px solid #EF463B;
+}
+
+.smile-wrapper{
+    position: absolute;
+    right: 0;
+    bottom: 0;
+}
+
 .main-form-wrapper{
     width:100%;
 }
@@ -38,7 +82,7 @@
 
 #add-new-form .MuiInputBase-input{
     color:#fff;
-    width:235px;
+    width:310px;
 }
 
 #add-file{
@@ -102,4 +146,13 @@
 
 .empty-state .text-center{
     margin-top:14px;
+}
+
+
+.inner-form-wrapper input[type="checkbox"]{
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
 }

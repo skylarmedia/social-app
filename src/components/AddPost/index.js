@@ -53,6 +53,7 @@ class AddPost extends Component {
     this.handlePostTime = this.handlePostTime.bind(this);
     // this.getValues = this.getValues.bind(this);
     this.receivedValues = this.receivedValues.bind(this);
+    // this.myRef = React.createRef();
   }
 
   // getValues = (postArr) => {
@@ -69,108 +70,28 @@ class AddPost extends Component {
     this.setState({
       completed:!this.state.completed
     })
+
+    // this.refs.child.getValues();
+  }
+
+  confirmPost = () => {
+    var r = window.confirm("Press a button!");
+
+    if(r == true){
+      alert(true);
+    }else{
+      alert(false);
+    }
+  }
+
+
+  triggerValues = (state) => {
     
+    this.setState(previousState => ({
+      tempHold: [...previousState.tempHold, state]
+    }));
 
-    // // console.log(this.props.match.params.clientId);
-
-    // let lastPost = {};
-    // // postArr.push(this.state.title, this.state.copy)
-    // lastPost['title'] = this.state.title;
-    // lastPost['copy'] = this.state.copy;
-    // lastPost['postTime'] = this.state.postTime;
-    // lastPost['postMedium'] = this.state.postMedium;
-    // lastPost['ad'] = this.state.ad;
-    // lastPost['postHashtag'] = this.state.postHashtag;
-    // lastPost['values'] = this.state.values;
-    // lastPost['facebook'] = this.state.facebook;
-    // lastPost['twitter'] = this.state.twitter;
-    // lastPost['instagram'] = this.state.instagram;
-    // lastPost['linkedin'] = this.state.linkedin;
-    // lastPost['other'] = this.state.other;
-    // lastPost['postDate'] = this.state.postDate;
-
-    // this.setState(
-    //   prevState => ({
-    //     subPosts: [...prevState.subPosts, lastPost]
-    //   }),
-    //   () => {
-    //     const friendlyUrl = this.state.title.toLowerCase().replace(/ /g, '-');
-    //     const formMonth = this.state.calendarMonth;
-    //     const clientId = this.props.match.params.clientId;
-
-    //     this.props.firebase.addPost(clientId, this.state.subPosts);
-    //   }
-    // );
-
-    // this.props.firebase.addPost(
-    //   clientId,
-    //   this.state.title,
-    //   this.state.copy,
-    //   this.state.hashtags,
-    //   this.state.time,
-    //   parseInt(this.props.match.params.day),
-    //   parseInt(this.props.match.params.month),
-    //   this.state.values,
-    //   this.state.metaImageFiles,
-    //   friendlyUrl,
-    //   false,
-    //   this.state.selectedCategory
-    // );
-
-    // this.props.history.push(
-    //   `/calendar/2019/${this.props.match.params.month}/${this.props.match.params.clientId}`
-    // );
-  };
-
-  //   // File upload methods
-
-  //   addFile = event => {
-  //     const file = Array.from(event.target.files);
-
-  //     if (file.length === 1) {
-  //       this.setState({
-  //         file: [...this.state.file],
-  //         file
-  //       });
-  //     } else if (file.length > 1) {
-  //       const emptyFileArr = [];
-  //       file.map(innerFile => {
-  //         emptyFileArr.push(innerFile);
-  //       });
-
-  //       this.setState({
-  //         file: emptyFileArr
-  //       }, () => {
-  //         this.uploadFiles();
-  //         alert('uploaded')
-  //         console.log('statefile', this.state.file)
-  //       });
-  //     }
-  //   };
-
-  //   showState = e => {
-  //     e.preventDefault();
-  //     console.log(this.state);
-  //   };
-
-  //   monthNumToName = monthnum => {
-  //     var months = [
-  //       'January',
-  //       'February',
-  //       'March',
-  //       'April',
-  //       'May',
-  //       'June',
-  //       'July',
-  //       'August',
-  //       'September',
-  //       'October',
-  //       'November',
-  //       'December'
-  //     ];
-
-  //     return months[monthnum - 1] || '';
-  //   };
+  }
 
   addEmoji = (e) => {
     //console.log(e.unified)
@@ -239,73 +160,26 @@ class AddPost extends Component {
   // END OF EMOJI METHODS
 
   addForm() {
-    let postArr = {};
-    // postArr.push(this.state.title, this.state.copy)
-    postArr['title'] = this.state.title;
-    postArr['copy'] = this.state.copy;
-    postArr['postTime'] = this.state.postTime;
-    postArr['postMedium'] = this.state.postMedium;
-    postArr['ad'] = this.state.ad;
-    postArr['postHashtag'] = this.state.postHashtag;
-    postArr['values'] = this.state.values;
-    postArr['facebook'] = this.state.facebook;
-    postArr['twitter'] = this.state.twitter;
-    postArr['instagram'] = this.state.instagram;
-    postArr['linkedin'] = this.state.linkedin;
-    postArr['other'] = this.state.other;
-    postArr['postDate'] = this.state.postDate;
-
-    // .set('title', this.state.title)
-    // .set('copy', this.state.copy)
-    // .set('postTime', this.state.postTime)
-    // .set('postMedium', this.state.postMedium)
-    // .set('ad', this.state.ad)
-    // .set('postHashtag', this.state.postHashTag)
-    // .set('values', this.state.values)
-    // .set('facebook', this.state.facebook)
-    // .set('twitter', this.state.twitter)
-    // .set('linkedin', this.state.linkedin)
-    // .set('instagram', this.state.instagram)
-    // .set('other', this.state.other)
-    // .set('postDate', this.state.ipDate)
-
-    // subPosts: [{ subPosts: null }],
-    // social: [],
-    // title: '',
-    // copy: '',
-    // postDate: new Date(),
-    // currentPost: new Map(),
-    // showDatePicker: true,
-    // postTime: null,
-    // postMedium: '',
-    // ad: false,
-    // postHashTag: '',
-    // values: [{ value: null }],
-    // facebook: false,
-    // twitter: false,
-    // instagram: false,
-    // linkedin:false,
-    // other:false,
-    // dpDate: moment().toDate(),
-    // ipDate: moment().format('MM/DD/YYYY')
 
     this.setState(prevState => ({
       subPosts: [...prevState.subPosts, null]
     }));
-
-    // console.log('STATE AFTER ADD FORM title', this.state.currentPost.get('title'))
-    // console.log('STATE AFTER ADD copy', this.state.currentPost.get('copy'))
+    // let postArr = {};
+    // // postArr.push(this.state.title, this.state.copy)
+    // postArr['title'] = this.state.title;
+    // postArr['copy'] = this.state.copy;
+    // postArr['postTime'] = this.state.postTime;
+    // postArr['postMedium'] = this.state.postMedium;
+    // postArr['ad'] = this.state.ad;
+    // postArr['postHashtag'] = this.state.postHashtag;
+    // postArr['values'] = this.state.values;
+    // postArr['facebook'] = this.state.facebook;
+    // postArr['twitter'] = this.state.twitter;
+    // postArr['instagram'] = this.state.instagram;
+    // postArr['linkedin'] = this.state.linkedin;
+    // postArr['other'] = this.state.other;
+    // postArr['postDate'] = this.state.postDate;
   }
-
-  // handleSocialCheck = e => {
-
-  //   this.setState({
-  //     [e.target.name]: `${!this.state}.${e.target.name}`
-  //   }, (e) => {
-  //     console.log('state in arr', this.state)
-  //   });
-  // };
-
 
   addPostToFirebase = () => {
     this.props.firebase.addPost(this.props.match.params.clientId, this.state.postArr)
@@ -439,7 +313,7 @@ class AddPost extends Component {
         <div className="main-form-wrapper">
           <SubPost 
             i={i} ref={this.getValues} 
-            receivedValues={this.receivedValues} 
+            triggerValues={this.triggerValues}
             ref="child" 
             completed={this.state.completed} 
             id={this.props.match.params.clientId}

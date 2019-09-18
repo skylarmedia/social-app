@@ -258,10 +258,12 @@ class Home extends Component {
                             <Link to={`/dates/${user.urlName}`}>
                               <img src={user.logo} className="user-background" />
                             </Link>
+                            <div className="x-wrapper">
                             <Link to={`/dates/${user.urlName}`}>
                               {user.name}
                             </Link>
-                            <button onClick={() => this.archiveClient(user.urlName, index)}>X</button>
+                            </div>
+                            <button onClick={() => this.archiveClient(user.urlName, index)} className="archive-x">x</button>
                         </div>
                       )
                     })
@@ -317,7 +319,6 @@ class Home extends Component {
                     onChange={this.onChange}
                     type="text"
                     label="Name"
-                    style={textFieldStyles}
                   />
                   <TextField
                     margin="normal"
@@ -326,13 +327,7 @@ class Home extends Component {
                     value={this.state.email}
                     onChange={this.onChange}
                     type="text"
-                    placeholder="Email Address"
                     label="Email"
-                    InputProps={{
-                      style: {
-                        borderColor: "red"
-                      }
-                    }}
                   />
                   <TextField
                     margin="normal"
@@ -341,8 +336,7 @@ class Home extends Component {
                     value={this.state.passwordOne}
                     onChange={this.onChange}
                     type="password"
-                    placeholder="Password"
-                    label="Password"
+                    label="PASSWORD"
                   />
                   <input type="file" onChange={this.addFile} id="add-file" />
                   <div id="add-new-btn-wrapper" className="text-center mt-88">

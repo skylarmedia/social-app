@@ -108,10 +108,30 @@
 #red-outline-wrapper{
     height: 280px;
     border: 3px dashed #EF463B;
+    margin-top:31px;
 }
 
 .MuiOutlinedInput-notchedOutline{
     border-radius:0 !important;
+}
+
+.x-wrapper a{
+    margin-bottom:0;
+}
+
+.red-button{
+   margin-right:12px; 
+}
+
+.archive-x{
+    background: transparent;
+    border: none;
+    color: #002D5B;
+    float: right;
+    font-size: 23px;
+    font-weight: bold;
+    height: auto;
+    padding: 0; 
 }
 
 .copy-wrapper{
@@ -133,4 +153,8 @@
     left: 20px;
     right: 0;
     margin: 0 auto;
+}
+
+#add-new-form .MuiInputBase-input::placeholder{
+    color:red;
 }

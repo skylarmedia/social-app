@@ -14,6 +14,9 @@ import EmojiField from 'emoji-picker-textfield';
 import 'emoji-mart/css/emoji-mart.css';
 import { Picker } from 'emoji-mart';
 
+import { connect } from 'react-redux'
+import { pushPost } from '../actions/actions'
+
 class SubPost extends Component {
   constructor(props) {
     super(props);
@@ -39,8 +42,8 @@ class SubPost extends Component {
       completed: true,
       filesArr: [],
       file: [],
-      metaImageFiles:[]
-      
+      metaImageFiles: [],
+      showEmoji: false
     };
 
     this.addForm = this.addForm.bind(this);
@@ -51,9 +54,8 @@ class SubPost extends Component {
     this.getValues = this.getValues.bind(this);
     this.addFile = this.addFile.bind(this);
     this.uploadFiles = this.uploadFiles.bind(this);
-    this.openIcons = this.openIcons.bind(this)
+    this.openIcons = this.openIcons.bind(this);
   }
-
 
   // Beginning of upload methods
 
@@ -62,82 +64,93 @@ class SubPost extends Component {
     const firestorageRef = this.props.firebase.storage;
     const imageRefs = [];
     this.state.file.forEach(file => {
-    var type;
+      var type;
 
       switch (file.type) {
-          case 'video/mp4':
-              type = 'video';
-              break;
-          case 'image/png':
-              type = 'image';
-              break;
-          case 'image/jpeg':
-              type = 'image';
-              break;
-          default:
-              type = '';
+        case 'video/mp4':
+          type = 'video';
+          break;
+        case 'image/png':
+          type = 'image';
+          break;
+        case 'image/jpeg':
+          type = 'image';
+          break;
+        default:
+          type = '';
       }
 
-        var encodedURL = encodeURIComponent(this.props.id) + encodeURIComponent('/') + this.props.month + encodeURIComponent('-') + this.props.day + encodeURIComponent('/') + file.name + '?alt=media&type=' + type;
-        var imageUrl = `https://firebasestorage.googleapis.com/v0/b/skylar-social-17190.appspot.com/o/${encodedURL}`
-        console.log('IMAGE URL', imageUrl)
-        imageRefs.push(imageUrl);
-  
+      var encodedURL =
+        encodeURIComponent(this.props.id) +
+        encodeURIComponent('/') +
+        this.props.month +
+        encodeURIComponent('-') +
+        this.props.day +
+        encodeURIComponent('/') +
+        file.name +
+        '?alt=media&type=' +
+        type;
+      var imageUrl = `https://firebasestorage.googleapis.com/v0/b/skylar-social-17190.appspot.com/o/${encodedURL}`;
+      console.log('IMAGE URL', imageUrl);
+      imageRefs.push(imageUrl);
 
       firestorageRef
         .ref()
-        .child(
-          `${this.props.id}/${this.props.month}-${this.props.day}/${
-            file.name
-          }`
-        )
+        .child(`${this.props.id}/${this.props.month}-${this.props.day}/${file.name}`)
         .put(file);
     });
-    this.setState({
-      metaImageFiles: imageRefs
-    }, () => {
-        console.log('META FILES', this.state.metaImageFiles)
-    });
+    this.setState(
+      {
+        metaImageFiles: imageRefs
+      },
+      () => {
+        console.log('META FILES', this.state.metaImageFiles);
+      }
+    );
   };
 
   addFile = event => {
-    console.log('EVENT', event.target.files)
+    console.log('EVENT', event.target.files);
     const file = Array.from(event.target.files);
-    console.log('length', file.length)
+    console.log('length', file.length);
     if (file.length == 1) {
       var emptyFileArr = [];
       file.map(innerFile => {
         emptyFileArr.push(innerFile);
       });
 
-      this.setState({
-        file: emptyFileArr
-      }, () => {
-        this.uploadFiles();
-      });
+      this.setState(
+        {
+          file: emptyFileArr
+        },
+        () => {
+          this.uploadFiles();
+        }
+      );
     } else if (file.length > 1) {
       var emptyFileArr = [];
       file.map(innerFile => {
         emptyFileArr.push(innerFile);
       });
 
-      this.setState({
-        file: emptyFileArr
-      }, () => {
-        this.uploadFiles();
-      });
+      this.setState(
+        {
+          file: emptyFileArr
+        },
+        () => {
+          this.uploadFiles();
+        }
+      );
     }
   };
 
-
   // End of upload methods
 
-
-  openIcons = () =>  {
-    
-  }
-
-
+  openIcons = () => {
+    this.setState({
+      showEmoji: !this.state.showEmoji
+    });
+  };
 
   onSubmitForm = e => {
     e.preventDefault();
@@ -265,36 +278,45 @@ class SubPost extends Component {
   componentDidUpdate(prevProps) {
     // Typical usage (don't forget to compare props):
     if (this.props.completed !== prevProps.completed) {
-      let postObj = {};
-      postObj['title'] = this.state.title;
-      postObj['copy'] = this.state.copy;
-      postObj['postTime'] = this.state.postTime;
-      postObj['postMedium'] = this.state.postMedium;
-      postObj['ad'] = this.state.ad;
-      postObj['postHashTag'] = this.state.postHashTag;
-      postObj['values'] = this.state.values;
-      postObj['facebook'] = this.state.facebook;
-      postObj['twitter'] = this.state.twitter;
-      postObj['instagram'] = this.state.instagram;
-      postObj['linkedin'] = this.state.linkedin;
-      postObj['other'] = this.state.other;
-      postObj['postDate'] = this.state.postDate;
-      this.props.firebase.addPost(
-        this.props.id,
-        this.state.title,
-        this.state.copy,
-        this.state.postTime,
-        this.state.postMedium,
-        this.state.ad,
-        this.state.postHashTag,
-        this.state.values,
-        this.state.facebook,
-        this.state.twitter,
-        this.state.instagram,
-        this.state.linkedin,
-        this.state.other,
-        this.state.postDate
-      );
+
+      // alert("RAN");
+      this.props.pushPost("TEST1"); 
+
+
+      // let postObj = {};
+      // postObj['title'] = this.state.title;
+      // postObj['copy'] = this.state.copy;
+      // postObj['postTime'] = this.state.postTime;
+      // postObj['postMedium'] = this.state.postMedium;
+      // postObj['ad'] = this.state.ad;
+      // postObj['postHashTag'] = this.state.postHashTag;
+      // postObj['values'] = this.state.values;
+      // postObj['facebook'] = this.state.facebook;
+      // postObj['twitter'] = this.state.twitter;
+      // postObj['instagram'] = this.state.instagram;
+      // postObj['linkedin'] = this.state.linkedin;
+      // postObj['other'] = this.state.other;
+      // postObj['postDate'] = this.state.postDate;
+
+      // this.props.triggerValues(postObj)
+
+
+      // this.props.firebase.addPost(
+      //   this.props.id,
+      //   this.state.title,
+      //   this.state.copy,
+      //   this.state.postTime,
+      //   this.state.postMedium,
+      //   this.state.ad,
+      //   this.state.postHashTag,
+      //   this.state.values,
+      //   this.state.facebook,
+      //   this.state.twitter,
+      //   this.state.instagram,
+      //   this.state.linkedin,
+      //   this.state.other,
+      //   this.state.postDate
+      // );
 
       // var newArr = [];
       // newArr.push(postObj)
@@ -560,20 +582,19 @@ class SubPost extends Component {
     ));
   }
 
-  getType = (url) => {
+  getType = url => {
     if (url !== 'No Files') {
-        var checkUrl = new URL(url)
+      var checkUrl = new URL(url);
 
-        var query_string = checkUrl.search;
+      var query_string = checkUrl.search;
 
-        var search_params = new URLSearchParams(query_string);
+      var search_params = new URLSearchParams(query_string);
 
-        var type = search_params.get('type');
+      var type = search_params.get('type');
 
-        return type
+      return type;
     }
-
-}
+  };
 
   //   componentWillUnmount(){
 
@@ -589,20 +610,17 @@ class SubPost extends Component {
     //   )
     // });
 
-    const renderMedia = this.state.metaImageFiles.map((item) => {
+    const renderMedia = this.state.metaImageFiles.map(item => {
       if (this.getType(item) == 'video') {
-          return (
-              <video height="200" width="200" controls>
-                  <source src={item} />
-              </video>
-          )
+        return (
+          <video height="200" width="200" controls>
+            <source src={item} />
+          </video>
+        );
       } else {
-          return (
-              <img src={item} />
-          )
-
+        return <img src={item} />;
       }
-  })
+    });
     return (
       <div className="d-flex">
         <div className="col-sm-6">
@@ -618,7 +636,7 @@ class SubPost extends Component {
 
           <div id="red-outline-wrapper">
             <div class="red-center">
-                <input type="file" multiple onChange={this.addFile} className="red-dashed-input"/>
+              <input type="file" multiple onChange={this.addFile} className="red-dashed-input" />
             </div>
           </div>
 
@@ -627,28 +645,26 @@ class SubPost extends Component {
             <div />
             <input type="file" multiple onChange={this.addFile} />
           </div>
-
-          <span>
-            <Picker onSelect={this.addEmoji.bind(this)} />
-          </span>
           <div className="copy-wrapper">
-          <TextField
-            className="outlined-copy"
-            label="Copy"
-            name="copy"
-            multiline
-            value={this.state.copy}
-            onChange={this.handleChange}
-            margin="normal"
-            variant="outlined"
-          />
-          <button onClick={() => this.openIcons}><img src={require('../assets/smile.png')} className="logo" /></button>
-
-
-
-
-
+            <TextField
+              className="outlined-copy"
+              label="Copy"
+              name="copy"
+              multiline
+              value={this.state.copy}
+              onChange={this.handleChange}
+              margin="normal"
+              variant="outlined"
+            />
+            <button onClick={this.openIcons} className="smile-wrapper">
+              <img src={require('../assets/smile.png')} className="smile-logo" />
+            </button>
           </div>
+          {this.state.showEmoji && (
+            <span>
+              <Picker onSelect={this.addEmoji.bind(this)} />
+            </span>
+          )}
         </div>
         <div className="inner-form-wrapper1 col-sm-6">
           <div className="category-wrapper">
@@ -677,6 +693,7 @@ class SubPost extends Component {
               value={this.state.facebook}
               onChange={this.handleFacebook}
               id="facebook"
+              className="custom-check"
               checked={this.state.checked}
             />
             <label for="facebook">Facebook</label>
@@ -685,6 +702,7 @@ class SubPost extends Component {
               name="instagram"
               value={this.state.instagram}
               onChange={this.handleInstagram}
+              className="custom-check"
               id="instagram"
             />
             <label for="instagram">Instagram</label>
@@ -693,6 +711,7 @@ class SubPost extends Component {
               name="twitter"
               value={this.state.twitter}
               onChange={this.handleTwitter}
+              className="custom-check"
               id="twitter"
             />
             <label for="twitter">Twitter</label>
@@ -701,6 +720,7 @@ class SubPost extends Component {
               name="linkedin"
               value={this.state.linkedin}
               onChange={this.handleLinkedin}
+              className="custom-check"
               id="linkedin"
             />
             <label for="linkedin">LinkedIn</label>
@@ -709,6 +729,7 @@ class SubPost extends Component {
               name="other"
               value={this.state.other}
               onChange={this.handleOther}
+              className="custom-check"
               id="other"
             />
             <label for="other">Other</label>
@@ -718,10 +739,12 @@ class SubPost extends Component {
               <div id="choose-date-wrapper">
                 <DatePicker
                   selected={this.state.dpDate}
+                  placeholderText="Post Date"
                   onChange={value => this.handleDPChange(value)}
                   customInput={
                     <CustomCalendarComponent
                       ipDate={this.state.ipDate}
+                      placeholderText="Post Date"
                       handleIpChange={val => this.handleIpChange(val)}
                     />
                   }
@@ -767,11 +790,17 @@ class SubPost extends Component {
             ))}
             <input type="button" value="add more" onClick={() => this.addClick()} />
           </div>
-          {/* <input type="button" value="Add Platform" onClick={() => this.addForm()} /> */}
+          <input type="button" value="Add Platform" onClick={() => this.addForm()} />
         </div>
       </div>
     );
   }
 }
 
-export default compose(withFirebase(SubPost));
+const mapDispatchToProps= (dispatch) => {
+  return{
+    pushPost: (item)=>{dispatch(pushPost(item))}
+}
+}
+
+export default withFirebase(connect(null, mapDispatchToProps)(SubPost))
