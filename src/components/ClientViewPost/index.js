@@ -12,14 +12,13 @@ import app from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/firestore';
 
-
 class ClientViewPost extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
       userId: localStorage.userId,
-      post: [],
+      posts: [],
       media: [],
       hashtags: [],
       links: [],
@@ -28,7 +27,9 @@ class ClientViewPost extends Component {
       showPopUp: false,
       messages: [],
       adminRead: null,
-      clientRead: null
+      clientRead: null,
+      category: '',
+      color: '#fff'
     };
 
     this.handleCheckbox = this.handleCheckbox.bind(this);
@@ -36,11 +37,25 @@ class ClientViewPost extends Component {
   }
 
   componentWillMount() {
-
-    app.firestore().collection('users').doc(this.state.userId).collection('posts')
-    .doc(this.props.match.params.id).get().then(res => {
-        console.log('RES', res.data())
-    })
+    app
+      .firestore()
+      .collection('users')
+      .doc(this.state.userId)
+      .collection('posts')
+      .doc(this.props.match.params.id)
+      .get()
+      .then(res => {
+        this.setState(
+          {
+            posts: res.data().post,
+            category: res.data().selectedCategoryName,
+            categoryColor: res.data().color
+          },
+          () => {
+            console.log('RES', res.data());
+          }
+        );
+      });
 
     // this.props.firebase
     //   .getSinglePost(
@@ -112,6 +127,54 @@ class ClientViewPost extends Component {
       zIndex: 1
     };
 
+    const posts = this.state.posts.map(item => {
+      const styles = {
+        backgroundColor: this.state.categoryColor
+      };
+      return (
+        <div className="d-flex">
+          <div className="col-sm-6">
+            <p>{item.title}</p>
+            <p>Post Copy</p>
+            <p>{item.copy}</p>
+          </div>
+          <div className="col-sm-6 d-flex flex-wrap">
+            <div style={styles} className="col-sm-6 align-self-center">
+              {this.state.category}
+            </div>
+            <div className="col-sm-6 d-flex align-items-center">
+              <input type="checkbox" checked={item.approved} />
+              <label>APPROVE POST</label>
+            </div>
+            <div className="d-flex flex-column">
+              <div>PLATFORMS</div>
+
+              <div className="d-flex row col-sm-12">
+                <div>{item.facebook && (<p>Facebook</p>)}</div>
+                <div>{item.instagram && (<p>Instagram</p>)}</div>
+                <div>{item.twitter && (<p>Twitter</p>)}</div>
+                <div>{item.linkedin && (<p>Linkedin</p>)}</div>
+                <div>{item.other && (<p>Other</p>)}</div>
+              </div>
+            </div>
+
+            <div className="row justify-content-between col-sm-12">
+              <div className="col-sm-4">POST DATE</div>
+              <div className="col-sm-4">POST TIME</div>
+              <div className="col-sm-4">POST MEDIUM</div>
+            </div>
+            <div className="row justify-content-between col-sm-12">
+              <div className="col-sm-4">{item.ipDate}</div>
+              <div className="col-sm-4">{item.postTime}</div>
+              <div className="col-sm-4">POST MEDIUM</div>
+            </div>
+          </div>
+
+          <div />
+        </div>
+      );
+    });
+
     return (
       <React.Fragment>
         <AuthUserContext.Consumer>
@@ -125,67 +188,7 @@ class ClientViewPost extends Component {
               ) : (
                 ''
               )}
-              <p>{this.state.title}</p>
-              <div className="media-text-wrapper row">
-                <div className="col-sm-6">
-                  <MediaWrapper media={this.state.media} />
-                </div>
-                <div className="col-sm-6">
-                  <div className="col-sm-12">
-                    <p>Copy</p>
-                    <p>{this.state.copy}</p>
-                  </div>
-                  <div className="col-sm-12">
-                    {this.state.hashtags.map(hash => (
-                      <div>#{hash}</div>
-                    ))}
-                    <br />
-
-                    {this.state.links.map(link => (
-                      <div>{link}</div>
-                    ))}
-                  </div>
-                </div>
-                <br />
-                <br />
-                <br />
-                <form onSubmit={this.approveFormSubmit} id="approve-form" style={approveStyles}>
-                  <label>
-                    {this.state.approved ? (
-                      <p>You have approved this post</p>
-                    ) : (
-                      <p>You have not approved this post</p>
-                    )}
-                    <input
-                      name="approve"
-                      type="checkbox"
-                      id="approve-checkbox"
-                      onChange={this.handleCheckbox}
-                      checked={this.state.approved}
-                    />
-                  </label>
-                  <button onClick={this.approveFormSubmit}>Submit</button>
-                </form>
-              </div>
-              {/* End of media-text-wrapper */}
-
-              <div id="chat-wrapper">
-                <ChatBox
-                  getMessage={this.getMessage}
-                  month={this.props.match.params.month}
-                  day={this.props.match.params.day}
-                  title={this.props.match.params.title}
-                  authUser={authUser}
-                />
-                <ChatLog
-                  incomingMessage={this.state.incomingMessage}
-                  id={this.props.match.params.client}
-                  month={this.props.match.params.month}
-                  day={this.props.match.params.day}
-                  messages={this.state.messages}
-                  authUser={authUser}
-                />
-              </div>
+              {this.state.posts && <p>{posts}</p>}
             </div>
           )}
         </AuthUserContext.Consumer>

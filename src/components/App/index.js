@@ -40,6 +40,7 @@ import { withAuthorization } from '../Session';
 import './index.css';
 import NavigationWrapper from '../NavigationWrapper';
 import Header from '../Header';
+import AssignCategories from '../AssignCategories';
 
 import { TransitionGroup, Transition } from "react-transition-group";
 
@@ -59,10 +60,12 @@ const App = () => (
         <Route path={ROUTES.CLIENTS} component={Clients} />
         <Route path={ROUTES.DATES} component={Dates} />
         <Route path="/edit-post/:clientId/:postId" component={EditPost} />
+        <Route path="/assign-categories/:year/:month/:id" component={AssignCategories} />
         <Route exact path={`/calendar-single/:year/:month:day`} component={CalendarSingle} />
         <Route path="/client-calendar/:year/:month" component={ClientCalendar} />
         <Route exact path="/view-post/:month/:day/:id" render={(props) => <ClientViewPost {...props} />} />
         <Route path="/admin-view-post/:month/:day/:title/:client/:itemId" component={AdminViewPost} />
+     
         <Route path="/calendar/:year/:month/:clientId" component={Calendar} />
         <Route path="/settings" component ={Settings} />
         <Route component={NoMatch} />

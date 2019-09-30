@@ -79,7 +79,6 @@ class AddPost extends Component {
     e.preventDefault();
     this.setState({
       completed:!this.state.completed
-    }, () => {
     })
 
     
@@ -355,7 +354,11 @@ class AddPost extends Component {
     if(this.state.subPosts.length == this.state.tempHold.length){
 
       // Add Back
-        this.props.firebase.addPost(this.props.match.params.clientId, this.state.tempHold, this.state.draft, this.state.selectedCategory, parseInt(this.state.year), parseInt(this.state.month), parseInt(this.state.day), this.state.selectedCategoryName)
+        this.props.firebase.addPost(this.props.match.params.clientId, this.state.tempHold, this.state.draft, this.state.selectedCategory, parseInt(this.state.year), parseInt(this.state.month), parseInt(this.state.day), this.state.selectedCategoryName).then(() => {
+          this.props.history.push(
+            `/calendar/2019/${this.props.match.params.month}/${this.props.match.params.clientId}`
+          );
+        })
     }
     console.log('state for render', this.state);
     // console.log('parent props', this.props)

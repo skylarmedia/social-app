@@ -467,7 +467,7 @@ class Calendar extends React.Component {
           )}
           
         </div>
-        <Legend />
+        <Legend month={this.props.match.params.month} year={this.props.match.params.year}/>
       </React.Fragment>
     );
   }

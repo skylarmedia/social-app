@@ -185,7 +185,7 @@ class Dates extends Component {
     this.setState({
       showCat: !this.state.showCat
     });
-  }
+  };
 
   deleteDate = (id, index) => {
     if (this.props.match.params.id !== undefined) {
@@ -248,22 +248,24 @@ class Dates extends Component {
         <h2 className="text-center" id="client-heading">
           Client A-Game’s Calendars
         </h2>
-        <div>
-          {this.state.showCat && (
-            <div className="category-main-wrapper">
-              <button onClick={() => this.closeCat()}>close</button>
-              <SelectCategory
-                className="selected-categoryComponent"
-                userId={this.props.match.params.clientId}
-                getCategories={this.sendCategories}
-                removeCategory={() => this.removeCategory}
-              />
-            </div>
-          )}
-          <button onClick={this.showCategories} id="add-category-button">
-            <span className="plus">+</span>Create Category
-          </button>
-          <CategoryList colors={this.state.categories} removeCategory={this.removeCategory} />
+        <div id="outter-cat-wrapper">
+          <div>
+            <button onClick={this.showCategories} id="add-category-button">
+              <span className="plus">+</span>Create Category
+            </button>
+            <CategoryList colors={this.state.categories} removeCategory={this.removeCategory} />
+            {this.state.showCat && (
+              <div className="category-main-wrapper">
+                <button onClick={() => this.closeCat()}>close</button>
+                <SelectCategory
+                  className="selected-categoryComponent"
+                  userId={this.props.match.params.clientId}
+                  getCategories={this.sendCategories}
+                  removeCategory={() => this.removeCategory}
+                />
+              </div>
+            )}
+          </div>
         </div>
         <p className="text-center">Select a month to view it’s calendar.</p>
         <div id="dates-list" className="container row date-wrapper justify-content-center">

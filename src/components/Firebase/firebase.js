@@ -52,6 +52,10 @@ class Firebase {
     .get()
 
   }
+
+  getSelectedCategores = (id, month, day) => {
+
+  }
    
 
   getCurrentUser = () => {
