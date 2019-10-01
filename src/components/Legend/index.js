@@ -2,8 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 const Legend = props => {
-
-    console.log('legend props', props)
+  console.log('legend props', props);
   return (
     <div>
       <p className="container">Details</p>
@@ -16,6 +15,26 @@ const Legend = props => {
           >
             Assign Categories
           </Link>
+          <div>
+            {props.selectedCategories &&
+              props.selectedCategories.map((item, index) => {
+                let categoryStyle = {
+                  background: item.color
+                };
+                return (
+                  <div>
+                    <p>{item.name}</p>
+                    <div className="category-color" style={categoryStyle}>
+                      {item.name}
+                      {index}
+                      <button index={index} onClick={props.removeCategory(index, item.name)}>
+                        x
+                      </button>
+                    </div>
+                  </div>
+                );
+              })}
+          </div>
         </div>
         <div>
           <h4>CALENDAR LEGEND</h4>

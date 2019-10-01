@@ -26,18 +26,20 @@ class SelectCategory extends Component {
     submitCategories = (e) => {
         e.preventDefault();
         let categoryObj = {
-            categories: {}
         }
 
         let sendCategory = {}
 
-        categoryObj.categories.color = this.state.color;
-        categoryObj.categories.name = this.state.name;
+        categoryObj.color = this.state.color;
+        categoryObj.name = this.state.name;
+
+        // SendCategory sends category values up to parent
         sendCategory.color = this.state.color;
-        sendCategory.name = this.state.name
+        sendCategory.name = this.state.name;
+        sendCategory.selected = false;
         this.setState({
             setCategories: [...this.state.setCategories, categoryObj],
-            sendCategory: [...this.state.sendCategory, sendCategory]
+            sendCategory: [...this.state.sendCategory, sendCategory],
         })
     }
 
@@ -68,7 +70,7 @@ class SelectCategory extends Component {
     render() {
         let categoryList = this.state.setCategories.map((item, i) => {
             let categoryStyle = {
-                background: item.categories.color
+                background: item.color
             }
             return (
                 <li key={i} className="category-list-item">
@@ -77,7 +79,7 @@ class SelectCategory extends Component {
                     </button>
                     <div className="d-flex align-items-center">
                         <div className="hex-color" style={categoryStyle}></div>
-                        <p className="mb-0" className="">{item.categories.name}</p>
+                        <p className="mb-0" className="">{item.name}</p>
                     </div>
                 </li>
             )

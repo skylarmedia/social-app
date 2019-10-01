@@ -43,7 +43,8 @@ class Calendar extends React.Component {
       posts: [],
       private: true,
       oldPrivate: true,
-      privateId: 0
+      privateId: 0,
+      selectedCategories:[]
     };
 
     this.showCategories = this.showCategories.bind(this);
@@ -53,6 +54,17 @@ class Calendar extends React.Component {
   weekdayshort = moment.weekdaysShort();
 
   componentWillMount() {
+
+    this.props.firebase.getSelectedCategories(this.props.match.params.clientId, this.props.match.params.year, this.props.match.params.month).then(item => {
+      item.docs.map(snapshot => {
+        this.setState({
+          selectedCategories: [...this.state.selectedCategories, snapshot.data()]
+        }, () => {
+          console.log(this.state, 'final state')
+        })
+      })
+    })
+
     if (this.props.match.params.clientId) {
       this.props.firebase.getSocialPosts(this.props.match.params.clientId).then(snapshot => {
         this.setState({
@@ -61,6 +73,7 @@ class Calendar extends React.Component {
         });
       });
 
+   
       console.log('year', typeof(this.props.match.params.year))
       console.log('month', typeof(this.props.match.params.month))
       console.log('Client', this.props.match.params.clientId)
@@ -213,6 +226,19 @@ class Calendar extends React.Component {
       dateObject: this.state.dateObject.add(1, curr)
     });
   };
+
+  removeCategory = (index, name) => {
+    alert('ran111');
+    console.log(index)
+    this.setState({
+      selectedCategories: this.state.selectedCategories.filter((_, i) => i !== index),
+    });
+
+    this.props.firebase.removeCategory(localStorage.getItem('userId'), name);
+
+    console.log(this.state.removedCategories, 'removed categories');
+  };
+
   setYear = year => {
     // alert(year)
     let dateObject = Object.assign({}, this.state.dateObject);
@@ -318,46 +344,11 @@ class Calendar extends React.Component {
     })
   }
 
-  // sendCategories = (arr, arr2) => {
-  //   const currentCat = [...this.state.categories];
-
-  //   arr.map(item => {
-  //     currentCat.push(item);
-  //   })
-
-  //   this.setState({
-  //     showCat: !this.state.showCat,
-  //     categories: currentCat
-  //   })
-  //   this.props.firebase.sendCategories(this.props.match.params.clientId, arr2);
-
-  // }
-
-  // sendCategories = (arr, arr2) => {
-  //   const currentCat = [...this.state.categories];
-
-  //   arr.map(item => {
-  //     currentCat.push(item);
-  //   })
-
-  //   this.setState({
-  //     showCat: !this.state.showCat,
-  //     categories: currentCat
-  //   })
-  //   this.props.firebase.sendCategories(this.props.match.params.clientId, arr2);
-  // }
-
   componentWillUnmount() {
-    // if (this.state.removedCategories.length > 0) {
-    //   console.log(this.state.removedCategories, 'removed');
-    //   this.props.firebase.updateCategories(this.props.match.params.clientId, this.state.removedCa)
-    // }
 
     if(this.state.private !== this.state.oldPrivate){
       this.props.firebase.updatePrivate(this.props.match.params.clientId, this.state.private, this.state.privateId)
     }
-
-    console.log(this.state.categories, 'categories in unmount');
   }
 
   render() {
@@ -449,15 +440,6 @@ class Calendar extends React.Component {
                   </table>
                 </div>
               )}
-
-              {/* {
-                this.state.showCat && (
-                  <SelectCategory className="selected-categoryComponent" userId={this.props.match.params.clientId} getCategories={this.sendCategories} removeCategory={() => this.removeCategory} />
-                )
-              } */}
-
-              {/* <button onClick={this.showCategories} id="add-category-button">Add Categories</button> */}
-              {/* <CategoryList colors={this.state.categories} removeCategory={this.removeCategory} /> */}
               
             </div>
           ) : (
@@ -467,7 +449,7 @@ class Calendar extends React.Component {
           )}
           
         </div>
-        <Legend month={this.props.match.params.month} year={this.props.match.params.year}/>
+        <Legend month={this.props.match.params.month} year={this.props.match.params.year} selectedCategories={this.state.selectedCategories} removeCategory={() => this.removeCategory}/>
       </React.Fragment>
     );
   }

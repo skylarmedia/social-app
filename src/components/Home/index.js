@@ -56,28 +56,23 @@ class Home extends Component {
     this.confirmArchive = this.confirmArchive.bind(this);
   }
 
-  getPosts() {
-
-  }
-
-
   // Component lifecycle methods
 
   componentWillMount() {
     this.props.firebase.getClients().then(snapshot => {
       const opened = snapshot.docs;
 
-      const setArr = [...this.state.users]
+      let setArr = [...this.state.users]
       opened.map(item => {
         setArr.push(item.data())
-      })
+      });
+
       this.setState({
         users: setArr,
         isLoading: !this.state.isLoading
-      })
+      });
+
     });
-
-
   }
 
   componentWillUnmount() {
@@ -96,20 +91,12 @@ class Home extends Component {
     })
   }
 
-  updateInput = e => {
+  updateInput = e => 
     this.setState({
       [e.target.name]: e.target.value
     });
-  }
+  
 
-  // deleteUser = (id, index) => {
-  //   this.props.firebase.deleteClient(id);
-
-  //   this.setState({
-  //     users: this.state.users.filter((_, i) => i !== index)
-  //   });
-
-  // }
 
   addClient = (e) => {
     e.preventDefault();

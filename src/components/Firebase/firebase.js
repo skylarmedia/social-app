@@ -32,31 +32,74 @@ class Firebase {
 
   //***** Reactive Client *****//
 
-  reactivateClient = id =>{
-    alert(id)
+  reactivateClient = id => {
+    alert(id);
+    this.db
+      .collection('users')
+      .doc(id.toLowerCase().replace(/ /g, '-'))
+      .update({
+        archived: false
+      });
+  };
+
+  getSelectedCategories = (id, year, month) => 
     this.db
     .collection('users')
-    .doc(id.toLowerCase().replace(/ /g, '-'))
-    .update({
-      archived: false
-    });
+    .doc(id)
+    .collection('categories')
+    .where('month', '==', month)
+    .where('year', '==', year)
+    .get();
+  
+
+
+  assignCategories = (id, year, month, categories) => {
+    
+    categories.forEach(function(item){
+      
+      console.log('MAIN ITEM', item)
+      app
+      .firestore()
+      .collection('users')
+      .doc(id)
+      .collection('categories')
+      .doc(item.name)
+      .set({
+          name:item.name,
+          color:item.color,
+          selected: item.selected,
+          month:parseInt(month),
+          year:parseInt(year)
+      })
+    })
+
+    // console.log('ID', id)
+    // categories.forEach(function(item, id){
+    //   console.log(item, 'CAT')
+    //   app.firestore()
+    //   .collection('users')
+    //   .doc(id)
+    //   .collection('categories')
+    //   .doc()
+  
+    // })
   }
+
+  getSelectedCategories = (id) => 
+  this.db.collection('users')
+  .doc(id)
+  .collection('categories')
+  .get();
+
 
   getSinglePost = (userId, id) => {
-    alert(id)
     this.db
-    .collection('users')
-    .doc('skylar-lanto')
-    .collection('posts')
-    .doc(id)
-    .get()
-
-  }
-
-  getSelectedCategores = (id, month, day) => {
-
-  }
-   
+      .collection('users')
+      .doc('skylar-lanto')
+      .collection('posts')
+      .doc(id)
+      .get();
+  };
 
   getCurrentUser = () => {
     alert(this.auth.currentUser.uid);
@@ -80,10 +123,6 @@ class Firebase {
         approved: approve
       });
 
-
-
-  
-
   getPostImages = () =>
     this.storage.refFromURL('gs://skylar-social-17190.appspot.com/test123/logo');
 
@@ -93,7 +132,11 @@ class Firebase {
       .where('archived', '==', true)
       .get();
 
+  
+
   //***** End Archive Functions ******/
+
+
 
   addLogoUrl = (user, logoUrl) =>
     this.db
@@ -118,6 +161,8 @@ class Firebase {
       .get();
 
   sendCategories = (user, categories) => {
+
+    console.log(categories, 'categss')
     categories.forEach(function(category) {
       console.log('category', category);
       app
@@ -127,10 +172,15 @@ class Firebase {
         .collection('categories')
         .doc(category.name)
         .set({
-          categories: category
+          color:category.color,
+          name:category.name,
+          selected:false
         });
     });
   };
+
+
+
 
   adminSendMessage = (id, month, day, title, message, logo) =>
     this.db
@@ -278,16 +328,16 @@ class Firebase {
         });
     });
 
-  updateCategories = (user, categories) => {
-    categories.map(category => {
-      this.db
-        .collection('users')
-        .doc(user)
-        .collection('categories')
-        .doc('JfldYWxlRlYj9kYzwpv3')
-        .delete();
-    });
-  };
+  // updateCategories = (user, categories) => {
+  //   categories.map(category => {
+  //     this.db
+  //       .collection('users')
+  //       .doc(user)
+  //       .collection('categories')
+  //       .doc('JfldYWxlRlYj9kYzwpv3')
+  //       .delete();
+  //   });
+  // };
 
   // Posts Function
 
@@ -306,8 +356,6 @@ class Firebase {
       .collection('posts')
       .doc(id)
       .get();
-    
-    
 
   editPostSubmit = (
     id,
@@ -353,16 +401,7 @@ class Firebase {
         clientRead: readValue
       });
 
-  addPost = (
-    id,
-    post,
-    draft,
-    color,
-    year,
-    month,
-    day,
-    selectedCategoryName
-  ) =>
+  addPost = (id, post, draft, color, year, month, day, selectedCategoryName) =>
     this.db
       .collection('users')
       .doc(id)
@@ -411,19 +450,21 @@ class Firebase {
   };
 
   updatePost = (user, id, post) => {
-    alert('updated')
-    alert(id)
+    alert('updated');
+    alert(id);
     this.db
-    .collection('users')
-    .doc(user)
-    .collection('posts')
-    .doc(id)
-    .update({
-      post:post
-    })
-  }
+      .collection('users')
+      .doc(user)
+      .collection('posts')
+      .doc(id)
+      .update({
+        post: post
+      });
+  };
 
   removeCategory = (id, name) => {
+    debugger();
+    console.log('deugger', id)
     //   alert('ran removed');
     //   console.log('ran remove')
     this.db
@@ -447,6 +488,8 @@ class Firebase {
       .get();
 
   //***** Archive Client Functions *****//
+
+ 
 
   archiveClient = userId =>
     this.db
@@ -476,7 +519,7 @@ class Firebase {
     this.db
       .collection('users')
       .doc(id)
-      .delete()
+      .delete();
 
   getPrivacy = (id, year, month) =>
     this.db

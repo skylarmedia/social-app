@@ -8,17 +8,17 @@ const CategoryList = (props) => {
         <div>
             {
                 props.colors.map((item, index) => {
-                    
+                    console.log('catlist color', item)
                     let categoryStyle = {
-                        background: item.categories.color
+                        background: item.color
                     }
 
                     return (
                         <div key={index}>
                             <div>
                                 <div className="category-color" style={categoryStyle}>
-                                    {item.categories.name}
-                                    <button index={index} onClick={() => props.removeCategory(index, item.categories.name)}>x</button>
+                                    {item.name}
+                                    <button index={index} onClick={() => props.removeCategory(index, item.name)}>x</button>
                                 </div>
                             </div>
                         </div>
