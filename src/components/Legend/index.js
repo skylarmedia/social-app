@@ -2,6 +2,11 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 const Legend = props => {
+
+  let unassignCategoryChild = (name, index) => {
+    props.removeCategory(name, index)
+  }
+
   console.log('legend props', props);
   return (
     <div>
@@ -18,16 +23,15 @@ const Legend = props => {
           <div>
             {props.selectedCategories &&
               props.selectedCategories.map((item, index) => {
+            
                 let categoryStyle = {
                   background: item.color
                 };
                 return (
                   <div>
-                    <p>{item.name}</p>
                     <div className="category-color" style={categoryStyle}>
                       {item.name}
-                      {index}
-                      <button index={index} onClick={props.removeCategory(index, item.name)}>
+                      <button index={index} onClick={() => unassignCategoryChild(item.name, index)}>
                         x
                       </button>
                     </div>

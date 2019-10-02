@@ -65,15 +65,6 @@ class AddPost extends Component {
     // this.getSelectedCategory = this.getSelectedCategory.bind(this)
   }
 
-  // getValues = (postArr) => {
-  //  console.log('posts arr', postArr);
-  //  alert('ran')
-  // //    this.setState(prevState => ({
-  // //     subPosts: [...prevState.subPosts, postArr]
-  // //}));
-  
-  // }
-
   onSubmitForm = e => {
 
     e.preventDefault();
@@ -237,16 +228,11 @@ class AddPost extends Component {
   // END OF SOCIAL METHODS
 
   getSelectedCategory = (color, name) => {
-
-    if(color !== undefined){
-
+    console.log(color, name)
     this.setState({
       selectedCategory: color,
       selectedCategoryName: name
-    }, () => {
-      alert(this.state.selectedColor)
     });
-    }
   };
   
 
@@ -255,7 +241,7 @@ class AddPost extends Component {
       draft: true
     })
 
-    alert(this.state.draft);
+    // alert(this.state.draft);
   }
 
   handlePostTime = (time, timeString) => {
@@ -369,6 +355,7 @@ class AddPost extends Component {
             clientId={this.props.match.params.clientId}
             getSelectedCategory={this.getSelectedCategory}
             category={this.state.selectedCategory}
+            month={this.props.match.params.month}
           />
           <p className="heading text-center add-post-heading">
             Client {this.props.match.params.clientId} Calendar

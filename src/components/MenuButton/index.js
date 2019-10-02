@@ -7,7 +7,6 @@ const MenuButton = () => (
         <div className="menu-line"></div>
         <div className="menu-line"></div>
         <div className="menu-line"></div>
-        MENU
     </div>
 )
 

@@ -22,14 +22,14 @@ class EditCategoryForm extends Component {
     }
 
     componentWillMount() {
-        this.props.firebase.getUserCategories(this.props.clientId).then(items => {
+        this.props.firebase.getUserCategories(this.props.clientId, parseInt(this.props.month)).then(items => {
 
             const editCatArr = []
             items.docs.map((item, index) => {
                 console.log(item.data(), 'item in map')
                 let currentCat = {}
-                currentCat.color = item.data().categories.color;
-                currentCat.name = item.data().categories.name
+                currentCat.color = item.data().color;
+                currentCat.name = item.data().name
                 editCatArr.push(currentCat);
             })
             this.setState({
@@ -68,7 +68,6 @@ class EditCategoryForm extends Component {
                         {this.props.currentCat ? 
                             <option value={`${this.props.currentCat} ||| #fff`} selected>{this.props.currentCat}</option> : <option value={`No Category ||| #fff`} selected>No Category</option>
                         }
-                        <option value={`No Category ||| #fff`} selected>No Category</option>
                         {options}
                     </select>
                 </form>

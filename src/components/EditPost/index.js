@@ -196,7 +196,7 @@ class EditPost extends Component {
 
   handleAd = e => {
     let index = e.target.getAttribute('index');
-    alert(index);
+    // alert(index);
 
     let posts = [...this.state.posts];
 
@@ -210,7 +210,7 @@ class EditPost extends Component {
  
 
   handleComplete = index => {
-    alert(index);
+    // alert(index);
     let posts = [...this.state.posts];
     posts[index].postTime = this.state.currentTime;
     this.setState(

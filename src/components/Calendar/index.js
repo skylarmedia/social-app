@@ -49,14 +49,16 @@ class Calendar extends React.Component {
 
     this.showCategories = this.showCategories.bind(this);
     this.handleSwitch = this.handleSwitch.bind(this);
+    this.unassignCategory = this.unassignCategory.bind(this);
   }
 
   weekdayshort = moment.weekdaysShort();
 
   componentWillMount() {
-
-    this.props.firebase.getSelectedCategories(this.props.match.params.clientId, this.props.match.params.year, this.props.match.params.month).then(item => {
+    this.props.firebase.getSelectedCategories(this.props.match.params.clientId, parseInt(this.props.match.params.year), parseInt(this.props.match.params.month)).then(item => {
+      console.log('item', item)
       item.docs.map(snapshot => {
+        console.log('snapshot ,data', snapshot.data())
         this.setState({
           selectedCategories: [...this.state.selectedCategories, snapshot.data()]
         }, () => {
@@ -227,16 +229,17 @@ class Calendar extends React.Component {
     });
   };
 
-  removeCategory = (index, name) => {
-    alert('ran111');
-    console.log(index)
+  unassignCategory = (name, index) => {
+    alert('ran')
+    console.log('NAME', name)
+    // console.log('INDEX,', index)
     this.setState({
       selectedCategories: this.state.selectedCategories.filter((_, i) => i !== index),
     });
 
-    this.props.firebase.removeCategory(localStorage.getItem('userId'), name);
+    this.props.firebase.unassignCategory(this.props.match.params.clientId, name);
 
-    console.log(this.state.removedCategories, 'removed categories');
+    // console.log(this.state.removedCategories, 'removed categories');
   };
 
   setYear = year => {
@@ -353,6 +356,7 @@ class Calendar extends React.Component {
 
   render() {
     // alert()
+    console.log(this.state, 'final state')
     console.log('privacy', this.state)
     let weekdayshortname = this.weekdayshort.map(day => {
       return <th key={day}>{day}</th>;
@@ -449,7 +453,7 @@ class Calendar extends React.Component {
           )}
           
         </div>
-        <Legend month={this.props.match.params.month} year={this.props.match.params.year} selectedCategories={this.state.selectedCategories} removeCategory={() => this.removeCategory}/>
+        <Legend month={this.props.match.params.month} year={this.props.match.params.year} selectedCategories={this.state.selectedCategories} removeCategory={this.unassignCategory}/>
       </React.Fragment>
     );
   }

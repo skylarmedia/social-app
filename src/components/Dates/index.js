@@ -96,7 +96,7 @@ class Dates extends Component {
       removedCategories: [...this.state.removedCategories, name]
     });
 
-    this.props.firebase.removeCategory(this.props.match.params.id, name);
+    this.props.firebase.removeCategoryNew(this.props.match.params.id, name);
 
     // console.log(this.state.removedCategories, 'removed categories');
   };

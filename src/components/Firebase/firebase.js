@@ -30,6 +30,19 @@ class Firebase {
 
   storage = this.storage;
 
+  unassignCategory = (id, name) => {
+  this.db
+  .collection('users')
+  .doc(id)
+  .collection('categories')
+  .doc(name)
+  .update({
+    selected:false
+  });
+  }
+
+
+
   //***** Reactive Client *****//
 
   reactivateClient = id => {
@@ -42,55 +55,33 @@ class Firebase {
       });
   };
 
-  getSelectedCategories = (id, year, month) => 
-    this.db
-    .collection('users')
-    .doc(id)
-    .collection('categories')
-    .where('month', '==', month)
-    .where('year', '==', year)
-    .get();
-  
-
-
   assignCategories = (id, year, month, categories) => {
-    
-    categories.forEach(function(item){
-      
-      console.log('MAIN ITEM', item)
+    console.log("main cates", categories)
+    categories.forEach(function(item, i) {
+      console.log('item months', item.months)
+      console.log('MAIN ITEM', item);
       app
-      .firestore()
+        .firestore()
+        .collection('users')
+        .doc(id)
+        .collection('categories')
+        .doc(item.name)
+        .set({
+          name: item.name,
+          color: item.color,
+          selected: item.selected,
+          month: item.month,
+          year: parseInt(year)
+        });
+    });
+  };
+
+  getSelectedCategoriesPre = id =>
+    this.db
       .collection('users')
       .doc(id)
       .collection('categories')
-      .doc(item.name)
-      .set({
-          name:item.name,
-          color:item.color,
-          selected: item.selected,
-          month:parseInt(month),
-          year:parseInt(year)
-      })
-    })
-
-    // console.log('ID', id)
-    // categories.forEach(function(item, id){
-    //   console.log(item, 'CAT')
-    //   app.firestore()
-    //   .collection('users')
-    //   .doc(id)
-    //   .collection('categories')
-    //   .doc()
-  
-    // })
-  }
-
-  getSelectedCategories = (id) => 
-  this.db.collection('users')
-  .doc(id)
-  .collection('categories')
-  .get();
-
+      .get();
 
   getSinglePost = (userId, id) => {
     this.db
@@ -112,7 +103,6 @@ class Firebase {
       .collection('messages');
 
   // Post Approval
-
   approvePost = (userId, postId, approve) =>
     this.db
       .collection('users')
@@ -132,11 +122,7 @@ class Firebase {
       .where('archived', '==', true)
       .get();
 
-  
-
   //***** End Archive Functions ******/
-
-
 
   addLogoUrl = (user, logoUrl) =>
     this.db
@@ -161,8 +147,7 @@ class Firebase {
       .get();
 
   sendCategories = (user, categories) => {
-
-    console.log(categories, 'categss')
+    console.log(categories, 'categss');
     categories.forEach(function(category) {
       console.log('category', category);
       app
@@ -172,14 +157,27 @@ class Firebase {
         .collection('categories')
         .doc(category.name)
         .set({
-          color:category.color,
-          name:category.name,
-          selected:false
+          color: category.color,
+          name: category.name,
+          selected: false,
+          month: new Array()
         });
     });
   };
 
+  getSelectedCategories = (id, year, month) => 
+  this.db
+  .collection('users')
+  .doc(id)
+  .collection('categories')
+  .where('selected', '==', true)
+  .where('month', 'array-contains', month)
+  .get()
+  .catch(function(err){
+    console.log(err)
+  })
 
+ 
 
 
   adminSendMessage = (id, month, day, title, message, logo) =>
@@ -210,12 +208,16 @@ class Firebase {
       .doc(user)
       .get();
 
-  getUserCategories = user =>
+  getUserCategories = (user, month) => 
+    // alert(user)
     this.db
       .collection('users')
       .doc(user)
       .collection('categories')
+      .where('selected', '==', true)
       .get();
+  
+ 
 
   postMessage = (id, month, day, title, message) =>
     this.db
@@ -462,11 +464,9 @@ class Firebase {
       });
   };
 
-  removeCategory = (id, name) => {
-    debugger();
-    console.log('deugger', id)
-    //   alert('ran removed');
-    //   console.log('ran remove')
+  removeCategoryNew = (id, name) => {
+    console.log('deugger', id);
+
     this.db
       .collection('users')
       .doc(id)
@@ -488,8 +488,6 @@ class Firebase {
       .get();
 
   //***** Archive Client Functions *****//
-
- 
 
   archiveClient = userId =>
     this.db

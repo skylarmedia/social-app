@@ -73,7 +73,7 @@ class HiddenCalendarSingle extends Component {
 
   handleColor = string => {
     if (string !== undefined) {
-      return string.split('|||')[1];
+      return string.split('|||')[0];
     }
   };
 
@@ -137,7 +137,7 @@ class HiddenCalendarSingle extends Component {
     
 
     const buttonStyle = {
-      background: this.handleColor(this.props.selectedCategory)
+      background: this.props.selectedCategory
     };
     return (
       <React.Fragment>

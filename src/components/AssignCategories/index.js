@@ -17,7 +17,7 @@ class AssignCategories extends Component {
   }
 
   componentWillMount() {
-    this.props.firebase.getSelectedCategories(localStorage.getItem('userId')).then(snapshot => {
+    this.props.firebase.getSelectedCategoriesPre(localStorage.getItem('userId')).then(snapshot => {
       let setArr = [...this.state.categories];
 
       snapshot.docs.map(item => {
@@ -27,9 +27,6 @@ class AssignCategories extends Component {
       this.setState(
         {
           categories: setArr
-        },
-        () => {
-          console.log(this.state);
         }
       );
     });
@@ -38,16 +35,26 @@ class AssignCategories extends Component {
   handleChange = i => {
     let categories = [...this.state.categories];
     categories[i].selected = !categories[i].selected;
-    console.log(categories);
+    console.log('cats', categories)
+    console.log('HANDLE CHANGE', [...this.state.categories[i].month, parseInt(this.props.match.params.month)])
+
+    categories[i].month = [...this.state.categories[i].month, parseInt(this.props.match.params.month)]
+
     this.setState({
-      categories,
+      categories:categories,
       dirty: true
+    }, () => {
+      console.log('inner state', categories)
     });
   };
 
   selectCategories = e => {
       e.preventDefault();
-      alert('ran')
+      // this.setState({
+      //   categores: 
+      // })
+      // categories[i].months = [...this.state.categories[i].months, parseInt(this.props.match.params.month)];
+      console.log('selected', this.state.categories)
       this.props.firebase.assignCategories(this.props.match.params.id, this.props.match.params.year, this.props.match.params.month, this.state.categories)
   }
 
@@ -56,7 +63,6 @@ class AssignCategories extends Component {
     let categories = this.state.categories.map((item, i) => {
       return (
         <li>
-          {item.name}
           <FormControlLabel
             control={
               <Checkbox

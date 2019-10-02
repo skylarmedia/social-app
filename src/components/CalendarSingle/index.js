@@ -114,7 +114,7 @@ class CalendarSingle extends Component {
                                         itemId={item.id} 
                                         push={this.props.history} 
                                        
-                                        selectedCategory={item.data().selectedCategory} 
+                                        selectedCategory={item.data().color} 
                                         adminRead={item.data().adminRead}
                                     />
                                 </div>
