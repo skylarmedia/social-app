@@ -403,7 +403,7 @@ class Firebase {
         clientRead: readValue
       });
 
-  addPost = (id, post, draft, color, year, month, day, selectedCategoryName) =>
+  addPost = (id, post, draft, color, year, month, day, selectedCategoryName, approved) =>
     this.db
       .collection('users')
       .doc(id)
@@ -415,7 +415,8 @@ class Firebase {
         year,
         month,
         day,
-        selectedCategoryName
+        selectedCategoryName,
+        approved
       });
 
   // Get UID

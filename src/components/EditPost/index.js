@@ -9,7 +9,6 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import Fab from '@material-ui/core/Fab';
 import './index.css';
 
-
 import TextField from '@material-ui/core/TextField';
 import CustomCalendarComponent from '../CustomCalendarComponent';
 import DatePicker from 'react-datepicker';
@@ -22,7 +21,8 @@ class EditPost extends Component {
 
     this.state = {
       posts: [],
-      currentTime: null
+      currentTime: null,
+      approved: false
       // postTitle: '',
       // postCopy: '',
       // postHashtags: [],
@@ -39,7 +39,7 @@ class EditPost extends Component {
     this.handleComplete = this.handleComplete.bind(this);
     this.handlePostMedium = this.handlePostMedium.bind(this);
     this.handleAd = this.handleAd.bind(this);
-    this.handleHashTags = this.handleHashTags.bind(this)
+    this.handleHashTags = this.handleHashTags.bind(this);
     this.submitEdits = this.submitEdits.bind(this);
     this.handleCopy = this.handleCopy.bind(this);
     // this.handleApproval = handleApproval.bind(this)
@@ -61,7 +61,7 @@ class EditPost extends Component {
     });
   };
 
-  handleHashTags = e =>{
+  handleHashTags = e => {
     let index = e.target.getAttribute('index');
     let state = [...this.state.posts];
     state[index].postHashTag = e.target.value;
@@ -69,7 +69,7 @@ class EditPost extends Component {
     this.setState({
       posts: state
     });
-  }
+  };
 
   handleTitle = e => {
     // console.log(e.target.name)
@@ -96,33 +96,34 @@ class EditPost extends Component {
     this.setState({
       posts: state
     });
-  }
+  };
 
   componentWillMount() {
-    
-
-      this.props.firebase
+    this.props.firebase
       .editPostFirebase(this.props.match.params.clientId, this.props.match.params.postId)
       .then(item => {
-        if(this.state.posts.length == 0) {
-        this.setState(
-          {
-            posts: item.data().post,
-            selectedCategoryName: item.data().selectedCategoryName
-          },
-          () => {
-            console.log(this.state.posts);
-          }
-        );
+        if (this.state.posts.length == 0) {
+          this.setState(
+            {
+              posts: item.data().post,
+              selectedCategoryName: item.data().selectedCategoryName,
+              approved: item.data().approved
+            },
+            () => {
+              console.log(this.state.posts);
+            }
+          );
         }
       });
   }
 
   submitEdits = () => {
-    this.props.firebase.updatePost(this.props.match.params.postId, this.props.match.params.clientId, this.state.posts)
-  }
-
-
+    this.props.firebase.updatePost(
+      this.props.match.params.postId,
+      this.props.match.params.clientId,
+      this.state.posts
+    );
+  };
 
   // Social Handles
 
@@ -180,8 +181,7 @@ class EditPost extends Component {
     this.setState({
       posts: posts
     });
-
-  }
+  };
 
   handleOther = e => {
     console.log('FACEBOOK', e.currentTarget);
@@ -206,8 +206,6 @@ class EditPost extends Component {
       posts: posts
     });
   };
-
- 
 
   handleComplete = index => {
     // alert(index);
@@ -349,187 +347,166 @@ class EditPost extends Component {
     });
   };
 
-  
-
   render() {
     console.log('timeposts', this.state.posts);
-    // const media = this.state.metaImageFiles.map((item) => {
-    //     if (this.getType(item) == 'video') {
-    //         return (
-    //             <video height="200" width="200" controls>
-    //                 <source src={item} />
-    //             </video>
-    //         )
-    //     } else if (this.getType(item) == 'image') {
-    //         return (
-    //             <img src={item} />
-    //         )
-    //     } else {
-    //         return (
-    //             <div>Sorry There is no media</div>
-    //         )
-    //     }
-    // })
-
-    // console.log(this.state.selectedCategory, 'selected category')
-
-    // const hashtags = this.state.postHashtags.map((hashtag, index) => (
-    //     <div>{hashtag}<input type="button" onClick={() => this.deleteHash(index)} value="x" index={index} className="remove-hash" /></div>
-    // ));
-
     const posts = this.state.posts.map((post, index) => {
       return (
         <div>
-          <input
-            className="outlined-title"
-            label="Post Title"
-            name="title"
-            index={index}
-            newKey={index}
-            value={this.state.posts[index].title}
-            onChange={this.handleTitle}
-            margin="normal"
-          />
-        <div>
-          <input
-              type="checkbox"
-              name="approved"
-              checked={this.state.posts[index].approved}
-              value={this.state.posts[index].approved}
-              onChange={this.handleApproval}
-              id="approvePost"
+          <div>
+            <input
+              className="outlined-title"
+              label="Post Title"
+              name="title"
               index={index}
+              newKey={index}
+              value={this.state.posts[index].title}
+              onChange={this.handleTitle}
+              margin="normal"
             />
-            <label for="approvePost">APPROVE POST</label>
-          </div>
+            <div />
 
-          <input
-            className="outlined-copy"
-            label="Copy"
-            name="copy"
-            multiline
-            value={this.state.posts[index].copy}
-            onChange={this.handleCopy}
-            margin="normal"
-            variant="outlined"
-            index={index}
-          />
-          <EditCategoryForm
-            clientId={this.props.match.params.postId}
-            getSelectedCategory={this.getSelectedCategory}
-            category={this.state.selectedCategory}
-            currentCat={this.state.selectedCategoryName}
-          />
-          <div>
             <input
-              type="checkbox"
-              name="facebook"
-              value={this.state.posts[index].facebook}
-              checked={this.state.posts[index].facebook}
-              onChange={this.handleFacebook}
+              className="outlined-copy"
+              label="Copy"
+              name="copy"
+              multiline
+              value={this.state.posts[index].copy}
+              onChange={this.handleCopy}
+              margin="normal"
+              variant="outlined"
               index={index}
             />
-            <label for="facebook">Facebook</label>
-          </div>
-          <div>
-            <input
-              type="checkbox"
-              name="instagram"
-              value={this.state.posts[index].instagram}
-              checked={this.state.posts[index].instagram}
-              onChange={this.handleInstagram}
-              index={index}
+            <EditCategoryForm
+              clientId={this.props.match.params.postId}
+              getSelectedCategory={this.getSelectedCategory}
+              category={this.state.selectedCategory}
+              currentCat={this.state.selectedCategoryName}
             />
-            <label for="instagram">Instagram</label>
-          </div>
-          <div>
-            <input
-              type="checkbox"
-              name="twitter"
-              value={this.state.posts[index].twitter}
-              checked={this.state.posts[index].twitter}
-              onChange={this.handleTwitter}
-              index={index}
-            />
-            <label for="twitter">Twitter</label>
-          </div>
-          <div>
-            <input
-              type="checkbox"
-              name="linkedin"
-              value={this.state.posts[index].linkedin}
-              checked={this.state.posts[index].linkedin}
-              onChange={this.handleLinkedin}
-              index={index}
-            />
-            <label for="linkedin">LinkedIn</label>
-          </div>
-          <div>
-            <input
-              type="checkbox"
-              name="other"
-              value={this.state.posts[index].other}
-              checked={this.state.posts[index].other}
-              onChange={this.handleOther}
-              index={index}
-            />
-            <label for="other">Other</label>
-          </div>
-
-          <DatePicker
-            selected={this.state.dpDate}
-            placeholderText="Post Date"
-            onChange={value => this.handleDPChange(value)}
-            customInput={
-              <CustomCalendarComponent
-                ipDate={this.state.posts[index].ipDate}
-                placeholderText="Post Date"
-                handleIpChange={val => this.handleIpChange(val)}
+            <div>
+              <input
+                type="checkbox"
+                name="facebook"
+                value={this.state.posts[index].facebook}
+                checked={this.state.posts[index].facebook}
+                onChange={this.handleFacebook}
+                index={index}
               />
-            }
-            dateFormat={'MM/dd/yyyy'}
-            showMonthDropdown
-            showYearDropdown
-            dropdownMode="select"
-          />
-          <TimePicker
-            index={index}
-            onOpenChange={() => this.handleComplete(index)}
-            onChange={this.handlePostTime}
-            defaultValue={moment(`${this.state.posts[index].postTime}`, 'HH:mm:ss')}
-          />
-          <input
-            type="text"
-            placeholder="POST MEDIUM"
-            name="postMedium"
-            value={this.state.posts[index].postMedium}
-            onChange={this.handlePostMedium}
-            index={index}
-          />
-          <div>
+              <label for="facebook">Facebook</label>
+            </div>
+            <div>
+              <input
+                type="checkbox"
+                name="instagram"
+                value={this.state.posts[index].instagram}
+                checked={this.state.posts[index].instagram}
+                onChange={this.handleInstagram}
+                index={index}
+              />
+              <label for="instagram">Instagram</label>
+            </div>
+            <div>
+              <input
+                type="checkbox"
+                name="twitter"
+                value={this.state.posts[index].twitter}
+                checked={this.state.posts[index].twitter}
+                onChange={this.handleTwitter}
+                index={index}
+              />
+              <label for="twitter">Twitter</label>
+            </div>
+            <div>
+              <input
+                type="checkbox"
+                name="linkedin"
+                value={this.state.posts[index].linkedin}
+                checked={this.state.posts[index].linkedin}
+                onChange={this.handleLinkedin}
+                index={index}
+              />
+              <label for="linkedin">LinkedIn</label>
+            </div>
+            <div>
+              <input
+                type="checkbox"
+                name="other"
+                value={this.state.posts[index].other}
+                checked={this.state.posts[index].other}
+                onChange={this.handleOther}
+                index={index}
+              />
+              <label for="other">Other</label>
+            </div>
+
+            <DatePicker
+              selected={this.state.dpDate}
+              placeholderText="Post Date"
+              onChange={value => this.handleDPChange(value)}
+              customInput={
+                <CustomCalendarComponent
+                  ipDate={this.state.posts[index].ipDate}
+                  placeholderText="Post Date"
+                  handleIpChange={val => this.handleIpChange(val)}
+                />
+              }
+              dateFormat={'MM/dd/yyyy'}
+              showMonthDropdown
+              showYearDropdown
+              dropdownMode="select"
+            />
+            <TimePicker
+              index={index}
+              onOpenChange={() => this.handleComplete(index)}
+              onChange={this.handlePostTime}
+              defaultValue={moment(`${this.state.posts[index].postTime}`, 'HH:mm:ss')}
+            />
             <input
-              type="checkbox"
-              checked={this.state.posts[index].ad}
-              onChange={this.handleAd}
-              id="ad"
+              type="text"
+              placeholder="POST MEDIUM"
+              name="postMedium"
+              value={this.state.posts[index].postMedium}
+              onChange={this.handlePostMedium}
               index={index}
             />
-            <label for="ad">Ad or Sponsored Post</label>
+            <div>
+              <input
+                type="checkbox"
+                checked={this.state.posts[index].ad}
+                onChange={this.handleAd}
+                id="ad"
+                index={index}
+              />
+              <label for="ad">Ad or Sponsored Post</label>
+            </div>
+            <div>
+              <textarea
+                placeholder="Hashtags"
+                value={this.state.posts[index].postHashTag}
+                name="postHashTag"
+                onChange={this.handleHashTags}
+                index={index}
+              />
+            </div>
+            <button onClick={this.submitEdits} className="add-date-btn">
+              Submit Edits
+            </button>
           </div>
-          <div>
-            <textarea
-              placeholder="Hashtags"
-              value={this.state.posts[index].postHashTag}
-              name="postHashTag"
-              onChange={this.handleHashTags}
-              index={index}
-            />
-          </div>
-          <button onClick={this.submitEdits} className="add-date-btn">Submit Edits</button>
         </div>
       );
     });
-    return <div className="container add-post edit-post">{posts}</div>;
+    return (
+      <div className="container add-post edit-post">
+        <input
+          type="checkbox"
+          name="approved"
+          value={this.state.approved}
+          onChange={this.handleApproval}
+          checked={this.state.approved}
+          id="approvePost"
+        />
+        {posts}
+      </div>
+    );
   }
 }
 

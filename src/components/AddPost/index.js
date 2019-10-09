@@ -13,10 +13,9 @@ import EditCategoryForm from '../EditCategoryForm';
 import moment from 'moment';
 import SubPost from './SubPost';
 
-
 import EmojiField from 'emoji-picker-textfield';
-import 'emoji-mart/css/emoji-mart.css'
-import { Picker } from 'emoji-mart'
+import 'emoji-mart/css/emoji-mart.css';
+import { Picker } from 'emoji-mart';
 
 //Date Picker for DD-MM-YYYY
 
@@ -42,15 +41,16 @@ class AddPost extends Component {
     this.state = {
       subPosts: [{ subPosts: null }],
       postArr: [],
-      completed:false,
+      completed: false,
       tempHold: [],
       draft: false,
-      created:true,
-      selectedCategory:'',
+      created: true,
+      selectedCategory: '',
       year: this.props.match.params.year,
       month: this.props.match.params.month,
       day: this.props.match.params.day,
-      selectedCategoryName: ''
+      selectedCategoryName: '',
+      approved: false
     };
 
     this.addForm = this.addForm.bind(this);
@@ -60,55 +60,52 @@ class AddPost extends Component {
     this.handlePostTime = this.handlePostTime.bind(this);
     // this.getValues = this.getValues.bind(this);
     this.receivedValues = this.receivedValues.bind(this);
-    this.saveDraft = this.saveDraft.bind(this)
+    this.saveDraft = this.saveDraft.bind(this);
     // this.myRef = React.createRef();
     // this.getSelectedCategory = this.getSelectedCategory.bind(this)
   }
 
   onSubmitForm = e => {
-
     e.preventDefault();
     this.setState({
-      completed:!this.state.completed
-    })
-
-    
-  }
-
-  triggerValues = (state) => {
-    
-    this.setState(previousState => ({
-      tempHold: [...previousState.tempHold, state]
-    }), () => {
-      console.log(' TEMP HOLD ONE', this.state.tempHold[0]);
+      completed: !this.state.completed
     });
+  };
 
-  }
+  triggerValues = state => {
+    this.setState(
+      previousState => ({
+        tempHold: [...previousState.tempHold, state]
+      }),
+      () => {
+        console.log(' TEMP HOLD ONE', this.state.tempHold[0]);
+      }
+    );
+  };
 
-  addEmoji = (e) => {
+  addEmoji = e => {
     //console.log(e.unified)
     if (e.unified.length <= 5) {
-        let emojiPic = String.fromCodePoint(`0x${e.unified}`)
-        this.setState({
-            copy: this.state.copy + emojiPic
-        })
+      let emojiPic = String.fromCodePoint(`0x${e.unified}`);
+      this.setState({
+        copy: this.state.copy + emojiPic
+      });
     } else {
+      let sym = e.unified.split('-');
+      let codesArray = [];
+      sym.forEach(el => codesArray.push('0x' + el));
+      //console.log(codesArray.length)
+      //console.log(codesArray)  // ["0x1f3f3", "0xfe0f"]
 
-        let sym = e.unified.split('-')
-        let codesArray = []
-        sym.forEach(el => codesArray.push('0x' + el))
-        //console.log(codesArray.length)
-        //console.log(codesArray)  // ["0x1f3f3", "0xfe0f"]
-
-        let emojiPic = String.fromCodePoint(...codesArray)
-        this.setState({
-            copy: this.state.copy + emojiPic
-        })
+      let emojiPic = String.fromCodePoint(...codesArray);
+      this.setState({
+        copy: this.state.copy + emojiPic
+      });
     }
-}
+  };
 
   handleChange = e => {
-    console.log('CHANGE', e.target.value)
+    console.log('CHANGE', e.target.value);
     this.setState({
       [e.target.name]: e.target.value
     });
@@ -152,7 +149,6 @@ class AddPost extends Component {
   // END OF EMOJI METHODS
 
   addForm() {
-
     this.setState(prevState => ({
       subPosts: [...prevState.subPosts, null]
     }));
@@ -174,8 +170,8 @@ class AddPost extends Component {
   }
 
   addPostToFirebase = () => {
-    this.props.firebase.addPost(this.props.match.params.clientId, this.state.postArr)
-  }
+    this.props.firebase.addPost(this.props.match.params.clientId, this.state.postArr);
+  };
 
   handleSocialCheck(e) {
     const item = e.target.name;
@@ -183,15 +179,19 @@ class AddPost extends Component {
     this.setState(prevState => ({ checkedItems: prevState.checkedItems.set(item, isChecked) }));
   }
 
-  receivedValues = (postObj) => {
+  receivedValues = postObj => {
     this.setState({ postArr: [...this.state.postArr, postObj] }, () => {
-      console.log("POST ARR", this.state)
-    })
-  }
+      console.log('POST ARR', this.state);
+    });
+  };
 
-  // componentWillUnmount(){
-  //   this.refs.child.getValues();
-  // }
+  handleApproval = () => {
+    this.setState({
+      approved: !this.state.approved
+    }, () => {
+      alert(this.state.approved)
+    });
+  };
 
   // BEGINNING OF SOCIAL METHODS
 
@@ -228,21 +228,20 @@ class AddPost extends Component {
   // END OF SOCIAL METHODS
 
   getSelectedCategory = (color, name) => {
-    console.log(color, name)
+    console.log(color, name);
     this.setState({
       selectedCategory: color,
       selectedCategoryName: name
     });
   };
-  
 
   saveDraft = () => {
     this.setState({
       draft: true
-    })
+    });
 
     // alert(this.state.draft);
-  }
+  };
 
   handlePostTime = (time, timeString) => {
     this.setState(
@@ -314,11 +313,12 @@ class AddPost extends Component {
     return this.state.subPosts.map((el, i) => (
       <div className="form-wrapper d-flex" key={i}>
         <div className="main-form-wrapper">
-          <SubPost 
-            i={i} ref={this.getValues} 
+          <SubPost
+            i={i}
+            ref={this.getValues}
             triggerValues={this.triggerValues}
-            ref="child" 
-            completed={this.state.completed} 
+            ref="child"
+            completed={this.state.completed}
             id={this.props.match.params.clientId}
             month={this.props.match.params.month}
             day={this.props.match.params.day}
@@ -337,21 +337,32 @@ class AddPost extends Component {
       height: '40px'
     };
 
-    if(this.state.subPosts.length == this.state.tempHold.length){
-
+    if (this.state.subPosts.length == this.state.tempHold.length) {
       // Add Back
-        this.props.firebase.addPost(this.props.match.params.clientId, this.state.tempHold, this.state.draft, this.state.selectedCategory, parseInt(this.state.year), parseInt(this.state.month), parseInt(this.state.day), this.state.selectedCategoryName).then(() => {
+      this.props.firebase
+        .addPost(
+          this.props.match.params.clientId,
+          this.state.tempHold,
+          this.state.draft,
+          this.state.selectedCategory,
+          parseInt(this.state.year),
+          parseInt(this.state.month),
+          parseInt(this.state.day),
+          this.state.selectedCategoryName,
+          this.state.approved
+        )
+        .then(() => {
           this.props.history.push(
             `/calendar/2019/${this.props.match.params.month}/${this.props.match.params.clientId}`
           );
-        })
+        });
     }
     console.log('state for render', this.state);
     // console.log('parent props', this.props)
     return (
       <React.Fragment>
         <div className="add-post">
-        <EditCategoryForm
+          <EditCategoryForm
             clientId={this.props.match.params.clientId}
             getSelectedCategory={this.getSelectedCategory}
             category={this.state.selectedCategory}
@@ -364,16 +375,27 @@ class AddPost extends Component {
           <div className="grey-background">
             <div className="container">
               <form onSubmit={this.onSubmitForm}>
+                <div className="d-flex">
+                  <input
+                    type="checkbox"
+                    name="approved"
+                    value={this.state.approved}
+                    onChange={this.handleApproval}
+                    id="approvePost"
+                  />
+                  <label for="approvePost">APPROVE POST</label>
+                </div>
                 {this.createForms()}
                 <input type="button" value="Add Platform" onClick={() => this.addForm()} />
                 <div className="text-center">
-                  <button className="save-draft-btn" onClick={this.saveDraft.bind(this)}>SAVE DRAFT</button>
+                  <button className="save-draft-btn" onClick={this.saveDraft.bind(this)}>
+                    SAVE DRAFT
+                  </button>
                   <input type="submit" value="Submit" className="add-date-btn" />
                 </div>
               </form>
             </div>
           </div>
-         
         </div>
       </React.Fragment>
     );
