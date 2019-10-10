@@ -137,7 +137,6 @@ class AddPost extends Component {
   // BEGINNING OF EMOJI METHODS
 
   inputComponent = props => {
-    // you need to explicitly pass 'fieldType="input"'.
     return <EmojiField name="my-input" onChange={props.onChange} fieldType="input" />;
   };
 
@@ -152,21 +151,6 @@ class AddPost extends Component {
     this.setState(prevState => ({
       subPosts: [...prevState.subPosts, null]
     }));
-    // let postArr = {};
-    // // postArr.push(this.state.title, this.state.copy)
-    // postArr['title'] = this.state.title;
-    // postArr['copy'] = this.state.copy;
-    // postArr['postTime'] = this.state.postTime;
-    // postArr['postMedium'] = this.state.postMedium;
-    // postArr['ad'] = this.state.ad;
-    // postArr['postHashtag'] = this.state.postHashtag;
-    // postArr['values'] = this.state.values;
-    // postArr['facebook'] = this.state.facebook;
-    // postArr['twitter'] = this.state.twitter;
-    // postArr['instagram'] = this.state.instagram;
-    // postArr['linkedin'] = this.state.linkedin;
-    // postArr['other'] = this.state.other;
-    // postArr['postDate'] = this.state.postDate;
   }
 
   addPostToFirebase = () => {
@@ -352,9 +336,9 @@ class AddPost extends Component {
           this.state.approved
         )
         .then(() => {
-          this.props.history.push(
-            `/calendar/2019/${this.props.match.params.month}/${this.props.match.params.clientId}`
-          );
+          // this.props.history.push(
+          //   `/calendar/2019/${this.props.match.params.month}/${this.props.match.params.clientId}`
+          // );
         });
     }
     console.log('state for render', this.state);

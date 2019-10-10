@@ -22,13 +22,15 @@ class Firebase {
     app.initializeApp(config);
     this.auth = app.auth();
     this.db = app.firestore();
-    this.storage = app.storage();
+    this.storage = app.storage().ref();
+    this.storageParent = app.storage()
     this.functions = app.functions();
   }
 
   // Admin Functions
 
   storage = this.storage;
+  storageParent = this.storageParent;
 
   unassignCategory = (id, name) => {
   this.db
@@ -403,7 +405,7 @@ class Firebase {
         clientRead: readValue
       });
 
-  addPost = (id, post, draft, color, year, month, day, selectedCategoryName, approved) =>
+  addPost = (id, post, draft, color, year, month, day, selectedCategoryName, approved, ) =>
     this.db
       .collection('users')
       .doc(id)

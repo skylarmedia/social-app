@@ -37,7 +37,7 @@ class SubPost extends Component {
       instagram: false,
       linkedin: false,
       other: false,
-      
+
       dpDate: moment().toDate(),
       ipDate: moment().format('MM/DD/YYYY'),
 
@@ -52,7 +52,6 @@ class SubPost extends Component {
       file: [],
       metaImageFiles: [],
       showEmoji: false
-
     };
 
     this.addForm = this.addForm.bind(this);
@@ -60,7 +59,6 @@ class SubPost extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.showDate = this.showDate.bind(this);
     this.handlePostTime = this.handlePostTime.bind(this);
-    // this.getValues = this.getValues.bind(this);
     this.addFile = this.addFile.bind(this);
     this.uploadFiles = this.uploadFiles.bind(this);
     this.openIcons = this.openIcons.bind(this);
@@ -68,60 +66,30 @@ class SubPost extends Component {
 
   // Beginning of upload methods
 
-  uploadFiles = () => {
-    // e.preventDefault();
-    const firestorageRef = this.props.firebase.storage;
-    const imageRefs = [];
-    this.state.file.forEach(file => {
-      var type;
-
-      switch (file.type) {
-        case 'video/mp4':
-          type = 'video';
-          break;
-        case 'image/png':
-          type = 'image';
-          break;
-        case 'image/jpeg':
-          type = 'image';
-          break;
-        default:
-          type = '';
+  uploadFiles = (fb) => {
+    this.state.file.map((file, i )=> {
+      console.log('storage', this.props.firebase.storage);
+      console.log('file', file.type)
+      const storageRef = this.props.firebase.storage;
+      const storageParent = this.props.firebase.storageParent;
+      const metadata = {
+        contentType: file.type
       }
 
-      var encodedURL =
-        encodeURIComponent(this.props.id) +
-        encodeURIComponent('/') +
-        this.props.month +
-        encodeURIComponent('-') +
-        this.props.day +
-        encodeURIComponent('/') +
-        file.name +
-        '?alt=media&type=' +
-        type;
-      var imageUrl = `https://firebasestorage.googleapis.com/v0/b/skylar-social-17190.appspot.com/o/${encodedURL}`;
-      console.log('IMAGE URL', imageUrl);
-      imageRefs.push(imageUrl);
+      storageRef.child('images/' + file.name).put(file, metadata).then(snapshot => {
+        const encodedUrl = `https://firebasestorage.googleapis.com/v0/b/skylar-social-17190.appspot.com/o/${encodeURIComponent(snapshot.metadata.fullPath)}?alt=media`;
+        this.setState({
+          metaImageFiles: [...this.state.metaImageFiles, encodedUrl]
+        })
+      })
 
-      firestorageRef
-        .ref()
-        .child(`${this.props.id}/${this.props.month}-${this.props.day}/${file.name}`)
-        .put(file);
+      console.log('store', this.props.firebase.storage, this.props.firebase.storageParent)
     });
-    this.setState(
-      {
-        metaImageFiles: imageRefs
-      },
-      () => {
-        console.log('META FILES', this.state.metaImageFiles);
-      }
-    );
   };
 
   addFile = event => {
-    console.log('EVENT', event.target.files);
     const file = Array.from(event.target.files);
-    console.log('length', file.length);
+    console.log('add file method', event);
     if (file.length == 1) {
       var emptyFileArr = [];
       file.map(innerFile => {
@@ -133,7 +101,7 @@ class SubPost extends Component {
           file: emptyFileArr
         },
         () => {
-          this.uploadFiles();
+          this.uploadFiles(this.props.firebase);
         }
       );
     } else if (file.length > 1) {
@@ -165,7 +133,6 @@ class SubPost extends Component {
     e.preventDefault();
   };
 
-
   componentDidUpdate(prevProps) {
     // Typical usage (don't forget to compare props):
     if (this.props.completed !== prevProps.completed) {
@@ -184,30 +151,13 @@ class SubPost extends Component {
       postObj['other'] = this.state.other;
       postObj['postDate'] = this.state.dpDate;
       postObj['ipDate'] = this.state.ipDate;
+      postObj['budgetStart'] = this.state.startIpDate;
+      postObj['budgetEnd'] = this.state.endIpDate; 
+ 
+      console.log('updated component props', this.state)
+      postObj['images'] = this.state.metaImageFiles
 
       this.props.triggerValues(postObj);
-
-      // this.props.firebase.addPost(
-      //   this.props.id,
-      //   this.state.title,
-      //   this.state.copy,
-      //   this.state.postTime,
-      //   this.state.postMedium,
-      //   this.state.ad,
-      //   this.state.postHashTag,
-      //   this.state.values,
-      //   this.state.facebook,
-      //   this.state.twitter,
-      //   this.state.instagram,
-      //   this.state.linkedin,
-      //   this.state.other,
-      //   this.state.postDate
-      // );
-
-      // var newArr = [];
-      // newArr.push(postObj)
-      // console.log('NEW ARR', newArr)
-      // this.props.receivedValues(postObj)
     }
   }
 
@@ -294,6 +244,9 @@ class SubPost extends Component {
     postArr['other'] = this.state.other;
     postArr['postDate'] = this.state.dpDate;
     postArr['ipDate'] = this.state.ipDate;
+    console.log('budget start', this.state.startIpDate)
+    console.log('budget end', this.state.endIpDate);
+
   }
 
   handleSocialCheck(e) {
@@ -386,12 +339,6 @@ class SubPost extends Component {
     );
   };
 
-  // handleApproval = () => {
-  //   this.setState({
-  //     approved:!this.state.approved
-  //   })
-  // }
-
   handleDPChange(val) {
     this.setState({ dpDate: val, ipDate: moment(val).format('MM/DD/YYYY') });
   }
@@ -406,7 +353,7 @@ class SubPost extends Component {
 
   handleEndDpChange(val) {
     this.setState({ endDpDate: val, endIpDate: moment(val).format('MM/DD/YYYY') }, () => {
-      console.log('ip', this.state.edDpDate, this.state.endIpDate)
+      console.log('ip', this.state.edDpDate, this.state.endIpDate);
     });
   }
 
@@ -418,8 +365,19 @@ class SubPost extends Component {
     this.setState({ endIpDate: val });
   }
 
+  handleStartDpChange(val) {
+    this.setState({ startDpDate: val, startIpDate: moment(val).format('MM/DD/YYYY') }, () => {
+      console.log('ip', this.state.startDpDate, this.state.startIpDate);
+    });
+  }
 
-
+  handleStartIpChange(val) {
+    let d = moment(val, 'MM/DD/YYYY');
+    if (d.isValid()) {
+      this.setState({ startDpDate: d.toDate() });
+    }
+    this.setState({ startIpDate: val });
+  }
 
   createForms() {
     return this.state.subPosts.map((el, i) => (
@@ -445,21 +403,10 @@ class SubPost extends Component {
     }
   };
 
-  //   componentWillUnmount(){
-
-  //   }
-
   render() {
     console.log('this PROPS ', this.props);
-    // const { handleChange } = this.props;
-
-    // const renderMedia = this.state.metaImageFiles.map(media => {
-    //   return(
-    //     <div>TEST</div>
-    //   )
-    // });
-
     const renderMedia = this.state.metaImageFiles.map(item => {
+      console.log("item", item)
       if (this.getType(item) == 'video') {
         return (
           <video height="200" width="200" controls>
@@ -605,7 +552,7 @@ class SubPost extends Component {
 
             {this.state.ad && (
               <div>
-              <DatePicker
+                <DatePicker
                   selected={this.state.startDpDate}
                   placeholderText="Post Date"
                   onChange={value => this.handleStartDpChange(value)}
@@ -621,17 +568,18 @@ class SubPost extends Component {
                   showYearDropdown
                   dropdownMode="select"
                 />
+
+                <p>BREAK</p>
                 <DatePicker
                   selected={this.state.endDpDate}
-                  placeholderText="Post Date"
                   onChange={value => this.handleEndDpChange(value)}
                   customInput={
                     <CustomCalendarComponent
-                      ipDate={this.state.endpDate}
-                      placeholderText="Post Date"
+                      ipDate={this.state.endIpDate}
                       handleIpChange={val => this.handleEndIpChange(val)}
-                    />
-                  }
+                      placeholderText="Post Date"
+                    />}
+                    placeholderText="Post Date"
                   dateFormat={'MM/dd/yyyy'}
                   showMonthDropdown
                   showYearDropdown
