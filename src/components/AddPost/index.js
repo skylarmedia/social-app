@@ -17,19 +17,9 @@ import EmojiField from 'emoji-picker-textfield';
 import 'emoji-mart/css/emoji-mart.css';
 import { Picker } from 'emoji-mart';
 
-//Date Picker for DD-MM-YYYY
-
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import CustomCalendarComponent from '../CustomCalendarComponent';
-
-// const momentDateFormat = "MM/DD/YYYY";
-
-// Time Picker
-
-// const { TimePicker } = 'antd/es/time-picker';
-// import DatePicker as TimePicker from 'antd/es/date-picker'; // for js
-// import 'antd/es/date-picker/style/css'; // for css
 
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
@@ -58,11 +48,8 @@ class AddPost extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.showDate = this.showDate.bind(this);
     this.handlePostTime = this.handlePostTime.bind(this);
-    // this.getValues = this.getValues.bind(this);
     this.receivedValues = this.receivedValues.bind(this);
     this.saveDraft = this.saveDraft.bind(this);
-    // this.myRef = React.createRef();
-    // this.getSelectedCategory = this.getSelectedCategory.bind(this)
   }
 
   onSubmitForm = e => {
@@ -73,18 +60,12 @@ class AddPost extends Component {
   };
 
   triggerValues = state => {
-    this.setState(
-      previousState => ({
-        tempHold: [...previousState.tempHold, state]
-      }),
-      () => {
-        console.log(' TEMP HOLD ONE', this.state.tempHold[0]);
-      }
-    );
+    this.setState(previousState => ({
+      tempHold: [...previousState.tempHold, state]
+    }));
   };
 
   addEmoji = e => {
-    //console.log(e.unified)
     if (e.unified.length <= 5) {
       let emojiPic = String.fromCodePoint(`0x${e.unified}`);
       this.setState({
@@ -94,9 +75,6 @@ class AddPost extends Component {
       let sym = e.unified.split('-');
       let codesArray = [];
       sym.forEach(el => codesArray.push('0x' + el));
-      //console.log(codesArray.length)
-      //console.log(codesArray)  // ["0x1f3f3", "0xfe0f"]
-
       let emojiPic = String.fromCodePoint(...codesArray);
       this.setState({
         copy: this.state.copy + emojiPic
@@ -105,7 +83,6 @@ class AddPost extends Component {
   };
 
   handleChange = e => {
-    console.log('CHANGE', e.target.value);
     this.setState({
       [e.target.name]: e.target.value
     });
@@ -113,18 +90,9 @@ class AddPost extends Component {
 
   handlePostDate = date => {
     let postDateFormatted = date.toLocaleDateString('en-US');
-    console.log(postDateFormatted);
-    // let postDate = date.toLocale/DateString('en-US');
-    this.setState(
-      {
-        postDate: postDateFormatted
-      },
-      () => {
-        console.log('DATE IN METHOD', this.state.postDate);
-      }
-    );
-
-    console.log('post date', this.state.postDate.toLocaleDateString('en-US'));
+    this.setState({
+      postDate: postDateFormatted
+    });
   };
 
   showDate = e => {
@@ -165,16 +133,18 @@ class AddPost extends Component {
 
   receivedValues = postObj => {
     this.setState({ postArr: [...this.state.postArr, postObj] }, () => {
-      console.log('POST ARR', this.state);
     });
   };
 
   handleApproval = () => {
-    this.setState({
-      approved: !this.state.approved
-    }, () => {
-      alert(this.state.approved)
-    });
+    this.setState(
+      {
+        approved: !this.state.approved
+      },
+      () => {
+        alert(this.state.approved);
+      }
+    );
   };
 
   // BEGINNING OF SOCIAL METHODS
@@ -212,7 +182,6 @@ class AddPost extends Component {
   // END OF SOCIAL METHODS
 
   getSelectedCategory = (color, name) => {
-    console.log(color, name);
     this.setState({
       selectedCategory: color,
       selectedCategoryName: name
@@ -223,20 +192,13 @@ class AddPost extends Component {
     this.setState({
       draft: true
     });
-
-    // alert(this.state.draft);
   };
 
   handlePostTime = (time, timeString) => {
     this.setState(
       {
         postTime: timeString
-      },
-      () => {
-        console.log(timeString);
-        console.log('Time string', this.state.postTime);
-      }
-    );
+      });
   };
 
   // Beginning Of Link Methods
@@ -271,14 +233,9 @@ class AddPost extends Component {
   // End of Link Methods
 
   handleAd = e => {
-    this.setState(
-      {
-        ad: !this.state.ad
-      },
-      () => {
-        console.log('ad state', this.state.ad);
-      }
-    );
+    this.setState({
+      ad: !this.state.ad
+    });
   };
 
   handleDPChange(val) {
@@ -336,13 +293,11 @@ class AddPost extends Component {
           this.state.approved
         )
         .then(() => {
-          // this.props.history.push(
-          //   `/calendar/2019/${this.props.match.params.month}/${this.props.match.params.clientId}`
-          // );
+          this.props.history.push(
+            `/calendar/2019/${this.props.match.params.month}/${this.props.match.params.clientId}`
+          );
         });
     }
-    console.log('state for render', this.state);
-    // console.log('parent props', this.props)
     return (
       <React.Fragment>
         <div className="add-post">

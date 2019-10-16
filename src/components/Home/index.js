@@ -41,7 +41,7 @@ class Home extends Component {
       email: '',
       passwordOne: '',
       error: null,
-      firestorageRef: this.props.firebase.storage,
+      firestorageRef: this.props.firebase.storageHome,
       adminEmail: '',
       backgroundUrl: '',
       uploadComplete: false,

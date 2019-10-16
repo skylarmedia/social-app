@@ -5,7 +5,6 @@ import { compose } from 'recompose';
 class EditCategoryForm extends Component {
     constructor(props) {
         super(props)
-
         this.state = {
             categories: [],
             selectedCategory: ''
@@ -23,7 +22,6 @@ class EditCategoryForm extends Component {
 
     componentWillMount() {
         this.props.firebase.getUserCategories(this.props.clientId, parseInt(this.props.month)).then(items => {
-
             const editCatArr = []
             items.docs.map((item, index) => {
                 console.log(item.data(), 'item in map')

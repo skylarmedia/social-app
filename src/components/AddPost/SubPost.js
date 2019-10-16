@@ -162,7 +162,6 @@ class SubPost extends Component {
   }
 
   addEmoji = e => {
-    //console.log(e.unified)
     if (e.unified.length <= 5) {
       let emojiPic = String.fromCodePoint(`0x${e.unified}`);
       this.setState({
@@ -172,8 +171,6 @@ class SubPost extends Component {
       let sym = e.unified.split('-');
       let codesArray = [];
       sym.forEach(el => codesArray.push('0x' + el));
-      //console.log(codesArray.length)
-      //console.log(codesArray)  // ["0x1f3f3", "0xfe0f"]
 
       let emojiPic = String.fromCodePoint(...codesArray);
       this.setState({
@@ -192,8 +189,6 @@ class SubPost extends Component {
 
   handlePostDate = date => {
     let postDateFormatted = date.toLocaleDateString('en-US');
-    console.log(postDateFormatted);
-    // let postDate = date.toLocale/DateString('en-US');
     this.setState(
       {
         postDate: postDateFormatted
@@ -216,20 +211,14 @@ class SubPost extends Component {
   // BEGINNING OF EMOJI METHODS
 
   inputComponent = props => {
-    // you need to explicitly pass 'fieldType="input"'.
     return <EmojiField name="my-input" onChange={props.onChange} fieldType="input" />;
   };
 
   textAreaComponent = props => {
-    // defaults to textarea, no need to pass fieldType
     return <EmojiField name="my-textarea" onChange={props.onChange} />;
   };
-
-  // END OF EMOJI METHODS
-
   addForm() {
     let postArr = {};
-    // postArr.push(this.state.title, this.state.copy)
     postArr['title'] = this.state.title;
     postArr['copy'] = this.state.copy;
     postArr['postTime'] = this.state.postTime;
@@ -515,7 +504,6 @@ class SubPost extends Component {
             {this.state.showDatePicker && (
               <div id="choose-date-wrapper">
                 <DatePicker
-                  selected={this.state.startDate}
                   placeholderText="Post Date"
                   onChange={value => this.handleDPChange(value)}
                   customInput={

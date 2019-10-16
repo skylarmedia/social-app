@@ -12,6 +12,7 @@ import { withAuthorizationAdmin } from '../Session';
 import { AuthUserContext } from '../Session';
 import Switch from '@material-ui/core/Switch';
 import Legend from '../Legend';
+import ListMode from '../ListMode';
 
 import { withAuthorization } from '../Session';
 
@@ -44,7 +45,8 @@ class Calendar extends React.Component {
       private: true,
       oldPrivate: true,
       privateId: 0,
-      selectedCategories:[]
+      selectedCategories:[],
+      grid: false
     };
 
     this.showCategories = this.showCategories.bind(this);
@@ -53,6 +55,18 @@ class Calendar extends React.Component {
   }
 
   weekdayshort = moment.weekdaysShort();
+
+  gridMode(){
+    this.setState({
+      grid:true
+    })
+  }
+
+  listMode(){
+    this.setState({
+      grid:false
+    })
+  }
 
   componentWillMount() {
     this.props.firebase.getSelectedCategories(this.props.match.params.clientId, parseInt(this.props.match.params.year), parseInt(this.props.match.params.month)).then(item => {
@@ -414,6 +428,8 @@ class Calendar extends React.Component {
         <Link to={`/home`}>Back to All Calendar Months</Link>
         <img src={require('../assets/skylar_Icon_wingPortion.svg')} id="wing-logo" />
         <div>
+          <button onClick={() => this.gridMode()}>Grid</button>
+          <button onClick={() => this.listMode()}>ListMode</button>
           {this.state.isLoading ? (
             <div className="tail-datetime-calendar">
               <Switch
@@ -434,7 +450,7 @@ class Calendar extends React.Component {
                 {this.state.showMonthTable && <this.MonthList data={moment.months()} />}
               </div>
 
-              {this.state.showCalendarTable && (
+              {this.state.showCalendarTable && this.state.grid && (
                 <div className="calendar-date">
                   <table className="calendar-day">
                     <thead>
@@ -443,6 +459,10 @@ class Calendar extends React.Component {
                     <tbody>{daysinmonth}</tbody>
                   </table>
                 </div>
+              )}
+
+              {!this.state.grid && (
+                <ListMode user={this.props.match.params.clientId} month={this.props.match.params.month} year={this.props.match.params.year}/>
               )}
               
             </div>

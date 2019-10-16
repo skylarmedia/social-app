@@ -1,0 +1,11 @@
+.inner-images-wrapper img{
+    width:40%;
+}
+
+.inner-images-wrapper img:first-child{
+    width:100%;
+}
+
+ul{
+    list-style:none;
+}

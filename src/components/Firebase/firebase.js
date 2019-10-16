@@ -23,6 +23,7 @@ class Firebase {
     this.auth = app.auth();
     this.db = app.firestore();
     this.storage = app.storage().ref();
+    this.storageHome = app.storage();
     this.storageParent = app.storage()
     this.functions = app.functions();
   }
@@ -435,6 +436,16 @@ class Firebase {
         .where('email', '==', res.user.email)
         .get();
     });
+
+  listMode = (id, month, year) => 
+    this.db
+    .collection('users')
+    .doc(id)
+    .collection('posts')
+    .where('month', '==', month)
+    .where('year', '==',  year)
+    .get()
+
 
   doSignOut = () =>
     this.auth.signOut().finally(() => {

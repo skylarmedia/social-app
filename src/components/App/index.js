@@ -55,6 +55,7 @@ const App = () => (
       <Switch>
         <Route exact path={`${process.env.PUBLIC_URL + '/'}`} component={SignInPage} />
         <Route path={`/add-post/:year/:month/:day/:clientId`} component={AddPost} />
+        <Route path={`/sign-up`} component={SignUpPage} />
         <Route path={ROUTES.SIGN_IN} component={SignInPage} />
         <Route exact path={ROUTES.HOME} component={HomePage} />
         <Route path={ROUTES.CLIENTS} component={Clients} />
