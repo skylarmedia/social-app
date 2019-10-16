@@ -23,16 +23,6 @@ class EditPost extends Component {
       posts: [],
       currentTime: null,
       approved: false
-      // postTitle: '',
-      // postCopy: '',
-      // postHashtags: [],
-      // postTime: '',
-      // values: [],
-      // firestorageRef: this.props.firebase.storage,
-      // metaImageFiles: [],
-      // categories: [],
-      // selectedCategory: 'No Category|||#fff',
-      // currentHashtag: ''
     };
 
     this.handleFacebook = this.handleFacebook.bind(this);
@@ -42,13 +32,6 @@ class EditPost extends Component {
     this.handleHashTags = this.handleHashTags.bind(this);
     this.submitEdits = this.submitEdits.bind(this);
     this.handleCopy = this.handleCopy.bind(this);
-    // this.handleApproval = handleApproval.bind(this)
-    // this.handlePostTitle = this.handlePostTitle.bind(this);
-    // this.editPostSubmit = this.editPostSubmit.bind(this);
-    // this.getSelectedCategory = this.getSelectedCategory.bind(this);
-    // this.deleteHash = this.deleteHash.bind(this);
-    // this.addHashtag = this.addHashtag.bind(this)
-    // this.handleHashtags = this.handleHashtags.bind(this);
   }
 
   handlePostMedium = e => {
@@ -123,6 +106,7 @@ class EditPost extends Component {
       this.props.match.params.clientId,
       this.state.posts
     );
+    this.props.history.goBack()
   };
 
   // Social Handles
@@ -196,7 +180,6 @@ class EditPost extends Component {
 
   handleAd = e => {
     let index = e.target.getAttribute('index');
-    // alert(index);
 
     let posts = [...this.state.posts];
 
@@ -208,7 +191,6 @@ class EditPost extends Component {
   };
 
   handleComplete = index => {
-    // alert(index);
     let posts = [...this.state.posts];
     posts[index].postTime = this.state.currentTime;
     this.setState(
@@ -221,125 +203,6 @@ class EditPost extends Component {
     );
   };
 
-  // handleChange(i, event) {
-  //     let values = [...this.state.values];
-  //     values[i] = event.target.value;
-  //     this.setState({ values });
-  // }
-
-  // getType = (url) => {
-  //     if (url !== 'No Files') {
-  //         var checkUrl = new URL(url)
-
-  //         var query_string = checkUrl.search;
-
-  //         var search_params = new URLSearchParams(query_string);
-
-  //         var type = search_params.get('type');
-
-  //         return type
-  //     }
-
-  // }
-
-  // createUI() {
-  //     return this.state.values.map((el, i) =>
-  //         <div key={i}>
-  //             <input type="text" value={el || ''} onChange={this.handleChange.bind(this, i)} />
-  //             <input type='button' value='x' onClick={this.removeClick.bind(this, i)} className="remove-hash" />
-  //         </div>
-  //     )
-  // }
-
-  // removeClick(i) {
-  //     let values = [...this.state.values];
-  //     values.splice(i, 1);
-  //     this.setState({ values });
-  // }
-
-  // handlePostTitle = (e) => {
-  //     this.setState({
-  //         postTitle: e.target.value
-  //     })
-  // }
-
-  // handlePostCopy = (e) => {
-  //     this.setState({
-  //         postCopy: e.target.value
-  //     })
-  // }
-
-  // editPostSubmit = (event) => {
-  //     event.preventDefault();
-
-  //     this.props.firebase.editPostSubmit(
-  //         this.props.match.params.clientId,
-  //         this.props.match.params.postId,
-  //         this.state.postTitle,
-  //         this.state.postCopy,
-  //         this.state.postHashtags,
-  //         this.state.postTime,
-  //         this.state.values,
-  //         this.state.selectedCategory
-  //     )
-
-  //     this.props.history.push(`/calendar/2019/${this.props.match.params.month}/${this.props.match.params.clientId}`);
-  // }
-
-  // deletePost = () => {
-  //     if (window.confirm('Are you sure you wish to delete this item?')) {
-  //         this.props.firebase.deletePost(this.props.match.params.clientId, this.props.match.params.postId)
-  //         this.props.history.push(`/calendar/2019/${this.props.match.params.month}/${this.props.match.params.clientId}`);
-  //     }
-  //     return false
-  // }
-
-  // getSelectedCategory = (event) => {
-  //     this.setState({
-  //         selectedCategory: event.target.value
-  //     })
-  // }
-
-  // monthNumToName = (monthnum) => {
-  //     var months = [
-  //         'January', 'February', 'March', 'April', 'May',
-  //         'June', 'July', 'August', 'September',
-  //         'October', 'November', 'December'
-  //     ];
-
-  //     return months[monthnum - 1] || '';
-  // }
-
-  // onChangeTime = e => {
-  //     this.setState({
-  //         postTime: e
-  //     })
-  // }
-
-  // deleteHash = (index) => {
-
-  //     // console.log(this.getAttribute('index'), 'attributed')
-  //     this.setState({
-  //         postHashtags: this.state.postHashtags.filter((_, i) => i !== index)
-  //     });
-  // }
-
-  // addNewHashtag = (e) => {
-  //     e.preventDefault();
-
-  //     this.setState({
-  //         postHashtags: [...this.state.postHashtags, this.state.currentHashtag],
-  //         currentHashtag: ''
-  //     })
-
-  // }
-
-  // currentHashtagHandle = e => {
-  //     this.setState({
-  //         currentHashtag: e.target.value
-  //     })
-  // }
-
   handlePostTime = (time, timePicker) => {
     console.log(time);
     this.setState({
@@ -348,8 +211,13 @@ class EditPost extends Component {
   };
 
   render() {
-    console.log('timeposts', this.state.posts);
     const posts = this.state.posts.map((post, index) => {
+
+      let image = this.state.posts[index].images.map(item => {
+        return (
+          <img src={item} />
+        )
+      })
       return (
         <div>
           <div>
@@ -364,7 +232,7 @@ class EditPost extends Component {
               margin="normal"
             />
             <div />
-
+            {image}
             <input
               className="outlined-copy"
               label="Copy"
@@ -479,6 +347,9 @@ class EditPost extends Component {
               <label for="ad">Ad or Sponsored Post</label>
             </div>
             <div>
+
+            </div>
+            <div>
               <textarea
                 placeholder="Hashtags"
                 value={this.state.posts[index].postHashTag}
@@ -509,16 +380,5 @@ class EditPost extends Component {
     );
   }
 }
-
-// const mapDispatchToProps = dispatch => ({
-//     getPost: post => dispatch({
-//         type: 'GET_POST', post
-//     })
-// })
-
-// const mapStateToProps = state => (
-//     console.log(state, 'state in map state to props'), {
-//         post: state.setEditPostReducer
-//     })
 
 export default withFirebase(EditPost);

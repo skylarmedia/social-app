@@ -17,10 +17,11 @@ class AssignCategories extends Component {
   }
 
   componentWillMount() {
-    this.props.firebase.getSelectedCategoriesPre(localStorage.getItem('userId')).then(snapshot => {
+    const { getClient } = this.props.location.state
+    this.props.firebase.getSelectedCategoriesPre(getClient).then(snapshot => {
       let setArr = [...this.state.categories];
-
       snapshot.docs.map(item => {
+        console.log("ITEM CAR", item)
         setArr.push(item.data());
       });
 
@@ -71,7 +72,7 @@ class AssignCategories extends Component {
   };
 
   render() {
-    console.log('cats', this.state.categories);
+    console.log(this.state.categories, 'CATEGORISE')
     let categories = this.state.categories.map((item, i) => {
       return (
         <li>

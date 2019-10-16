@@ -62,3 +62,13 @@
     transition: opacity 250ms ease-in;
   }
   
+
+  #header{
+      z-index:99;
+      position:fixed;
+      top:0;
+  }
+
+  body{
+      padding-top:88px;
+  }

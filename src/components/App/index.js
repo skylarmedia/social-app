@@ -41,6 +41,7 @@ import './index.css';
 import NavigationWrapper from '../NavigationWrapper';
 import Header from '../Header';
 import AssignCategories from '../AssignCategories';
+import Logout from '../Logout'
 
 import { TransitionGroup, Transition } from "react-transition-group";
 
@@ -66,7 +67,7 @@ const App = () => (
         <Route path="/client-calendar/:year/:month" component={ClientCalendar} />
         <Route exact path="/view-post/:month/:day/:id" render={(props) => <ClientViewPost {...props} />} />
         <Route path="/admin-view-post/:month/:day/:title/:client/:itemId" component={AdminViewPost} />
-     
+        <Route path="/logout" component={Logout} />
         <Route path="/calendar/:year/:month/:clientId" component={Calendar} />
         <Route path="/settings" component ={Settings} />
         <Route component={NoMatch} />

@@ -80,61 +80,40 @@ class HiddenCalendarSingle extends Component {
   render() {
     const friendlyUrlTitle = 'test';
 
-
     const hiddenPost = () => {
-        const date = new Date(this.props.ipDate)
-        let string = this.props.copy;
-        let maxLength = 200;
-        let trimmedString = string.substr(0, maxLength);
-        trimmedString = trimmedString.substr(0, Math.min(trimmedString.length, trimmedString.lastIndexOf(" ")))
-        console.log('NEW DATE', date.toString());
-        return(
-            <div>
-        <h4 className="text-center">{this.props.title}</h4>
-        <div class="social-wrapper">
-        {this.props.facebook == true && (
-            <p>Facebook</p>
-        )}
-        {this.props.instagram == true && (
-            <p>Instagram</p>
-        )}
-        {this.props.linkedin == true && (
-            <p>LinkedIn</p>
-        )}
-        {this.props.twitter == true && (
-            <p>Twitter</p>
-        )}
-        {this.props.other == true && (
-            <p>Other</p>
-        )}
+      console.log('props images', this.props.images)
+      const date = new Date(this.props.ipDate);
+      let string = this.props.copy;
+      let maxLength = 200;
+      let trimmedString = string.substr(0, maxLength);
+      trimmedString = trimmedString.substr(
+        0,
+        Math.min(trimmedString.length, trimmedString.lastIndexOf(' '))
+      );
+
+      let image = this.props.images[0]
+      console.log('NEW DATE', date.toString());
+      return (
+        <div>
+          <h4 className="text-center">{this.props.title}</h4>
+          <img src={image} />
+          <div class="social-wrapper">
+            {this.props.facebook == true && <p>Facebook</p>}
+            {this.props.instagram == true && <p>Instagram</p>}
+            {this.props.linkedin == true && <p>LinkedIn</p>}
+            {this.props.twitter == true && <p>Twitter</p>}
+            {this.props.other == true && <p>Other</p>}
+          </div>
+          <p>
+            {date.toString().split('00')[0]} @ {this.props.ipDate}
+          </p>
+
+          <p className="props-copy">{this.props.copy.substr(0, 200)}</p>
+          <div>{this.props.hashtags}</div>
+          <Link to={`/edit-post/${this.props.postId}/${this.props.clientId}`}>Edit Post</Link>
         </div>
-        <p>{date.toString().split('00')[0]} @ {this.props.ipDate}</p>
-
-        <p className="props-copy">
-            {this.props.copy.substr(0, 200)}
-        </p>
-        <div>{this.props.hashtags}</div>
-        {/* {date.map(item => (
-            <p>{item}</p>
-        ))} */}
-        {/* <p>{this.truncate(this.props.copy)}</p> */}
-        {/* <p>{this.props.time}</p> */}
-        {/* <p className="mb-0">{this.props.hashtags.map(item => (
-                    <span>#{item} </span>
-                ))}</p> */}
-        <Link
-          to={`/edit-post/${this.props.postId}/${this.props.clientId}`}
-        >
-          Edit Post
-        </Link>
-      </div>
-        )
-    }
-
-    
-
-      
-    
+      );
+    };
 
     const buttonStyle = {
       background: this.props.selectedCategory
@@ -149,11 +128,7 @@ class HiddenCalendarSingle extends Component {
             className="label-button"
           >
             {this.props.title}
-            {this.props.adminRead != false ? (
-              ''
-            ) : (
-              <img src={require('../assets/not-read.svg')} className="not-read" />
-            )}
+            {this.props.adminRead != false ? '' : ''}
           </button>
           {this.state.isHiddenCalendar && (
             <CSSTransition classNames="dialog" timeout={300}>

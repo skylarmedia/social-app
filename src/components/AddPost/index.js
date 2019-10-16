@@ -132,19 +132,13 @@ class AddPost extends Component {
   }
 
   receivedValues = postObj => {
-    this.setState({ postArr: [...this.state.postArr, postObj] }, () => {
-    });
+    this.setState({ postArr: [...this.state.postArr, postObj] }, () => {});
   };
 
   handleApproval = () => {
-    this.setState(
-      {
-        approved: !this.state.approved
-      },
-      () => {
-        alert(this.state.approved);
-      }
-    );
+    this.setState({
+      approved: !this.state.approved
+    });
   };
 
   // BEGINNING OF SOCIAL METHODS
@@ -195,10 +189,9 @@ class AddPost extends Component {
   };
 
   handlePostTime = (time, timeString) => {
-    this.setState(
-      {
-        postTime: timeString
-      });
+    this.setState({
+      postTime: timeString
+    });
   };
 
   // Beginning Of Link Methods

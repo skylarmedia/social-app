@@ -14,3 +14,4 @@ export const ADD_POST = '/add-post/'
 export const EDIT_POST = '/edit-post';
 export const ADMIN_VIEW_POST = '/admin-view-post';
 export const SETTINGS = '/settings';
+export const LOGOUT = '/logout'

@@ -20,24 +20,15 @@ const NavigationAuth = (props) => (
   <div id="auth-nav-wrapper">
     <ul id="nav-id">
       <li>
-        <Link to={ROUTES.LANDING}>Landing</Link>
+        <Link to={ROUTES.HOME}>CLIENTS/HOME</Link>
       </li>
-      <li>
-        <Link to={ROUTES.HOME}>Home</Link>
-      </li>
-      <li>
-        <Link to={ROUTES.ACCOUNT}>Account</Link>
-      </li>
-      <li>
-        <Link to={ROUTES.SETTINGS}>Settings</Link></li>
       <li>
         <SignOutButton />
       </li>
+      <li>
+        <Link to={ROUTES.SETTINGS}>Settings</Link></li>
+
     </ul>
-    {/* <div>
-      <img src={props.authUser.photoURL} className="nav-avatar" />
-      <p>{props.authUser.displayName}</p>
-    </div> */}
   </div>
 );
 

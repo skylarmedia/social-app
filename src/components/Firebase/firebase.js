@@ -47,7 +47,6 @@ class Firebase {
   //***** Reactive Client *****//
 
   reactivateClient = id => {
-    alert(id);
     this.db
       .collection('users')
       .doc(id.toLowerCase().replace(/ /g, '-'))
@@ -124,6 +123,10 @@ class Firebase {
       .get();
 
   //***** End Archive Functions ******/
+
+  logout = () => this.auth.signOut().then(() => {
+    window.location.href = '/'
+  })
 
   addLogoUrl = (user, logoUrl) =>
     this.db
@@ -207,7 +210,6 @@ class Firebase {
       .get();
 
   getUserCategories = (user, month) =>
-    // alert(user)
     this.db
       .collection('users')
       .doc(user)
@@ -450,10 +452,9 @@ class Firebase {
     .get();
   }
 
-
   doSignOut = () =>
-    this.auth.signOut().finally(() => {
-      window.location.replace(process.env.PUBLIC_URL);
+    this.auth.signOut().then(() => {
+      window.location.href = '/'
     });
 
   doPasswordReset = email => this.auth.sendPasswordResetEmail(email);
@@ -470,8 +471,6 @@ class Firebase {
   };
 
   updatePost = (user, id, post) => {
-    alert('updated');
-    alert(id);
     this.db
       .collection('users')
       .doc(user)

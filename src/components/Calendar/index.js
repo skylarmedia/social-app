@@ -44,9 +44,9 @@ class Calendar extends React.Component {
       posts: [],
       private: true,
       oldPrivate: true,
-      privateId: 0,
-      selectedCategories:[],
-      grid: false
+      privateId: 3,
+      selectedCategories: [],
+      grid: true
     };
 
     this.showCategories = this.showCategories.bind(this);
@@ -56,60 +56,68 @@ class Calendar extends React.Component {
 
   weekdayshort = moment.weekdaysShort();
 
-  gridMode(){
+  gridMode() {
     this.setState({
-      grid:true
-    })
+      grid: true
+    });
   }
 
-  listMode(){
+  listMode() {
     this.setState({
-      grid:false
-    })
+      grid: false
+    });
   }
 
   componentWillMount() {
-    this.props.firebase.getSelectedCategories(this.props.match.params.clientId, parseInt(this.props.match.params.year), parseInt(this.props.match.params.month)).then(item => {
-      console.log('item', item)
-      item.docs.map(snapshot => {
-        console.log('snapshot ,data', snapshot.data())
-        this.setState({
-          selectedCategories: [...this.state.selectedCategories, snapshot.data()]
-        }, () => {
-          console.log(this.state, 'final state')
-        })
-      })
-    })
-
-    if (this.props.match.params.clientId) {
-      this.props.firebase.getSocialPosts(this.props.match.params.clientId).then(snapshot => {
-        this.setState({
-          posts: snapshot.docs,
-          isLoading: !this.state.isLoading
+    this.props.firebase
+      .getSelectedCategories(
+        this.props.match.params.clientId,
+        parseInt(this.props.match.params.year),
+        parseInt(this.props.match.params.month)
+      )
+      .then(item => {
+        item.docs.map(snapshot => {
+          this.setState(
+            {
+              selectedCategories: [...this.state.selectedCategories, snapshot.data()]
+            },
+            () => {
+              console.log(this.state, 'final state');
+            }
+          );
         });
       });
 
-   
-      console.log('year', typeof(this.props.match.params.year))
-      console.log('month', typeof(this.props.match.params.month))
-      console.log('Client', this.props.match.params.clientId)
+      this.props.firebase.getSocialPosts(this.props.match.params.clientId).then(snapshot => {
+        this.setState({
+          posts: snapshot.docs,
+          isLoading: !this.state.isLoading,
+          clientId: this.props.match.params.clientId
+        });
+      });
 
-      this.props.firebase.getPrivacy(this.props.match.params.clientId, parseInt(this.props.match.params.year), this.props.match.params.month)
-      .then(snapshot => {
-        console.log('document', snapshot.docs)
-        snapshot.docs.map(item => {
-          this.setState({
-            private:item.data().private,
-            oldPrivate:item.data().private,
-            privateId: item.id
-          }, 
-          () => {
-            console.log('state privacy', this.state.private)
-          }
-          )
-        })
-      })
-    }
+      this.props.firebase
+        .getPrivacy(
+          this.props.match.params.clientId,
+          parseInt(this.props.match.params.year),
+          parseInt(this.props.match.params.month)
+        )
+        .then(snapshot => {
+          console.log("PRIVATE", snapshot)
+          snapshot.docs.map(item => {
+            this.setState(
+              {
+                private: item.data().private,
+                oldPrivate: item.data().private,
+                privateId: item.id
+              },
+              () => {
+                console.log('state privacy', this.state.private);
+              }
+            );
+          });
+        });
+    
 
     this.setState({
       authUser: JSON.parse(localStorage.getItem('authUser')).email
@@ -244,16 +252,11 @@ class Calendar extends React.Component {
   };
 
   unassignCategory = (name, index) => {
-    alert('ran')
-    console.log('NAME', name)
-    // console.log('INDEX,', index)
     this.setState({
-      selectedCategories: this.state.selectedCategories.filter((_, i) => i !== index),
+      selectedCategories: this.state.selectedCategories.filter((_, i) => i !== index)
     });
 
     this.props.firebase.unassignCategory(this.props.match.params.clientId, name);
-
-    // console.log(this.state.removedCategories, 'removed categories');
   };
 
   setYear = year => {
@@ -358,20 +361,19 @@ class Calendar extends React.Component {
   handleSwitch = () => {
     this.setState({
       private: !this.state.private
-    })
-  }
+    });
+  };
 
   componentWillUnmount() {
-
-    if(this.state.private !== this.state.oldPrivate){
-      this.props.firebase.updatePrivate(this.props.match.params.clientId, this.state.private, this.state.privateId)
-    }
+    this.props.firebase.updatePrivate(
+      this.props.match.params.clientId,
+      this.state.private,
+      this.state.privateId
+    );
   }
 
   render() {
-    // alert()
-    console.log(this.state, 'final state')
-    console.log('privacy', this.state)
+    console.log('MAIN PROPS LEGEND', this.props);
     let weekdayshortname = this.weekdayshort.map(day => {
       return <th key={day}>{day}</th>;
     });
@@ -443,8 +445,7 @@ class Calendar extends React.Component {
                   {this.month()} {this.year()}
                 </p>
               </div>
-              <div className="calendar-navi">
-              </div>
+              <div className="calendar-navi" />
               <div className="calendar-date">
                 {this.state.showYearNav && <this.YearTable props={this.year()} />}
                 {this.state.showMonthTable && <this.MonthList data={moment.months()} />}
@@ -462,18 +463,26 @@ class Calendar extends React.Component {
               )}
 
               {!this.state.grid && (
-                <ListMode user={this.props.match.params.clientId} month={this.props.match.params.month} year={this.props.match.params.year}/>
+                <ListMode
+                  user={this.props.match.params.clientId}
+                  month={this.props.match.params.month}
+                  year={this.props.match.params.year}
+                />
               )}
-              
             </div>
           ) : (
             <div className="progress-wrapper">
               <CircularProgress />
             </div>
           )}
-          
         </div>
-        <Legend month={this.props.match.params.month} year={this.props.match.params.year} selectedCategories={this.state.selectedCategories} removeCategory={this.unassignCategory}/>
+        <Legend
+          month={this.props.match.params.month}
+          year={this.props.match.params.year}
+          selectedCategories={this.state.selectedCategories}
+          removeCategory={this.unassignCategory}
+          client={this.props.match.params.clientId}
+        />
       </React.Fragment>
     );
   }

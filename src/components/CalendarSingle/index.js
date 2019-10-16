@@ -14,8 +14,6 @@ class CalendarSingle extends Component {
             posts: [],
             showCalendarModule: false
         }
-
-        // this.toggleShowCalendarModule = this.toggleShowCalendarModule.bind
     }
 
 
@@ -25,11 +23,6 @@ class CalendarSingle extends Component {
 
 
     toggleShowCalendarModule = () => {
-
-        alert('ran');
-        // this.setState({
-        //     showCalendarModule: !this.state.showCalendarModule
-        // })
     }
 
 
@@ -71,25 +64,6 @@ class CalendarSingle extends Component {
                                     {
                                         item.data().adminRead ? '' : <img src={require('../assets/not-read.svg')} className="not-read" />
                                     }
-                                    {/* <h4>{item.data().post[0].title}</h4> */}
-                                    
-                                    {/* <div>
-                                        {item.data().post[0].facebook && (
-                                            <p>Facebook1</p>
-                                        )}
-                                        {item.data().post[0].instagram && (
-                                            <p>Instagram</p>
-                                        )}
-                                        {item.data().post[0].linkedin && (
-                                            <p>LinkedIn</p>
-                                        )}
-                                        {item.data().post[0].twitter && (
-                                            <p>Twitter</p>
-                                        )}
-                                        {item.data().post[0].other && (
-                                            <p>Other</p>
-                                        )}
-                                    </div> */}
 
 
 
@@ -106,7 +80,7 @@ class CalendarSingle extends Component {
                                         hashtags={item.data().post[0].postHashTag}
                                         postId={item.id}
                                         clientId={this.props.clientId}
-
+                                        images={item.data().post[0].images}
                                         time={item.data().time} 
                                         links={item.data().links} 
                                         day={item.data().day} 
@@ -116,6 +90,9 @@ class CalendarSingle extends Component {
                                        
                                         selectedCategory={item.data().color} 
                                         adminRead={item.data().adminRead}
+
+                                        ad={item.data().ad}
+
                                     />
                                 </div>
                             )

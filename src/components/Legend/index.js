@@ -16,7 +16,12 @@ const Legend = props => {
         <div>
           <h4>CATEGORIES</h4>
           <Link
-            to={`/assign-categories/${props.year}/${props.month}/${localStorage.getItem('userId')}`}
+            to={{
+              pathname: `/assign-categories/${props.year}/${props.month}/${props.client}`,
+              state:{
+                getClient:props.client
+              }
+            }}
           >
             Assign Categories
           </Link>
