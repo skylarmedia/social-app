@@ -24,39 +24,51 @@ class AssignCategories extends Component {
         setArr.push(item.data());
       });
 
-      this.setState(
-        {
-          categories: setArr
-        }
-      );
+      this.setState({
+        categories: setArr
+      });
     });
   }
 
   handleChange = i => {
     let categories = [...this.state.categories];
     categories[i].selected = !categories[i].selected;
-    console.log('cats', categories)
-    console.log('HANDLE CHANGE', [...this.state.categories[i].month, parseInt(this.props.match.params.month)])
+    console.log('cats', categories);
+    console.log('HANDLE CHANGE', [
+      ...this.state.categories[i].month,
+      parseInt(this.props.match.params.month)
+    ]);
 
-    categories[i].month = [...this.state.categories[i].month, parseInt(this.props.match.params.month)]
+    categories[i].month = [
+      ...this.state.categories[i].month,
+      parseInt(this.props.match.params.month)
+    ];
 
-    this.setState({
-      categories:categories,
-      dirty: true
-    }, () => {
-      console.log('inner state', categories)
-    });
+    this.setState(
+      {
+        categories: categories,
+        dirty: true
+      },
+      () => {
+        console.log('inner state', categories);
+      }
+    );
   };
 
   selectCategories = e => {
-      e.preventDefault();
-      // this.setState({
-      //   categores: 
-      // })
-      // categories[i].months = [...this.state.categories[i].months, parseInt(this.props.match.params.month)];
-      console.log('selected', this.state.categories)
-      this.props.firebase.assignCategories(this.props.match.params.id, this.props.match.params.year, this.props.match.params.month, this.state.categories)
-  }
+    e.preventDefault();
+    // this.setState({
+    //   categores:
+    // })
+    // categories[i].months = [...this.state.categories[i].months, parseInt(this.props.match.params.month)];
+    console.log('selected', this.state.categories);
+    this.props.firebase.assignCategories(
+      this.props.match.params.id,
+      this.props.match.params.year,
+      this.props.match.params.month,
+      this.state.categories
+    );
+  };
 
   render() {
     console.log('cats', this.state.categories);
@@ -78,18 +90,14 @@ class AssignCategories extends Component {
       );
     });
 
-    return <div id="assign-categories-wrapper">
+    return (
+      <div id="assign-categories-wrapper">
         <form onSubmit={this.selectCategories}>
-            <ul>
-                {this.state.categories.length > 0 && 
-                    categories
-                }
-            
-            </ul>
-            <input type="submit" value="Submit" />
+          <ul>{this.state.categories.length > 0 && categories}</ul>
+          <input type="submit" value="Submit" />
         </form>
-        
-    </div>;
+      </div>
+    );
   }
 }
 

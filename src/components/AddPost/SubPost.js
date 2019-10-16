@@ -51,7 +51,8 @@ class SubPost extends Component {
       filesArr: [],
       file: [],
       metaImageFiles: [],
-      showEmoji: false
+      showEmoji: false,
+      budget: ''
     };
 
     this.addForm = this.addForm.bind(this);
@@ -61,6 +62,7 @@ class SubPost extends Component {
     this.handlePostTime = this.handlePostTime.bind(this);
     this.addFile = this.addFile.bind(this);
     this.uploadFiles = this.uploadFiles.bind(this);
+    this.handleBudget = this.handleBudget.bind(this);
     this.openIcons = this.openIcons.bind(this);
   }
 
@@ -153,6 +155,7 @@ class SubPost extends Component {
       postObj['ipDate'] = this.state.ipDate;
       postObj['budgetStart'] = this.state.startIpDate;
       postObj['budgetEnd'] = this.state.endIpDate; 
+      postObj['budget'] = this.state.budget;
  
       console.log('updated component props', this.state)
       postObj['images'] = this.state.metaImageFiles
@@ -233,6 +236,7 @@ class SubPost extends Component {
     postArr['other'] = this.state.other;
     postArr['postDate'] = this.state.dpDate;
     postArr['ipDate'] = this.state.ipDate;
+    postArr['budget'] = this.state.budget;
     console.log('budget start', this.state.startIpDate)
     console.log('budget end', this.state.endIpDate);
 
@@ -358,6 +362,12 @@ class SubPost extends Component {
     this.setState({ startDpDate: val, startIpDate: moment(val).format('MM/DD/YYYY') }, () => {
       console.log('ip', this.state.startDpDate, this.state.startIpDate);
     });
+  }
+
+  handleBudget = (e) => {
+    this.setState({
+      budget:e.target.value
+    })
   }
 
   handleStartIpChange(val) {
@@ -573,6 +583,7 @@ class SubPost extends Component {
                   showYearDropdown
                   dropdownMode="select"
                 />
+                <input type="text" placeholder="$0.00" onChange={this.handleBudget.bind(this)}/>
               </div>
             )}
           </div>

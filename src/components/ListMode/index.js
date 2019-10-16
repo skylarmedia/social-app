@@ -4,6 +4,8 @@ import { compose } from 'redux';
 import './index.css';
 import DatePicker from 'react-datepicker';
 import CustomCalendarComponent from '../CustomCalendarComponent';
+import TimePicker from 'antd/es/time-picker';
+import moment from 'moment';
 
 class ListMode extends Component {
   constructor(props) {
@@ -11,8 +13,71 @@ class ListMode extends Component {
 
     this.state = {
       listItems: [],
-      innerPosts: []
+      innerPosts: [],
+      mainArr: []
     };
+    this.approvedPosts = this.approvedPosts.bind(this);
+    this.unApprovedPosts = this.unApprovedPosts.bind(this);
+    this.allPosts = this.allPosts.bind(this);
+  }
+
+  approvedPosts() {
+    const approved = this.state.mainArr.filter((item, index) => {
+      return item.approved;
+    });
+
+    this.setState(
+      {
+        listItems: approved
+      },
+      () => {
+        this.state.listItems.map(item => {
+          item.post.map(inner => {
+            this.setState({
+              innerPosts: [...this.state.innerPosts, inner]
+            });
+          });
+        });
+      }
+    );
+  }
+
+  allPosts = () => {
+    this.setState(
+        {
+          listItems: this.state.mainArr
+        },
+        () => {
+          this.state.listItems.map(item => {
+            item.post.map(inner => {
+              this.setState({
+                innerPosts: [...this.state.innerPosts, inner]
+              });
+            });
+          });
+        }
+      );
+  }
+
+  unApprovedPosts() {
+    const notApproved = this.state.mainArr.filter((item, index) => {
+      return item.approved === false
+    });
+
+    this.setState(
+      {
+        listItems: notApproved
+      },
+      () => {
+        this.state.listItems.map(item => {
+          item.post.map(inner => {
+            this.setState({
+              innerPosts: [...this.state.innerPosts, inner]
+            });
+          });
+        });
+      }
+    );
   }
 
   componentWillMount() {
@@ -22,6 +87,7 @@ class ListMode extends Component {
         snapshot.docs.map(item => {
           this.setState(
             {
+              mainArr: [...this.state.mainArr, item.data()],
               listItems: [...this.state.listItems, item.data()]
             },
             () => {
@@ -44,96 +110,162 @@ class ListMode extends Component {
     return f.toString();
   }
 
-  render() {
-    const renderParent = this.state.listItems.map((item, index) => (
-      <li class="row">
-        <div class="col-sm-6">
-          {this.state.innerPosts.map((inner, index) => {
-            return (
-              <li>
-                <div>
-                  <div>{this.convertTimeString(inner.ipDate)}</div>
-                  <div>{inner.title}</div>
-                  <div class="inner-images-wrapper col-sm-12 row">
-                    {inner.images.map(img => (
-                      <img src={img} class="image-inner" />
-                    ))}
-                  </div>
-                </div>
-              </li>
-            );
-          })}
-          <input
-            className="outlined-copy"
-            label="Copy"
-            name="copy"
-            multiline
-            value={item.copy}
-            margin="normal"
-            variant="outlined"
-            index={index}
-          />
-        </div>
-        <div class="col-sm-6 row flex-wrap">
-          <span class="col-sm-6">CAT</span>
-          <span class="col-sm-6">
-            {item.approved ? (
-              <div>
-                <input type="checkbox" checked />
-                Approved
-              </div>
-            ) : (
-              <div>
-                <input type="checkbox" />
-                Not approved
-              </div>
-            )}
-          </span>
+  convertMoment = string => {
+    moment(string, 'HH:mm a');
+  };
 
-          <div class="col-sm-12">
-            <input type="checkbox" />
-            {this.state.listItems[index].post.map((inner, index) => {
-              console.log('inner', inner);
+  render() {
+    const renderParent = this.state.listItems.map((item, index) => {
+      console.log('ITEM', item);
+      return (
+        <div class="row">
+          <div class="col-sm-6">
+            {item.post.map(innerItem => {
+              console.log('INNER ITEM', innerItem);
               return (
                 <div>
+                  <div>{this.convertTimeString(innerItem.ipDate)}</div>
+                  <div>{innerItem.title}</div>
+                  <div class="col-sm-6 inner-images-wrapper">
+                    {innerItem.images.length > 0 ? (
+                      innerItem.images.map(img => <img src={img} class="image-inner" />)
+                    ) : (
+                      <p>RED BOX</p>
+                    )}
+                  </div>
+                  <div class="col-sm-6">
+                    <input
+                      className="outlined-copy"
+                      label="Copy"
+                      name="copy"
+                      multiline
+                      value={item.copy}
+                      margin="normal"
+                      variant="outlined"
+                    />
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+          <div class="col-sm-6 row">
+            <div class="col-sm-6">CATEGORY</div>
+            <div class="col-sm-6">
+              {item.approved == true ? (
+                <div>
+                  <input type="checkbox" checked />
+                  Approved
+                </div>
+              ) : (
+                <div>
+                  <input type="checkbox" />
+                  Not approved
+                </div>
+              )}
+            </div>
+            {item.post.map(innerItem => {
+              return (
+                <div class="row col-sm-12">
+                  <div>
+                    <input type="checkbox" checked={innerItem.facebook ? 'checked' : ''} />
+                    <label>Facebook</label>
+                  </div>
+                  <div>
+                    <input type="checkbox" checked={innerItem.instagram ? 'checked' : ''} />
+                    <label>Instagram</label>
+                  </div>
+                  <div>
+                    <input type="checkbox" checked={innerItem.twitter ? 'checked' : ''} />
+                    <label>Twitter</label>
+                  </div>
+                  <div>
+                    <input type="checkbox" checked={innerItem.linkedin ? 'checked' : ''} />
+                    <label>Linkedin</label>
+                  </div>
+                  <div>
+                    <input type="checkbox" checked={innerItem.other ? 'checked' : ''} />
+                    <label>Other</label>
+                  </div>
                   <div class="row">
-                    <div>
-                      <input type="checkbox" checked={inner.facebook ? 'checked' : ''} />
-                      <label>Facebook</label>
+                    <div class="col-sm-4">
+                      TEST
+                      <DatePicker
+                        customInput={
+                          <CustomCalendarComponent
+                            ipDate={innerItem.ipDate}
+                            placeholderText="Post Date"
+                          />
+                        }
+                      />
                     </div>
-                    <div>
-                      <input type="checkbox" checked={inner.instagram ? 'checked' : ''} />
-                      <label>Instagram</label>
+                    <div class="col-sm-4">
+                      {this.convertMoment(innerItem.postTime)}
+                      <TimePicker
+                        placeholder="Sorry there was no date available"
+                        defaultValue={moment(innerItem.postTime, 'HH:mm')}
+                      />
                     </div>
-                    <div>
-                      <input type="checkbox" checked={inner.twitter ? 'checked' : ''} />
-                      <label>Twitter</label>
-                    </div>
-                    <div>
-                      <input type="checkbox" checked={inner.linkedin ? 'checked' : ''} />
-                      <label>Linkedin</label>
-                    </div>
-                    <div>
-                      <input type="checkbox" checked={inner.other ? 'checked' : ''} />
-                      <label>Other</label>
+                    <div class="col-sm-4">
+                      <input type="text" value={innerItem.postMedium} />
                     </div>
                   </div>
-                  <DatePicker
-                    customInput={
-                      <CustomCalendarComponent ipDate={inner.ipDate} placeholderText="Post Date" />
-                    }
-                  />
+                  <div class="col-sm-12">
+                    {innerItem.ad ? (
+                      <div>
+                        <div class="d-flex">
+                          <input type="checkbox" checked />
+                          <label>Ad or Sponsored Post</label>
+                        </div>
+                        <div>
+                          <DatePicker
+                            customInput={<CustomCalendarComponent ipDate={innerItem.budgetStart} />}
+                          />
+                          <span>-</span>
+                          <DatePicker
+                            customInput={<CustomCalendarComponent ipDate={innerItem.budgetEnd} />}
+                          />
+                        </div>
+                      </div>
+                    ) : (
+                      <div class="d-flex">
+                        <input type="checkbox" />
+                        <label>Ad or Sponsored Post</label>
+                      </div>
+                    )}
+                  </div>
+                  <div class="col-sm-12">
+                    <input
+                      className="outlined-copy"
+                      label="hashtag"
+                      name="hashtag"
+                      value={innerItem.postHashTag}
+                      margin="normal"
+                      variant="outlined"
+                    />
+                  </div>
+                  <div class="col-sm-12">
+                    {innerItem.values.map(link => (
+                      <div>
+                        <a href={`${link.value}`}>{link.value}</a>
+                        <br />
+                      </div>
+                    ))}
+                  </div>
                 </div>
               );
             })}
           </div>
         </div>
-      </li>
-    ));
-
+      );
+    });
     return (
       <div>
-        <ul>{renderParent}</ul>
+        <div id="button-switch">
+        <button onClick={this.allPosts.bind(this)}>All POSTS</button>
+          <button onClick={this.approvedPosts.bind(this)}>APPROVED POSTS</button>
+          <button onClick={this.unApprovedPosts.bind(this)}>APPROVED POSTS</button>
+        </div>
+        <div>{renderParent}</div>
       </div>
     );
   }

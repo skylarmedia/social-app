@@ -24,7 +24,7 @@ class Firebase {
     this.db = app.firestore();
     this.storage = app.storage().ref();
     this.storageHome = app.storage();
-    this.storageParent = app.storage()
+    this.storageParent = app.storage();
     this.functions = app.functions();
   }
 
@@ -34,17 +34,15 @@ class Firebase {
   storageParent = this.storageParent;
 
   unassignCategory = (id, name) => {
-  this.db
-  .collection('users')
-  .doc(id)
-  .collection('categories')
-  .doc(name)
-  .update({
-    selected:false
-  });
-  }
-
-
+    this.db
+      .collection('users')
+      .doc(id)
+      .collection('categories')
+      .doc(name)
+      .update({
+        selected: false
+      });
+  };
 
   //***** Reactive Client *****//
 
@@ -59,9 +57,9 @@ class Firebase {
   };
 
   assignCategories = (id, year, month, categories) => {
-    console.log("main cates", categories)
+    console.log('main cates', categories);
     categories.forEach(function(item, i) {
-      console.log('item months', item.months)
+      console.log('item months', item.months);
       console.log('MAIN ITEM', item);
       app
         .firestore()
@@ -168,20 +166,17 @@ class Firebase {
     });
   };
 
-  getSelectedCategories = (id, year, month) => 
-  this.db
-  .collection('users')
-  .doc(id)
-  .collection('categories')
-  .where('selected', '==', true)
-  .where('month', 'array-contains', month)
-  .get()
-  .catch(function(err){
-    console.log(err)
-  })
-
- 
-
+  getSelectedCategories = (id, year, month) =>
+    this.db
+      .collection('users')
+      .doc(id)
+      .collection('categories')
+      .where('selected', '==', true)
+      .where('month', 'array-contains', month)
+      .get()
+      .catch(function(err) {
+        console.log(err);
+      });
 
   adminSendMessage = (id, month, day, title, message, logo) =>
     this.db
@@ -211,7 +206,7 @@ class Firebase {
       .doc(user)
       .get();
 
-  getUserCategories = (user, month) => 
+  getUserCategories = (user, month) =>
     // alert(user)
     this.db
       .collection('users')
@@ -219,8 +214,6 @@ class Firebase {
       .collection('categories')
       .where('selected', '==', true)
       .get();
-  
- 
 
   postMessage = (id, month, day, title, message) =>
     this.db
@@ -406,7 +399,7 @@ class Firebase {
         clientRead: readValue
       });
 
-  addPost = (id, post, draft, color, year, month, day, selectedCategoryName, approved, ) =>
+  addPost = (id, post, draft, color, year, month, day, selectedCategoryName, approved) =>
     this.db
       .collection('users')
       .doc(id)
@@ -437,14 +430,25 @@ class Firebase {
         .get();
     });
 
-  listMode = (id, month, year) => 
+  listMode = (id, month, year) =>
+    this.db
+      .collection('users')
+      .doc(id)
+      .collection('posts')
+      .where('month', '==', month)
+      .where('year', '==', year)
+      .get();
+
+  getApprovedPosts = (id, month, year) => {
     this.db
     .collection('users')
     .doc(id)
     .collection('posts')
     .where('month', '==', month)
-    .where('year', '==',  year)
-    .get()
+    .where('year', '==', year)
+    .where('approved', '==', true)
+    .get();
+  }
 
 
   doSignOut = () =>
