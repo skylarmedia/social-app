@@ -172,15 +172,6 @@ class Dates extends Component {
     });
   };
 
-  redirectDate = () => {
-    console.log('hello');
-  };
-
-  passDates() {
-    console.log('clicked');
-    console.log(this.props);
-  }
-
   closeCat = () => {
     this.setState({
       showCat: !this.state.showCat
@@ -211,6 +202,8 @@ class Dates extends Component {
   };
 
   render() {
+
+    console.log(this.state, 'CATEGORIES')
     const renderDates = this.state.date.map((item, index) => (
       <div
         className="single-calendar-wrapper d-flex align-items-center justify-content-center"
@@ -243,15 +236,15 @@ class Dates extends Component {
     };
 
     return this.state.isLoading && this.state.date.length > 0 ? (
-      <div>
+      <div class="container">
         <Link to={`dates/${this.props.match.params.clientId}`}>Back To All Clients</Link>
         <h2 className="text-center" id="client-heading">
           Client A-Game’s Calendars
         </h2>
         <div id="outter-cat-wrapper">
           <div>
-            <button onClick={this.showCategories} id="add-category-button">
-              <span className="plus">+</span>Create Category
+            <button onClick={this.showCategories} id="add-category-button" class="clear-btn d-flex justify-content-between">
+              <span className="plus">+</span><p class="no-margin">Create Category</p>
             </button>
             <CategoryList colors={this.state.categories} removeCategory={this.removeCategory} />
             {this.state.showCat && (
@@ -324,7 +317,7 @@ class Dates extends Component {
         </div>
       </div>
     ) : this.state.isLoading && this.state.date.length == 0 ? (
-      <div className="container">
+      <div className="container position-relative">
         {this.state.showAddDate ? (
           <form className="add-date-form" onSubmit={this.submitForm.bind(this)}>
             <button onClick={this.toggleAddDate.bind(this)} className="toggle-close">

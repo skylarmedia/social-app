@@ -88,36 +88,35 @@ class Calendar extends React.Component {
         });
       });
 
-      this.props.firebase.getSocialPosts(this.props.match.params.clientId).then(snapshot => {
-        this.setState({
-          posts: snapshot.docs,
-          isLoading: !this.state.isLoading,
-          clientId: this.props.match.params.clientId
+    this.props.firebase.getSocialPosts(this.props.match.params.clientId).then(snapshot => {
+      this.setState({
+        posts: snapshot.docs,
+        isLoading: !this.state.isLoading,
+        clientId: this.props.match.params.clientId
+      });
+    });
+
+    this.props.firebase
+      .getPrivacy(
+        this.props.match.params.clientId,
+        parseInt(this.props.match.params.year),
+        parseInt(this.props.match.params.month)
+      )
+      .then(snapshot => {
+        console.log('PRIVATE', snapshot);
+        snapshot.docs.map(item => {
+          this.setState(
+            {
+              private: item.data().private,
+              oldPrivate: item.data().private,
+              privateId: item.id
+            },
+            () => {
+              console.log('state privacy', this.state.private);
+            }
+          );
         });
       });
-
-      this.props.firebase
-        .getPrivacy(
-          this.props.match.params.clientId,
-          parseInt(this.props.match.params.year),
-          parseInt(this.props.match.params.month)
-        )
-        .then(snapshot => {
-          console.log("PRIVATE", snapshot)
-          snapshot.docs.map(item => {
-            this.setState(
-              {
-                private: item.data().private,
-                oldPrivate: item.data().private,
-                privateId: item.id
-              },
-              () => {
-                console.log('state privacy', this.state.private);
-              }
-            );
-          });
-        });
-    
 
     this.setState({
       authUser: JSON.parse(localStorage.getItem('authUser')).email
@@ -427,62 +426,64 @@ class Calendar extends React.Component {
 
     return (
       <React.Fragment>
-        <Link to={`/home`}>Back to All Calendar Months</Link>
-        <img src={require('../assets/skylar_Icon_wingPortion.svg')} id="wing-logo" />
-        <div>
-          <button onClick={() => this.gridMode()}>Grid</button>
-          <button onClick={() => this.listMode()}>ListMode</button>
-          {this.state.isLoading ? (
-            <div className="tail-datetime-calendar">
-              <Switch
-                value={this.state.private}
-                checked={this.state.private}
-                onChange={this.handleSwitch}
-              />
-              <div className="calendar-heading">
-                <h2 className="text-center">Client {this.props.match.params.clientId} Calendar </h2>
-                <p className="text-center">
-                  {this.month()} {this.year()}
-                </p>
-              </div>
-              <div className="calendar-navi" />
-              <div className="calendar-date">
-                {this.state.showYearNav && <this.YearTable props={this.year()} />}
-                {this.state.showMonthTable && <this.MonthList data={moment.months()} />}
-              </div>
-
-              {this.state.showCalendarTable && this.state.grid && (
-                <div className="calendar-date">
-                  <table className="calendar-day">
-                    <thead>
-                      <tr id="weekdays">{weekdayshortname}</tr>
-                    </thead>
-                    <tbody>{daysinmonth}</tbody>
-                  </table>
-                </div>
-              )}
-
-              {!this.state.grid && (
-                <ListMode
-                  user={this.props.match.params.clientId}
-                  month={this.props.match.params.month}
-                  year={this.props.match.params.year}
+        <div class="container">
+          <Link to={`/home`}>Back to All Calendar Months</Link>
+          <div className="calendar-heading">
+            <h2 className="text-center">Client {this.props.match.params.clientId} Calendar </h2>
+            <p className="text-center">
+              {this.month()} {this.year()}
+            </p>
+          </div>
+          <img src={require('../assets/skylar_Icon_wingPortion.svg')} id="wing-logo" />
+          <div>
+            <button onClick={() => this.gridMode()} class="clear-btn">Grid</button>
+            <button onClick={() => this.listMode()} class="clear-btn">ListMode</button>
+            {this.state.isLoading ? (
+              <div className="tail-datetime-calendar">
+                <Switch
+                  value={this.state.private}
+                  checked={this.state.private}
+                  onChange={this.handleSwitch}
                 />
-              )}
-            </div>
-          ) : (
-            <div className="progress-wrapper">
-              <CircularProgress />
-            </div>
-          )}
+                <div className="calendar-navi" />
+                <div className="calendar-date">
+                  {this.state.showYearNav && <this.YearTable props={this.year()} />}
+                  {this.state.showMonthTable && <this.MonthList data={moment.months()} />}
+                </div>
+
+                {this.state.showCalendarTable && this.state.grid && (
+                  <div className="calendar-date">
+                    <table className="calendar-day">
+                      <thead>
+                        <tr id="weekdays">{weekdayshortname}</tr>
+                      </thead>
+                      <tbody>{daysinmonth}</tbody>
+                    </table>
+                  </div>
+                )}
+
+                {!this.state.grid && (
+                  <ListMode
+                    user={this.props.match.params.clientId}
+                    month={this.props.match.params.month}
+                    year={this.props.match.params.year}
+                  />
+                )}
+              </div>
+            ) : (
+              <div className="progress-wrapper">
+                <CircularProgress />
+              </div>
+            )}
+          </div>
+          <Legend
+            month={this.props.match.params.month}
+            year={this.props.match.params.year}
+            selectedCategories={this.state.selectedCategories}
+            removeCategory={this.unassignCategory}
+            client={this.props.match.params.clientId}
+          />
         </div>
-        <Legend
-          month={this.props.match.params.month}
-          year={this.props.match.params.year}
-          selectedCategories={this.state.selectedCategories}
-          removeCategory={this.unassignCategory}
-          client={this.props.match.params.clientId}
-        />
       </React.Fragment>
     );
   }

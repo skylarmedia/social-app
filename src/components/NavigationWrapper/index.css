@@ -1,5 +1,6 @@
 #main-menu{
   background: #002D5B;
+  box-shadow: 3px 11px 17px -2px rgba(0,0,0,0.6);
 }
 
 #hamburger-menu{
@@ -9,13 +10,26 @@
     top: 20px;
 }
 
+.hidden-add{
+  position: absolute;
+  top: 55px;
+  right: 0;
+}
+
+
+
+
+#settings-btn{
+  position:absolute;
+  bottom:0;
+}
 /* Position and sizing of burger button */
 .bm-burger-button {
-    position: fixed;
     width: 36px;
     height: 30px;
     left: 36px;
     top: 36px;
+    margin-left:45px;
   }
   
   /* Color/shape of burger icon bars */

@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { slide as Menu } from 'react-burger-menu';
-import MenuButton from '../MenuButton';
 import './index.css';
 import Navigation from '../Navigation';
 

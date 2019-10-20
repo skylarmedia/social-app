@@ -98,6 +98,7 @@
     border-radius: 11px;
   }
 
+
   .react-time-picker__inputGroup__input{
     width:18px !important;
   }
@@ -147,8 +148,29 @@
     position:absolute;
   }
 
-  .arrow-wrapper .add-date-btn{
-    margin-top:63px;
+  .no-margin{
+    margin:0;
+  }
+
+  .plus{
+    color:#fff;
+    background: #002D5B;
+    display:inline-block;
+    height:25px;
+    width:25px;
+    border-radius:50%;
+  }
+
+  #add-category-button{
+    color:#002D5B;
+    border-radius:50%;
+  }
+
+  .arrow-wrapper .add-date-btn {
+    margin-top: 0;
+    position: absolute;
+    top: 0;
+    right: 0;
   }
 
   .date-wrapper a{
@@ -170,7 +192,7 @@
   }
 
   body .bm-menu{
-    background: #093e73;
+    background: #fff;
   }
 
   #main-menu{
@@ -181,9 +203,15 @@
     padding:0;
     list-style:none;
   }
+  
+  #nav-id img{
+    width:46px;
+    height:46px;
+    margin-right:20px;
+  }
 
   #nav-id li a{
-    color:#fff;
+    color:#002D5B;
   }
 
   #outter-cat-wrapper{

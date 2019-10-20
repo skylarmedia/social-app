@@ -1,35 +1,18 @@
 import React, { Component } from 'react';
 import { withFirebase } from '../Firebase';
-import { FirebaseContext } from '../Firebase';
 import { Link } from 'react-router-dom';
 import { compose } from 'recompose';
-import Firebase from '../Firebase';
-import * as ROUTES from '../../constants/routes';
-import { throwStatement, thisExpression, tsExpressionWithTypeArguments } from '@babel/types';
-import { connect } from 'react-redux';
-import { notStrictEqual } from 'assert';
-import FileUploader from "react-firebase-file-uploader";
-import MenuItem from '@material-ui/core/MenuItem';
-import DeleteIcon from '@material-ui/icons/Delete';
-import Fab from '@material-ui/core/Fab';
-import AddIcon from '@material-ui/icons/Add';
 import 'firebase/storage';
 import TextField from '@material-ui/core/TextField';
-import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import { withAuthorization } from '../Session';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import { fade, withStyles, makeStyles, createMuiTheme } from '@material-ui/core/styles';
-import { TransitionGroup, CSSTransition } from "react-transition-group";
+import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import './index.css';
-import MainButton  from '../MainButton';
-
-
+import MainButton from '../MainButton';
 
 class Home extends Component {
-
-
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       isLoading: false,
       isHidden: false,
@@ -47,9 +30,9 @@ class Home extends Component {
       uploadComplete: false,
       loadSpinner: false,
       showButton: false
-    }
+    };
 
-    this.baseState = this.state
+    this.baseState = this.state;
     this.toggleAddNew = this.toggleAddNew.bind(this);
     this.handleLogoUpload = this.handleLogoUpload.bind(this);
     this.addFile = this.addFile.bind(this);
@@ -62,24 +45,23 @@ class Home extends Component {
     this.props.firebase.getClients().then(snapshot => {
       const opened = snapshot.docs;
 
-      let setArr = [...this.state.users]
+      let setArr = [...this.state.users];
       opened.map(item => {
-        setArr.push(item.data())
+        setArr.push(item.data());
       });
 
       this.setState({
         users: setArr,
         isLoading: !this.state.isLoading
       });
-
     });
   }
 
   componentWillUnmount() {
     this.setState({
       file: null,
-      username: '',
-    })
+      username: ''
+    });
   }
 
   toggleAddNew() {
@@ -87,18 +69,16 @@ class Home extends Component {
       isHidden: !this.state.isHidden,
       file: null,
       backgroundUrl: '',
-      username: '',
-    })
+      username: ''
+    });
   }
 
-  updateInput = e => 
+  updateInput = e =>
     this.setState({
       [e.target.name]: e.target.value
     });
-  
 
-
-  addClient = (e) => {
+  addClient = e => {
     e.preventDefault();
 
     this.setState({
@@ -109,7 +89,7 @@ class Home extends Component {
     });
 
     this.props.firebase.getClients().then(snapshot => {
-      this.props.getAllClients(snapshot.docs)
+      this.props.getAllClients(snapshot.docs);
     });
   };
 
@@ -117,64 +97,71 @@ class Home extends Component {
     this.props.firebase.getClients().then(snapshot => {
       this.setState({
         users: snapshot.docs
-      })
+      });
     });
-  }
+  };
 
-  handleLogoUpload = (event) => {
+  handleLogoUpload = event => {
     const file = Array.from(event.target.files);
 
     this.setState({
       file: file[0]
     });
-  }
+  };
 
   addFile = event => {
-    this.setState({
-      file: event.target.files[0],
-      backgroundUrl: '',
-      loadSpinner: !this.state.loadSpinner
-    }, () => {
-      this.state.firestorageRef.ref().child(`${this.state.username}/logo/`)
-        .put(this.state.file).then(snapshot => {
-          console.log(snapshot, 'snapshot in it')
-          const encodedUrl = `https://firebasestorage.googleapis.com/v0/b/skylar-social-17190.appspot.com/o/${encodeURIComponent(snapshot.metadata.fullPath)}?alt=media`;
-          this.setState({
-            backgroundUrl: encodedUrl,
-            uploadComplete: true,
-            loadSpinner: !this.state.loadSpinner
-          })
-        })
-    });
+    this.setState(
+      {
+        file: event.target.files[0],
+        backgroundUrl: '',
+        loadSpinner: !this.state.loadSpinner
+      },
+      () => {
+        this.state.firestorageRef
+          .ref()
+          .child(`${this.state.username}/logo/`)
+          .put(this.state.file)
+          .then(snapshot => {
+            const encodedUrl = `https://firebasestorage.googleapis.com/v0/b/skylar-social-17190.appspot.com/o/${encodeURIComponent(
+              snapshot.metadata.fullPath
+            )}?alt=media`;
+            this.setState({
+              backgroundUrl: encodedUrl,
+              uploadComplete: true,
+              loadSpinner: !this.state.loadSpinner
+            });
+          });
+      }
+    );
+  };
 
-    console.log(this.state.file, 'file upload')
-
-  }
-
-  confirmArchive = (e) => {
-    console.log('target value', e.target.value);
-    console.log('type of', typeof(e.target.value))
-    if(e.target.value == 'true'){
+  confirmArchive = e => {
+    if (e.target.value == 'true') {
       this.props.firebase.archiveClient(localStorage.getItem('archiveId'));
-      this.setState({
-        users: this.state.users.filter((_, i) => i !== parseInt(localStorage.getItem('tempIndex')))
-      }, () => {
-        localStorage.removeItem('tempIndex');
-      })
+      this.setState(
+        {
+          users: this.state.users.filter(
+            (_, i) => i !== parseInt(localStorage.getItem('tempIndex'))
+          )
+        },
+        () => {
+          localStorage.removeItem('tempIndex');
+        }
+      );
     }
     this.setState({
-      showButton:!this.state.showButton
-    })
-  }
+      showButton: !this.state.showButton
+    });
+  };
 
   archiveClient = (user, index) => {
     this.setState({
-      showButton: true,
-    })
+      showButton: true
+    });
 
     localStorage.setItem('archiveId', user);
     localStorage.setItem('tempIndex', index);
-  }
+  };
 
   onChange = event => {
     this.setState({ [event.target.name]: event.target.value });
@@ -182,11 +169,16 @@ class Home extends Component {
 
   onSubmit = event => {
     event.preventDefault();
-    this.props.firebase.addUser(this.state.email, this.state.passwordOne, this.state.username, this.state.backgroundUrl);
-    const userObj = {}
+    this.props.firebase.addUser(
+      this.state.email,
+      this.state.passwordOne,
+      this.state.username,
+      this.state.backgroundUrl
+    );
+    const userObj = {};
     userObj.logo = this.state.backgroundUrl;
     userObj.name = this.state.username;
-    userObj.urlName = this.state.username.toLowerCase().replace(/ /g, '-')
+    userObj.urlName = this.state.username.toLowerCase().replace(/ /g, '-');
     this.setState({
       isHidden: !this.state.isHidden,
       users: [...this.state.users, userObj],
@@ -195,24 +187,22 @@ class Home extends Component {
       passwordOne: '',
       email: '',
       file: null
-    })
+    });
   };
 
-
   render() {
-
     const backgroundUrlStyle = {
       backgroundImage: `url(${this.state.backgroundUrl})`,
-      backgroundSize: "cover"
-    }
+      backgroundSize: 'cover'
+    };
 
     const progressStyles = {
       color: '#ee463a'
-    }
+    };
 
     const textFieldStyles = {
-      borderColor: 'red',
-    }
+      borderColor: 'red'
+    };
 
     const isInvalid =
       this.state.passwordOne === '' ||
@@ -221,80 +211,109 @@ class Home extends Component {
       this.state.uploadComplete === false;
 
     return (
-
       <div id="home-page" className="container">
-        {this.state.showButton ?
-          <MainButton title="Archive Client?" subtitle="Are you sure you would like to archive this client?" buttonText="Archive" confirmArchive={this.confirmArchive.bind(this)}/>
-          :
-          ""
-        }
+        {this.state.showButton ? (
+          <MainButton
+            title="Archive Client?"
+            subtitle="Are you sure you would like to archive this client?"
+            buttonText="Archive"
+            confirmArchive={this.confirmArchive.bind(this)}
+          />
+        ) : (
+          ''
+        )}
         <TransitionGroup component={null}>
           <img src={require('../assets/skylar_Icon_wingPortion.svg')} id="wing-logo" />
           <h2 className="text-center welcome">Welcome Home!</h2>
-          {
-            this.state.isLoading && this.state.users.length > 0 ?
-              <div>
-                <p className="text-center">What client do you want to work on today?</p>
-                <div id="client-list" className="row">
-                  {
-                    this.state.users.map((user, index) => {
-                      return (
-                        <div data-id={user.userId} className="client-wrapper flex-column d-flex" key={index}>
-                            <Link to={`/dates/${user.urlName}`}>
-                              <img src={user.logo} className="user-background" />
-                            </Link>
-                            <div className="x-wrapper">
-                            <Link to={`/dates/${user.urlName}`}>
-                              {user.name}
-                            </Link>
-                            </div>
-                            <button onClick={() => this.archiveClient(user.urlName, index)} className="archive-x">x</button>
+
+          {this.state.isLoading && this.state.users.length > 0 ? (
+            <div>
+              <p className="text-center">What client do you want to work on today?</p>
+              <div id="client-list" className="row justify-content-between">
+                {this.state.users.map((user, index) => {
+                  return (
+                    <div
+                      data-id={user.userId}
+                      className="client-wrapper flex-column d-flex"
+                      key={index}
+                    >
+                      <Link to={`/dates/${user.urlName}`}>
+                        <img src={user.logo} className="user-background" />
+                      </Link>
+                      <div class="d-flex align-items-center align-items-center">
+                        <div className="x-wrapper">
+                          <Link to={`/dates/${user.urlName}`}>{user.name}</Link>
                         </div>
-                      )
-                    })
-                  }
-                </div>
-                <div id="add-new-btn-wrapper" className="text-center">
-                  <button onClick={this.toggleAddNew.bind(this)} className="add-date-btn">Add New</button>
-                </div>
-              </div>
-              :
-              (this.state.isLoading && this.state.users.length == 0 ?
-                <div>
-                  <div className="empty-state">
-                    <div className="row justify-content-between">
-                      <div className="dashed">
-
-                      </div>
-
-                      <div className="dashed">
-                      </div>
-
-                      <div className="dashed">
-                      </div>
-
-                      <div className="dashed">
+                        <button
+                          onClick={() => this.archiveClient(user.urlName, index)}
+                          className="archive-x"
+                        >
+                          x
+                        </button>
                       </div>
                     </div>
-                    <p className="text-center">You don’t seem to have any client calendars set up yet.<br />Click below to add one and get started!</p>
-                  </div>
-                  <div id="add-new-btn-wrapper" className="text-center mt-88">
-                    <button onClick={this.toggleAddNew.bind(this)} className="add-date-btn">Add New</button>
+                  );
+                })}
+              </div>
+              <div id="add-new-btn-wrapper" className="text-center">
+                <button onClick={this.toggleAddNew.bind(this)} className="add-date-btn hidden-add">
+                  Add New
+                </button>
+              </div>
+            </div>
+          ) : this.state.isLoading && this.state.users.length == 0 ? (
+            <div>
+              <p className="text-center para-margin">
+              You don’t seem to have any client calendars set up yet. Click below to add one and get started!
+              </p>
+              <div id="add-new-btn-wrapper" className="text-center mt-88">
+                <button onClick={this.toggleAddNew.bind(this)} className="add-date-btn empty-add-date">
+                  Add New
+                </button>
+              </div>
+              <div className="empty-state">
+                <div className="row justify-content-between">
+                  <div className="dashed" />
+
+                  <div className="dashed" />
+
+                  <div className="dashed" />
+
+                  <div className="dashed dashed-wrapper">
+                    <img src={require('../assets/round-arrow.png')} class="round-arrow" />
                   </div>
                 </div>
-                : <div className="progress-wrapper"><CircularProgress /></div>)
-          }
+              </div>
+            </div>
+          ) : (
+            <div className="progress-wrapper">
+              <CircularProgress />
+            </div>
+          )}
 
-
-          {this.state.isHidden ?
+          {this.state.isHidden ? (
             <CSSTransition classNames="dialog" timeout={300}>
               <div id="add-new-form-wrapper">
-                <button onClick={this.toggleAddNew.bind(this)} id="x-add-new" className="toggle-close">x</button>
+                <button
+                  onClick={this.toggleAddNew.bind(this)}
+                  id="x-add-new"
+                  className="toggle-close"
+                >
+                  x
+                </button>
 
                 <form onSubmit={this.onSubmit} id="add-new-form" className="d-flex flex-column">
-                  <div id="avatar-upload" className="d-flex align-items-end justify-content-center align-items-center" style={backgroundUrlStyle}>
-                    {this.state.loadSpinner === true ? <CircularProgress style={progressStyles} /> : ''}
-
+                  <div
+                    id="avatar-upload"
+                    className="d-flex align-items-end justify-content-center align-items-center"
+                    style={backgroundUrlStyle}
+                  >
+                    <input type="file" onChange={this.addFile} id="add-file" />
+                    {this.state.loadSpinner === true ? (
+                      <CircularProgress style={progressStyles} />
+                    ) : (
+                      ''
+                    )}
                   </div>
                   <TextField
                     margin="normal"
@@ -303,7 +322,7 @@ class Home extends Component {
                     value={this.state.username}
                     onChange={this.onChange}
                     type="text"
-                    label="Name"
+                    label="CLIENT_NAME"
                   />
                   <TextField
                     margin="normal"
@@ -312,7 +331,7 @@ class Home extends Component {
                     value={this.state.email}
                     onChange={this.onChange}
                     type="text"
-                    label="Email"
+                    label="CLIENT_EMAIL"
                   />
                   <TextField
                     margin="normal"
@@ -323,37 +342,30 @@ class Home extends Component {
                     type="password"
                     label="PASSWORD"
                   />
-                  <input type="file" onChange={this.addFile} id="add-file" />
+
                   <div id="add-new-btn-wrapper" className="text-center mt-88">
-                    <button disabled={isInvalid} type="submit" className={`add-date-btn ${this.state.uploadComplete ? 'complete' : 'uncomplete'}`}>Add New</button>
+                    <button
+                      disabled={isInvalid}
+                      type="submit"
+                      className={`add-date-btn ${
+                        this.state.uploadComplete ? 'complete' : 'uncomplete'
+                      }`}
+                    >
+                      SUBMIT
+                    </button>
                   </div>
 
                   {this.state.error && <p>{this.state.error.message}</p>}
                 </form>
-
               </div>
             </CSSTransition>
-            :
-            ''}
+          ) : (
+            ''
+          )}
         </TransitionGroup>
       </div>
-    )
+    );
   }
 }
 
-const mapDispatchToProps = dispatch => ({
-  getAllClients: clients => dispatch({
-    type: 'GET_ALL_CLIENTS', clients
-  })
-})
-
-const mapStateToProps = state => (
-  console.log(state, 'state in map state to props'), {
-    data: state.setClientsReducer
-  })
-
-const authCondition = authUser => authUser;
-
-export default withAuthorization(compose(
-  withFirebase
-))(Home);
+export default withAuthorization(compose(withFirebase))(Home);

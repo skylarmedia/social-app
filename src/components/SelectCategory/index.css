@@ -16,6 +16,35 @@
     box-shadow: none;
 }
 
+.gen-red-btn{
+        background: #EF463B;
+        text-transform: uppercase;
+        color: #fff;
+        border: none;
+        height: 48px;
+        width: 149px;
+        border-radius: 11px;
+}
+
+.light-input{
+    border: 1px solid #002D5B;
+    width: 100%;
+    height: 33px;
+    padding-left: 15px;
+}
+
+.light-input::placeholder { /* Firefox, Chrome, Opera */ 
+    color: #707070;
+} 
+  
+.light-input:-ms-input-placeholder { /* Internet Explorer 10-11 */ 
+    color:#707070;
+} 
+  
+.light-input::-ms-input-placeholder { /* Microsoft Edge */ 
+    color: #707070;
+} 
+
 .category-list-item{
     position:relative;  
 }

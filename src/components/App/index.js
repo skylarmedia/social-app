@@ -1,9 +1,5 @@
 import React from 'react';
-import {
-  BrowserRouter as Router,
-  Route, Switch
-} from 'react-router-dom';
-
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 import { withFirebase } from '../Firebase';
 
@@ -28,12 +24,12 @@ import CalendarSingle from '../CalendarSingle';
 import Server from '../ServerFile';
 import ClientCalendar from '../ClientCalendar';
 import ClientViewPost from '../ClientViewPost';
-import HiddenCalendarSingle from '../HiddenCalendarSingle'
+import HiddenCalendarSingle from '../HiddenCalendarSingle';
 import AdminViewPost from '../AdminViewPost';
 import * as ROUTES from '../../constants/routes';
 import MenuButton from '../MenuButton';
 import { withAuthentication } from '../Session';
-import CalendarCategoryContainer from '../CalendarCategoryContainer'
+import CalendarCategoryContainer from '../CalendarCategoryContainer';
 import { PasswordForgetForm } from '../PasswordForget';
 import PasswordChangeForm from '../PasswordChange';
 import { withAuthorization } from '../Session';
@@ -41,18 +37,23 @@ import './index.css';
 import NavigationWrapper from '../NavigationWrapper';
 import Header from '../Header';
 import AssignCategories from '../AssignCategories';
-import Logout from '../Logout'
+import Logout from '../Logout';
 
-import { TransitionGroup, Transition } from "react-transition-group";
-
-
+import { TransitionGroup, Transition } from 'react-transition-group';
 
 const App = () => (
   <Router basename={'/social-app-deploy'}>
     <div id="outer-container">
-      <Header />
-      <NavigationWrapper />
-
+      <div class="d-flex nav-wrapper align-items-center">
+        <div class="d-flex justify-content-between w-100">
+          <div class="d-flex align-items-center">
+            <NavigationWrapper />
+            <h5>Skylar Media</h5>
+          </div>
+          <img src={require('../assets/logo.png')} id="sky-logo" class="align-self-center" />
+        </div>
+       
+      </div>
       <Switch>
         <Route exact path={`${process.env.PUBLIC_URL + '/'}`} component={SignInPage} />
         <Route path={`/add-post/:year/:month/:day/:clientId`} component={AddPost} />
@@ -65,24 +66,25 @@ const App = () => (
         <Route path="/assign-categories/:year/:month/:id" component={AssignCategories} />
         <Route exact path={`/calendar-single/:year/:month/:day`} component={CalendarSingle} />
         <Route path="/client-calendar/:year/:month" component={ClientCalendar} />
-        <Route exact path="/view-post/:month/:day/:id" render={(props) => <ClientViewPost {...props} />} />
-        <Route path="/admin-view-post/:month/:day/:title/:client/:itemId" component={AdminViewPost} />
+        <Route
+          exact
+          path="/view-post/:month/:day/:id"
+          render={props => <ClientViewPost {...props} />}
+        />
+        <Route
+          path="/admin-view-post/:month/:day/:title/:client/:itemId"
+          component={AdminViewPost}
+        />
         <Route path="/logout" component={Logout} />
         <Route path="/calendar/:year/:month/:clientId" component={Calendar} />
-        <Route path="/settings" component ={Settings} />
+        <Route path="/settings" component={Settings} />
         <Route component={NoMatch} />
       </Switch>
       )
-
     </div>
   </Router>
-)
+);
 
-
-const NoMatch = ({ location }) => (
-  <div>Sorry this page at {location.pathname} doesn't exist</div>
-)
-
-
+const NoMatch = ({ location }) => <div>Sorry this page at {location.pathname} doesn't exist</div>;
 
 export default withAuthentication(App);

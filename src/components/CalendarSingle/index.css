@@ -69,6 +69,27 @@
       top:0;
   }
 
-  body{
-      padding-top:88px;
-  }
+.nav-wrapper{
+    background: #002D5B;
+    height: 88px;
+}
+
+.nav-wrapper > div {
+    width: auto;
+    height: 30px;
+    margin-right: 45px;
+}
+
+.nav-wrapper h5{
+    color:#fff;
+    margin-left:40px;
+}
+
+.nav-wrapper h5{
+    color:#fff;
+    margin-left:40px;
+}
+
+h5{
+    margin-bottom:0;
+}

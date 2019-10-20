@@ -76,19 +76,63 @@
     border-color:#fff;
 }
 
-#add-new-form .MuiInputLabel-outlined{
+.para-margin{
+    margin-bottom:78px;
+}
+
+.bm-burger-bars-hover {
     color:#fff;
+    transform: translateY(-3px);
+    transition: transform 0.3s linear;
+    background:#002D5B;
+  }
+
+#add-new-form .MuiInputLabel-outlined{
+    color: #707070;
 }
 
 #add-new-form .MuiInputBase-input{
     color:#fff;
     width:310px;
+    background:#fff;
 }
+
+#add-new-form .MuiInputLabel-outlined {
+
+}
+
+
+#add-new-form .MuiInputBase-input::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+    color:#002D5B;
+    opacity: 1; /* Firefox */
+  }
+  
 
 #add-file{
     margin-top: 13px;
     width:260px;
+    margin-top: 13px;
+    width: 260px;
+    position: absolute;
+    bottom: 15px;
+    right: 0;
+    width: 90px;
+    right: 15px;
 }
+
+.archive-x{
+    position:absolute;
+    right:0;
+}
+
+.bm-burger-bars {
+    background: #fff;
+    height: 4px !important;
+    width: 43px;
+    border-radius: 3px;
+}
+
+
 
 #client-list{
     margin-top:61px;
@@ -100,6 +144,13 @@
     object-fit: cover;
 }
 
+.x-wrapper{
+    position: absolute !important;
+    right: 0;
+    left: 0;
+    text-align: center;
+}
+
 .uncomplete.add-date-btn{
     background:#b2bec3;
 }
@@ -107,7 +158,6 @@
 .client-wrapper{
     height: 178px;
     width: 23%;
-    margin-right: 20px;
     position: relative;
 }
 
@@ -130,8 +180,13 @@
     margin-bottom: 10px;
 }
 
+.round-arrow{
+    position: relative;
+    top: -80px;
+}
+
 .dashed{
-    border:3px dashed #002D5B;
+    border:3px dashed #F0F0F0;
     height:178px;
     width:24%;
 }
@@ -140,10 +195,16 @@
     max-width:1140px;
 }
 
-#home-page .add-date-btn{
-    margin-top:88px;
+#home-page{
+    position:relative;
 }
 
+.empty-add-date{
+    position: absolute;
+    right: 45px;
+    top: 53px;
+    z-index:100;
+}
 .empty-state .text-center{
     margin-top:14px;
 }
@@ -155,4 +216,7 @@
     cursor: pointer;
     height: 0;
     width: 0;
+}
+#avatar-upload{
+    position:relative;
 }

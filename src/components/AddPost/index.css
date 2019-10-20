@@ -97,10 +97,6 @@
     padding: 0;
 }
 
-#nav-id li {
-    color:#fff;
-}
-
 .grey-background{
     background:#F0F0F0;
 }
@@ -127,11 +123,19 @@
     background: transparent;
     border: none;
     color: #002D5B;
-    float: right;
     font-size: 23px;
     font-weight: bold;
     height: auto;
     padding: 0; 
+}
+
+#nav-id li{
+    margin-bottom:20px;
+}
+
+.clear-btn{
+    border: none;
+    box-shadow: none;
 }
 
 .copy-wrapper{
@@ -155,6 +159,16 @@
     margin: 0 auto;
 }
 
-#add-new-form .MuiInputBase-input::placeholder{
-    color:red;
+.dashed-wrapper{
+    position:relative;
+}
+
+.sign-out-btn{
+    color:#002D5B;
+}
+
+#sky-logo{
+    align-self: center;
+    max-height: 70px;
+
 }

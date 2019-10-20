@@ -21,7 +21,6 @@ class AssignCategories extends Component {
     this.props.firebase.getSelectedCategoriesPre(getClient).then(snapshot => {
       let setArr = [...this.state.categories];
       snapshot.docs.map(item => {
-        console.log("ITEM CAR", item)
         setArr.push(item.data());
       });
 

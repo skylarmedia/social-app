@@ -20,12 +20,15 @@ const NavigationAuth = (props) => (
   <div id="auth-nav-wrapper">
     <ul id="nav-id">
       <li>
+      <img src={require('../assets/people.png')} />
         <Link to={ROUTES.HOME}>CLIENTS/HOME</Link>
       </li>
       <li>
+        <img src={require('../assets/lock.png')} />
         <SignOutButton />
       </li>
-      <li>
+      <li id="settings-btn">
+        <img src={require('../assets/settings.png')} />
         <Link to={ROUTES.SETTINGS}>Settings</Link></li>
 
     </ul>
