@@ -108,24 +108,54 @@
     background:#fff;
   }
 
+  .date-map-item img{
+    width:95%;
+  }
+
+  .back-link{
+    color:#002D5B;
+    margin-left:15px;
+  }
+
   .single-calendar-wrapper{
     background-image:url('../assets/grouped-single-calendar.svg');
     height: 240px;
-    width: 23%;
-    margin-left: 1%;
     display: block;
     background-size: cover;
     position: relative;
     background-size: 100% 100%;
+    width:100%; 
+  }
+
+  .margin-40{
+    margin-bottom:40px;
   }
 
   #client-heading{
-    margin-top: 123px; 
-    margin-bottom:23px;
+    margin-top: 60px;
+    margin-bottom:40px;
+    font-size: 20px;
+    text-align: left !important;
   }
 
   .client-text{
     margin-top:20px;
+  }
+
+  .add-btn-wrapper{
+    position: absolute;
+    top: 26%;
+    right: 25px;
+  }
+
+  .cal-img{
+    margin-bottom:11px;
+  }
+
+  .main-link{
+    margin-left: 17px;
+    width: 80%;
+    text-align: center;
   }
 
   .date-wrapper{
@@ -133,15 +163,14 @@
   }
 
   .delete-date{
-    font-weight: bold;
     box-shadow: none;
     border: none;
     background: transparent;
-    position: absolute;
-    top: 5px;
-    right: 6px;
-    font-size: 31px;
     cursor:pointer;
+  }
+
+  .no-padding{
+    padding: 0 !important;
   }
 
   #arrow{

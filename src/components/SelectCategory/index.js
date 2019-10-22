@@ -75,27 +75,35 @@ class SelectCategory extends Component {
             <DeleteIcon className="delete-category" />
           </button>
           <div className="d-flex align-items-center">
-            <div className="hex-color" style={categoryStyle} />
-            <p className="mb-0" className="">
+            <div className="hex-color" style={categoryStyle}>
               {item.name}
-            </p>
+            </div>
           </div>
         </li>
       );
     });
     return (
       <React.Fragment>
-        <ul id="selected-categories">{categoryList}</ul>
         <form onSubmit={this.passCategories}>
-          <input type="text" onChange={this.selectCategory.bind(this)} class="light-input" placeholder="CATEGORY_NAME"/>
+          <input
+            type="text"
+            onChange={this.selectCategory.bind(this)}
+            class="light-input"
+            placeholder="CATEGORY_NAME"
+          />
           <SketchPicker
             color={this.state.color}
             onChangeComplete={this.handleChangeComplete.bind(this)}
           />
-          <div class="d-flex flex-column">
-          <button onClick={this.submitCategories} class="gen-red-btn">Add Categories</button>
-          <br />
-          <button onClick={this.passCategories}  class="gen-red-btn">Submit</button>
+          <div class="d-flex flex-column justify-content align-items-center">
+            <ul id="selected-categories">{categoryList}</ul>
+            <button onClick={this.submitCategories} class="gen-red-btn">
+              Add Categories
+            </button>
+            <br />
+            <button onClick={this.passCategories} class="gen-red-btn">
+              Submit
+            </button>
           </div>
         </form>
       </React.Fragment>

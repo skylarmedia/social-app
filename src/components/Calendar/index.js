@@ -44,7 +44,6 @@ class Calendar extends React.Component {
       posts: [],
       private: true,
       oldPrivate: true,
-      privateId: 3,
       selectedCategories: [],
       grid: true
     };
@@ -80,9 +79,6 @@ class Calendar extends React.Component {
           this.setState(
             {
               selectedCategories: [...this.state.selectedCategories, snapshot.data()]
-            },
-            () => {
-              console.log(this.state, 'final state');
             }
           );
         });
@@ -95,7 +91,6 @@ class Calendar extends React.Component {
         clientId: this.props.match.params.clientId
       });
     });
-
     this.props.firebase
       .getPrivacy(
         this.props.match.params.clientId,
@@ -103,16 +98,13 @@ class Calendar extends React.Component {
         parseInt(this.props.match.params.month)
       )
       .then(snapshot => {
-        console.log('PRIVATE', snapshot);
         snapshot.docs.map(item => {
+          console.log('privacy', item)
           this.setState(
             {
               private: item.data().private,
               oldPrivate: item.data().private,
               privateId: item.id
-            },
-            () => {
-              console.log('state privacy', this.state.private);
             }
           );
         });
@@ -361,14 +353,17 @@ class Calendar extends React.Component {
     this.setState({
       private: !this.state.private
     });
+    // this.props.firebase.updatePrivate(
+    //   this.props.match.params.clientId,
+    //   this.state.private,
+    //   parseInt(this.props.match.params.year),
+    //   parseInt(this.props.match.params.month)
+    // );
   };
 
   componentWillUnmount() {
-    this.props.firebase.updatePrivate(
-      this.props.match.params.clientId,
-      this.state.private,
-      this.state.privateId
-    );
+    console.log(this.props)
+ 
   }
 
   render() {
@@ -427,7 +422,12 @@ class Calendar extends React.Component {
     return (
       <React.Fragment>
         <div class="container">
-          <Link to={`/home`}>Back to All Calendar Months</Link>
+          <div>
+            <Link to={`/home`} class="back-link" class="d-flex align-items-center">
+              <img src={require('../assets/back.svg')} />
+              Back to All Calendar Months
+            </Link>
+          </div>
           <div className="calendar-heading">
             <h2 className="text-center">Client {this.props.match.params.clientId} Calendar </h2>
             <p className="text-center">
@@ -436,15 +436,31 @@ class Calendar extends React.Component {
           </div>
           <img src={require('../assets/skylar_Icon_wingPortion.svg')} id="wing-logo" />
           <div>
-            <button onClick={() => this.gridMode()} class="clear-btn">Grid</button>
-            <button onClick={() => this.listMode()} class="clear-btn">ListMode</button>
+            <div class="d-flex justify-content-between align-items-center">
+              <div>
+                <button onClick={() => this.listMode()} class="clear-btn">
+                  {this.state.grid ? (
+                    <img src={require('../assets/list-non-active.svg')} />
+                  ) : (
+                    <img src={require('../assets/listmode.svg')} />
+                  )}
+                </button>
+                <button onClick={() => this.gridMode()} class="clear-btn">
+                  {this.state.grid ? (
+                    <img src={require('../assets/grid.svg')} />
+                  ) : (
+                    <img src={require('../assets/grid-non-active.svg')} />
+                  )}
+                </button>
+              </div>
+              <Switch
+                value={this.state.private}
+                checked={this.state.private}
+                onChange={this.handleSwitch}
+              />
+            </div>
             {this.state.isLoading ? (
               <div className="tail-datetime-calendar">
-                <Switch
-                  value={this.state.private}
-                  checked={this.state.private}
-                  onChange={this.handleSwitch}
-                />
                 <div className="calendar-navi" />
                 <div className="calendar-date">
                   {this.state.showYearNav && <this.YearTable props={this.year()} />}

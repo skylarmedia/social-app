@@ -314,13 +314,19 @@
   height:20px;
 }
 
+#add-category-button img{
+  margin-right:14px;  
+}
+
 #add-category-button{
   width: 181px;
   height: 36px;
   color: #002D5B;
   font-size: 16px;
   border-radius: 11px;
+  padding:0;
   margin: 20px 0;
+  
 }
 
 .border{

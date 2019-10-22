@@ -50,7 +50,7 @@ const App = () => (
             <NavigationWrapper />
             <h5>Skylar Media</h5>
           </div>
-          <img src={require('../assets/logo.png')} id="sky-logo" class="align-self-center" />
+          <img src={require('../assets/skylar-logo.svg')} id="sky-logo" class="align-self-center" />
         </div>
        
       </div>

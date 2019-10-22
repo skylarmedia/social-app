@@ -202,21 +202,18 @@ class Dates extends Component {
   };
 
   render() {
-
-    console.log(this.state, 'CATEGORIES')
     const renderDates = this.state.date.map((item, index) => (
-      <div
-        className="single-calendar-wrapper d-flex align-items-center justify-content-center"
-        index={index}
-        key={item.id}
-      >
-        <button onClick={() => this.deleteDate(item.id, index)} className="delete-date">
-          x
-        </button>
-        <Link to={`/calendar/${item.year}/${item.month}/${this.props.match.params.id}`}>
+      <div class="position-relative date-map-item">
+        <img src={require('../assets/grouped-single-calendar.svg')} class="cal-img" />
+        <div class="d-flex justify-content-between">
+        <Link to={`/calendar/${item.year}/${item.month}/${this.props.match.params.id}`} class="main-link">
           {this.convert(item.month)} {item.year}
           <br />
         </Link>
+        <button onClick={() => this.deleteDate(item.id, index)} className="delete-date">
+          <img src={require('../assets/xsvg.svg')}/>
+        </button>
+        </div>
       </div>
     ));
 
@@ -236,84 +233,103 @@ class Dates extends Component {
     };
 
     return this.state.isLoading && this.state.date.length > 0 ? (
-      <div class="container">
-        <Link to={`dates/${this.props.match.params.clientId}`}>Back To All Clients</Link>
-        <h2 className="text-center" id="client-heading">
-          Client A-Game’s Calendars
-        </h2>
-        <div id="outter-cat-wrapper">
-          <div>
-            <button onClick={this.showCategories} id="add-category-button" class="clear-btn d-flex justify-content-between">
-              <span className="plus">+</span><p class="no-margin">Create Category</p>
-            </button>
-            <CategoryList colors={this.state.categories} removeCategory={this.removeCategory} />
-            {this.state.showCat && (
-              <div className="category-main-wrapper">
-                <button onClick={() => this.closeCat()}>close</button>
-                <SelectCategory
-                  className="selected-categoryComponent"
-                  userId={this.props.match.params.clientId}
-                  getCategories={this.sendCategories}
-                  removeCategory={() => this.removeCategory}
-                />
-              </div>
-            )}
+      <div class="container row mx-auto">
+        <div class="col-sm-3">
+          <div class="d-flex  back-wrapper">
+            <img src={require('../assets/back.svg')} />
+            <Link to={`dates/${this.props.match.params.clientId}`} class="back-link">
+              Back To All Clients
+            </Link>
+          </div>
+
+          <div id="outter-cat-wrapper">
+            <div>
+              <button
+                onClick={this.showCategories}
+                id="add-category-button"
+                class="clear-btn d-flex"
+              >
+                <img src={require('../assets/select.svg')} />
+                <p class="no-margin">Create Category</p>
+              </button>
+
+              {this.state.showCat && (
+                <div className="category-main-wrapper">
+                  <button onClick={() => this.closeCat()}>close</button>
+                  <SelectCategory
+                    className="selected-categoryComponent"
+                    userId={this.props.match.params.clientId}
+                    getCategories={this.sendCategories}
+                    removeCategory={() => this.removeCategory}
+                  />
+                  <CategoryList
+                    colors={this.state.categories}
+                    removeCategory={this.removeCategory}
+                  />
+                </div>
+              )}
+            </div>
           </div>
         </div>
-        <p className="text-center">Select a month to view it’s calendar.</p>
-        <div id="dates-list" className="container row date-wrapper justify-content-center">
-          {renderDates}
-        </div>
-        {this.state.showAddDate ? (
-          <form className="add-date-form" onSubmit={this.submitForm.bind(this)}>
-            <button onClick={this.toggleAddDate.bind(this)} className="toggle-close">
-              x
+        <div class="col-sm-9">
+          <h2 className="text-left" id="client-heading">
+            Client {this.props.match.params.clientId} Calendars
+          </h2>
+          <p className="text-left margin-40">Select a month to view it’s calendar.</p>
+          <div id="dates-list" className="d-flex date-wrapper justify-content-between">
+            {renderDates}
+          </div>
+          {this.state.showAddDate ? (
+            <form className="add-date-form" onSubmit={this.submitForm.bind(this)}>
+              <button onClick={this.toggleAddDate.bind(this)} className="toggle-close">
+                x
+              </button>
+              <div className="d-flex justify-content-between inner-date-wrapper">
+                <InputLabel htmlFor="month-helper">Month</InputLabel>
+
+                <Select
+                  onChange={this.handleMonth.bind(this)}
+                  className="select-date"
+                  value={this.state.month}
+                  style={selectStyles}
+                  id="month-helper"
+                >
+                  <MenuItem value="1">January</MenuItem>
+                  <MenuItem value="2">February</MenuItem>
+                  <MenuItem value="3">March</MenuItem>
+                  <MenuItem value="4">April</MenuItem>
+                  <MenuItem value="5">May</MenuItem>
+                  <MenuItem value="6">June</MenuItem>
+                  <MenuItem value="7">July</MenuItem>
+                  <MenuItem value="8">August</MenuItem>
+                  <MenuItem value="9">September</MenuItem>
+                  <MenuItem value="10">October</MenuItem>
+                  <MenuItem value="11">November</MenuItem>
+                  <MenuItem value="12">December</MenuItem>
+                </Select>
+
+                <Select
+                  onChange={this.handleYear.bind(this)}
+                  style={selectStyles}
+                  class="select-date"
+                  id="month-helper"
+                  value={this.state.year}
+                >
+                  <MenuItem value="2019">2019</MenuItem>
+                  <MenuItem value="2020">2020</MenuItem>
+                </Select>
+              </div>
+              <input type="submit" value="Submit" className="add-date-btn" />
+            </form>
+          ) : (
+            ''
+          )}
+          {this.state.showCalender ? <Calendar impData={this.state} /> : ''}
+          <div className="text-center add-btn-wrapper">
+            <button onClick={this.toggleAddDate.bind(this)} className="add-date-btn">
+              Add New
             </button>
-            <div className="d-flex justify-content-between inner-date-wrapper">
-              <InputLabel htmlFor="month-helper">Month</InputLabel>
-
-              <Select
-                onChange={this.handleMonth.bind(this)}
-                className="select-date"
-                value={this.state.month}
-                style={selectStyles}
-                id="month-helper"
-              >
-                <MenuItem value="1">January</MenuItem>
-                <MenuItem value="2">February</MenuItem>
-                <MenuItem value="3">March</MenuItem>
-                <MenuItem value="4">April</MenuItem>
-                <MenuItem value="5">May</MenuItem>
-                <MenuItem value="6">June</MenuItem>
-                <MenuItem value="7">July</MenuItem>
-                <MenuItem value="8">August</MenuItem>
-                <MenuItem value="9">September</MenuItem>
-                <MenuItem value="10">October</MenuItem>
-                <MenuItem value="11">November</MenuItem>
-                <MenuItem value="12">December</MenuItem>
-              </Select>
-
-              <Select
-                onChange={this.handleYear.bind(this)}
-                style={selectStyles}
-                class="select-date"
-                id="month-helper"
-                value={this.state.year}
-              >
-                <MenuItem value="2019">2019</MenuItem>
-                <MenuItem value="2020">2020</MenuItem>
-              </Select>
-            </div>
-            <input type="submit" value="Submit" className="add-date-btn" />
-          </form>
-        ) : (
-          ''
-        )}
-        {this.state.showCalender ? <Calendar impData={this.state} /> : ''}
-        <div className="text-center">
-          <button onClick={this.toggleAddDate.bind(this)} className="add-date-btn">
-            Add New
-          </button>
+          </div>
         </div>
       </div>
     ) : this.state.isLoading && this.state.date.length == 0 ? (
@@ -361,7 +377,7 @@ class Dates extends Component {
         ) : (
           ''
         )}
-        <h2 className="text-center" id="client-heading">
+        <h2 className="text-left" id="client-heading">
           Client A-Game’s Calendars
         </h2>
         <img src={require('../assets/repeat-grid.svg')} id="no-date-calendar" />
