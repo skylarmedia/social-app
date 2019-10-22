@@ -138,6 +138,28 @@
     box-shadow: none;
 }
 
+.upload-files-wrapper div:first-child{
+    width:100%;
+    display:flex;
+    text-align:center;
+    margin: 0 auto;
+    text-align: center;
+    width: 70%;
+    object-fit: cover;
+}
+
+.upload-files-wrapper div:nth-child(n+2){
+    width: 25%;
+    padding: 10px;
+    width: 100%;
+height: 100%;
+object-fit: cover;
+    
+}
+
+
+
+
 .copy-wrapper{
     position:relative;
 }
@@ -151,6 +173,26 @@
     position:relative;
 }
 
+.inner-form-wrapper1{
+    font-size: 14px;
+    color: #002D5B;
+}
+
+
+.ant-checkbox-checked .ant-checkbox-inner {
+    background-color: #002D5B;
+    border-color: #002D5B;
+}
+
+.save-draft-btn{
+    width: 149px;
+    height: 49px;
+    background: #fff;
+    border: 2px solid #EF463B;
+    border-radius: 11px;
+    color: #EF463B;
+    margin-right: 10px;
+}
 .red-dashed-input{
     position: absolute;
     bottom: 10px;

@@ -1,28 +1,15 @@
 import React, { Component } from 'react';
 import { withFirebase } from '../Firebase';
 import { compose } from 'redux';
-import FileUploader from 'react-firebase-file-uploader';
-import TimePicker from 'antd/es/time-picker';
 import 'antd/dist/antd.css';
-import { SketchPicker } from 'react-color';
-import * as ROUTES from '../../constants/routes';
-import { bigIntLiteral } from '@babel/types';
 import './index.css';
-import TextField from '@material-ui/core/TextField';
 import EditCategoryForm from '../EditCategoryForm';
 import moment from 'moment';
 import SubPost from './SubPost';
 
 import EmojiField from 'emoji-picker-textfield';
 import 'emoji-mart/css/emoji-mart.css';
-import { Picker } from 'emoji-mart';
-
-import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import CustomCalendarComponent from '../CustomCalendarComponent';
-
-import Fab from '@material-ui/core/Fab';
-import AddIcon from '@material-ui/icons/Add';
 
 class AddPost extends Component {
   constructor(props) {
@@ -136,6 +123,7 @@ class AddPost extends Component {
   };
 
   handleApproval = () => {
+    alert('ran')
     this.setState({
       approved: !this.state.approved
     });
@@ -308,6 +296,7 @@ class AddPost extends Component {
             <div className="container">
               <form onSubmit={this.onSubmitForm}>
                 <div className="d-flex">
+                  
                   <input
                     type="checkbox"
                     name="approved"

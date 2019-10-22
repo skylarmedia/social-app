@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
 import TimePicker from 'antd/es/time-picker';
-import EditCategoryForm from '../EditCategoryForm';
+import { Checkbox } from 'antd';
 import CustomCalendarComponent from '../CustomCalendarComponent';
 import DatePicker from 'react-datepicker';
 
 import { withFirebase } from '../Firebase';
-import { compose } from 'redux';
 
 import moment from 'moment';
 import TextField from '@material-ui/core/TextField';
@@ -15,7 +14,6 @@ import 'emoji-mart/css/emoji-mart.css';
 import { Picker } from 'emoji-mart';
 
 import { connect } from 'react-redux';
-import { pushPosts } from '../actions/actions';
 
 class SubPost extends Component {
   constructor(props) {
@@ -413,7 +411,7 @@ class SubPost extends Component {
           </video>
         );
       } else {
-        return <img src={item} />;
+        return <div><img src={item} /></div>;
       }
     });
     return (
@@ -429,17 +427,21 @@ class SubPost extends Component {
             variant="outlined"
           />
 
+          {this.state.metaImageFiles.length > 0 ?
+            <div className="upload-files-wrapper d-flex flex-wrap">
+            {renderMedia}
+          </div>
+          :
           <div id="red-outline-wrapper">
             <div class="red-center">
               <input type="file" multiple onChange={this.addFile} className="red-dashed-input" />
             </div>
           </div>
+          }
+       
 
-          <div className="upload-files-wrapper">
-            {renderMedia}
-            <div />
-            <input type="file" multiple onChange={this.addFile} />
-          </div>
+
+
           <div className="copy-wrapper">
             <TextField
               className="outlined-copy"
@@ -452,7 +454,7 @@ class SubPost extends Component {
               variant="outlined"
             />
             <button onClick={this.openIcons} className="smile-wrapper">
-              <img src={require('../assets/smile.png')} className="smile-logo" />
+              <img src={require('../assets/happy-face.svg')} className="smile-logo" />
             </button>
           </div>
           {this.state.showEmoji && (
@@ -462,53 +464,27 @@ class SubPost extends Component {
           )}
         </div>
         <div className="inner-form-wrapper1 col-sm-6">
-          <div>
-            <input
-              type="checkbox"
-              name="facebook"
-              value={this.state.facebook}
-              onChange={this.handleFacebook}
-              id="facebook"
-              className="custom-check"
-              checked={this.state.checked}
-            />
+          <div class="d-flex justify-content-between">
+            <div>
+            <Checkbox onChange={this.handleFacebook} name="facebook" value={this.state.facebook} id="facebook"/>
             <label for="facebook">Facebook</label>
-            <input
-              type="checkbox"
-              name="instagram"
-              value={this.state.instagram}
-              onChange={this.handleInstagram}
-              className="custom-check"
-              id="instagram"
-            />
+            </div>
+            <div>
+            <Checkbox  onChange={this.handleInstagram} name="instagram" value={this.state.instagram} id="instagram"/>
             <label for="instagram">Instagram</label>
-            <input
-              type="checkbox"
-              name="twitter"
-              value={this.state.twitter}
-              onChange={this.handleTwitter}
-              className="custom-check"
-              id="twitter"
-            />
+            </div>
+            <div>
+            <Checkbox onChange={this.handleTwitter} name="twitter" value={this.state.twitter} id="twitter"/>
             <label for="twitter">Twitter</label>
-            <input
-              type="checkbox"
-              name="linkedin"
-              value={this.state.linkedin}
-              onChange={this.handleLinkedin}
-              className="custom-check"
-              id="linkedin"
-            />
+            </div>
+            <div>
+            <Checkbox onChange={this.handleLinkedin} name="linkedin" value={this.state.linkedin} id="linkedin"/>
             <label for="linkedin">LinkedIn</label>
-            <input
-              type="checkbox"
-              name="other"
-              value={this.state.other}
-              onChange={this.handleOther}
-              className="custom-check"
-              id="other"
-            />
+            </div>
+            <div>
+            <Checkbox onChange={this.handleOther} name="other" value={this.state.other} id="other"/>
             <label for="other">Other</label>
+            </div>
           </div>
           <div class="date-button-wrapper d-flex">
             {this.state.showDatePicker && (
