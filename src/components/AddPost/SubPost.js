@@ -50,7 +50,10 @@ class SubPost extends Component {
       file: [],
       metaImageFiles: [],
       showEmoji: false,
-      budget: ''
+      budget: '',
+
+      toggleDate: false,
+      toggleTime: false
     };
 
     this.addForm = this.addForm.bind(this);
@@ -66,26 +69,43 @@ class SubPost extends Component {
 
   // Beginning of upload methods
 
-  uploadFiles = (fb) => {
-    this.state.file.map((file, i )=> {
+  uploadFiles = fb => {
+    this.state.file.map((file, i) => {
       console.log('storage', this.props.firebase.storage);
-      console.log('file', file.type)
+      console.log('file', file.type);
       const storageRef = this.props.firebase.storage;
       const storageParent = this.props.firebase.storageParent;
       const metadata = {
         contentType: file.type
-      }
+      };
 
-      storageRef.child('images/' + file.name).put(file, metadata).then(snapshot => {
-        const encodedUrl = `https://firebasestorage.googleapis.com/v0/b/skylar-social-17190.appspot.com/o/${encodeURIComponent(snapshot.metadata.fullPath)}?alt=media`;
-        this.setState({
-          metaImageFiles: [...this.state.metaImageFiles, encodedUrl]
-        })
-      })
+      storageRef
+        .child('images/' + file.name)
+        .put(file, metadata)
+        .then(snapshot => {
+          const encodedUrl = `https://firebasestorage.googleapis.com/v0/b/skylar-social-17190.appspot.com/o/${encodeURIComponent(
+            snapshot.metadata.fullPath
+          )}?alt=media`;
+          this.setState({
+            metaImageFiles: [...this.state.metaImageFiles, encodedUrl]
+          });
+        });
 
-      console.log('store', this.props.firebase.storage, this.props.firebase.storageParent)
+      console.log('store', this.props.firebase.storage, this.props.firebase.storageParent);
     });
   };
+
+  toggleDate() {
+    this.setState({
+      toggleDate: !this.state.toggleDate
+    });
+  }
+
+  toggleTime() {
+    this.setState({
+      toggleTime: !this.state.toggleTime
+    });
+  }
 
   addFile = event => {
     const file = Array.from(event.target.files);
@@ -152,11 +172,9 @@ class SubPost extends Component {
       postObj['postDate'] = this.state.dpDate;
       postObj['ipDate'] = this.state.ipDate;
       postObj['budgetStart'] = this.state.startIpDate;
-      postObj['budgetEnd'] = this.state.endIpDate; 
+      postObj['budgetEnd'] = this.state.endIpDate;
       postObj['budget'] = this.state.budget;
- 
-      console.log('updated component props', this.state)
-      postObj['images'] = this.state.metaImageFiles
+      postObj['images'] = this.state.metaImageFiles;
 
       this.props.triggerValues(postObj);
     }
@@ -235,9 +253,6 @@ class SubPost extends Component {
     postArr['postDate'] = this.state.dpDate;
     postArr['ipDate'] = this.state.ipDate;
     postArr['budget'] = this.state.budget;
-    console.log('budget start', this.state.startIpDate)
-    console.log('budget end', this.state.endIpDate);
-
   }
 
   handleSocialCheck(e) {
@@ -362,11 +377,11 @@ class SubPost extends Component {
     });
   }
 
-  handleBudget = (e) => {
+  handleBudget = e => {
     this.setState({
-      budget:e.target.value
-    })
-  }
+      budget: e.target.value
+    });
+  };
 
   handleStartIpChange(val) {
     let d = moment(val, 'MM/DD/YYYY');
@@ -401,9 +416,8 @@ class SubPost extends Component {
   };
 
   render() {
-    console.log('this PROPS ', this.props);
     const renderMedia = this.state.metaImageFiles.map(item => {
-      console.log("item", item)
+      console.log('item', item);
       if (this.getType(item) == 'video') {
         return (
           <video height="200" width="200" controls>
@@ -411,11 +425,16 @@ class SubPost extends Component {
           </video>
         );
       } else {
-        return <div><img src={item} /></div>;
+        return (
+          <div>
+            <img src={item} />
+          </div>
+        );
       }
     });
+
     return (
-      <div className="d-flex">
+      <div className="d-flex row">
         <div className="col-sm-6">
           <TextField
             className="outlined-title"
@@ -427,20 +446,15 @@ class SubPost extends Component {
             variant="outlined"
           />
 
-          {this.state.metaImageFiles.length > 0 ?
-            <div className="upload-files-wrapper d-flex flex-wrap">
-            {renderMedia}
-          </div>
-          :
-          <div id="red-outline-wrapper">
-            <div class="red-center">
-              <input type="file" multiple onChange={this.addFile} className="red-dashed-input" />
+          {this.state.metaImageFiles.length > 0 ? (
+            <div className="upload-files-wrapper d-flex flex-wrap">{renderMedia}</div>
+          ) : (
+            <div id="red-outline-wrapper">
+              <div class="red-center">
+                <input type="file" multiple onChange={this.addFile} className="red-dashed-input" />
+              </div>
             </div>
-          </div>
-          }
-       
-
-
+          )}
 
           <div className="copy-wrapper">
             <TextField
@@ -466,121 +480,197 @@ class SubPost extends Component {
         <div className="inner-form-wrapper1 col-sm-6">
           <div class="d-flex justify-content-between">
             <div>
-            <Checkbox onChange={this.handleFacebook} name="facebook" value={this.state.facebook} id="facebook"/>
-            <label for="facebook">Facebook</label>
+              <Checkbox
+                onChange={this.handleFacebook}
+                name="facebook"
+                value={this.state.facebook}
+                id="facebook"
+              />
+              <label for="facebook" class="margin-label">
+                Facebook
+              </label>
             </div>
             <div>
-            <Checkbox  onChange={this.handleInstagram} name="instagram" value={this.state.instagram} id="instagram"/>
-            <label for="instagram">Instagram</label>
+              <Checkbox
+                onChange={this.handleInstagram}
+                name="instagram"
+                value={this.state.instagram}
+                id="instagram"
+              />
+              <label for="instagram" class="margin-label">
+                Instagram
+              </label>
             </div>
             <div>
-            <Checkbox onChange={this.handleTwitter} name="twitter" value={this.state.twitter} id="twitter"/>
-            <label for="twitter">Twitter</label>
+              <Checkbox
+                onChange={this.handleTwitter}
+                name="twitter"
+                value={this.state.twitter}
+                id="twitter"
+              />
+              <label for="twitter" class="margin-label">
+                Twitter
+              </label>
             </div>
             <div>
-            <Checkbox onChange={this.handleLinkedin} name="linkedin" value={this.state.linkedin} id="linkedin"/>
-            <label for="linkedin">LinkedIn</label>
+              <Checkbox
+                onChange={this.handleLinkedin}
+                name="linkedin"
+                value={this.state.linkedin}
+                id="linkedin"
+              />
+              <label for="linkedin" class="margin-label">
+                LinkedIn
+              </label>
             </div>
             <div>
-            <Checkbox onChange={this.handleOther} name="other" value={this.state.other} id="other"/>
-            <label for="other">Other</label>
+              <Checkbox
+                onChange={this.handleOther}
+                name="other"
+                value={this.state.other}
+                id="other"
+              />
+              <label for="other" class="margin-label">
+                Other
+              </label>
             </div>
           </div>
           <div class="date-button-wrapper d-flex">
             {this.state.showDatePicker && (
               <div id="choose-date-wrapper">
-                <DatePicker
-                  placeholderText="Post Date"
-                  onChange={value => this.handleDPChange(value)}
-                  customInput={
-                    <CustomCalendarComponent
-                      ipDate={this.state.ipDate}
-                      placeholderText="Post Date"
-                      handleIpChange={val => this.handleIpChange(val)}
-                    />
-                  }
-                  dateFormat={'MM/dd/yyyy'}
-                  showMonthDropdown
-                  showYearDropdown
-                  dropdownMode="select"
-                />
+                <button
+                  class="toggle-btn clear-btn"
+                  type="button"
+                  onClick={this.toggleDate.bind(this)}
+                >
+                  <span>POST DATE</span> <i class="fa fa-caret-down" aria-hidden="true"></i>
+                </button>
+                {this.state.toggleDate && (
+                  <DatePicker
+                    placeholderText="Post Date"
+                    onChange={value => this.handleDPChange(value)}
+                    customInput={
+                      <CustomCalendarComponent
+                        ipDate={this.state.ipDate}
+                        placeholderText="Post Date"
+                        handleIpChange={val => this.handleIpChange(val)}
+                      />
+                    }
+                    dateFormat={'MM/dd/yyyy'}
+                    showMonthDropdown
+                    showYearDropdown
+                    dropdownMode="select"
+                  />
+                )}
               </div>
             )}
             <div>
-              <TimePicker onChange={this.handlePostTime} />
+              <TimePicker
+                onChange={this.handlePostTime}
+                class="toggle-btn"
+                placeholder="POST TIME"
+              />
             </div>
             <div>
-              <input
-                type="text"
-                placeholder="POST MEDIUM"
+              <TextField
+                className="outlined-title no-margin"
+                label="POST MEDIUM"
                 name="postMedium"
                 value={this.state.postMedium}
                 onChange={this.handleChange}
+                margin="normal"
+                variant="outlined"
               />
             </div>
           </div>
           {/* date-button-wrapper */}
           <div>
-            <input type="checkbox" checked={this.state.ad} onChange={this.handleAd} id="ad" />
-            <label for="ad">Ad or Sponsored Post</label>
+            <div>
+              <Checkbox onChange={this.handleAd} name="other" checked={this.state.ad} id="ad" />
+              <label>Ad or Sponsored Post</label>
+            </div>
 
             {this.state.ad && (
-              <div>
-                <DatePicker
-                  selected={this.state.startDpDate}
-                  placeholderText="Post Date"
-                  onChange={value => this.handleStartDpChange(value)}
-                  customInput={
-                    <CustomCalendarComponent
-                      ipDate={this.state.startIpDate}
-                      placeholderText="Post Date"
-                      handleIpChange={val => this.handleStartIpChange(val)}
-                    />
-                  }
-                  dateFormat={'MM/dd/yyyy'}
-                  showMonthDropdown
-                  showYearDropdown
-                  dropdownMode="select"
-                />
-
-                <p>BREAK</p>
-                <DatePicker
-                  selected={this.state.endDpDate}
-                  onChange={value => this.handleEndDpChange(value)}
-                  customInput={
-                    <CustomCalendarComponent
-                      ipDate={this.state.endIpDate}
-                      handleIpChange={val => this.handleEndIpChange(val)}
-                      placeholderText="Post Date"
-                    />}
+              <div class="bg-white col-md-12">
+                <div class="d-flex justify-content-between date-picker-wrapper flex-85 align-items-center">
+                  <DatePicker
+                    selected={this.state.startDpDate}
                     placeholderText="Post Date"
-                  dateFormat={'MM/dd/yyyy'}
-                  showMonthDropdown
-                  showYearDropdown
-                  dropdownMode="select"
-                />
-                <input type="text" placeholder="$0.00" onChange={this.handleBudget.bind(this)}/>
+                    onChange={value => this.handleStartDpChange(value)}
+                    dateFormat={'MM/dd/yyyy'}
+                    showMonthDropdown
+                    showYearDropdown
+                    dropdownMode="select"
+                  />
+                  <span>-</span>
+                  <DatePicker
+                    selected={this.state.endDpDate}
+                    onChange={value => this.handleEndDpChange(value)}
+                    customInput={
+                      <CustomCalendarComponent
+                        ipDate={this.state.endIpDate}
+                        handleIpChange={val => this.handleEndIpChange(val)}
+                        placeholderText="Post Date"
+                      />
+                    }
+                    placeholderText="Post Date"
+                    dateFormat={'MM/dd/yyyy'}
+                    showMonthDropdown
+                    showYearDropdown
+                    dropdownMode="select"
+                  />
+                </div>
+                <div class="d-flex flex-85 align-items-center">
+                  <label class="budget-text">Budget</label>
+                  <input
+                    type="text"
+                    placeholder="$0.00"
+                    class="budget-input"
+                    onChange={this.handleBudget.bind(this)}
+                  />
+                </div>
               </div>
             )}
           </div>
           <div>
-            <textarea
-              placeholder="Hashtags"
-              value={this.state.postHashTag}
+            <TextField
+              className="outlined-hash w-100"
+              label="Hashtags"
               name="postHashTag"
+              multiline
+              value={this.state.postHashTag}
               onChange={this.handleChange}
+              margin="normal"
+              variant="outlined"
             />
           </div>
           <div>
             {this.state.values.map((el, i) => (
               <div key={i}>
-                <input type="text" value={el.value || ''} onChange={e => this.handleLinks(i, e)} />
-                <input type="button" value="remove" onClick={() => this.removeClick(i)} />
+                <div class="d-flex align-self-center">
+
+                <TextField
+                  className="outlined-title"
+                  label="Add Links"
+                  value={el.value || ''}
+                  onChange={e => this.handleLinks(i, e)}
+                  margin="normal"
+                  variant="outlined"
+                />
+
+                {i == this.state.values.length - 1 ?
+                  <button type="button" onClick={() => this.addClick()} class="clear-btn" ><img src={require('../assets/select.svg')}/></button>
+                  : <input type="button" value="remove" onClick={() => this.removeClick(i)} />
+                }
+                
+                </div>
+                
+                
               </div>
             ))}
-            <input type="button" value="add more" onClick={() => this.addClick()} />
+
+            
           </div>
-          <input type="button" value="Add Platform" onClick={() => this.addForm()} />
         </div>
       </div>
     );

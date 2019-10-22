@@ -1,18 +1,18 @@
 {
   "files": {
-    "main.css": "/social-app/static/css/main.21a8211d.chunk.css",
-    "main.js": "/social-app/static/js/main.f28e5ed6.chunk.js",
-    "main.js.map": "/social-app/static/js/main.f28e5ed6.chunk.js.map",
+    "main.css": "/social-app/static/css/main.069ab4d8.chunk.css",
+    "main.js": "/social-app/static/js/main.9a317986.chunk.js",
+    "main.js.map": "/social-app/static/js/main.9a317986.chunk.js.map",
     "runtime~main.js": "/social-app/static/js/runtime~main.acab5ee4.js",
     "runtime~main.js.map": "/social-app/static/js/runtime~main.acab5ee4.js.map",
     "static/css/2.aac3e05f.chunk.css": "/social-app/static/css/2.aac3e05f.chunk.css",
-    "static/js/2.e33c8365.chunk.js": "/social-app/static/js/2.e33c8365.chunk.js",
-    "static/js/2.e33c8365.chunk.js.map": "/social-app/static/js/2.e33c8365.chunk.js.map",
+    "static/js/2.042fb3c5.chunk.js": "/social-app/static/js/2.042fb3c5.chunk.js",
+    "static/js/2.042fb3c5.chunk.js.map": "/social-app/static/js/2.042fb3c5.chunk.js.map",
     "index.html": "/social-app/index.html",
-    "precache-manifest.4afcb38ae771fe6a03c683d31bf1f4a8.js": "/social-app/precache-manifest.4afcb38ae771fe6a03c683d31bf1f4a8.js",
+    "precache-manifest.e907ecb8f2e6716498fd764d9dcc8dab.js": "/social-app/precache-manifest.e907ecb8f2e6716498fd764d9dcc8dab.js",
     "service-worker.js": "/social-app/service-worker.js",
     "static/css/2.aac3e05f.chunk.css.map": "/social-app/static/css/2.aac3e05f.chunk.css.map",
-    "static/css/main.21a8211d.chunk.css.map": "/social-app/static/css/main.21a8211d.chunk.css.map",
+    "static/css/main.069ab4d8.chunk.css.map": "/social-app/static/css/main.069ab4d8.chunk.css.map",
     "static/media/ad.svg": "/social-app/static/media/ad.ee515845.svg",
     "static/media/arrow.svg": "/social-app/static/media/arrow.cab4dd14.svg",
     "static/media/back.svg": "/social-app/static/media/back.39c56bc8.svg",
@@ -20,6 +20,7 @@
     "static/media/grid-non-active.svg": "/social-app/static/media/grid-non-active.e0b79dd4.svg",
     "static/media/grid.svg": "/social-app/static/media/grid.6c44f1ec.svg",
     "static/media/grouped-single-calendar.svg": "/social-app/static/media/grouped-single-calendar.59cd97bb.svg",
+    "static/media/happy-face.svg": "/social-app/static/media/happy-face.439a46b0.svg",
     "static/media/list-non-active.svg": "/social-app/static/media/list-non-active.d06bd475.svg",
     "static/media/listmode.svg": "/social-app/static/media/listmode.8e8bbd26.svg",
     "static/media/not-read.svg": "/social-app/static/media/not-read.2b36b776.svg",
@@ -28,7 +29,6 @@
     "static/media/select.svg": "/social-app/static/media/select.1bc9ab83.svg",
     "static/media/skylar-logo.svg": "/social-app/static/media/skylar-logo.8708182b.svg",
     "static/media/skylar_Icon_wingPortion.svg": "/social-app/static/media/skylar_Icon_wingPortion.b1ca3ff5.svg",
-    "static/media/smile.png": "/social-app/static/media/smile.daeb37f1.png",
     "static/media/xsvg.svg": "/social-app/static/media/xsvg.529511f6.svg"
   }
 }

@@ -123,7 +123,7 @@ class AddPost extends Component {
   };
 
   handleApproval = () => {
-    alert('ran')
+    alert('ran');
     this.setState({
       approved: !this.state.approved
     });
@@ -296,7 +296,6 @@ class AddPost extends Component {
             <div className="container">
               <form onSubmit={this.onSubmitForm}>
                 <div className="d-flex">
-                  
                   <input
                     type="checkbox"
                     name="approved"
@@ -307,7 +306,11 @@ class AddPost extends Component {
                   <label for="approvePost">APPROVE POST</label>
                 </div>
                 {this.createForms()}
-                <input type="button" value="Add Platform" onClick={() => this.addForm()} />
+
+                <button onClick={() => this.addForm()} class="clear-btn" type="button">
+                  <img src={require('../assets/select.svg')} />
+                  <span>Add Platform</span>
+                </button>
                 <div className="text-center">
                   <button className="save-draft-btn" onClick={this.saveDraft.bind(this)}>
                     SAVE DRAFT
