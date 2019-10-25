@@ -333,7 +333,7 @@ class Dates extends Component {
         </div>
       </div>
     ) : this.state.isLoading && this.state.date.length == 0 ? (
-      <div className="container position-relative">
+      <div className="container position-relative text-align-center">
         {this.state.showAddDate ? (
           <form className="add-date-form" onSubmit={this.submitForm.bind(this)}>
             <button onClick={this.toggleAddDate.bind(this)} className="toggle-close">
@@ -380,15 +380,12 @@ class Dates extends Component {
         <h2 className="text-left" id="client-heading">
           Client A-Game’s Calendars
         </h2>
-        <img src={require('../assets/repeat-grid.svg')} id="no-date-calendar" />
-        <p className="text-center client-text">
-          You don’t seem to have any calendars set up yet. Click below to add one and get started!
-        </p>
+        <img src={require('../assets/single-grid.svg')} id="no-date-calendar" class="col-md-3"/>
         <div className="text-center arrow-wrapper">
           <button onClick={this.toggleAddDate.bind(this)} className="add-date-btn">
             Add New
           </button>
-          <img src={require('../assets/arrow.svg')} id="arrow" />
+          <img src={require('../assets/curly-arrow.svg')} id="arrow"/>
         </div>
       </div>
     ) : (

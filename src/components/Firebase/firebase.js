@@ -315,7 +315,7 @@ class Firebase {
   addUser = (email, password, name, logo) =>
       { console.log('sent logo',logo)
         this.auth.createUserWithEmailAndPassword(email, password).then(user => {
-          return this.db
+          this.db
             .collection('users')
             .doc(name.toLowerCase().replace(/ /g, '-'))
             .set({

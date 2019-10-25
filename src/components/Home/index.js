@@ -125,6 +125,7 @@ class Home extends Component {
             const encodedUrl = `https://firebasestorage.googleapis.com/v0/b/skylar-social-17190.appspot.com/o/${encodeURIComponent(
               snapshot.metadata.fullPath
             )}?alt=media`;
+           console.log('encoded URL in ');
             this.setState({
               backgroundUrl: encodedUrl,
               uploadComplete: true,
@@ -191,6 +192,7 @@ class Home extends Component {
   };
 
   render() {
+    console.log(this.state.backgroundUrl, 'encoded URl')
     const backgroundUrlStyle = {
       backgroundImage: `url(${this.state.backgroundUrl})`,
       backgroundSize: 'cover'
