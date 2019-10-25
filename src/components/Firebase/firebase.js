@@ -313,20 +313,24 @@ class Firebase {
       .get();
 
   addUser = (email, password, name, logo) =>
-    this.auth.createUserWithEmailAndPassword(email, password).then(user => {
-      return this.db
-        .collection('users')
-        .doc(name.toLowerCase().replace(/ /g, '-'))
-        .set({
-          name: name,
-          logo: logo,
-          userId: user.user.uid,
-          admin: 0,
-          email: email,
-          urlName: name.toLowerCase().replace(/ /g, '-'),
-          archived: false
+      { console.log('sent logo',logo)
+        this.auth.createUserWithEmailAndPassword(email, password).then(user => {
+          return this.db
+            .collection('users')
+            .doc(name.toLowerCase().replace(/ /g, '-'))
+            .set({
+              name: name,
+              logo: logo,
+              userId: user.user.uid,
+              admin: 0,
+              email: email,
+              urlName: name.toLowerCase().replace(/ /g, '-'),
+              archived: false
+            });
         });
-    });
+
+      }
+
 
   // updateCategories = (user, categories) => {
   //   categories.map(category => {
