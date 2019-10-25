@@ -12,6 +12,11 @@ ul{
     list-style:none;
 }
 
+.date-col{
+    border: none;
+    color: #707070;
+}
+
 .margin-border{
     margin-bottom: 30px;
 }

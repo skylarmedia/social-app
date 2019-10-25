@@ -45,7 +45,7 @@ class Calendar extends React.Component {
       private: true,
       oldPrivate: true,
       selectedCategories: [],
-      grid: true
+      grid: false
     };
 
     this.showCategories = this.showCategories.bind(this);
@@ -353,12 +353,6 @@ class Calendar extends React.Component {
     this.setState({
       private: !this.state.private
     });
-    // this.props.firebase.updatePrivate(
-    //   this.props.match.params.clientId,
-    //   this.state.private,
-    //   parseInt(this.props.match.params.year),
-    //   parseInt(this.props.match.params.month)
-    // );
   };
 
   componentWillUnmount() {

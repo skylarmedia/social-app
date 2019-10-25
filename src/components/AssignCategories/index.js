@@ -57,10 +57,6 @@ class AssignCategories extends Component {
 
   selectCategories = e => {
     e.preventDefault();
-    // this.setState({
-    //   categores:
-    // })
-    // categories[i].months = [...this.state.categories[i].months, parseInt(this.props.match.params.month)];
     console.log('selected', this.state.categories);
     this.props.firebase.assignCategories(
       this.props.match.params.id,
@@ -68,13 +64,18 @@ class AssignCategories extends Component {
       this.props.match.params.month,
       this.state.categories
     );
+    this.props.history.goBack()
   };
 
   render() {
-    console.log(this.state.categories, 'CATEGORISE')
+    console.log(this.state.categories, 'CATEGORISE');
+    console.log(this.props, 'categories')
     let categories = this.state.categories.map((item, i) => {
+      let style = {
+        background:item.color
+      }
       return (
-        <li>
+        <div className="d-flex assign-cat justify-content-center">
           <FormControlLabel
             control={
               <Checkbox
@@ -84,17 +85,20 @@ class AssignCategories extends Component {
                 value={item.name}
               />
             }
-            label={item.name}
           />
-        </li>
+          <div style={style} class="align-self-center col-md-3">{item.name}</div>
+        </div>
       );
     });
 
     return (
       <div id="assign-categories-wrapper">
-        <form onSubmit={this.selectCategories}>
-          <ul>{this.state.categories.length > 0 && categories}</ul>
-          <input type="submit" value="Submit" />
+        <form onSubmit={this.selectCategories} class="col-sm-6 d-flex flex-column mx-auto bg-white form-cat position-relative">
+          <h5 className="cat-h5">Categories</h5>
+          {this.state.categories.length > 0 && (
+            categories
+          )}
+          <input type="submit" value="Save" class="align-self-center save-draft-btn submit-cat" />
         </form>
       </div>
     );
