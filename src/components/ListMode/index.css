@@ -1,11 +1,31 @@
-.inner-images-wrapper img{
-    width:40%;
+.inner-images-wrapper div{
+    width: 25%;
+    padding: 10px;
+    min-height: 100px;
 }
 
-.inner-images-wrapper img:first-child{
+.inner-images-wrapper div:first-child{
     width:100%;
 }
 
 ul{
     list-style:none;
+}
+
+.margin-border{
+    margin-bottom: 30px;
+}
+
+.inner-images-wrapper div:nth-child(n + 2) img{
+    border: 1px solid #707070;
+    object-fit: cover;
+    height:100%;
+}
+
+.inner-images-wrapper div:first-child img{
+    margin-bottom:30px;
+}
+
+.inner-images-wrapper{
+    margin-top:30px;
 }

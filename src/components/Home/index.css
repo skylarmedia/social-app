@@ -26,6 +26,28 @@
     justify-content: center;
 }
 
+.margin-border{
+    margin-bottom: 30px;
+}
+
+.post-list-wrapper{
+    margin-bottom:50px;
+}
+
+.time-string{
+    position: relative;
+    background: #002D5B;
+    color: #fff;
+    font-size: 20px;
+    border-bottom-left-radius: 25px;
+    border-bottom-right-radius: 25px;
+    padding: 11px;
+}
+
+.p-blue{
+    color:#002D5B
+}
+
 #x-add-new{
   z-index: 9999999999;
   color:#ee463a;
@@ -34,6 +56,14 @@
 .smile-logo, .smile-wrapper{
     width:21px;
     height:21px;
+}
+
+.list-header{
+    border-bottom: 2px solid #002D5B;
+    color: #002D5B;
+    font-size: 16px;
+    padding-bottom: 7px;
+    margin-bottom: 0;
 }
 
 .inner-btn{

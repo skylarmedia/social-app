@@ -6,6 +6,8 @@ import DatePicker from 'react-datepicker';
 import CustomCalendarComponent from '../CustomCalendarComponent';
 import TimePicker from 'antd/es/time-picker';
 import moment from 'moment';
+import TextField from '@material-ui/core/TextField';
+import { Checkbox } from 'antd';
 
 class ListMode extends Component {
   constructor(props) {
@@ -44,24 +46,24 @@ class ListMode extends Component {
 
   allPosts = () => {
     this.setState(
-        {
-          listItems: this.state.mainArr
-        },
-        () => {
-          this.state.listItems.map(item => {
-            item.post.map(inner => {
-              this.setState({
-                innerPosts: [...this.state.innerPosts, inner]
-              });
+      {
+        listItems: this.state.mainArr
+      },
+      () => {
+        this.state.listItems.map(item => {
+          item.post.map(inner => {
+            this.setState({
+              innerPosts: [...this.state.innerPosts, inner]
             });
           });
-        }
-      );
-  }
+        });
+      }
+    );
+  };
 
   unApprovedPosts() {
     const notApproved = this.state.mainArr.filter((item, index) => {
-      return item.approved === false
+      return item.approved === false;
     });
 
     this.setState(
@@ -118,39 +120,40 @@ class ListMode extends Component {
     const renderParent = this.state.listItems.map((item, index) => {
       console.log('ITEM', item);
       return (
-        <div class="row">
-          <div class="col-sm-6">
+        <div className="row post-list-wrapper">
+          <div className="col-sm-6">
             {item.post.map(innerItem => {
-              console.log('INNER ITEM', innerItem);
               return (
                 <div>
-                  <div>{this.convertTimeString(innerItem.ipDate)}</div>
-                  <div>{innerItem.title}</div>
-                  <div class="col-sm-6 inner-images-wrapper">
+                  <h5 class="time-string">{this.convertTimeString(innerItem.ipDate)}</h5>
+                  <TextField
+                    className="w-100 margin-border"
+                    value={innerItem.title}
+                    margin="normal"
+                  />
+
+                  <div className="col-sm-10 d-flex flex-wrap inner-images-wrapper mx-auto">
                     {innerItem.images.length > 0 ? (
-                      innerItem.images.map(img => <img src={img} class="image-inner" />)
+                      innerItem.images.map(img => (
+                        <div>
+                          <img src={img} className="w-100 border-image" />
+                        </div>
+                      ))
                     ) : (
                       <p>RED BOX</p>
                     )}
                   </div>
-                  <div class="col-sm-6">
-                    <input
-                      className="outlined-copy"
-                      label="Copy"
-                      name="copy"
-                      multiline
-                      value={item.copy}
-                      margin="normal"
-                      variant="outlined"
-                    />
+                  <div class="col-md-12">
+                    <TextField className="w-100 margin-border" value="POST COPY" margin="normal" />
+                    <p>{innerItem.copy}</p>
                   </div>
                 </div>
               );
             })}
           </div>
           <div class="col-sm-6 row">
-            <div class="col-sm-6">CATEGORY</div>
-            <div class="col-sm-6">
+            <div class="col-sm-6 align-self-center">CATEGORY</div>
+            <div class="col-sm-6 align-self-center">
               {item.approved == true ? (
                 <div>
                   <input type="checkbox" checked />
@@ -165,55 +168,88 @@ class ListMode extends Component {
             </div>
             {item.post.map(innerItem => {
               return (
-                <div class="row col-sm-12">
-                  <div>
-                    <input type="checkbox" checked={innerItem.facebook ? 'checked' : ''} />
+                <div className="row col-sm-12 flex-wrap justify-content-between">
+                  <p className="col-md-12 list-header align-self-center">PLATFORMS</p>
+                  <div className="col-md-2 d-flex">
+                    <Checkbox
+                      name="facebook"
+                      value={innerItem.facebook}
+                      checked={innerItem.facebook ? 'checked' : ''}
+                      id="facebook"
+                    />
                     <label>Facebook</label>
                   </div>
-                  <div>
-                    <input type="checkbox" checked={innerItem.instagram ? 'checked' : ''} />
+                  <div className="col-md-2 d-flex">
+                    <Checkbox
+                      name="instagram"
+                      value={innerItem.instagram}
+                      checked={innerItem.instagram ? 'checked' : ''}
+                      id="instagram"
+                    />
                     <label>Instagram</label>
                   </div>
-                  <div>
-                    <input type="checkbox" checked={innerItem.twitter ? 'checked' : ''} />
+                  <div className="col-md-2 d-flex">
+                    <Checkbox
+                      name="instagram"
+                      value={innerItem.twitter}
+                      checked={innerItem.twitter ? 'checked' : ''}
+                      id="instagram"
+                    />
                     <label>Twitter</label>
                   </div>
-                  <div>
-                    <input type="checkbox" checked={innerItem.linkedin ? 'checked' : ''} />
+                  <div className="col-md-2 d-flex">
+                    <Checkbox
+                      name="instagram"
+                      value={innerItem.linkedin}
+                      checked={innerItem.linkedin ? 'checked' : ''}
+                      id="instagram"
+                    />
                     <label>Linkedin</label>
                   </div>
-                  <div>
-                    <input type="checkbox" checked={innerItem.other ? 'checked' : ''} />
+                  <div className="col-md-2 d-flex">
+                    <Checkbox
+                      name="instagram"
+                      value={innerItem.other}
+                      checked={innerItem.other ? 'checked' : ''}
+                      id="instagram"
+                    />
                     <label>Other</label>
                   </div>
                   <div class="row">
-                    <div class="col-sm-4">
-                      TEST
-                      <DatePicker
-                        customInput={
-                          <CustomCalendarComponent
-                            ipDate={innerItem.ipDate}
-                            placeholderText="Post Date"
-                          />
-                        }
-                      />
+                    <div className="row col-md-12 list-header">
+                      <p className="col-sm-4 m-0 align-self-center">POST DATE</p>
+                      <p className="col-sm-4 m-0 align-self-center">POST TIME</p>
+                      <p className="col-sm-4 m-0 align-self-center">POST MEDIUM</p>
                     </div>
-                    <div class="col-sm-4">
-                      {this.convertMoment(innerItem.postTime)}
-                      <TimePicker
-                        placeholder="Sorry there was no date available"
-                        defaultValue={moment(innerItem.postTime, 'HH:mm')}
-                      />
-                    </div>
-                    <div class="col-sm-4">
-                      <input type="text" value={innerItem.postMedium} />
+                    <div className="row col-md-12 ">
+                      <div class="col-sm-4">
+                        <DatePicker
+                          customInput={
+                            <CustomCalendarComponent
+                              ipDate={innerItem.ipDate}
+                              placeholderText="Post Date"
+                            />
+                          }
+                        />
+                      </div>
+                      <div class="col-sm-4">
+                        {this.convertMoment(innerItem.postTime)}
+                        <TimePicker
+                          placeholder="Sorry there was no date available"
+                          defaultValue={moment(innerItem.postTime, 'HH:mm')}
+                        />
+                      </div>
+                      <div class="col-sm-4">
+                        <input type="text" value={innerItem.postMedium} />
+                      </div>
                     </div>
                   </div>
                   <div class="col-sm-12">
                     {innerItem.ad ? (
                       <div>
                         <div class="d-flex">
-                          <input type="checkbox" checked />
+                          <Checkbox checkbox id="facebook" />
+                          />
                           <label>Ad or Sponsored Post</label>
                         </div>
                         <div>
@@ -259,11 +295,17 @@ class ListMode extends Component {
       );
     });
     return (
-      <div>
-        <div id="button-switch">
-        <button onClick={this.allPosts.bind(this)}>All POSTS</button>
-          <button onClick={this.approvedPosts.bind(this)}>APPROVED POSTS</button>
-          <button onClick={this.unApprovedPosts.bind(this)}>APPROVED POSTS</button>
+      <div class="position-relative">
+        <div id="button-switch position-absolute" class="text-right">
+          <button onClick={this.allPosts.bind(this)} className="clear-btn p-blue>">
+            <u className="p-blue">All POSTS</u>
+          </button>
+          <button onClick={this.approvedPosts.bind(this)} className="clear-btn p-blue>">
+            <u className="p-blue">APPROVED POSTS</u>
+          </button>
+          <button onClick={this.unApprovedPosts.bind(this)} className="clear-btn p-blue>">
+            <u className="p-blue">APPROVED POSTS</u>
+          </button>
         </div>
         <div>{renderParent}</div>
       </div>

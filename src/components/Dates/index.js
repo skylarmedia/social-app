@@ -203,16 +203,19 @@ class Dates extends Component {
 
   render() {
     const renderDates = this.state.date.map((item, index) => (
-      <div class="position-relative date-map-item">
+      <div class="position-relative date-map-item ">
         <img src={require('../assets/grouped-single-calendar.svg')} class="cal-img" />
         <div class="d-flex justify-content-between">
-        <Link to={`/calendar/${item.year}/${item.month}/${this.props.match.params.id}`} class="main-link">
-          {this.convert(item.month)} {item.year}
-          <br />
-        </Link>
-        <button onClick={() => this.deleteDate(item.id, index)} className="delete-date">
-          <img src={require('../assets/xsvg.svg')}/>
-        </button>
+          <Link
+            to={`/calendar/${item.year}/${item.month}/${this.props.match.params.id}`}
+            class="main-link"
+          >
+            {this.convert(item.month)} {item.year}
+            <br />
+          </Link>
+          <button onClick={() => this.deleteDate(item.id, index)} className="delete-date">
+            <img src={require('../assets/xsvg.svg')} />
+          </button>
         </div>
       </div>
     ));
@@ -272,7 +275,7 @@ class Dates extends Component {
           </div>
         </div>
         <div class="col-sm-9">
-          <h2 className="text-left" id="client-heading">
+          <h2 className="text-center" id="client-heading">
             Client {this.props.match.params.clientId} Calendars
           </h2>
           <p className="text-left margin-40">Select a month to view it’s calendar.</p>
@@ -333,59 +336,80 @@ class Dates extends Component {
         </div>
       </div>
     ) : this.state.isLoading && this.state.date.length == 0 ? (
-      <div className="container position-relative text-align-center">
-        {this.state.showAddDate ? (
-          <form className="add-date-form" onSubmit={this.submitForm.bind(this)}>
-            <button onClick={this.toggleAddDate.bind(this)} className="toggle-close">
-              x
-            </button>
-            <div className="d-flex justify-content-between date-wrapper month-wrapper">
-              <Select
-                onChange={this.handleMonth.bind(this)}
-                value={this.state.month}
-                style={selectStyles}
-              >
-                <MenuItem value="1">January</MenuItem>
-                <MenuItem value="2">February</MenuItem>
-                <MenuItem value="3">March</MenuItem>
-                <MenuItem value="4">April</MenuItem>
-                <MenuItem value="5">May</MenuItem>
-                <MenuItem value="6">June</MenuItem>
-                <MenuItem value="7">July</MenuItem>
-                <MenuItem value="8">August</MenuItem>
-                <MenuItem value="9">September</MenuItem>
-                <MenuItem value="10">October</MenuItem>
-                <MenuItem value="11">November</MenuItem>
-                <MenuItem value="12">December</MenuItem>
-              </Select>
-              <Select
-                onChange={this.handleYear.bind(this)}
-                style={selectStyles}
-                value={this.state.year}
-              >
-                Placeholder
-                <MenuItem value="2019">2019</MenuItem>
-              </Select>
-            </div>
-            <input
-              type="submit"
-              value="Submit"
-              className="add-date-btn"
-              onSubmit={this.submitForm.bind(this)}
+      <div class="row justify-content-between container mx-auto">
+        <div class="col-md-3">
+          <div class="d-flex  back-wrapper">
+            <img src={require('../assets/back.svg')} />
+            <Link to={`dates/${this.props.match.params.clientId}`} class="back-link">
+              Back To All Clients
+            </Link>
+          </div>
+        </div>
+        <div className="col-md-8 position-relative">
+          {this.state.showAddDate ? (
+            <form className="add-date-form" onSubmit={this.submitForm.bind(this)}>
+              <button onClick={this.toggleAddDate.bind(this)} className="toggle-close">
+                x
+              </button>
+              <div className="d-flex justify-content-between date-wrapper month-wrapper">
+                <Select
+                  onChange={this.handleMonth.bind(this)}
+                  value={this.state.month}
+                  style={selectStyles}
+                >
+                  <MenuItem value="1">January</MenuItem>
+                  <MenuItem value="2">February</MenuItem>
+                  <MenuItem value="3">March</MenuItem>
+                  <MenuItem value="4">April</MenuItem>
+                  <MenuItem value="5">May</MenuItem>
+                  <MenuItem value="6">June</MenuItem>
+                  <MenuItem value="7">July</MenuItem>
+                  <MenuItem value="8">August</MenuItem>
+                  <MenuItem value="9">September</MenuItem>
+                  <MenuItem value="10">October</MenuItem>
+                  <MenuItem value="11">November</MenuItem>
+                  <MenuItem value="12">December</MenuItem>
+                </Select>
+                <Select
+                  onChange={this.handleYear.bind(this)}
+                  style={selectStyles}
+                  value={this.state.year}
+                >
+                  Placeholder
+                  <MenuItem value="2019">2019</MenuItem>
+                </Select>
+              </div>
+              <input
+                type="submit"
+                value="Submit"
+                className="add-date-btn"
+                onSubmit={this.submitForm.bind(this)}
+              />
+            </form>
+          ) : (
+            ''
+          )}
+          <h2 className="text-center" id="client-heading">
+            Client A-Game’s Calendars
+          </h2>
+          <p>
+            You don’t seem to have any calendars set up yet. Click below to add one and <br/>get started!
+          </p>
+          <div class="text-center">
+            <img
+              src={require('../assets/single-grid.svg')}
+              id="no-date-calendar"
+              class="col-md-4"
             />
-          </form>
-        ) : (
-          ''
-        )}
-        <h2 className="text-left" id="client-heading">
-          Client A-Game’s Calendars
-        </h2>
-        <img src={require('../assets/single-grid.svg')} id="no-date-calendar" class="col-md-3"/>
-        <div className="text-center arrow-wrapper">
+          </div>
+          <div className="text-center arrow-wrapper">
+            <img src={require('../assets/curly-arrow.svg')} id="arrow" />
+          </div>
+        </div>
+        <div class="col-md-1 margin-btn">
           <button onClick={this.toggleAddDate.bind(this)} className="add-date-btn">
             Add New
           </button>
-          <img src={require('../assets/curly-arrow.svg')} id="arrow"/>
         </div>
       </div>
     ) : (

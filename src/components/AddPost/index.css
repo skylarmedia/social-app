@@ -291,5 +291,20 @@
 
 #sky-logo{
     align-self: center;
-    max-height: 70px;
+    height: 66px;
+}
+
+#no-date-calendar{
+    margin-top: 20px;
+}
+
+#arrow {
+    position: absolute;
+    top: 150px;
+    right: 0px;
+    width: 42%;
+}
+
+.blue-color{
+    color:#002D5B;
 }
