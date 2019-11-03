@@ -290,6 +290,12 @@
 	position: relative;
 }
 
+.go-post{
+	width: 100%;
+    display: inline-block;
+    text-align: right;
+}
+
 a.d-flex{
     color:#002D5B;
     margin-top:15px;

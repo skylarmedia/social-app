@@ -3,13 +3,16 @@ import { withFirebase } from '../Firebase';
 import { compose } from 'redux';
 import 'antd/dist/antd.css';
 import './index.css';
+import { Checkbox } from 'antd';
 import EditCategoryForm from '../EditCategoryForm';
 import moment from 'moment';
 import SubPost from './SubPost';
 
+//
 import EmojiField from 'emoji-picker-textfield';
 import 'emoji-mart/css/emoji-mart.css';
-import 'react-datepicker/dist/react-datepicker.css';
+import { Picker } from 'emoji-mart';
+
 
 class AddPost extends Component {
   constructor(props) {
@@ -123,9 +126,14 @@ class AddPost extends Component {
   };
 
   handleApproval = () => {
-    alert('ran');
     this.setState({
       approved: !this.state.approved
+    });
+  };
+
+  openIcons = () => {
+    this.setState({
+      showEmoji: !this.state.showEmoji
     });
   };
 
@@ -282,22 +290,21 @@ class AddPost extends Component {
     return (
       <React.Fragment>
         <div className="add-post">
-          <EditCategoryForm
-            clientId={this.props.match.params.clientId}
-            getSelectedCategory={this.getSelectedCategory}
-            category={this.state.selectedCategory}
-            month={this.props.match.params.month}
-          />
           <p className="heading text-center add-post-heading">
             Client {this.props.match.params.clientId} Calendar
             <br />
           </p>
           <div className="grey-background">
             <div className="container">
+              <EditCategoryForm
+                clientId={this.props.match.params.clientId}
+                getSelectedCategory={this.getSelectedCategory}
+                category={this.state.selectedCategory}
+                month={this.props.match.params.month}
+              />
               <form onSubmit={this.onSubmitForm}>
-                <div className="d-flex">
-                  <input
-                    type="checkbox"
+                <div className="d-flex approval-wrapper">
+                  <Checkbox
                     name="approved"
                     value={this.state.approved}
                     onChange={this.handleApproval}
@@ -317,6 +324,9 @@ class AddPost extends Component {
                   </button>
                   <input type="submit" value="Submit" className="add-date-btn" />
                 </div>
+                <button onClick={this.openIcons} className="smile-wrapper" type="button">
+              <img src={require('../assets/happy-face.svg')} className="smile-logo" />
+            </button>
               </form>
             </div>
           </div>

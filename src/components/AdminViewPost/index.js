@@ -86,10 +86,9 @@ class AdminViewPost extends Component {
         });
     }
 
-    getMessage = (id, month, day, title, message, logo) => {
+    getMessage = (id, month, day, title, message) => {
         const incomingMessageObj = {}
         incomingMessageObj.id = id
-        incomingMessageObj.logo = logo
         incomingMessageObj.month = month
         incomingMessageObj.day = day
         incomingMessageObj.title = title
@@ -100,7 +99,7 @@ class AdminViewPost extends Component {
             clientRead: false
         });
 
-        this.props.firebase.adminSendMessage(id, month, day, title, message, 'https://skylarmedia.ca/wp-content/uploads/2018/12/SkylarMG_Icon_RGB-1.svg');
+        this.props.firebase.adminSendMessage(id, month, day, title, message);
     }
 
     componentWillUnmount() {

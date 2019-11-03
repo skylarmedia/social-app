@@ -55,6 +55,7 @@ class SignInFormBase extends Component {
     this.props.firebase
       .doSignInWithEmailAndPassword(email, password).then(value => {
         if (value.docs[0].data().admin == 1) {
+          localStorage.setItem('loggedIn', true);
           this.props.history.push({
             pathname: `/home`,
             state: {

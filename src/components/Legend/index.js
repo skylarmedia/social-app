@@ -22,6 +22,7 @@ const Legend = props => {
                 getClient:props.client
               }
             }}
+            class="assign-link"
           >
             Assign Categories
           </Link>

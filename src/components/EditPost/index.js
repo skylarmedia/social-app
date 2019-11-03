@@ -1,19 +1,17 @@
 import React, { Component } from 'react';
 import { withFirebase } from '../Firebase';
-import { compose } from 'redux';
-import { connect } from 'react-redux';
-// import TimePicker from 'react-time-picker';
 import EditCategoryForm from '../EditCategoryForm';
-import * as ROUTES from '../../constants/routes';
-import DeleteIcon from '@material-ui/icons/Delete';
-import Fab from '@material-ui/core/Fab';
+import { Picker } from 'emoji-mart';
+import ChatLog from '../ChatLog';
 import './index.css';
-
-import TextField from '@material-ui/core/TextField';
+import { Checkbox } from 'antd';
 import CustomCalendarComponent from '../CustomCalendarComponent';
 import DatePicker from 'react-datepicker';
 import TimePicker from 'antd/es/time-picker';
 import moment from 'moment';
+import 'emoji-mart/css/emoji-mart.css';
+
+
 
 class EditPost extends Component {
   constructor(props) {
@@ -22,7 +20,9 @@ class EditPost extends Component {
     this.state = {
       posts: [],
       currentTime: null,
-      approved: false
+      approved: false,
+      showChat: false,
+      message: ''
     };
 
     this.handleFacebook = this.handleFacebook.bind(this);
@@ -32,6 +32,7 @@ class EditPost extends Component {
     this.handleHashTags = this.handleHashTags.bind(this);
     this.submitEdits = this.submitEdits.bind(this);
     this.handleCopy = this.handleCopy.bind(this);
+    this.setMessage = this.setMessage.bind(this);
   }
 
   handlePostMedium = e => {
@@ -55,9 +56,8 @@ class EditPost extends Component {
   };
 
   handleTitle = e => {
-    // console.log(e.target.name)
     let index = e.target.getAttribute('index');
-    console.log('HANDLE e', e.target.getAttribute('index'));
+    console.log('HANDLE TITLE', e);
 
     let state = [...this.state.posts];
     state[index].title = e.target.value;
@@ -65,14 +65,10 @@ class EditPost extends Component {
     this.setState({
       posts: state
     });
-
-    console.log('this state', this.state);
   };
 
   handleCopy = e => {
     let index = e.target.getAttribute('index');
-    console.log('HANDLE e', e.target.getAttribute('index'));
-
     let state = [...this.state.posts];
     state[index].copy = e.target.value;
 
@@ -86,16 +82,11 @@ class EditPost extends Component {
       .editPostFirebase(this.props.match.params.clientId, this.props.match.params.postId)
       .then(item => {
         if (this.state.posts.length == 0) {
-          this.setState(
-            {
-              posts: item.data().post,
-              selectedCategoryName: item.data().selectedCategoryName,
-              approved: item.data().approved
-            },
-            () => {
-              console.log(this.state.posts);
-            }
-          );
+          this.setState({
+            posts: item.data().post,
+            selectedCategoryName: item.data().selectedCategoryName,
+            approved: item.data().approved
+          });
         }
       });
   }
@@ -104,17 +95,16 @@ class EditPost extends Component {
     this.props.firebase.updatePost(
       this.props.match.params.postId,
       this.props.match.params.clientId,
-      this.state.posts
+      this.state.posts,
+      this.state.approved
     );
-    this.props.history.goBack()
+    this.props.history.goBack();
   };
 
   // Social Handles
 
   handleFacebook = e => {
-    console.log('FACEBOOK', e.currentTarget);
     let index = e.target.getAttribute('index');
-    console.log(index);
     let posts = [...this.state.posts];
     posts[index].facebook = !posts[index].facebook;
     this.setState({
@@ -123,9 +113,7 @@ class EditPost extends Component {
   };
 
   handleInstagram = e => {
-    console.log('FACEBOOK', e.currentTarget);
     let index = e.target.getAttribute('index');
-    console.log(index);
     let posts = [...this.state.posts];
     posts[index].instagram = !posts[index].instagram;
     this.setState({
@@ -134,9 +122,7 @@ class EditPost extends Component {
   };
 
   handleTwitter = e => {
-    console.log('FACEBOOK', e.currentTarget);
     let index = e.target.getAttribute('index');
-    console.log(index);
     let posts = [...this.state.posts];
     posts[index].twitter = !posts[index].twitter;
     this.setState({
@@ -145,9 +131,7 @@ class EditPost extends Component {
   };
 
   handleLinkedin = e => {
-    console.log('FACEBOOK', e.currentTarget);
     let index = e.target.getAttribute('index');
-    console.log(index);
     let posts = [...this.state.posts];
     posts[index].linkedin = !posts[index].linkedin;
     this.setState({
@@ -156,21 +140,13 @@ class EditPost extends Component {
   };
 
   handleApproval = e => {
-    let index = e.target.getAttribute('index');
-
-    let posts = [...this.state.posts];
-
-    posts[index].approved = !posts[index].approved;
-
     this.setState({
-      posts: posts
+      approved: !this.state.approved
     });
   };
 
   handleOther = e => {
-    console.log('FACEBOOK', e.currentTarget);
     let index = e.target.getAttribute('index');
-    console.log(index);
     let posts = [...this.state.posts];
     posts[index].other = !posts[index].other;
     this.setState({
@@ -193,31 +169,106 @@ class EditPost extends Component {
   handleComplete = index => {
     let posts = [...this.state.posts];
     posts[index].postTime = this.state.currentTime;
-    this.setState(
-      {
-        posts: posts
-      },
-      () => {
-        console.log('POST TIME', this.state.posts);
-      }
-    );
+    this.setState({
+      posts: posts
+    });
   };
 
   handlePostTime = (time, timePicker) => {
-    console.log(time);
     this.setState({
       currentTime: timePicker
     });
   };
 
-  render() {
-    const posts = this.state.posts.map((post, index) => {
+  //ChatBox Functions
 
+  getMessage = (id, month, day, title, message) => {
+    const incomingMessageObj = {};
+    incomingMessageObj.id = id;
+    incomingMessageObj.month = month;
+    incomingMessageObj.day = day;
+    incomingMessageObj.title = title;
+    incomingMessageObj.message = message;
+
+    this.setState({
+      messages: [...this.state.messages, incomingMessageObj],
+      clientRead: false
+    });
+  };
+
+  toggleChat = () => {
+    this.setState({
+      showChat: !this.state.showChat
+    });
+  };
+
+  submitMessage = e => {
+    e.preventDefault();
+    alert('submitted');
+  };
+
+  // Capture Key
+
+  captureKey = e => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      this.props.firebase.adminSendMessage(
+        'admin', // Role
+        moment(new Date()).format('DD/MM/YYYY'), // Date,
+        this.formatAMPM(new Date),
+        this.props.match.params.postId, // Client
+        this.state.message, // Message
+        this.props.match.params.clientId
+      ); 
+      this.setState({
+        message: ''
+      });
+    }
+  };
+
+  addEmoji = e => {
+    if (e.unified.length <= 5) {
+      let emojiPic = String.fromCodePoint(`0x${e.unified}`);
+      this.setState({
+        message: this.state.message + emojiPic
+      });
+    } else {
+      let sym = e.unified.split('-');
+      let codesArray = [];
+      sym.forEach(el => codesArray.push('0x' + el));
+
+      let emojiPic = String.fromCodePoint(...codesArray);
+      this.setState({
+        message: this.state.message + emojiPic
+      });
+    }
+  };
+
+  setMessage = e => {
+    e.preventDefault();
+
+    this.setState({
+      message: e.target.value
+    });
+  };
+
+  formatAMPM = (date) => {
+    var hours = date.getHours();
+    var minutes = date.getMinutes();
+    var ampm = hours >= 12 ? 'pm' : 'am';
+    hours = hours % 12;
+    hours = hours ? hours : 12; // the hour '0' should be '12'
+    minutes = minutes < 10 ? '0'+minutes : minutes;
+    var strTime = hours + ':' + minutes + ' ' + ampm;
+    return strTime;
+  }
+
+  render() {
+    console.log(this.props.match.params)
+    const posts = this.state.posts.map((post, index) => {
       let image = this.state.posts[index].images.map(item => {
-        return (
-          <img src={item} />
-        )
-      })
+        return <img src={item} key={item} />;
+      });
       return (
         <div>
           <div>
@@ -237,7 +288,6 @@ class EditPost extends Component {
               className="outlined-copy"
               label="Copy"
               name="copy"
-              multiline
               value={this.state.posts[index].copy}
               onChange={this.handleCopy}
               margin="normal"
@@ -259,7 +309,7 @@ class EditPost extends Component {
                 onChange={this.handleFacebook}
                 index={index}
               />
-              <label for="facebook">Facebook</label>
+              <label>Facebook</label>
             </div>
             <div>
               <input
@@ -270,7 +320,7 @@ class EditPost extends Component {
                 onChange={this.handleInstagram}
                 index={index}
               />
-              <label for="instagram">Instagram</label>
+              <label>Instagram</label>
             </div>
             <div>
               <input
@@ -281,7 +331,7 @@ class EditPost extends Component {
                 onChange={this.handleTwitter}
                 index={index}
               />
-              <label for="twitter">Twitter</label>
+              <label>Twitter</label>
             </div>
             <div>
               <input
@@ -292,7 +342,7 @@ class EditPost extends Component {
                 onChange={this.handleLinkedin}
                 index={index}
               />
-              <label for="linkedin">LinkedIn</label>
+              <label>LinkedIn</label>
             </div>
             <div>
               <input
@@ -303,7 +353,7 @@ class EditPost extends Component {
                 onChange={this.handleOther}
                 index={index}
               />
-              <label for="other">Other</label>
+              <label>Other</label>
             </div>
 
             <DatePicker
@@ -346,9 +396,7 @@ class EditPost extends Component {
               />
               <label for="ad">Ad or Sponsored Post</label>
             </div>
-            <div>
-
-            </div>
+            <div></div>
             <div>
               <textarea
                 placeholder="Hashtags"
@@ -376,6 +424,28 @@ class EditPost extends Component {
           id="approvePost"
         />
         {posts}
+        <div class="fixed-bottom container position_relative;">
+          {this.state.showChat && (
+            <div>
+              <div>
+                <ChatLog />
+                <form onSubmit={this.submitMessage}>
+                  <textarea
+                    onChange={this.setMessage}
+                    value={this.state.message}
+                    onKeyDown={this.captureKey}
+                  />
+                </form>
+                <span>
+                  <Picker onSelect={this.addEmoji} />
+                </span>
+              </div>
+            </div>
+          )}
+          <button onClick={this.toggleChat} type="button">
+            <img src={require('../assets/chatbox.svg')} />
+          </button>
+        </div>
       </div>
     );
   }

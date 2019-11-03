@@ -279,7 +279,7 @@ class Dates extends Component {
             Client {this.props.match.params.clientId} Calendars
           </h2>
           <p className="text-left margin-40">Select a month to view it’s calendar.</p>
-          <div id="dates-list" className="d-flex date-wrapper justify-content-between">
+          <div id="dates-list" className="d-flex date-wrapper">
             {renderDates}
           </div>
           {this.state.showAddDate ? (

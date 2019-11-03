@@ -64,27 +64,24 @@ class Settings extends Component{
     }
 
     render(){
-        console.log('Firebase', this.props)
-        console.log('Firebase reactive', this.props.firebase.reactivateClient);
-        console.log('Firebase archive Clients', this.props.firebase.getArchivedClients);
         return(
             <div>Settings
                 <div class="row container mx-auto">
                 {this.state.clients.map((item, index) => {
-                    console.log('item', item)
                     return (
                         <div class="col-sm-3">
-                            <button onClick={() => this.deleteClient(item.name, index)}>Delete</button>
-                            {item.userId}
+                            <button onClick={() => this.deleteClient(item.name, index)} className="clear-btn top-delete">Delete</button>
                             <img src={item.logo}/>
                             <p class="text-center">{item.name}</p>
-                            <button onClick={() => this.reactivateClient(item.name, index)}>Reactivate Client</button>
+                            <button onClick={() => this.reactivateClient(item.name, index)} className="clear-btn text-center color-blue w-100">Reactivate Client</button>
                         </div>
                     )       
                 })}
                 </div>
                 {this.state.showDelete && (
-                    <MainButton title="Delete Client?" subtitle="Are you sure you would like to delete this client? This action is permanent and cannot be un-done." buttonText="Delete" confirmArchive={this.confirmArchive.bind(this)} index='lanto'/>
+                    <div className="delete-btn">
+                    <MainButton title="Delete Client?" subtitle="Are you sure you would like to delete this client? This action is permanent and cannot be un-done." buttonText="Delete" confirmArchive={this.confirmArchive.bind(this)} index='lanto' />
+                    </div>
                 )}
                 
             </div>

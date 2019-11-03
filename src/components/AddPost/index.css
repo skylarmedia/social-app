@@ -308,3 +308,11 @@
 .blue-color{
     color:#002D5B;
 }
+
+.approval-wrapper .ant-checkbox-wrapper{
+    margin-right:15px;
+}
+
+.approval-wrapper{
+    margin-top:20px;
+}

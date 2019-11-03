@@ -50,10 +50,21 @@
 }
  
 .category-list-item button{
-    box-shadow:none;
-    border:none;
-    position:absolute;
+    box-shadow: none;
+    border: none;
+    position: absolute;
     right: 0;
-    left: 0;
-    background: transparent;
+    top: -8px;  
+}
+
+.hidden-inner .save-draft-btn{
+    font-size: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin:0 auto;
+}
+
+.hidden-inner{
+    color:#002D5B;
 }

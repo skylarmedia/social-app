@@ -18,9 +18,21 @@
   justify-content: center;
 }
 
-.hidden-post div{
+.hidden-post > div{
   background: #fff;
   width: 558px;
+}
+
+.social-wrapper p{
+  margin-right:6px;
+  margin-bottom:0;
+}
+
+.delete-btn p{
+  width: 60%;
+  text-align: center;
+  color: #002D5B;
+  margin: 10px 0 20px;
 }
 
 .props-copy{
@@ -37,6 +49,10 @@
     right: 0;
     width: 20px;
     top:0;
+}
+
+.hidden-inner{
+  padding:50px 50px 20px 80px;
 }
 
 

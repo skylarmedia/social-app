@@ -11,35 +11,22 @@ import HomePage from '../Home';
 import Settings from '../Settings';
 import AddPost from '../AddPost';
 import EditPost from '../EditPost';
-
-import Navigation from '../Navigation';
 import SignUpPage from '../SignUp';
 import SignInPage from '../SignIn';
-
-import AdminPage from '../Admin';
 import Clients from '../Clients';
 import Dates from '../Dates';
 import Calendar from '../Calendar';
 import CalendarSingle from '../CalendarSingle';
-import Server from '../ServerFile';
 import ClientCalendar from '../ClientCalendar';
 import ClientViewPost from '../ClientViewPost';
 import HiddenCalendarSingle from '../HiddenCalendarSingle';
 import AdminViewPost from '../AdminViewPost';
 import * as ROUTES from '../../constants/routes';
-import MenuButton from '../MenuButton';
 import { withAuthentication } from '../Session';
-import CalendarCategoryContainer from '../CalendarCategoryContainer';
-import { PasswordForgetForm } from '../PasswordForget';
-import PasswordChangeForm from '../PasswordChange';
-import { withAuthorization } from '../Session';
 import './index.css';
 import NavigationWrapper from '../NavigationWrapper';
-import Header from '../Header';
 import AssignCategories from '../AssignCategories';
 import Logout from '../Logout';
-
-import { TransitionGroup, Transition } from 'react-transition-group';
 
 const App = () => (
   <Router basename={'/social-app-deploy'}>

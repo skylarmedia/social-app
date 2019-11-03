@@ -157,19 +157,18 @@ class ListMode extends Component {
             })}
           </div>
           <div className="col-sm-6 align-self-start">
-            <Link to={`/edit-post/${this.props.user}/${item.id}`}>Go to post</Link>
+            <Link to={`/edit-post/${item.id}/${this.props.user}`} className="go-post">Go to post</Link>
             <div className="d-flex">
               <div class="col-sm-6 align-self-center">CATEGORY</div>
               <div class="col-sm-6 align-self-center">
                 {item.approved == true ? (
                   <div>
-                    <Checkbox checked />
+                    <Checkbox checked={true} />
                     Approved
                   </div>
                 ) : (
                   <div>
-                    <input type="checkbox" />
-                    Not approved
+                    <Checkbox checked={false} />
                   </div>
                 )}
               </div>

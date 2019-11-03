@@ -543,7 +543,7 @@ class SubPost extends Component {
                   type="button"
                   onClick={this.toggleDate.bind(this)}
                 >
-                  <span>POST DATE</span> <i class="fa fa-caret-down" aria-hidden="true"></i>
+                  <span>POST DATE</span>
                 </button>
                 {this.state.toggleDate && (
                   <DatePicker

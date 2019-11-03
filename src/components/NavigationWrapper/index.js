@@ -4,21 +4,27 @@ import './index.css';
 import Navigation from '../Navigation';
 
 class NavigationWrapper extends Component {
-    constructor(props) {
-        super(props);
+  constructor(props) {
+    super(props);
 
-        this.state = {
-            isVisible: false
-        }
-    }
+    this.state = {
+      isVisible: false
+    };
+  }
 
-    render() {
+  render() {
+    if (localStorage.getItem('loggedIn') == "true") {
+      return (
+        <Menu id="main-menu" noOverlay>
+          <Navigation />
+        </Menu>
+      );
+    }else{
         return (
-            <Menu id="main-menu" noOverlay>
-                <Navigation />
-            </Menu>
+            <div></div>
         )
     }
+  }
 }
 
 export default NavigationWrapper;

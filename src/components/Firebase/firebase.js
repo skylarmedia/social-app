@@ -124,9 +124,10 @@ class Firebase {
 
   //***** End Archive Functions ******/
 
-  logout = () => this.auth.signOut().then(() => {
-    window.location.href = '/'
-  })
+  logout = () =>
+    this.auth.signOut().then(() => {
+      window.location.href = '/';
+    });
 
   addLogoUrl = (user, logoUrl) =>
     this.db
@@ -151,9 +152,7 @@ class Firebase {
       .get();
 
   sendCategories = (user, categories) => {
-    console.log(categories, 'categss');
     categories.forEach(function(category) {
-      console.log('category', category);
       app
         .firestore()
         .collection('users')
@@ -169,6 +168,20 @@ class Firebase {
     });
   };
 
+  adminSendMessage = (role, date, time, client, message, postId) => {
+    this.db
+    .collection('chats')
+    .doc(client)
+    .collection('messages')
+    .add({
+     role,
+     date,
+     time,
+     message,
+     postId
+    })
+  }
+
   getSelectedCategories = (id, year, month) =>
     this.db
       .collection('users')
@@ -179,20 +192,6 @@ class Firebase {
       .get()
       .catch(function(err) {
         console.log(err);
-      });
-
-  adminSendMessage = (id, month, day, title, message, logo) =>
-    this.db
-      .collection('chats')
-      .doc(id)
-      .collection('messages')
-      .add({
-        message,
-        month,
-        day,
-        title,
-        logo: logo,
-        time: new Date().getTime()
       });
 
   getAdminPost = (user, postId) =>
@@ -312,36 +311,23 @@ class Firebase {
       .where('urlName', '==', urlName)
       .get();
 
-  addUser = (email, password, name, logo) =>
-      { console.log('sent logo',logo)
-        this.auth.createUserWithEmailAndPassword(email, password).then(user => {
-          this.db
-            .collection('users')
-            .doc(name.toLowerCase().replace(/ /g, '-'))
-            .set({
-              name: name,
-              logo: logo,
-              userId: user.user.uid,
-              admin: 0,
-              email: email,
-              urlName: name.toLowerCase().replace(/ /g, '-'),
-              archived: false
-            });
+  addUser = (email, password, name, logo) => {
+    console.log('sent logo', logo);
+    this.auth.createUserWithEmailAndPassword(email, password).then(user => {
+      this.db
+        .collection('users')
+        .doc(name.toLowerCase().replace(/ /g, '-'))
+        .set({
+          name: name,
+          logo: logo,
+          userId: user.user.uid,
+          admin: 0,
+          email: email,
+          urlName: name.toLowerCase().replace(/ /g, '-'),
+          archived: false
         });
-
-      }
-
-
-  // updateCategories = (user, categories) => {
-  //   categories.map(category => {
-  //     this.db
-  //       .collection('users')
-  //       .doc(user)
-  //       .collection('categories')
-  //       .doc('JfldYWxlRlYj9kYzwpv3')
-  //       .delete();
-  //   });
-  // };
+    });
+  };
 
   // Posts Function
 
@@ -447,19 +433,21 @@ class Firebase {
 
   getApprovedPosts = (id, month, year) => {
     this.db
-    .collection('users')
-    .doc(id)
-    .collection('posts')
-    .where('month', '==', month)
-    .where('year', '==', year)
-    .where('approved', '==', true)
-    .get();
-  }
+      .collection('users')
+      .doc(id)
+      .collection('posts')
+      .where('month', '==', month)
+      .where('year', '==', year)
+      .where('approved', '==', true)
+      .get();
+  };
 
-  doSignOut = () =>
+  doSignOut = () => {
+    localStorage.removeItem('loggedIn');
     this.auth.signOut().then(() => {
-      window.location.href = '/'
+      window.location.href = '/';
     });
+  };
 
   doPasswordReset = email => this.auth.sendPasswordResetEmail(email);
 
@@ -474,29 +462,26 @@ class Firebase {
       });
   };
 
-  updatePost = (user, id, post) => {
+  updatePost = (user, id, post, approved) => {
     this.db
       .collection('users')
       .doc(user)
       .collection('posts')
       .doc(id)
       .update({
-        post: post
+        post: post,
+        approved: approved
       });
   };
 
   removeCategoryNew = (id, name) => {
-    console.log('deugger', id);
-
     this.db
       .collection('users')
       .doc(id)
       .collection('categories')
       .doc(name)
       .delete()
-      .then(function() {
-        console.log('Successfully Deleted');
-      })
+      .then(function() {})
       .catch(err => {
         console.log('Err', err);
       });

@@ -45,7 +45,7 @@ class Calendar extends React.Component {
       private: true,
       oldPrivate: true,
       selectedCategories: [],
-      grid: false
+      grid: true
     };
 
     this.showCategories = this.showCategories.bind(this);
@@ -251,7 +251,6 @@ class Calendar extends React.Component {
   };
 
   setYear = year => {
-    // alert(year)
     let dateObject = Object.assign({}, this.state.dateObject);
     dateObject = moment(dateObject).set('year', year);
     this.setState({
@@ -361,7 +360,6 @@ class Calendar extends React.Component {
   }
 
   render() {
-    console.log('MAIN PROPS LEGEND', this.props);
     let weekdayshortname = this.weekdayshort.map(day => {
       return <th key={day}>{day}</th>;
     });
