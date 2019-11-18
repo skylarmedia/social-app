@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { withFirebase } from '../Firebase';
 import EditCategoryForm from '../EditCategoryForm';
 import { Picker } from 'emoji-mart';
-import ChatLog from '../ChatLog';
+import AdminChatLog from '../ChatLog';
 import './index.css';
 import { Checkbox } from 'antd';
 import CustomCalendarComponent from '../CustomCalendarComponent';
@@ -10,8 +10,7 @@ import DatePicker from 'react-datepicker';
 import TimePicker from 'antd/es/time-picker';
 import moment from 'moment';
 import 'emoji-mart/css/emoji-mart.css';
-
-
+import app from 'firebase/app';
 
 class EditPost extends Component {
   constructor(props) {
@@ -22,7 +21,8 @@ class EditPost extends Component {
       currentTime: null,
       approved: false,
       showChat: false,
-      message: ''
+      message: '',
+      messages: []
     };
 
     this.handleFacebook = this.handleFacebook.bind(this);
@@ -33,6 +33,8 @@ class EditPost extends Component {
     this.submitEdits = this.submitEdits.bind(this);
     this.handleCopy = this.handleCopy.bind(this);
     this.setMessage = this.setMessage.bind(this);
+
+    this.db = app.firestore();
   }
 
   handlePostMedium = e => {
@@ -57,7 +59,6 @@ class EditPost extends Component {
 
   handleTitle = e => {
     let index = e.target.getAttribute('index');
-    console.log('HANDLE TITLE', e);
 
     let state = [...this.state.posts];
     state[index].title = e.target.value;
@@ -78,6 +79,7 @@ class EditPost extends Component {
   };
 
   componentWillMount() {
+
     this.props.firebase
       .editPostFirebase(this.props.match.params.clientId, this.props.match.params.postId)
       .then(item => {
@@ -89,6 +91,31 @@ class EditPost extends Component {
           });
         }
       });
+
+      this.db
+      .collection('chats')
+      .doc(this.props.match.params.postId)
+      .collection('messages')
+      .where('postId', '==', this.props.match.params.clientId)
+      .onSnapshot((snap) => {
+        const messageArr = [...this.state.messages]
+        snap.docChanges().forEach((change) => {
+          messageArr.push(change.doc.data());
+          this.setState({
+            messages:messageArr
+          })
+        });
+      });
+  }
+
+  addState = (val) => {
+    alert('ran')
+  }
+
+
+
+  componentDidMount() {
+
   }
 
   submitEdits = () => {
@@ -156,7 +183,6 @@ class EditPost extends Component {
 
   handleAd = e => {
     let index = e.target.getAttribute('index');
-
     let posts = [...this.state.posts];
 
     posts[index].ad = !posts[index].ad;
@@ -180,22 +206,6 @@ class EditPost extends Component {
     });
   };
 
-  //ChatBox Functions
-
-  getMessage = (id, month, day, title, message) => {
-    const incomingMessageObj = {};
-    incomingMessageObj.id = id;
-    incomingMessageObj.month = month;
-    incomingMessageObj.day = day;
-    incomingMessageObj.title = title;
-    incomingMessageObj.message = message;
-
-    this.setState({
-      messages: [...this.state.messages, incomingMessageObj],
-      clientRead: false
-    });
-  };
-
   toggleChat = () => {
     this.setState({
       showChat: !this.state.showChat
@@ -215,11 +225,12 @@ class EditPost extends Component {
       this.props.firebase.adminSendMessage(
         'admin', // Role
         moment(new Date()).format('DD/MM/YYYY'), // Date,
-        this.formatAMPM(new Date),
+        this.formatAMPM(new Date()),
         this.props.match.params.postId, // Client
         this.state.message, // Message
-        this.props.match.params.clientId
-      ); 
+        this.props.match.params.clientId,
+        moment().unix()
+      );
       this.setState({
         message: ''
       });
@@ -246,25 +257,22 @@ class EditPost extends Component {
 
   setMessage = e => {
     e.preventDefault();
-
     this.setState({
       message: e.target.value
     });
   };
 
-  formatAMPM = (date) => {
+  formatAMPM = date => {
     var hours = date.getHours();
     var minutes = date.getMinutes();
     var ampm = hours >= 12 ? 'pm' : 'am';
     hours = hours % 12;
     hours = hours ? hours : 12; // the hour '0' should be '12'
-    minutes = minutes < 10 ? '0'+minutes : minutes;
+    minutes = minutes < 10 ? '0' + minutes : minutes;
     var strTime = hours + ':' + minutes + ' ' + ampm;
     return strTime;
-  }
-
+  };
   render() {
-    console.log(this.props.match.params)
     const posts = this.state.posts.map((post, index) => {
       let image = this.state.posts[index].images.map(item => {
         return <img src={item} key={item} />;
@@ -428,7 +436,7 @@ class EditPost extends Component {
           {this.state.showChat && (
             <div>
               <div>
-                <ChatLog />
+                <AdminChatLog messages={this.state.messages} />
                 <form onSubmit={this.submitMessage}>
                   <textarea
                     onChange={this.setMessage}

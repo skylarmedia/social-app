@@ -76,6 +76,16 @@ class Firebase {
     });
   };
 
+  getMessages = (id, postId) => {
+    this.db
+    .collection('chats')
+    .doc(id)
+    .collection('messages')
+    .where('postId', '==', postId)
+    .get()
+  }
+
+
   getSelectedCategoriesPre = id =>
     this.db
       .collection('users')
@@ -142,14 +152,7 @@ class Firebase {
         }
       );
 
-  getMessages = (id, month, day) =>
-    this.db
-      .collection('chats')
-      .doc(id)
-      .collection('messages')
-      .where('month', '==', month)
-      .where('day', '==', day)
-      .get();
+
 
   sendCategories = (user, categories) => {
     categories.forEach(function(category) {
@@ -168,7 +171,8 @@ class Firebase {
     });
   };
 
-  adminSendMessage = (role, date, time, client, message, postId) => {
+  adminSendMessage = (role, date, time, client, message, postId, timestamp) => {
+
     this.db
     .collection('chats')
     .doc(client)
@@ -178,8 +182,23 @@ class Firebase {
      date,
      time,
      message,
-     postId
-    })
+     postId,
+     timestamp
+    });
+
+    this.db
+    .collection('chats')
+    .doc(client)
+    .collection('count')
+    .doc('countDoc')
+    .set({
+      count: 1
+    });
+  }
+
+  // Come Back
+  getMessagesWithId = (client, postId) => {
+
   }
 
   getSelectedCategories = (id, year, month) =>
@@ -525,14 +544,16 @@ class Firebase {
       .doc(id)
       .delete();
 
-  getPrivacy = (id, year, month) =>
-    this.db
+  getPrivacy = (id, year, month) => {
+        this.db
       .collection('users')
       .doc(id)
       .collection('dates')
       .where('month', '==', month)
       .where('year', '==', year)
       .get();
-}
+  }
+
+  }
 
 export default Firebase;

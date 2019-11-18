@@ -14,22 +14,21 @@ class AdminChatLog extends Component {
     };
   }
 
-  componentWillMount() {
-
+  componentDidMount() {
+    console.log('item message', this.props.messages);
   }
 
   render() {
-
+    const { messages } = this.props;
     return (
-      <div>
-        {this.props.messages &&
+      <div className="d-flex justify-content-end">
+        {messages &&
           this.props.messages.map(item => {
-            return (
-              <li className="row align-items-center">
-                <img src={`${item.logo}`} className="avatar-chat" />
-                <p>{item.message}</p>
-              </li>
-            );
+            if (item.role == 'admin') {
+              return <div class="admin-message-wrap">{item.message}</div>;
+            } else {
+              return <div class="client-message-wrapper">${item.message}</div>;
+            }
           })}
       </div>
     );

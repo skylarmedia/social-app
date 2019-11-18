@@ -9,3 +9,11 @@
 .avatar-chat p{
     margin-bottom:0;
 }
+
+.flex-file{
+    border: 2px solid #002D5B;
+    /* max-width: 100px; */
+    /* float: right; */
+    width: 18vw;
+    text-align: right;
+}

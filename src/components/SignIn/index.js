@@ -64,13 +64,14 @@ class SignInFormBase extends Component {
           })
         }
         else {
+          console.log('return value in signIn', value);
           localStorage.setItem('userId', value.docs[0].data().urlName)
           this.props.history.push({
-            pathname: `/client-calendar/${this.state.year}/${this.state.month}`,
+            pathname: `/client/${value.docs[0].id}/dates`,
             state: {
               userId: value.docs[0].data().urlName
             }
-          })
+          });
 
         }
       })

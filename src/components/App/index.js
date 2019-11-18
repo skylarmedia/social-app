@@ -27,6 +27,7 @@ import './index.css';
 import NavigationWrapper from '../NavigationWrapper';
 import AssignCategories from '../AssignCategories';
 import Logout from '../Logout';
+import ClientDates from '../ClientDates';
 
 const App = () => (
   <Router basename={'/social-app-deploy'}>
@@ -53,6 +54,7 @@ const App = () => (
         <Route path="/assign-categories/:year/:month/:id" component={AssignCategories} />
         <Route exact path={`/calendar-single/:year/:month/:day`} component={CalendarSingle} />
         <Route path="/client-calendar/:year/:month" component={ClientCalendar} />
+        <Route exact path="/client/:id/dates" component={ClientDates}/>
         <Route
           exact
           path="/view-post/:month/:day/:id"
