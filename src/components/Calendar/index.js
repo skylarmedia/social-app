@@ -91,24 +91,25 @@ class Calendar extends React.Component {
         clientId: this.props.match.params.clientId
       });
     });
-    this.props.firebase
-      .getPrivacy(
-        this.props.match.params.clientId,
-        parseInt(this.props.match.params.year),
-        parseInt(this.props.match.params.month)
-      )
-      .then(snapshot => {
-        snapshot.docs.map(item => {
-          console.log('privacy', item)
-          this.setState(
-            {
-              private: item.data().private,
-              oldPrivate: item.data().private,
-              privateId: item.id
-            }
-          );
-        });
-      });
+
+    // this.props.firebase
+    //   .getPrivacy(
+    //     this.props.match.params.clientId,
+    //     parseInt(this.props.match.params.year),
+    //     parseInt(this.props.match.params.month)
+    //   )
+    //   .then(snapshot => {
+    //     snapshot.docs.map(item => {
+    //       console.log('privacy', item)
+    //       this.setState(
+    //         {
+    //           private: item.data().private,
+    //           oldPrivate: item.data().private,
+    //           privateId: item.id
+    //         }
+    //       );
+    //     });
+    //   });
 
     this.setState({
       authUser: JSON.parse(localStorage.getItem('authUser')).email

@@ -28,6 +28,19 @@ class Firebase {
     this.functions = app.functions();
   }
 
+
+  getMessagesWithId = (client, month) => 
+    this.db
+    .collection('chats')
+    .doc(client)
+    .collection('messages')
+    .where('month', '==', month)
+    .where('read', '==', false)
+    .get()
+  
+
+
+
   // Admin Functions
 
   storage = this.storage;
@@ -54,6 +67,17 @@ class Firebase {
         archived: false
       });
   };
+
+  //**** Client Get Dates ****//
+
+  getClientMonths = (user) => 
+    this.db
+    .collection('users')
+    .doc(user)
+    .collection('dates')
+    .where('private', '<', 1)
+    .get()
+
 
   assignCategories = (id, year, month, categories) => {
     console.log('main cates', categories);
@@ -86,12 +110,28 @@ class Firebase {
   }
 
 
-  getSelectedCategoriesPre = id =>
+  getSelectedCategoriesPre = id => {
     this.db
-      .collection('users')
-      .doc(id)
-      .collection('categories')
-      .get();
+    .collection('users')
+    .doc(id)
+    .collection('categories')
+    .get();
+  }
+
+  // Start of client FB calls
+
+  countClientMessages = (client, month, year) => 
+    this.db
+    .collection('users')
+    .doc(client)
+    .collection('dates')
+    .where('month', '==', month)
+    .where('year', '==', year)
+    .get()
+  
+
+ 
+ 
 
   getSinglePost = (userId, id) => {
     this.db
@@ -171,7 +211,7 @@ class Firebase {
     });
   };
 
-  adminSendMessage = (role, date, time, client, message, postId, timestamp) => {
+  adminSendMessage = (role, date, time, client, message, postId, timestamp, month, year) => {
 
     this.db
     .collection('chats')
@@ -183,23 +223,15 @@ class Firebase {
      time,
      message,
      postId,
-     timestamp
-    });
-
-    this.db
-    .collection('chats')
-    .doc(client)
-    .collection('count')
-    .doc('countDoc')
-    .set({
-      count: 1
+     timestamp,
+     read: false,
+     month,
+     year
     });
   }
 
-  // Come Back
-  getMessagesWithId = (client, postId) => {
 
-  }
+  
 
   getSelectedCategories = (id, year, month) =>
     this.db

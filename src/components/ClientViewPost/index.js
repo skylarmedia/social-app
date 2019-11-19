@@ -133,7 +133,7 @@ class ClientViewPost extends Component {
       };
       return (
         <div className="d-flex">
-          <div className="col-sm-6">
+          {/* <div className="col-sm-6">
             <p>{item.title}</p>
             <p>Post Copy</p>
             <p>{item.copy}</p>
@@ -148,7 +148,6 @@ class ClientViewPost extends Component {
             </div>
             <div className="d-flex flex-column">
               <div>PLATFORMS</div>
-
               <div className="d-flex row col-sm-12">
                 <div>{item.facebook && (<p>Facebook</p>)}</div>
                 <div>{item.instagram && (<p>Instagram</p>)}</div>
@@ -170,7 +169,7 @@ class ClientViewPost extends Component {
             </div>
           </div>
 
-          <div />
+          <div /> */}
         </div>
       );
     });

@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { withFirebase } from '../Firebase';
 import EditCategoryForm from '../EditCategoryForm';
 import { Picker } from 'emoji-mart';
 import AdminChatLog from '../ChatLog';
@@ -11,6 +10,7 @@ import TimePicker from 'antd/es/time-picker';
 import moment from 'moment';
 import 'emoji-mart/css/emoji-mart.css';
 import app from 'firebase/app';
+import { withFirebase } from '../Firebase';
 
 class EditPost extends Component {
   constructor(props) {
@@ -22,7 +22,9 @@ class EditPost extends Component {
       approved: false,
       showChat: false,
       message: '',
-      messages: []
+      messages: [],
+      currentMonth: null,
+      currentYear: null
     };
 
     this.handleFacebook = this.handleFacebook.bind(this);
@@ -78,19 +80,40 @@ class EditPost extends Component {
     });
   };
 
+
+  getNumberOfMessages = () => {
+    this.props.firebase.countClientMessages(this.props.match.params.clientId, this.state.currentMonth, this.state.currentYear)
+    .then(snapshot => {
+      console.log('snapshot in months', snapshot)
+      snapshot.docs.map(item => {
+        console.log('item month data', item.data())
+      })
+    })
+  }
+
   componentWillMount() {
 
     this.props.firebase
       .editPostFirebase(this.props.match.params.clientId, this.props.match.params.postId)
       .then(item => {
+        console.log(`item date state`, item.data())
+        const thisVar = this
         if (this.state.posts.length == 0) {
           this.setState({
             posts: item.data().post,
             selectedCategoryName: item.data().selectedCategoryName,
-            approved: item.data().approved
+            approved: item.data().approved,
+            currentMonth: item.data().month,
+            curretYear: item.data().year
+          }, function() {
+            console.log('this', this)
+            this.getNumberOfMessages()
           });
         }
       });
+
+
+     
 
       this.db
       .collection('chats')
@@ -106,17 +129,14 @@ class EditPost extends Component {
           })
         });
       });
+
+      // Get Count of Messages
+      // Remove Count of Messages functions
+
+      // this.props.firebase.countClientMessages(this.props.match.params.clientIdm, this.state.currentMonth, this.state.currentYear)
   }
 
-  addState = (val) => {
-    alert('ran')
-  }
 
-
-
-  componentDidMount() {
-
-  }
 
   submitEdits = () => {
     this.props.firebase.updatePost(
@@ -229,7 +249,9 @@ class EditPost extends Component {
         this.props.match.params.postId, // Client
         this.state.message, // Message
         this.props.match.params.clientId,
-        moment().unix()
+        moment().unix(),
+        this.state.currentMonth, // Month to count messages,
+        this.state.currentYear // Year to count messages
       );
       this.setState({
         message: ''
@@ -272,6 +294,7 @@ class EditPost extends Component {
     var strTime = hours + ':' + minutes + ' ' + ampm;
     return strTime;
   };
+
   render() {
     const posts = this.state.posts.map((post, index) => {
       let image = this.state.posts[index].images.map(item => {

@@ -67,7 +67,7 @@ class SignInFormBase extends Component {
           console.log('return value in signIn', value);
           localStorage.setItem('userId', value.docs[0].data().urlName)
           this.props.history.push({
-            pathname: `/client/${value.docs[0].id}/dates`,
+            pathname: `/client/${localStorage.getItem('userId')}/dates`,
             state: {
               userId: value.docs[0].data().urlName
             }
