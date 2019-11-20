@@ -455,7 +455,8 @@ class Firebase {
         month,
         day,
         selectedCategoryName,
-        approved
+        approved,
+        adminUnread:false
       });
 
   // Get UID
