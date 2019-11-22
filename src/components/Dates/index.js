@@ -13,6 +13,8 @@ import MenuItem from '@material-ui/core/MenuItem';
 import SelectCategory from '../SelectCategory';
 import CategoryList from '../CategoryList';
 
+import app from 'firebase/app';
+
 class Dates extends Component {
   constructor(props) {
     super(props);
@@ -44,6 +46,8 @@ class Dates extends Component {
 
     this.submitForm = this.submitForm.bind(this);
     this.closeCat = this.closeCat.bind(this);
+
+    this.db = app.functions();
   }
 
   componentWillMount() {
@@ -393,7 +397,8 @@ class Dates extends Component {
             Client A-Game’s Calendars
           </h2>
           <p>
-            You don’t seem to have any calendars set up yet. Click below to add one and <br/>get started!
+            You don’t seem to have any calendars set up yet. Click below to add one and <br />
+            get started!
           </p>
           <div class="text-center">
             <img

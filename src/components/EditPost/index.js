@@ -112,9 +112,6 @@ class EditPost extends Component {
         }
       });
 
-
-     
-
       this.db
       .collection('chats')
       .doc(this.props.match.params.postId)

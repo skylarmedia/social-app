@@ -39,7 +39,6 @@ img{
   position: absolute;
   background: #fff;
   box-shadow: 0 0 3.8px 0 rgba(0,0,0,1);
-  border: 1px solid red;
   z-index: 99999;
   max-width: 100%;
   line-height: 1.3;
@@ -48,4 +47,22 @@ img{
 
 h1{
   font-size:20px;
+}
+
+.approved-icon{
+  background:#3BEF3B;
+}
+
+.clientRead-icon{
+  background:#EFB83B;
+}
+
+.clientNotRead-icon{
+  border:2px solid #EFB83B;
+}
+
+.icon{
+  width:18px;
+  height:18px;
+  border-radius:50%;
 }

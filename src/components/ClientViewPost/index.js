@@ -1,11 +1,7 @@
 import React, { Component } from 'react';
 import { withFirebase } from '../Firebase';
 import { compose } from 'redux';
-import MediaWrapper from '../MediaWrapper';
-import Hashtags from '../Hashtags';
-import ChatBox from '../ChatBox';
-import ChatLog from '../ChatLog';
-
+import AdminChatLog from '../ChatLog';
 import { AuthUserContext } from '../Session';
 
 import app from 'firebase/app';
@@ -29,11 +25,13 @@ class ClientViewPost extends Component {
       adminRead: null,
       clientRead: null,
       category: '',
-      color: '#fff'
+      color: '#fff',
+      openedChat: false
     };
 
     this.handleCheckbox = this.handleCheckbox.bind(this);
     this.approveFormSubmit = this.approveFormSubmit.bind(this);
+    this.db = app.firestore();
   }
 
   componentWillMount() {
@@ -56,6 +54,21 @@ class ClientViewPost extends Component {
           }
         );
       });
+      console.log('PROPS MATCH PARAMS', this.props.match.params.id)
+      this.db
+      .collection('chats')
+      .doc(localStorage.getItem('userId'))
+      .collection('messages')
+      .where('postId', '==', this.props.match.params.id)
+      .onSnapshot((snap) => {
+        const messageArr = [...this.state.messages]
+        snap.docChanges().forEach((change) => {
+          messageArr.push(change.doc.data());
+          this.setState({
+            messages:messageArr
+          })
+        });
+      });
 
     // this.props.firebase
     //   .getSinglePost(
@@ -65,6 +78,13 @@ class ClientViewPost extends Component {
     //     console.log('DATA', res)
     //     return res.data()
     //   })
+  }
+
+  toggleChat = () => {
+    alert('ran');
+    this.setState({
+      openedChat:true
+    })
   }
 
   handleCheckbox = event => {
@@ -133,6 +153,27 @@ class ClientViewPost extends Component {
       };
       return (
         <div className="d-flex">
+          TEST
+          {this.state.showChat && (
+            <div>
+              <div>
+                <AdminChatLog messages={this.state.messages} />
+                <form onSubmit={this.submitMessage}>
+                  <textarea
+                    onChange={this.setMessage}
+                    value={this.state.message}
+                    onKeyDown={this.captureKey}
+                  />
+                </form>
+                <span>
+                  {/* <Picker onSelect={this.addEmoji} /> */}
+                </span>
+              </div>
+            </div>
+          )}
+          <button onClick={this.toggleChat} type="button">
+            <img src={require('../assets/chatbox.svg')} />
+          </button>
           {/* <div className="col-sm-6">
             <p>{item.title}</p>
             <p>Post Copy</p>

@@ -1,26 +1,66 @@
 {
-  // Example:
-  //
-  // "indexes": [
-  //   {
-  //     "collectionGroup": "widgets",
-  //     "queryScope": "COLLECTION",
-  //     "fields": [
-  //       { "fieldPath": "foo", "arrayConfig": "CONTAINS" },
-  //       { "fieldPath": "bar", "mode": "DESCENDING" }
-  //     ]
-  //   },
-  //
-  //  "fieldOverrides": [
-  //    {
-  //      "collectionGroup": "widgets",
-  //      "fieldPath": "baz",
-  //      "indexes": [
-  //        { "order": "ASCENDING", "queryScope": "COLLECTION" }
-  //      ]
-  //    },
-  //   ]
-  // ]
-  "indexes": [],
-  "fieldOverrides": []
+  "indexes": [
+    {
+      "collectionGroup": "dates",
+      "queryScope": "COLLECTION_GROUP",
+      "fields": [
+        {
+          "fieldPath": "year",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "month",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "dates",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "year",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "month",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "messages",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "time",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "month",
+          "order": "ASCENDING"
+        }
+      ]
+    }
+  ],
+  "fieldOverrides": [
+    {
+      "collectionGroup": "messages",
+      "fieldPath": "messages",
+      "indexes": [
+        {
+          "order": "ASCENDING",
+          "queryScope": "COLLECTION"
+        },
+        {
+          "order": "DESCENDING",
+          "queryScope": "COLLECTION"
+        },
+        {
+          "arrayConfig": "CONTAINS",
+          "queryScope": "COLLECTION"
+        }
+      ]
+    }
+  ]
 }

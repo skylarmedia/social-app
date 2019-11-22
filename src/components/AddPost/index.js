@@ -8,10 +8,10 @@ import EditCategoryForm from '../EditCategoryForm';
 import moment from 'moment';
 import SubPost from './SubPost';
 
-//
 import EmojiField from 'emoji-picker-textfield';
 import 'emoji-mart/css/emoji-mart.css';
 import { Picker } from 'emoji-mart';
+
 
 
 class AddPost extends Component {
@@ -30,7 +30,8 @@ class AddPost extends Component {
       month: this.props.match.params.month,
       day: this.props.match.params.day,
       selectedCategoryName: '',
-      approved: false
+      approved: false,
+      postAd: false
     };
 
     this.addForm = this.addForm.bind(this);
@@ -40,7 +41,13 @@ class AddPost extends Component {
     this.handlePostTime = this.handlePostTime.bind(this);
     this.receivedValues = this.receivedValues.bind(this);
     this.saveDraft = this.saveDraft.bind(this);
+
   }
+
+  componentWillMount(){
+
+  }
+
 
   onSubmitForm = e => {
     e.preventDefault();
@@ -50,9 +57,18 @@ class AddPost extends Component {
   };
 
   triggerValues = state => {
-    this.setState(previousState => ({
-      tempHold: [...previousState.tempHold, state]
-    }));
+    let adState = false;
+    if (state.ad == true && this.state.postAd == false) {
+      adState = true;
+      this.setState(previousState => ({
+        tempHold: [...previousState.tempHold, state],
+        postAd: adState
+      }));
+    }else{
+      this.setState(previousState => ({
+        tempHold: [...previousState.tempHold, state]
+      }));
+    }
   };
 
   addEmoji = e => {
@@ -260,6 +276,9 @@ class AddPost extends Component {
   }
 
   render() {
+    // console.log('this db', this.db.httpsCallable('readMonths'))
+    // const changeUdata = functions
+    // console.log('THIS DB functions', this.db.functions())
     const buttonStyles = {
       backgroundColor: '#EF463B',
       borderColor: '#007bff',
@@ -268,7 +287,6 @@ class AddPost extends Component {
     };
 
     if (this.state.subPosts.length == this.state.tempHold.length) {
-      // Add Back
       this.props.firebase
         .addPost(
           this.props.match.params.clientId,
@@ -279,7 +297,8 @@ class AddPost extends Component {
           parseInt(this.state.month),
           parseInt(this.state.day),
           this.state.selectedCategoryName,
-          this.state.approved
+          this.state.approved,
+          this.state.postAd
         )
         .then(() => {
           this.props.history.push(
@@ -325,8 +344,8 @@ class AddPost extends Component {
                   <input type="submit" value="Submit" className="add-date-btn" />
                 </div>
                 <button onClick={this.openIcons} className="smile-wrapper" type="button">
-              <img src={require('../assets/happy-face.svg')} className="smile-logo" />
-            </button>
+                  <img src={require('../assets/happy-face.svg')} className="smile-logo" />
+                </button>
               </form>
             </div>
           </div>

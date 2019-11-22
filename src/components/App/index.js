@@ -32,13 +32,13 @@ import ClientDates from '../ClientDates';
 const App = () => (
   <Router basename={'/social-app-deploy'}>
     <div id="outer-container">
-      <div class="d-flex nav-wrapper align-items-center">
-        <div class="d-flex justify-content-between w-100">
-          <div class="d-flex align-items-center">
+      <div className="d-flex nav-wrapper align-items-center">
+        <div className="d-flex justify-content-between w-100">
+          <div className="d-flex align-items-center">
             <NavigationWrapper />
             <h5>Skylar Media</h5>
           </div>
-          <img src={require('../assets/skylar-logo.svg')} id="sky-logo" class="align-self-center" />
+          <img src={require('../assets/skylar-logo.svg')} id="sky-logo" className="align-self-center" />
         </div>
        
       </div>

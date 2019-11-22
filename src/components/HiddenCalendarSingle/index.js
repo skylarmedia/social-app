@@ -6,6 +6,7 @@ import * as ROUTES from '../../constants/routes';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import './index.css';
 import { Checkbox } from 'antd';
+import Icons from '../Icons';
 
 let timer = 0;
 let delay = 200;
@@ -137,9 +138,7 @@ class HiddenCalendarSingle extends Component {
             {this.props.title}
             {this.props.adminRead != false ? '' : ''}
           </button>
-          {this.props.ad && (
-                                        <img src={require('../assets/ad.svg')} />
-                                    )}
+          <Icons ad={this.props.ad} approved={this.props.approved} clientRead={this.props.clientRead} clientNotifcation={this.props.clientNotifcation}/>
           </div>
           {this.state.isHiddenCalendar && (
             <CSSTransition classNames="dialog" timeout={300}>

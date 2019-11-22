@@ -109,7 +109,6 @@ class SubPost extends Component {
 
   addFile = event => {
     const file = Array.from(event.target.files);
-    console.log('add file method', event);
     if (file.length == 1) {
       var emptyFileArr = [];
       file.map(innerFile => {

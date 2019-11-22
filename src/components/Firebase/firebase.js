@@ -176,6 +176,7 @@ class Firebase {
 
   logout = () =>
     this.auth.signOut().then(() => {
+      localStorage.removeItem('userId');
       window.location.href = '/';
     });
 
@@ -221,10 +222,12 @@ class Firebase {
      role,
      date,
      time,
+     client,
      message,
      postId,
      timestamp,
      read: false,
+     readByAdmin:false,
      month,
      year
     });
@@ -442,7 +445,7 @@ class Firebase {
         clientRead: readValue
       });
 
-  addPost = (id, post, draft, color, year, month, day, selectedCategoryName, approved) =>
+  addPost = (id, post, draft, color, year, month, day, selectedCategoryName, approved, postAd) =>
     this.db
       .collection('users')
       .doc(id)
@@ -456,7 +459,11 @@ class Firebase {
         day,
         selectedCategoryName,
         approved,
-        adminUnread:false
+        clientRead:false,
+        adminRead: false,
+        postAd,
+        adminNotification: false,
+        clientNotification: false
       });
 
   // Get UID

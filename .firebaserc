@@ -1,5 +1,6 @@
 {
   "projects": {
-    "default": "skylar-social"
+    "skylar-social-17190": "skylar-social-17190",
+    "default": "skylar-social-17190"
   }
 }

@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import * as ROUTES from '../../constants/routes';
 import HiddenCalendarSingle from '../HiddenCalendarSingle';
 import './index.css';
+import Icons from '../Icons';
 
 class CalendarSingle extends Component {
   constructor(props) {
@@ -29,8 +30,6 @@ class CalendarSingle extends Component {
   truncate = input => (input.length > 200 ? `${input.substring(0, 200)}...` : input);
 
   render() {
-    // const hiddenPost = this.props.posts
-
     return (
       <div className="calendar-popup-wrapper">
         <p className="calendar-single-day">{this.props.day}</p>
@@ -41,11 +40,11 @@ class CalendarSingle extends Component {
               return (
                 <div class="hidden-calendar-wrapper d-flex flex-column">
                   {item.data().draft}
-                  {item.data().approved ? (
+                  {/* {item.data().approved ? (
                     <img src={require('../assets/check.svg')} className="check" />
                   ) : (
                     ''
-                  )}
+                  )} */}
 
                   <HiddenCalendarSingle
                     title={item.data().post[0].title}
@@ -70,6 +69,9 @@ class CalendarSingle extends Component {
                     selectedCategory={item.data().color}
                     adminRead={item.data().adminRead}
                     ad={item.data().post[0].ad}
+                    approved={item.data().approved}
+                    clientRead={item.data().clientRead}
+                    clientNotifcation={item.data().clientNotifcation}
                   />
                 </div>
               );
