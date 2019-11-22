@@ -1,0 +1,226 @@
+[debug] [2019-11-22T15:21:30.380Z] ----------------------------------------------------------------------
+[debug] [2019-11-22T15:21:30.382Z] Command:       /usr/local/bin/node /usr/local/bin/firebase deploy --only functions
+[debug] [2019-11-22T15:21:30.383Z] CLI Version:   7.7.0
+[debug] [2019-11-22T15:21:30.383Z] Platform:      darwin
+[debug] [2019-11-22T15:21:30.383Z] Node Version:  v10.15.3
+[debug] [2019-11-22T15:21:30.384Z] Time:          Fri Nov 22 2019 10:21:30 GMT-0500 (Eastern Standard Time)
+[debug] [2019-11-22T15:21:30.384Z] ----------------------------------------------------------------------
+[debug] [2019-11-22T15:21:30.384Z] 
+[debug] [2019-11-22T15:21:30.392Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2019-11-22T15:21:30.392Z] > authorizing via signed-in user
+[debug] [2019-11-22T15:21:30.392Z] [iam] checking project skylar-social-17190 for permissions ["cloudfunctions.functions.create","cloudfunctions.functions.delete","cloudfunctions.functions.get","cloudfunctions.functions.list","cloudfunctions.functions.update","cloudfunctions.operations.get","firebase.projects.get"]
+[debug] [2019-11-22T15:21:30.394Z] >>> HTTP REQUEST POST https://cloudresourcemanager.googleapis.com/v1/projects/skylar-social-17190:testIamPermissions  
+
+[debug] [2019-11-22T15:21:30.706Z] <<< HTTP RESPONSE 200
+[info] 
+[info] === Deploying to 'skylar-social-17190'...
+[info] 
+[info] i  deploying functions
+[debug] [2019-11-22T15:21:32.427Z] > [functions] package.json contents: {
+  "name": "functions",
+  "description": "Cloud Functions for Firebase",
+  "scripts": {
+    "serve": "firebase serve --only functions",
+    "shell": "firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "8"
+  },
+  "dependencies": {
+    "firebase-admin": "^8.6.0",
+    "firebase-functions": "^3.3.0"
+  },
+  "devDependencies": {
+    "firebase-functions-test": "^0.1.6"
+  },
+  "private": true
+}
+[info] i  functions: ensuring necessary APIs are enabled...
+[debug] [2019-11-22T15:21:32.430Z] >>> HTTP REQUEST GET https://serviceusage.googleapis.com/v1/projects/skylar-social-17190/services/cloudfunctions.googleapis.com  
+ 
+[debug] [2019-11-22T15:21:32.433Z] >>> HTTP REQUEST GET https://serviceusage.googleapis.com/v1/projects/skylar-social-17190/services/runtimeconfig.googleapis.com  
+ 
+[debug] [2019-11-22T15:21:32.623Z] <<< HTTP RESPONSE 200
+[debug] [2019-11-22T15:21:32.783Z] <<< HTTP RESPONSE 200
+[info] ✔  functions: all necessary APIs are enabled
+[debug] [2019-11-22T15:21:32.784Z] >>> HTTP REQUEST GET https://firebase.googleapis.com/v1beta1/projects/skylar-social-17190/adminSdkConfig  
+ 
+[debug] [2019-11-22T15:21:32.980Z] <<< HTTP RESPONSE 200
+[info] i  functions: preparing functions directory for uploading...
+[debug] [2019-11-22T15:21:32.984Z] >>> HTTP REQUEST GET https://runtimeconfig.googleapis.com/v1beta1/projects/skylar-social-17190/configs  
+ 
+[debug] [2019-11-22T15:21:33.205Z] <<< HTTP RESPONSE 200
+[info] i  functions: packaged functions (25.14 KB) for uploading
+[debug] [2019-11-22T15:21:33.433Z] >>> HTTP REQUEST POST https://cloudfunctions.googleapis.com/v1/projects/skylar-social-17190/locations/us-central1/functions:generateUploadUrl  
+ 
+[debug] [2019-11-22T15:21:34.012Z] <<< HTTP RESPONSE 200
+[debug] [2019-11-22T15:21:34.013Z] >>> HTTP REQUEST PUT https://storage.googleapis.com/gcf-upload-us-central1-13fad88a-a511-4d5c-aa1d-168b38ed74fd/8aac34b5-4e08-497e-80e6-a2c304a44a11.zip?GoogleAccessId=service-861778122764@gcf-admin-robot.iam.gserviceaccount.com&Expires=1574437890&Signature=NNHIKEmWB8TJ7YZVP5G9mC%2Bg7ykTpT5ek%2FNdsnE024ssRwTgORd3o35tlEF2XBQMbcLjxdB03gB%2BKBROvtVRvAVP6lQO6EuY2tvuwRfRIcBrvaxM%2BrhrRyrWC2Wx9mrM1dHZxcjPVZn7kw%2BRRi4%2FwsLeKlqG3qzwwALM1ACc6i10A087aNGvLTWh7t8t6LdBuyaJAZxffRwkoBCfqV2BJMyqyILJNzIwo4k7IV13SC5uJ%2BoszVQKmIIPAVJAj7LAE0omHpvHmEv83rpgSIEDl8KzIayLSnA2s8eyImohRmj9yPX9HG6plavLAkvO%2BbCLs92d%2Fod%2BRpJRTdiM96R9Dw%3D%3D  
+ <request body omitted>
+[debug] [2019-11-22T15:21:34.246Z] <<< HTTP RESPONSE 200
+[info] ✔  functions: functions folder uploaded successfully
+[debug] [2019-11-22T15:21:34.249Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/projects/skylar-social-17190/locations/-/functions  
+ 
+[debug] [2019-11-22T15:21:34.589Z] <<< HTTP RESPONSE 200
+[info] i  functions: updating Node.js 8 function countUnread(us-central1)...
+[debug] [2019-11-22T15:21:34.592Z] Trigger is:  {"eventTrigger":{"resource":"projects/skylar-social-17190/databases/(default)/documents/chats/{userId}/messages/{message}","eventType":"providers/cloud.firestore/eventTypes/document.create","service":"firestore.googleapis.com"}}
+[info] i  functions: updating Node.js 8 function readMonths(us-central1)...
+[debug] [2019-11-22T15:21:34.592Z] Trigger is:  {"httpsTrigger":{}}
+[info] i  functions: updating Node.js 8 function readClientMessages(us-central1)...
+[debug] [2019-11-22T15:21:34.593Z] Trigger is:  {"httpsTrigger":{}}
+[info] i  functions: updating Node.js 8 function getNumberOfMonths(us-central1)...
+[debug] [2019-11-22T15:21:34.593Z] Trigger is:  {"httpsTrigger":{}}
+[debug] [2019-11-22T15:21:34.594Z] >>> HTTP REQUEST GET https://serviceusage.googleapis.com/v1/projects/skylar-social-17190/services/cloudscheduler.googleapis.com  
+ 
+[debug] [2019-11-22T15:21:34.935Z] <<< HTTP RESPONSE 200
+[debug] [2019-11-22T15:21:34.938Z] >>> HTTP REQUEST PATCH https://cloudfunctions.googleapis.com/v1/projects/skylar-social-17190/locations/us-central1/functions/countUnread {"updateMask":"sourceUploadUrl,name,labels,runtime,eventTrigger.resource,eventTrigger.eventType,eventTrigger.service"} 
+
+[debug] [2019-11-22T15:21:34.940Z] >>> HTTP REQUEST PATCH https://cloudfunctions.googleapis.com/v1/projects/skylar-social-17190/locations/us-central1/functions/readMonths {"updateMask":"sourceUploadUrl,name,labels,runtime,httpsTrigger"} 
+
+[debug] [2019-11-22T15:21:34.941Z] >>> HTTP REQUEST PATCH https://cloudfunctions.googleapis.com/v1/projects/skylar-social-17190/locations/us-central1/functions/readClientMessages {"updateMask":"sourceUploadUrl,name,labels,runtime,httpsTrigger"} 
+
+[debug] [2019-11-22T15:21:34.941Z] >>> HTTP REQUEST PATCH https://cloudfunctions.googleapis.com/v1/projects/skylar-social-17190/locations/us-central1/functions/getNumberOfMonths {"updateMask":"sourceUploadUrl,name,labels,runtime,httpsTrigger"} 
+
+[debug] [2019-11-22T15:21:35.242Z] <<< HTTP RESPONSE 200
+[debug] [2019-11-22T15:21:35.243Z] <<< HTTP RESPONSE 400
+[debug] [2019-11-22T15:21:35.243Z] <<< HTTP RESPONSE BODY
+[warn] ⚠  functions: failed to update function readMonths
+[info] HTTP Error: 400, An operation on function readMonths in region us-central1 in project skylar-social-17190 is already in progress. Please try again later.
+[debug] [2019-11-22T15:21:35.246Z] <<< HTTP RESPONSE 200
+[debug] [2019-11-22T15:21:35.325Z] <<< HTTP RESPONSE 200
+[debug] [2019-11-22T15:21:35.327Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/projects/skylar-social-17190/locations/-/functions  
+ 
+[debug] [2019-11-22T15:21:35.754Z] <<< HTTP RESPONSE 200
+[debug] [2019-11-22T15:21:35.756Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/operations/c2t5bGFyLXNvY2lhbC0xNzE5MC91cy1jZW50cmFsMS9jb3VudFVucmVhZC9wUy1BUW55YlVtcw  
+ 
+[debug] [2019-11-22T15:21:35.756Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/operations/c2t5bGFyLXNvY2lhbC0xNzE5MC91cy1jZW50cmFsMS9yZWFkQ2xpZW50TWVzc2FnZXMvaGx1NDhKanNTck0  
+ 
+[debug] [2019-11-22T15:21:35.757Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/operations/c2t5bGFyLXNvY2lhbC0xNzE5MC91cy1jZW50cmFsMS9nZXROdW1iZXJPZk1vbnRocy8zb0g0VUVHZXNfMA  
+ 
+[debug] [2019-11-22T15:21:35.892Z] <<< HTTP RESPONSE 200
+[debug] [2019-11-22T15:21:35.925Z] <<< HTTP RESPONSE 200
+[debug] [2019-11-22T15:21:35.935Z] <<< HTTP RESPONSE 200
+[debug] [2019-11-22T15:21:37.894Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/operations/c2t5bGFyLXNvY2lhbC0xNzE5MC91cy1jZW50cmFsMS9jb3VudFVucmVhZC9wUy1BUW55YlVtcw  
+ 
+[debug] [2019-11-22T15:21:37.927Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/operations/c2t5bGFyLXNvY2lhbC0xNzE5MC91cy1jZW50cmFsMS9nZXROdW1iZXJPZk1vbnRocy8zb0g0VUVHZXNfMA  
+ 
+[debug] [2019-11-22T15:21:37.935Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/operations/c2t5bGFyLXNvY2lhbC0xNzE5MC91cy1jZW50cmFsMS9yZWFkQ2xpZW50TWVzc2FnZXMvaGx1NDhKanNTck0  
+ 
+[debug] [2019-11-22T15:21:38.047Z] <<< HTTP RESPONSE 200
+[debug] [2019-11-22T15:21:38.057Z] <<< HTTP RESPONSE 200
+[debug] [2019-11-22T15:21:38.089Z] <<< HTTP RESPONSE 200
+[debug] [2019-11-22T15:22:35.759Z] ----------------------------------------------------------------------
+[debug] [2019-11-22T15:22:35.761Z] Command:       /usr/local/bin/node /usr/local/bin/firebase deploy --only functions
+[debug] [2019-11-22T15:22:35.761Z] CLI Version:   7.7.0
+[debug] [2019-11-22T15:22:35.761Z] Platform:      darwin
+[debug] [2019-11-22T15:22:35.761Z] Node Version:  v10.15.3
+[debug] [2019-11-22T15:22:35.762Z] Time:          Fri Nov 22 2019 10:22:35 GMT-0500 (Eastern Standard Time)
+[debug] [2019-11-22T15:22:35.762Z] ----------------------------------------------------------------------
+[debug] [2019-11-22T15:22:35.762Z] 
+[debug] [2019-11-22T15:22:35.772Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2019-11-22T15:22:35.772Z] > authorizing via signed-in user
+[debug] [2019-11-22T15:22:35.772Z] [iam] checking project skylar-social-17190 for permissions ["cloudfunctions.functions.create","cloudfunctions.functions.delete","cloudfunctions.functions.get","cloudfunctions.functions.list","cloudfunctions.functions.update","cloudfunctions.operations.get","firebase.projects.get"]
+[debug] [2019-11-22T15:22:35.774Z] >>> HTTP REQUEST POST https://cloudresourcemanager.googleapis.com/v1/projects/skylar-social-17190:testIamPermissions  
+
+[debug] [2019-11-22T15:22:36.086Z] <<< HTTP RESPONSE 200
+[info] 
+[info] === Deploying to 'skylar-social-17190'...
+[info] 
+[info] i  deploying functions
+[debug] [2019-11-22T15:22:37.603Z] > [functions] package.json contents: {
+  "name": "functions",
+  "description": "Cloud Functions for Firebase",
+  "scripts": {
+    "serve": "firebase serve --only functions",
+    "shell": "firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "8"
+  },
+  "dependencies": {
+    "firebase-admin": "^8.6.0",
+    "firebase-functions": "^3.3.0"
+  },
+  "devDependencies": {
+    "firebase-functions-test": "^0.1.6"
+  },
+  "private": true
+}
+[info] i  functions: ensuring necessary APIs are enabled...
+[debug] [2019-11-22T15:22:37.605Z] >>> HTTP REQUEST GET https://serviceusage.googleapis.com/v1/projects/skylar-social-17190/services/cloudfunctions.googleapis.com  
+ 
+[debug] [2019-11-22T15:22:37.606Z] >>> HTTP REQUEST GET https://serviceusage.googleapis.com/v1/projects/skylar-social-17190/services/runtimeconfig.googleapis.com  
+ 
+[debug] [2019-11-22T15:22:37.795Z] <<< HTTP RESPONSE 200
+[info] ✔  functions: all necessary APIs are enabled
+[debug] [2019-11-22T15:22:37.934Z] <<< HTTP RESPONSE 200
+[debug] [2019-11-22T15:22:37.934Z] >>> HTTP REQUEST GET https://firebase.googleapis.com/v1beta1/projects/skylar-social-17190/adminSdkConfig  
+ 
+[debug] [2019-11-22T15:22:38.130Z] <<< HTTP RESPONSE 200
+[info] i  functions: preparing functions directory for uploading...
+[debug] [2019-11-22T15:22:38.134Z] >>> HTTP REQUEST GET https://runtimeconfig.googleapis.com/v1beta1/projects/skylar-social-17190/configs  
+ 
+[debug] [2019-11-22T15:22:38.625Z] <<< HTTP RESPONSE 200
+[info] i  functions: packaged functions (25.14 KB) for uploading
+[debug] [2019-11-22T15:22:38.831Z] >>> HTTP REQUEST POST https://cloudfunctions.googleapis.com/v1/projects/skylar-social-17190/locations/us-central1/functions:generateUploadUrl  
+ 
+[debug] [2019-11-22T15:22:39.343Z] <<< HTTP RESPONSE 200
+[debug] [2019-11-22T15:22:39.344Z] >>> HTTP REQUEST PUT https://storage.googleapis.com/gcf-upload-us-central1-13fad88a-a511-4d5c-aa1d-168b38ed74fd/f5863868-5d9c-4a9f-9926-e9d3c38a0d22.zip?GoogleAccessId=service-861778122764@gcf-admin-robot.iam.gserviceaccount.com&Expires=1574437955&Signature=Q0Qgy8FvUsONDGkUqai5ShqNzvQWHWj2tQ%2BW1VTsT1xsE07HQbeQf3VFh66lxUV%2FtrDa2PRnaKD4phwYG6QPT%2FQaKHHQw0B1MdNAiDepQ3YJEgKzqcOEUgbdPkIKsqIsTqRnm6npAHY50%2FkHtq65eNrjya%2BOj9kZ1o9ewCiX3iC1cYjzwxpau4Arr8wEUPPlHSMbE00jAhqMgJHpC4wvc3b%2FVmOatJzNqLLiatu7Y5r%2BTQMQPqYl33D%2Bv1h0mTS4GPsU9ruIEGK7955XEYGyCFeBEBG6BG1Y5a6z6yBrkSTfmXvEqPJIc2dH1loVo1bdM0qecWmzutOAMw4uSuIcOw%3D%3D  
+ <request body omitted>
+[debug] [2019-11-22T15:22:39.552Z] <<< HTTP RESPONSE 200
+[info] ✔  functions: functions folder uploaded successfully
+[debug] [2019-11-22T15:22:39.556Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/projects/skylar-social-17190/locations/-/functions  
+ 
+[debug] [2019-11-22T15:22:39.855Z] <<< HTTP RESPONSE 200
+[info] i  functions: updating Node.js 8 function countUnread(us-central1)...
+[debug] [2019-11-22T15:22:39.858Z] Trigger is:  {"eventTrigger":{"resource":"projects/skylar-social-17190/databases/(default)/documents/chats/{userId}/messages/{message}","eventType":"providers/cloud.firestore/eventTypes/document.create","service":"firestore.googleapis.com"}}
+[info] i  functions: updating Node.js 8 function readMonths(us-central1)...
+[debug] [2019-11-22T15:22:39.859Z] Trigger is:  {"httpsTrigger":{}}
+[info] i  functions: updating Node.js 8 function readClientMessages(us-central1)...
+[debug] [2019-11-22T15:22:39.859Z] Trigger is:  {"httpsTrigger":{}}
+[info] i  functions: updating Node.js 8 function getNumberOfMonths(us-central1)...
+[debug] [2019-11-22T15:22:39.859Z] Trigger is:  {"httpsTrigger":{}}
+[debug] [2019-11-22T15:22:39.860Z] >>> HTTP REQUEST GET https://serviceusage.googleapis.com/v1/projects/skylar-social-17190/services/cloudscheduler.googleapis.com  
+ 
+[debug] [2019-11-22T15:22:40.264Z] <<< HTTP RESPONSE 200
+[debug] [2019-11-22T15:22:40.268Z] >>> HTTP REQUEST PATCH https://cloudfunctions.googleapis.com/v1/projects/skylar-social-17190/locations/us-central1/functions/countUnread {"updateMask":"sourceUploadUrl,name,labels,runtime,eventTrigger.resource,eventTrigger.eventType,eventTrigger.service"} 
+
+[debug] [2019-11-22T15:22:40.269Z] >>> HTTP REQUEST PATCH https://cloudfunctions.googleapis.com/v1/projects/skylar-social-17190/locations/us-central1/functions/readMonths {"updateMask":"sourceUploadUrl,name,labels,runtime,httpsTrigger"} 
+
+[debug] [2019-11-22T15:22:40.270Z] >>> HTTP REQUEST PATCH https://cloudfunctions.googleapis.com/v1/projects/skylar-social-17190/locations/us-central1/functions/readClientMessages {"updateMask":"sourceUploadUrl,name,labels,runtime,httpsTrigger"} 
+
+[debug] [2019-11-22T15:22:40.270Z] >>> HTTP REQUEST PATCH https://cloudfunctions.googleapis.com/v1/projects/skylar-social-17190/locations/us-central1/functions/getNumberOfMonths {"updateMask":"sourceUploadUrl,name,labels,runtime,httpsTrigger"} 
+
+[debug] [2019-11-22T15:22:40.570Z] <<< HTTP RESPONSE 400
+[debug] [2019-11-22T15:22:40.571Z] <<< HTTP RESPONSE BODY
+[warn] ⚠  functions: failed to update function readMonths
+[info] HTTP Error: 400, An operation on function readMonths in region us-central1 in project skylar-social-17190 is already in progress. Please try again later.
+[debug] [2019-11-22T15:22:40.575Z] <<< HTTP RESPONSE 200
+[debug] [2019-11-22T15:22:40.577Z] <<< HTTP RESPONSE 200
+[debug] [2019-11-22T15:22:40.591Z] <<< HTTP RESPONSE 200
+[debug] [2019-11-22T15:22:40.592Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/projects/skylar-social-17190/locations/-/functions  
+ 
+[debug] [2019-11-22T15:22:40.947Z] <<< HTTP RESPONSE 200
+[debug] [2019-11-22T15:22:40.948Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/operations/c2t5bGFyLXNvY2lhbC0xNzE5MC91cy1jZW50cmFsMS9jb3VudFVucmVhZC9faVBoNnVYcHBHWQ  
+ 
+[debug] [2019-11-22T15:22:40.949Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/operations/c2t5bGFyLXNvY2lhbC0xNzE5MC91cy1jZW50cmFsMS9yZWFkQ2xpZW50TWVzc2FnZXMvb1FadEJPaER3Tm8  
+ 
+[debug] [2019-11-22T15:22:40.949Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/operations/c2t5bGFyLXNvY2lhbC0xNzE5MC91cy1jZW50cmFsMS9nZXROdW1iZXJPZk1vbnRocy81cE5aQXlNeldOVQ  
+ 
+[debug] [2019-11-22T15:22:41.108Z] <<< HTTP RESPONSE 200
+[debug] [2019-11-22T15:22:41.111Z] <<< HTTP RESPONSE 200
+[debug] [2019-11-22T15:22:41.128Z] <<< HTTP RESPONSE 200
+[debug] [2019-11-22T15:22:43.114Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/operations/c2t5bGFyLXNvY2lhbC0xNzE5MC91cy1jZW50cmFsMS9yZWFkQ2xpZW50TWVzc2FnZXMvb1FadEJPaER3Tm8  
+ 
+[debug] [2019-11-22T15:22:43.115Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/operations/c2t5bGFyLXNvY2lhbC0xNzE5MC91cy1jZW50cmFsMS9nZXROdW1iZXJPZk1vbnRocy81cE5aQXlNeldOVQ  
+ 
+[debug] [2019-11-22T15:22:43.130Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/operations/c2t5bGFyLXNvY2lhbC0xNzE5MC91cy1jZW50cmFsMS9jb3VudFVucmVhZC9faVBoNnVYcHBHWQ  
+ 
+[debug] [2019-11-22T15:22:43.268Z] <<< HTTP RESPONSE 200
+[debug] [2019-11-22T15:22:43.287Z] <<< HTTP RESPONSE 200
+[debug] [2019-11-22T15:22:43.306Z] <<< HTTP RESPONSE 200

@@ -1,0 +1,184 @@
+[debug] [2019-11-18T04:27:08.370Z] ----------------------------------------------------------------------
+[debug] [2019-11-18T04:27:08.372Z] Command:       /usr/local/bin/node /usr/local/bin/firebase init
+[debug] [2019-11-18T04:27:08.372Z] CLI Version:   7.7.0
+[debug] [2019-11-18T04:27:08.372Z] Platform:      darwin
+[debug] [2019-11-18T04:27:08.372Z] Node Version:  v10.15.3
+[debug] [2019-11-18T04:27:08.373Z] Time:          Sun Nov 17 2019 23:27:08 GMT-0500 (Eastern Standard Time)
+[debug] [2019-11-18T04:27:08.373Z] ----------------------------------------------------------------------
+[debug] [2019-11-18T04:27:08.373Z] 
+[warn] ⚠  JSON error trying to load /Users/edwardlanto/Desktop/social-app-deploy/.firebaserc
+[debug] [2019-11-18T04:27:08.386Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2019-11-18T04:27:08.386Z] > authorizing via signed-in user
+[info] 
+     ######## #### ########  ######## ########     ###     ######  ########
+     ##        ##  ##     ## ##       ##     ##  ##   ##  ##       ##
+     ######    ##  ########  ######   ########  #########  ######  ######
+     ##        ##  ##    ##  ##       ##     ## ##     ##       ## ##
+     ##       #### ##     ## ######## ########  ##     ##  ######  ########
+
+You're about to initialize a Firebase project in this directory:
+
+  /Users/edwardlanto/Desktop/social-app-deploy
+
+Before we get started, keep in mind:
+
+  * You are initializing in an existing Firebase project directory
+
+[info] 
+=== Project Setup
+[info] 
+[info] First, let's associate this project directory with a Firebase project.
+[info] You can create multiple project aliases by running firebase use --add, 
+[info] but for now we'll just set up a default project.
+[info] 
+[info] i  If you want to create a project in a Google Cloud organization or folder, please use "firebase projects:create" instead, and return to this command when you've created the project.
+[debug] [2019-11-18T04:27:27.577Z] >>> HTTP REQUEST POST https://cloudresourcemanager.googleapis.com/v1/projects  
+
+[debug] [2019-11-18T04:27:28.005Z] <<< HTTP RESPONSE 409
+[debug] [2019-11-18T04:27:28.005Z] <<< HTTP RESPONSE BODY
+[debug] [2019-11-18T04:27:28.007Z] HTTP Error: 409, Requested entity already exists
+[debug] [2019-11-18T04:27:28.106Z] FirebaseError: HTTP Error: 409, Requested entity already exists
+    at module.exports (/usr/local/lib/node_modules/firebase-tools/lib/responseToError.js:38:12)
+    at Request._callback (/usr/local/lib/node_modules/firebase-tools/lib/api.js:39:35)
+    at Request.self.callback (/usr/local/lib/node_modules/firebase-tools/node_modules/request/request.js:185:22)
+    at Request.emit (events.js:189:13)
+    at Request.EventEmitter.emit (domain.js:441:20)
+    at Request.<anonymous> (/usr/local/lib/node_modules/firebase-tools/node_modules/request/request.js:1161:10)
+    at Request.emit (events.js:189:13)
+    at Request.EventEmitter.emit (domain.js:441:20)
+    at IncomingMessage.<anonymous> (/usr/local/lib/node_modules/firebase-tools/node_modules/request/request.js:1083:12)
+    at Object.onceWrapper (events.js:277:13)
+[error] 
+[error] Error: Failed to create Google Cloud project. See firebase-debug.log for more info.
+[debug] [2019-11-18T04:27:32.251Z] ----------------------------------------------------------------------
+[debug] [2019-11-18T04:27:32.253Z] Command:       /usr/local/bin/node /usr/local/bin/firebase init
+[debug] [2019-11-18T04:27:32.254Z] CLI Version:   7.7.0
+[debug] [2019-11-18T04:27:32.254Z] Platform:      darwin
+[debug] [2019-11-18T04:27:32.254Z] Node Version:  v10.15.3
+[debug] [2019-11-18T04:27:32.255Z] Time:          Sun Nov 17 2019 23:27:32 GMT-0500 (Eastern Standard Time)
+[debug] [2019-11-18T04:27:32.255Z] ----------------------------------------------------------------------
+[debug] [2019-11-18T04:27:32.255Z] 
+[warn] ⚠  JSON error trying to load /Users/edwardlanto/Desktop/social-app-deploy/.firebaserc
+[debug] [2019-11-18T04:27:32.267Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2019-11-18T04:27:32.267Z] > authorizing via signed-in user
+[info] 
+     ######## #### ########  ######## ########     ###     ######  ########
+     ##        ##  ##     ## ##       ##     ##  ##   ##  ##       ##
+     ######    ##  ########  ######   ########  #########  ######  ######
+     ##        ##  ##    ##  ##       ##     ## ##     ##       ## ##
+     ##       #### ##     ## ######## ########  ##     ##  ######  ########
+
+You're about to initialize a Firebase project in this directory:
+
+  /Users/edwardlanto/Desktop/social-app-deploy
+
+Before we get started, keep in mind:
+
+  * You are initializing in an existing Firebase project directory
+
+[info] 
+=== Project Setup
+[info] 
+[info] First, let's associate this project directory with a Firebase project.
+[info] You can create multiple project aliases by running firebase use --add, 
+[info] but for now we'll just set up a default project.
+[info] 
+[debug] [2019-11-18T04:27:36.542Z] >>> HTTP REQUEST GET https://firebase.googleapis.com/v1beta1/projects/skylar-social  
+ 
+[debug] [2019-11-18T04:27:36.787Z] <<< HTTP RESPONSE 200
+[info] i  Using project skylar-social (Skylar Social)
+[info] 
+=== Firestore Setup
+[debug] [2019-11-18T04:27:36.821Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2019-11-18T04:27:36.825Z] > authorizing via signed-in user
+[debug] [2019-11-18T04:27:36.826Z] >>> HTTP REQUEST GET https://firebase.googleapis.com/v1beta1/projects/skylar-social  
+ 
+[debug] [2019-11-18T04:27:36.989Z] <<< HTTP RESPONSE 200
+[info] 
+[info] Firestore Security Rules allow you to define how and when to allow
+[info] requests. You can keep these rules in your project directory
+[info] and publish them with firebase deploy.
+[info] 
+[debug] [2019-11-18T04:27:47.933Z] >>> HTTP REQUEST GET https://firebaserules.googleapis.com/v1/projects/skylar-social/releases?pageSize=10&pageToken=  
+ 
+[debug] [2019-11-18T04:27:48.137Z] <<< HTTP RESPONSE 200
+[debug] [2019-11-18T04:27:48.138Z] No rulesets found, using default.
+[debug] [2019-11-18T04:27:48.240Z] Error: EISDIR: illegal operation on a directory, open '/Users/edwardlanto/Desktop/social-app-deploy'
+    at Object.openSync (fs.js:438:3)
+    at Object.writeFileSync (fs.js:1189:35)
+    at Config.writeProjectFile (/usr/local/lib/node_modules/firebase-tools/lib/config.js:179:8)
+    at getRulesFromConsole.then (/usr/local/lib/node_modules/firebase-tools/lib/init/features/firestore/rules.js:55:31)
+    at process._tickCallback (internal/process/next_tick.js:68:7)
+[error] 
+[error] Error: An unexpected error has occurred.
+[debug] [2019-11-18T04:27:51.294Z] ----------------------------------------------------------------------
+[debug] [2019-11-18T04:27:51.296Z] Command:       /usr/local/bin/node /usr/local/bin/firebase init
+[debug] [2019-11-18T04:27:51.296Z] CLI Version:   7.7.0
+[debug] [2019-11-18T04:27:51.296Z] Platform:      darwin
+[debug] [2019-11-18T04:27:51.296Z] Node Version:  v10.15.3
+[debug] [2019-11-18T04:27:51.297Z] Time:          Sun Nov 17 2019 23:27:51 GMT-0500 (Eastern Standard Time)
+[debug] [2019-11-18T04:27:51.297Z] ----------------------------------------------------------------------
+[debug] [2019-11-18T04:27:51.297Z] 
+[warn] ⚠  JSON error trying to load /Users/edwardlanto/Desktop/social-app-deploy/.firebaserc
+[debug] [2019-11-18T04:27:51.308Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2019-11-18T04:27:51.309Z] > authorizing via signed-in user
+[info] 
+     ######## #### ########  ######## ########     ###     ######  ########
+     ##        ##  ##     ## ##       ##     ##  ##   ##  ##       ##
+     ######    ##  ########  ######   ########  #########  ######  ######
+     ##        ##  ##    ##  ##       ##     ## ##     ##       ## ##
+     ##       #### ##     ## ######## ########  ##     ##  ######  ########
+
+You're about to initialize a Firebase project in this directory:
+
+  /Users/edwardlanto/Desktop/social-app-deploy
+
+Before we get started, keep in mind:
+
+  * You are initializing in an existing Firebase project directory
+
+[info] 
+=== Project Setup
+[info] 
+[info] First, let's associate this project directory with a Firebase project.
+[info] You can create multiple project aliases by running firebase use --add, 
+[info] but for now we'll just set up a default project.
+[info] 
+[debug] [2019-11-18T04:27:54.782Z] >>> HTTP REQUEST GET https://firebase.googleapis.com/v1beta1/projects/skylar-social  
+ 
+[debug] [2019-11-18T04:27:55.004Z] <<< HTTP RESPONSE 200
+[info] i  Using project skylar-social (Skylar Social)
+[info] 
+=== Firestore Setup
+[debug] [2019-11-18T04:27:55.026Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2019-11-18T04:27:55.030Z] > authorizing via signed-in user
+[debug] [2019-11-18T04:27:55.031Z] >>> HTTP REQUEST GET https://firebase.googleapis.com/v1beta1/projects/skylar-social  
+ 
+[debug] [2019-11-18T04:27:55.195Z] <<< HTTP RESPONSE 200
+[info] 
+[info] Firestore Security Rules allow you to define how and when to allow
+[info] requests. You can keep these rules in your project directory
+[info] and publish them with firebase deploy.
+[info] 
+[info] 
+[info] Firestore indexes allow you to perform complex queries while
+[info] maintaining performance that scales with the size of the result
+[info] set. You can keep index definitions in your project directory
+[info] and publish them with firebase deploy.
+[info] 
+[debug] [2019-11-18T04:28:09.379Z] >>> HTTP REQUEST GET https://firestore.googleapis.com/v1beta2/projects/skylar-social/databases/(default)/collectionGroups/-/indexes  
+ 
+[debug] [2019-11-18T04:28:09.380Z] >>> HTTP REQUEST GET https://firestore.googleapis.com/v1beta2/projects/skylar-social/databases/(default)/collectionGroups/-/fields?filter=indexConfig.usesAncestorConfig=false  
+ 
+[debug] [2019-11-18T04:28:09.655Z] <<< HTTP RESPONSE 400
+[debug] [2019-11-18T04:28:09.656Z] <<< HTTP RESPONSE BODY
+[debug] [2019-11-18T04:28:09.665Z] <<< HTTP RESPONSE 400
+[debug] [2019-11-18T04:28:09.665Z] <<< HTTP RESPONSE BODY
+[debug] [2019-11-18T04:28:09.753Z] Error: EISDIR: illegal operation on a directory, open '/Users/edwardlanto/Desktop/social-app-deploy/y'
+    at Object.openSync (fs.js:438:3)
+    at Object.writeFileSync (fs.js:1189:35)
+    at Config.writeProjectFile (/usr/local/lib/node_modules/firebase-tools/lib/config.js:179:8)
+    at getIndexesFromConsole.then (/usr/local/lib/node_modules/firebase-tools/lib/init/features/firestore/indexes.js:56:31)
+    at process._tickCallback (internal/process/next_tick.js:68:7)
+[error] 
+[error] Error: An unexpected error has occurred.

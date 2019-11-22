@@ -1,0 +1,62 @@
+[debug] [2019-11-18T04:05:21.809Z] ----------------------------------------------------------------------
+[debug] [2019-11-18T04:05:21.811Z] Command:       /usr/local/bin/node /usr/local/bin/firebase deploy
+[debug] [2019-11-18T04:05:21.811Z] CLI Version:   7.7.0
+[debug] [2019-11-18T04:05:21.811Z] Platform:      darwin
+[debug] [2019-11-18T04:05:21.811Z] Node Version:  v10.15.3
+[debug] [2019-11-18T04:05:21.812Z] Time:          Sun Nov 17 2019 23:05:21 GMT-0500 (Eastern Standard Time)
+[debug] [2019-11-18T04:05:21.812Z] ----------------------------------------------------------------------
+[debug] [2019-11-18T04:05:21.812Z] 
+[debug] [2019-11-18T04:05:21.820Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2019-11-18T04:05:21.821Z] > authorizing via signed-in user
+[debug] [2019-11-18T04:05:21.821Z] [iam] checking project skylar-social for permissions ["cloudfunctions.functions.create","cloudfunctions.functions.delete","cloudfunctions.functions.get","cloudfunctions.functions.list","cloudfunctions.functions.update","cloudfunctions.operations.get","datastore.indexes.create","datastore.indexes.delete","datastore.indexes.list","datastore.indexes.update","firebase.projects.get","firebasehosting.sites.update","firebaserules.releases.create","firebaserules.releases.update","firebaserules.rulesets.create"]
+[debug] [2019-11-18T04:05:21.822Z] >>> HTTP REQUEST POST https://cloudresourcemanager.googleapis.com/v1/projects/skylar-social:testIamPermissions  
+
+[debug] [2019-11-18T04:05:22.205Z] <<< HTTP RESPONSE 200
+[debug] [2019-11-18T04:05:22.207Z] >>> HTTP REQUEST GET https://firebase.googleapis.com/v1beta1/projects/skylar-social  
+ 
+[debug] [2019-11-18T04:05:22.498Z] <<< HTTP RESPONSE 200
+[info] 
+[info] === Deploying to 'skylar-social'...
+[info] 
+[info] i  deploying storage, firestore, functions, hosting
+[debug] [2019-11-18T04:05:24.236Z] >>> HTTP REQUEST GET https://appengine.googleapis.com/v1/apps/skylar-social  
+ 
+[debug] [2019-11-18T04:05:24.723Z] <<< HTTP RESPONSE 200
+[info] i  storage: checking storage.rules for compilation errors...
+[debug] [2019-11-18T04:05:24.726Z] >>> HTTP REQUEST POST https://firebaserules.googleapis.com/v1/projects/skylar-social:test  
+
+[debug] [2019-11-18T04:05:25.025Z] <<< HTTP RESPONSE 200
+[info] ✔  storage: rules file storage.rules compiled successfully
+[info] i  firestore: checking firestore.rules for compilation errors...
+[info] i  firestore: reading indexes from firestore.indexes.json...
+[debug] [2019-11-18T04:05:25.029Z] >>> HTTP REQUEST POST https://firebaserules.googleapis.com/v1/projects/skylar-social:test  
+
+[debug] [2019-11-18T04:05:25.211Z] <<< HTTP RESPONSE 200
+[info] ✔  firestore: rules file firestore.rules compiled successfully
+[debug] [2019-11-18T04:05:25.214Z] > [functions] package.json contents: {
+  "name": "functions",
+  "description": "Cloud Functions for Firebase",
+  "scripts": {
+    "serve": "firebase serve --only functions",
+    "shell": "firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "8"
+  },
+  "dependencies": {
+    "firebase-admin": "^8.0.0",
+    "firebase-functions": "^3.0.0"
+  },
+  "devDependencies": {
+    "firebase-functions-test": "^0.1.6"
+  },
+  "private": true
+}
+[info] i  functions: ensuring necessary APIs are enabled...
+[debug] [2019-11-18T04:05:25.216Z] >>> HTTP REQUEST GET https://serviceusage.googleapis.com/v1/projects/skylar-social/services/cloudfunctions.googleapis.com  
+ 
+[debug] [2019-11-18T04:05:25.216Z] >>> HTTP REQUEST GET https://serviceusage.googleapis.com/v1/projects/skylar-social/services/runtimeconfig.googleapis.com  
+ 

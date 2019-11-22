@@ -1,0 +1,25 @@
+[debug] [2019-11-18T04:32:56.417Z] ----------------------------------------------------------------------
+[debug] [2019-11-18T04:32:56.419Z] Command:       /usr/local/bin/node /usr/local/bin/firebase init
+[debug] [2019-11-18T04:32:56.419Z] CLI Version:   7.7.0
+[debug] [2019-11-18T04:32:56.419Z] Platform:      darwin
+[debug] [2019-11-18T04:32:56.419Z] Node Version:  v10.15.3
+[debug] [2019-11-18T04:32:56.420Z] Time:          Sun Nov 17 2019 23:32:56 GMT-0500 (Eastern Standard Time)
+[debug] [2019-11-18T04:32:56.420Z] ----------------------------------------------------------------------
+[debug] [2019-11-18T04:32:56.420Z] 
+[debug] [2019-11-18T04:32:56.428Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2019-11-18T04:32:56.428Z] > authorizing via signed-in user
+[info] 
+     ######## #### ########  ######## ########     ###     ######  ########
+     ##        ##  ##     ## ##       ##     ##  ##   ##  ##       ##
+     ######    ##  ########  ######   ########  #########  ######  ######
+     ##        ##  ##    ##  ##       ##     ## ##     ##       ## ##
+     ##       #### ##     ## ######## ########  ##     ##  ######  ########
+
+You're about to initialize a Firebase project in this directory:
+
+  /Users/edwardlanto/Desktop/social-app-deploy
+
+Before we get started, keep in mind:
+
+  * You are initializing in an existing Firebase project directory
+

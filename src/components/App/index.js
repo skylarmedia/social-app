@@ -58,7 +58,9 @@ const App = () => (
         <Route
           exact
           path="/view-post/:month/:day/:id"
-          render={props => <ClientViewPost {...props} />}
+          component={ClientViewPost}
+          
+          />
         />
         <Route
           path="/admin-view-post/:month/:day/:title/:client/:itemId"

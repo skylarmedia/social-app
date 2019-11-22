@@ -26,15 +26,19 @@ class ClientViewPost extends Component {
       clientRead: null,
       category: '',
       color: '#fff',
-      openedChat: false
+      openedChat: false,
+      updatedMessages: false
     };
 
     this.handleCheckbox = this.handleCheckbox.bind(this);
     this.approveFormSubmit = this.approveFormSubmit.bind(this);
     this.db = app.firestore();
+    this.functions = app.functions();
   }
 
   componentWillMount() {
+
+    // Get Post
     app
       .firestore()
       .collection('users')
@@ -47,14 +51,12 @@ class ClientViewPost extends Component {
           {
             posts: res.data().post,
             category: res.data().selectedCategoryName,
-            categoryColor: res.data().color
-          },
-          () => {
-            console.log('RES', res.data());
-          }
-        );
+            categoryColor: res.data().color,
+            postId: this.props.match.params.id
+          });
       });
-      console.log('PROPS MATCH PARAMS', this.props.match.params.id)
+
+      // Get Messages
       this.db
       .collection('chats')
       .doc(localStorage.getItem('userId'))
@@ -70,20 +72,24 @@ class ClientViewPost extends Component {
         });
       });
 
-    // this.props.firebase
-    //   .getSinglePost(
-    //     this.state.userId,
-    //     this.props.match.params.id
-    //   ).then(res => {
-    //     console.log('DATA', res)
-    //     return res.data()
-    //   })
+      // let newId = this.props.match.params.id;
+      // let functionObj = new Object();
+      const updateClientMessages = this.functions.httpsCallable('updateClientMessages');
+      // functionObj.postId = newId;
+      // functionObj.userId = this.state.userId;
+      updateClientMessages('test')
+      // readClientMessages(functionObj).then(res => {
+      //     console.log("RESPONSE GOTTEN", res)
+      // });
   }
 
   toggleChat = () => {
-    alert('ran');
+    if(this.state.updatedMessages == false){
+
+    }
     this.setState({
-      openedChat:true
+      showChat: !this.state.showChat,
+      updatedMessages: true
     })
   }
 
@@ -99,7 +105,7 @@ class ClientViewPost extends Component {
   approveFormSubmit = e => {
     e.preventDefault();
 
-    this.props.firebase.approvePost(this.state.userId, this.state.postId, this.state.approved);
+    // this.props.firebase.approvePost(this.state.userId, this.state.postId, this.state.approved);
   };
 
   showPopUp = e => {
@@ -153,7 +159,6 @@ class ClientViewPost extends Component {
       };
       return (
         <div className="d-flex">
-          TEST
           {this.state.showChat && (
             <div>
               <div>
@@ -209,8 +214,7 @@ class ClientViewPost extends Component {
               <div className="col-sm-4">POST MEDIUM</div>
             </div>
           </div>
-
-          <div /> */}
+          */}
         </div>
       );
     });

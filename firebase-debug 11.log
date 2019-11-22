@@ -1,0 +1,14 @@
+[debug] [2019-11-22T15:03:10.368Z] ----------------------------------------------------------------------
+[debug] [2019-11-22T15:03:10.370Z] Command:       /usr/local/bin/node /usr/local/bin/firebase deploy --only functions
+[debug] [2019-11-22T15:03:10.370Z] CLI Version:   7.7.0
+[debug] [2019-11-22T15:03:10.371Z] Platform:      darwin
+[debug] [2019-11-22T15:03:10.371Z] Node Version:  v10.15.3
+[debug] [2019-11-22T15:03:10.372Z] Time:          Fri Nov 22 2019 10:03:10 GMT-0500 (Eastern Standard Time)
+[debug] [2019-11-22T15:03:10.372Z] ----------------------------------------------------------------------
+[debug] [2019-11-22T15:03:10.372Z] 
+[debug] [2019-11-22T15:03:10.382Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2019-11-22T15:03:10.382Z] > authorizing via signed-in user
+[debug] [2019-11-22T15:03:10.382Z] [iam] checking project skylar-social-17190 for permissions ["cloudfunctions.functions.create","cloudfunctions.functions.delete","cloudfunctions.functions.get","cloudfunctions.functions.list","cloudfunctions.functions.update","cloudfunctions.operations.get","firebase.projects.get"]
+[debug] [2019-11-22T15:03:10.384Z] >>> HTTP REQUEST POST https://cloudresourcemanager.googleapis.com/v1/projects/skylar-social-17190:testIamPermissions  
+
+[debug] [2019-11-22T15:03:10.695Z] <<< HTTP RESPONSE 200

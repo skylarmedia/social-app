@@ -9,8 +9,9 @@ import DatePicker from 'react-datepicker';
 import TimePicker from 'antd/es/time-picker';
 import moment from 'moment';
 import 'emoji-mart/css/emoji-mart.css';
-import app from 'firebase/app';
 import { withFirebase } from '../Firebase';
+
+import app from 'firebase/app';
 
 class EditPost extends Component {
   constructor(props) {
@@ -37,6 +38,7 @@ class EditPost extends Component {
     this.setMessage = this.setMessage.bind(this);
 
     this.db = app.firestore();
+    this.functions = app.functions();
   }
 
   handlePostMedium = e => {
@@ -80,24 +82,29 @@ class EditPost extends Component {
     });
   };
 
-
   getNumberOfMessages = () => {
-    this.props.firebase.countClientMessages(this.props.match.params.clientId, this.state.currentMonth, this.state.currentYear)
-    .then(snapshot => {
-      console.log('snapshot in months', snapshot)
-      snapshot.docs.map(item => {
-        console.log('item month data', item.data())
-      })
-    })
-  }
+    this.props.firebase
+      .countClientMessages(
+        this.props.match.params.clientId,
+        this.state.currentMonth,
+        this.state.currentYear
+      )
+      .then(snapshot => {
+        console.log('snapshot in months', snapshot);
+        snapshot.docs.map(item => {
+          console.log('item month data', item.data());
+        });
+      });
+  };
 
   componentWillMount() {
-
+    console.log('clientid', this.props.match.params.clientId);
+    console.log('post id', this.props.match.params.postId);
     this.props.firebase
       .editPostFirebase(this.props.match.params.clientId, this.props.match.params.postId)
       .then(item => {
-        console.log(`item date state`, item.data())
-        const thisVar = this
+        console.log(`item date state`, item.data());
+        const thisVar = this;
         if (this.state.posts.length == 0) {
           this.setState({
             posts: item.data().post,
@@ -105,35 +112,34 @@ class EditPost extends Component {
             approved: item.data().approved,
             currentMonth: item.data().month,
             curretYear: item.data().year
-          }, function() {
-            console.log('this', this)
-            this.getNumberOfMessages()
           });
         }
       });
 
-      this.db
+    this.db
       .collection('chats')
       .doc(this.props.match.params.postId)
       .collection('messages')
       .where('postId', '==', this.props.match.params.clientId)
-      .onSnapshot((snap) => {
-        const messageArr = [...this.state.messages]
-        snap.docChanges().forEach((change) => {
-          messageArr.push(change.doc.data());
-          this.setState({
-            messages:messageArr
-          })
+      .onSnapshot(snap => {
+        const messageArr = [...this.state.messages];
+        snap.docChanges().forEach(change => {
+          if (change.type == 'added') {
+            console.log('CHANGE DETECTED', change);
+            messageArr.push(change.doc.data());
+            this.setState({
+              messages: messageArr
+            });
+          }
         });
       });
-
-      // Get Count of Messages
-      // Remove Count of Messages functions
-
-      // this.props.firebase.countClientMessages(this.props.match.params.clientIdm, this.state.currentMonth, this.state.currentYear)
   }
 
-
+  deletePostParent = index => {
+    this.setState({
+      messages: this.state.messages.filter((_, i) => i !== index)
+    });
+  };
 
   submitEdits = () => {
     this.props.firebase.updatePost(
@@ -293,6 +299,7 @@ class EditPost extends Component {
   };
 
   render() {
+    console.log('props id ', this.props.match.params.postId);
     const posts = this.state.posts.map((post, index) => {
       let image = this.state.posts[index].images.map(item => {
         return <img src={item} key={item} />;
@@ -456,7 +463,11 @@ class EditPost extends Component {
           {this.state.showChat && (
             <div>
               <div>
-                <AdminChatLog messages={this.state.messages} />
+                <AdminChatLog
+                  deletePost={this.deletePostParent}
+                  adminClient={this.props.match.params.postId}
+                  messages={this.state.messages}
+                />
                 <form onSubmit={this.submitMessage}>
                   <textarea
                     onChange={this.setMessage}

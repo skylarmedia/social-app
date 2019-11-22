@@ -13,7 +13,7 @@ class CalendarImage extends Component {
   }
 
   componentWillMount() {
-    console.log('props firebase', this.props);
+    // console.log('props firebase', this.props);
     // Function Call to Firebase Server
 
     if (this.props) {

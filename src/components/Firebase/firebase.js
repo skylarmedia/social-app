@@ -2,8 +2,7 @@ import app from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/firestore';
 import 'firebase/storage';
-import 'firebase/functions';
-import { runInThisContext } from 'vm';
+import 'firebase/functions';  
 // import addAdminRole from '../functions';
 // import * as admin from "firebase-admin";
 
@@ -37,6 +36,14 @@ class Firebase {
     .where('month', '==', month)
     .where('read', '==', false)
     .get()
+
+    deleteMessage = (user, timeStamp) => 
+    this.db.collection('chats')
+    .doc(user)
+    .collection('messages')
+    .where('timeStamp', '==', timeStamp)
+    .delete();
+
   
 
 
@@ -219,14 +226,14 @@ class Firebase {
     .doc(client)
     .collection('messages')
     .add({
-     role,
+     admin:true,
      date,
      time,
      client,
      message,
      postId,
      timestamp,
-     read: false,
+     readByClient: false,
      readByAdmin:false,
      month,
      year
