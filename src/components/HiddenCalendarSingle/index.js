@@ -138,7 +138,13 @@ class HiddenCalendarSingle extends Component {
             {this.props.title}
             {this.props.adminRead != false ? '' : ''}
           </button>
-          <Icons ad={this.props.ad} approved={this.props.approved} clientRead={this.props.clientRead} clientNotifcation={this.props.clientNotifcation}/>
+          <Icons 
+            ad={this.props.ad} 
+            approved={this.props.approved} 
+            clientRead={this.props.clientRead} 
+            clientNotifcation={this.props.clientNotifcation}
+            adminNotification={this.props.adminNotifcation}
+          />
           </div>
           {this.state.isHiddenCalendar && (
             <CSSTransition classNames="dialog" timeout={300}>

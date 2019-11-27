@@ -19,8 +19,14 @@ class AdminChatLog extends Component {
 
   componentDidMount() {
     console.log('item message', this.props.messages);
-    console.log('this db', this.db)
+    console.log('this db', this.db);
   }
+
+  deletePostParent = index => {
+    this.setState({
+      messages: this.state.messages.filter((_, i) => i !== index)
+    });
+  };
 
   deleteMessage(client, timestamp, i) {
     this.db
@@ -31,18 +37,16 @@ class AdminChatLog extends Component {
       .get()
       .then(res => {
         this.db
-        .collection('chats')
-        .doc(client)
-        .collection('messages')
-        .doc(res.docs[0].id)
-        .delete();
+          .collection('chats')
+          .doc(client)
+          .collection('messages')
+          .doc(res.docs[0].id)
+          .delete();
         // console.log('id in res', res)
         // console.log('doc res client', client, timestamp)
-      })
+      });
 
-    this.props.deletePost(i)
-
-
+    this.props.deletePost(i);
   }
 
   render() {
@@ -58,9 +62,7 @@ class AdminChatLog extends Component {
                 <div class="admin-message-wrap">
                   <button
                     type="button"
-                    onClick={() =>
-                      this.deleteMessage(this.props.adminClient, item.timestamp, i)
-                    }
+                    onClick={() => this.deleteMessage(this.props.adminClient, item.timestamp, i)}
                   >
                     <i class="fas fa-ellipsis-h"></i>
                   </button>

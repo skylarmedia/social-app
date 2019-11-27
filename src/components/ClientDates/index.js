@@ -64,7 +64,13 @@ class ClientDates extends Component {
             month={item.month}
             name={item.name}
             userId={this.props.match.params.id}
+            admin={false}
           />
+          <Link to={`/client-calendar/${item.year}/${item.month}`}>
+          <p>
+            {item.name} {item.year}
+          </p>
+        </Link>
         </li>
       );
     });

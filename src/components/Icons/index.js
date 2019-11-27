@@ -28,7 +28,7 @@ class Icons extends Component {
     if(icon.approved == true){
         return <div class="approved-icon icon"></div>
     }
-    if(icon.ad == true){
+    if(icon.postAd == true){
         return <div><img src={require('../assets/ad.svg')} /></div>
     }
     if(icon.clientRead == false){
@@ -37,6 +37,9 @@ class Icons extends Component {
     if(icon.clientRead == true){
         return <div class="clientNotRead-icon icon"></div>
     }
+    if(icon.adminNotifcation == true){
+      return <div >RED</div>
+  }
   };
 
   render() {

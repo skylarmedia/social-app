@@ -9,6 +9,9 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import './index.css';
 import MainButton from '../MainButton';
+import ClientImage from '../ClientImage';
+
+import app from 'firebase/app';
 
 class Home extends Component {
   constructor(props) {
@@ -37,6 +40,8 @@ class Home extends Component {
     this.handleLogoUpload = this.handleLogoUpload.bind(this);
     this.addFile = this.addFile.bind(this);
     this.confirmArchive = this.confirmArchive.bind(this);
+    this.db = app.firestore()
+    this.functions = app.functions();
   }
 
   // Component lifecycle methods
@@ -240,7 +245,8 @@ class Home extends Component {
                       key={index}
                     >
                       <Link to={`/dates/${user.urlName}`}>
-                        <img src={user.logo} className="user-background" />
+                        <ClientImage logo={user.logo} name={user.name}/>
+                        {/* <img src={user.logo} className="user-background" /> */}
                       </Link>
                       <div class="d-flex align-items-center align-items-center">
                         <div className="x-wrapper">

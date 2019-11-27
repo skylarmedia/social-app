@@ -2,7 +2,7 @@ import app from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/firestore';
 import 'firebase/storage';
-import 'firebase/functions';  
+import 'firebase/functions';
 // import addAdminRole from '../functions';
 // import * as admin from "firebase-admin";
 
@@ -27,26 +27,24 @@ class Firebase {
     this.functions = app.functions();
   }
 
+  updateClientNotification = (client, postId) =>
+  this.db
+  .collection('users')
+  .doc(client)
+  .collection('posts')
+  .doc(postId)
+  .update({
+    clientNotification:false
+  })
 
-  getMessagesWithId = (client, month) => 
+  getMessagesWithId = (client, month) =>
     this.db
-    .collection('chats')
-    .doc(client)
-    .collection('messages')
-    .where('month', '==', month)
-    .where('read', '==', false)
-    .get()
-
-    deleteMessage = (user, timeStamp) => 
-    this.db.collection('chats')
-    .doc(user)
-    .collection('messages')
-    .where('timeStamp', '==', timeStamp)
-    .delete();
-
-  
-
-
+      .collection('chats')
+      .doc(client)
+      .collection('messages')
+      .where('month', '==', month)
+      .where('read', '==', false)
+      .get();
 
   // Admin Functions
 
@@ -77,14 +75,13 @@ class Firebase {
 
   //**** Client Get Dates ****//
 
-  getClientMonths = (user) => 
+  getClientMonths = user =>
     this.db
-    .collection('users')
-    .doc(user)
-    .collection('dates')
-    .where('private', '<', 1)
-    .get()
-
+      .collection('users')
+      .doc(user)
+      .collection('dates')
+      .where('private', '<', 1)
+      .get();
 
   assignCategories = (id, year, month, categories) => {
     console.log('main cates', categories);
@@ -109,36 +106,31 @@ class Firebase {
 
   getMessages = (id, postId) => {
     this.db
-    .collection('chats')
-    .doc(id)
-    .collection('messages')
-    .where('postId', '==', postId)
-    .get()
-  }
-
+      .collection('chats')
+      .doc(id)
+      .collection('messages')
+      .where('postId', '==', postId)
+      .get();
+  };
 
   getSelectedCategoriesPre = id => {
     this.db
-    .collection('users')
-    .doc(id)
-    .collection('categories')
-    .get();
-  }
+      .collection('users')
+      .doc(id)
+      .collection('categories')
+      .get();
+  };
 
   // Start of client FB calls
 
-  countClientMessages = (client, month, year) => 
+  countClientMessages = (client, month, year) =>
     this.db
-    .collection('users')
-    .doc(client)
-    .collection('dates')
-    .where('month', '==', month)
-    .where('year', '==', year)
-    .get()
-  
-
- 
- 
+      .collection('users')
+      .doc(client)
+      .collection('dates')
+      .where('month', '==', month)
+      .where('year', '==', year)
+      .get();
 
   getSinglePost = (userId, id) => {
     this.db
@@ -200,8 +192,6 @@ class Firebase {
         }
       );
 
-
-
   sendCategories = (user, categories) => {
     categories.forEach(function(category) {
       app
@@ -220,28 +210,24 @@ class Firebase {
   };
 
   adminSendMessage = (role, date, time, client, message, postId, timestamp, month, year) => {
-
     this.db
-    .collection('chats')
-    .doc(client)
-    .collection('messages')
-    .add({
-     admin:true,
-     date,
-     time,
-     client,
-     message,
-     postId,
-     timestamp,
-     readByClient: false,
-     readByAdmin:false,
-     month,
-     year
-    });
-  }
-
-
-  
+      .collection('chats')
+      .doc(client)
+      .collection('messages')
+      .add({
+        admin: role,
+        date,
+        time,
+        client,
+        message,
+        postId,
+        timestamp,
+        readByClient: false,
+        readByAdmin: false,
+        month,
+        year
+      });
+  };
 
   getSelectedCategories = (id, year, month) =>
     this.db
@@ -267,6 +253,13 @@ class Firebase {
     this.db
       .collection('users')
       .doc(user)
+      .get();
+
+  getUserUnusedCategories = (user, month) =>
+    this.db
+      .collection('users')
+      .doc(user)
+      .collection('categories')
       .get();
 
   getUserCategories = (user, month) =>
@@ -466,7 +459,7 @@ class Firebase {
         day,
         selectedCategoryName,
         approved,
-        clientRead:false,
+        clientRead: false,
         adminRead: false,
         postAd,
         adminNotification: false,
@@ -592,15 +585,14 @@ class Firebase {
       .delete();
 
   getPrivacy = (id, year, month) => {
-        this.db
+    this.db
       .collection('users')
       .doc(id)
       .collection('dates')
       .where('month', '==', month)
       .where('year', '==', year)
       .get();
-  }
-
-  }
+  };
+}
 
 export default Firebase;

@@ -13,16 +13,23 @@ class CalendarImage extends Component {
   }
 
   componentWillMount() {
-    // console.log('props firebase', this.props);
-    // Function Call to Firebase Server
-
-    if (this.props) {
+    if (this.props.admin == false) {
       let functionObj = new Object();
       const readMonths = this.db.httpsCallable('readMonths');
       functionObj.userId = this.props.userId
       functionObj.month = this.props.month
       readMonths(functionObj).then(res => {
-          console.log("RESPONSE GOTTEN")
+        console.log('res', res)
+        // this.setState({
+        //   size: res.data._size
+        // });
+      });
+    }else{
+      let functionObj = new Object();
+      const readMonthsAdmin = this.db.httpsCallable('readMonthsAdmin');
+      functionObj.userId = this.props.userId
+      functionObj.month = this.props.month
+      readMonthsAdmin(functionObj).then(res => {
         this.setState({
           size: res.data._size
         });
@@ -35,11 +42,6 @@ class CalendarImage extends Component {
       <div>
         <p>{this.state.size}</p>
         <img src={require('../assets/grouped-single-calendar.svg')} class="cal-img" />
-        <Link to={`/client-calendar/${this.props.year}/${this.props.month}`}>
-          <p>
-            {this.props.name} {this.props.year}
-          </p>
-        </Link>
       </div>
     );
   }

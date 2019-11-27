@@ -8,6 +8,7 @@ import './index.css';
 import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
+import CalendarImage from '../CalendarImage';
 
 // Category List
 import SelectCategory from '../SelectCategory';
@@ -76,7 +77,9 @@ class Dates extends Component {
       });
     });
 
-    this.props.firebase.getUserCategories(this.props.match.params.id).then(snapshot => {
+    this.props.firebase.getUserUnusedCategories(this.props.match.params.id).then(snapshot => {
+      console.log('snapshot in cat,', snapshot)
+      console.log('rpos match parms', this.props.match.params.id)
       const catArr = [...this.state.categories];
       // console.log('cat arr', catArr)
       snapshot.docs.map((category, index) => {
@@ -208,7 +211,12 @@ class Dates extends Component {
   render() {
     const renderDates = this.state.date.map((item, index) => (
       <div class="position-relative date-map-item ">
-        <img src={require('../assets/grouped-single-calendar.svg')} class="cal-img" />
+        <CalendarImage 
+            year={item.year}
+            month={item.month}
+            userId={this.props.match.params.id}
+            admin={true}
+        />
         <div class="d-flex justify-content-between">
           <Link
             to={`/calendar/${item.year}/${item.month}/${this.props.match.params.id}`}

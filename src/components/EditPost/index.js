@@ -25,7 +25,8 @@ class EditPost extends Component {
       message: '',
       messages: [],
       currentMonth: null,
-      currentYear: null
+      currentYear: null,
+      updatedMessages: false
     };
 
     this.handleFacebook = this.handleFacebook.bind(this);
@@ -97,25 +98,7 @@ class EditPost extends Component {
       });
   };
 
-  componentWillMount() {
-    console.log('clientid', this.props.match.params.clientId);
-    console.log('post id', this.props.match.params.postId);
-    this.props.firebase
-      .editPostFirebase(this.props.match.params.clientId, this.props.match.params.postId)
-      .then(item => {
-        console.log(`item date state`, item.data());
-        const thisVar = this;
-        if (this.state.posts.length == 0) {
-          this.setState({
-            posts: item.data().post,
-            selectedCategoryName: item.data().selectedCategoryName,
-            approved: item.data().approved,
-            currentMonth: item.data().month,
-            curretYear: item.data().year
-          });
-        }
-      });
-
+  unsubscribe = () =>
     this.db
       .collection('chats')
       .doc(this.props.match.params.postId)
@@ -133,6 +116,39 @@ class EditPost extends Component {
           }
         });
       });
+
+  componentWillMount() {
+    console.log('clientid', );
+    console.log('post id', this.props.match.params.postId);
+
+    const updateAdminMessages = this.functions.httpsCallable('updateAdminMessages');
+    let newId = this.props.match.params.id;
+    let functionObj = new Object();
+    functionObj.postId = this.props.match.params.clientId;
+    functionObj.userId = this.props.match.params.postId
+    updateAdminMessages(functionObj);
+
+    this.props.firebase
+      .editPostFirebase(this.props.match.params.clientId, this.props.match.params.postId)
+      .then(item => {
+        console.log(`item date state`, item.data());
+        const thisVar = this;
+        if (this.state.posts.length == 0) {
+          this.setState({
+            posts: item.data().post,
+            selectedCategoryName: item.data().selectedCategoryName,
+            approved: item.data().approved,
+            currentMonth: item.data().month,
+            curretYear: item.data().year
+          });
+        }
+      });
+
+    this.unsubscribe();
+  }
+
+  componentWillUnmount() {
+    this.unsubscribe();
   }
 
   deletePostParent = index => {
@@ -230,6 +246,9 @@ class EditPost extends Component {
   };
 
   toggleChat = () => {
+    if (this.state.updatedMessages == false) {
+    }
+
     this.setState({
       showChat: !this.state.showChat
     });
@@ -246,7 +265,7 @@ class EditPost extends Component {
     if (e.key === 'Enter') {
       e.preventDefault();
       this.props.firebase.adminSendMessage(
-        'admin', // Role
+        true,
         moment(new Date()).format('DD/MM/YYYY'), // Date,
         this.formatAMPM(new Date()),
         this.props.match.params.postId, // Client
@@ -260,6 +279,11 @@ class EditPost extends Component {
         message: ''
       });
     }
+
+    this.props.firebase.updateClientNotification(
+      this.props.match.params.postId, // Client, 
+      this.props.match.params.clientId,
+    )
   };
 
   addEmoji = e => {
@@ -459,7 +483,7 @@ class EditPost extends Component {
           id="approvePost"
         />
         {posts}
-        <div class="fixed-bottom container position_relative;">
+        <div class="fixed-bottom container position_relative col-md-4">
           {this.state.showChat && (
             <div>
               <div>

@@ -3,7 +3,7 @@ import { withFirebase } from '../Firebase';
 import { compose } from 'redux';
 import AdminChatLog from '../ChatLog';
 import { AuthUserContext } from '../Session';
-
+import moment from 'moment';
 import app from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/firestore';
@@ -27,7 +27,8 @@ class ClientViewPost extends Component {
       category: '',
       color: '#fff',
       openedChat: false,
-      updatedMessages: false
+      updatedMessages: false,
+      clientRead:false
     };
 
     this.handleCheckbox = this.handleCheckbox.bind(this);
@@ -47,51 +48,74 @@ class ClientViewPost extends Component {
       .doc(this.props.match.params.id)
       .get()
       .then(res => {
-        this.setState(
-          {
-            posts: res.data().post,
-            category: res.data().selectedCategoryName,
-            categoryColor: res.data().color,
-            postId: this.props.match.params.id
-          });
+        console.log('RES IN VIEW POST', res)
+        this.setState({
+          posts: res.data().post,
+          category: res.data().selectedCategoryName,
+          categoryColor: res.data().color,
+          postId: this.props.match.params.id,
+          clientRead: res.data().clientRead,
+          approved: res.data().approved
+        });
       });
 
-      // Get Messages
-      this.db
+    // Get Messages
+    this.db
       .collection('chats')
       .doc(localStorage.getItem('userId'))
       .collection('messages')
       .where('postId', '==', this.props.match.params.id)
-      .onSnapshot((snap) => {
-        const messageArr = [...this.state.messages]
-        snap.docChanges().forEach((change) => {
-          messageArr.push(change.doc.data());
-          this.setState({
-            messages:messageArr
-          })
+      .onSnapshot(snap => {
+        const messageArr = [...this.state.messages];
+
+        snap.docChanges().forEach(change => {
+          console.log('CHANGE', change.type);
+          if (change.type == 'added') {
+            console.log('CHANGE DETECTED', change);
+            messageArr.push(change.doc.data());
+            this.setState({
+              messages: messageArr
+            });
+          } else if (change.type == 'removed') {
+            console.log(change.oldIndex);
+            this.setState({
+              messages: this.state.messages.filter((_, i) => i !== change.oldIndex)
+            });
+            console.log('CHANGE REMOVED', change);
+          }
         });
       });
 
-      // let newId = this.props.match.params.id;
-      // let functionObj = new Object();
-      const updateClientMessages = this.functions.httpsCallable('updateClientMessages');
-      // functionObj.postId = newId;
-      // functionObj.userId = this.state.userId;
-      updateClientMessages('test')
-      // readClientMessages(functionObj).then(res => {
-      //     console.log("RESPONSE GOTTEN", res)
-      // });
+    const updateClientMessages = this.functions.httpsCallable('updateClientMessages');
+    let newId = this.props.match.params.id;
+    let functionObj = new Object();
+    functionObj.postId = newId;
+    functionObj.userId = this.state.userId;
+    updateClientMessages(functionObj);
+
+    //update readByClient
+    if(this.state.clientRead == false){
+      app
+      .firestore()
+      .collection('users')
+      .doc(this.state.userId)
+      .collection('posts')
+      .doc(this.props.match.params.id)
+      .update({
+        clientRead: true
+      })
+    }
+
   }
 
   toggleChat = () => {
-    if(this.state.updatedMessages == false){
-
+    if (this.state.updatedMessages == false) {
     }
     this.setState({
       showChat: !this.state.showChat,
       updatedMessages: true
-    })
-  }
+    });
+  };
 
   handleCheckbox = event => {
     const target = event.target;
@@ -108,12 +132,60 @@ class ClientViewPost extends Component {
     // this.props.firebase.approvePost(this.state.userId, this.state.postId, this.state.approved);
   };
 
+  deletePostParent = index => {
+    alert('ran');
+    this.setState({
+      messages: this.state.messages.filter((_, i) => i !== index)
+    });
+  };
+
   showPopUp = e => {
     e.preventDefault();
 
     this.setState({
       showPopUp: !this.state.showPopUp
     });
+  };
+
+  formatAMPM = date => {
+    var hours = date.getHours();
+    var minutes = date.getMinutes();
+    var ampm = hours >= 12 ? 'pm' : 'am';
+    hours = hours % 12;
+    hours = hours ? hours : 12; // the hour '0' should be '12'
+    minutes = minutes < 10 ? '0' + minutes : minutes;
+    var strTime = hours + ':' + minutes + ' ' + ampm;
+    return strTime;
+  };
+
+  captureKey = e => {
+    if (e.key === 'Enter') {
+      console.log('CLIENT ID', this.state.userId);
+      e.preventDefault();
+      this.props.firebase.adminSendMessage(
+        false,
+        moment(new Date()).format('DD/MM/YYYY'), // Date,
+        this.formatAMPM(new Date()),
+        this.state.userId, // Client
+        this.state.message, // Message
+        this.props.match.params.id,
+        moment().unix(),
+        parseInt(this.props.match.params.month), // Month to count messages,
+        2019 // Year to count messages
+      );
+
+      this.setState({
+        message: ''
+      });
+
+      const updateClientNotification = this.functions.httpsCallable('updateClientNotification');
+      let newId = this.props.match.params.id;
+      let  noteObj = new Object();
+      noteObj.postId = newId;
+      noteObj.userId = this.state.userId;
+      updateClientNotification(noteObj);
+
+    }
   };
 
   getMessage = (id, month, day, title, message, logo) => {
@@ -137,6 +209,14 @@ class ClientViewPost extends Component {
     this.props.firebase.editReadAdmin(localStorage.userId, this.state.postId, this.state.adminRead);
   }
 
+  setMessage = e => {
+    e.preventDefault();
+    this.setState({
+      message: e.target.value
+    });
+  };
+
+  
   render() {
     console.log(this.state, 'read or not read');
     const approveStyles = {
@@ -154,35 +234,22 @@ class ClientViewPost extends Component {
     };
 
     const posts = this.state.posts.map(item => {
+      console.log("ITEM POST in client", item)
       const styles = {
         backgroundColor: this.state.categoryColor
       };
       return (
         <div className="d-flex">
-          {this.state.showChat && (
-            <div>
-              <div>
-                <AdminChatLog messages={this.state.messages} />
-                <form onSubmit={this.submitMessage}>
-                  <textarea
-                    onChange={this.setMessage}
-                    value={this.state.message}
-                    onKeyDown={this.captureKey}
-                  />
-                </form>
-                <span>
-                  {/* <Picker onSelect={this.addEmoji} /> */}
-                </span>
-              </div>
-            </div>
-          )}
-          <button onClick={this.toggleChat} type="button">
-            <img src={require('../assets/chatbox.svg')} />
-          </button>
-          {/* <div className="col-sm-6">
-            <p>{item.title}</p>
-            <p>Post Copy</p>
-            <p>{item.copy}</p>
+          <div>
+            <p>Title:{item.title}</p>
+            <p>Copy:{item.copy}</p>
+          </div>
+          <div>IMAGES
+            {item.images.map( image => {
+              return (
+                <img src={image} />
+              )
+            })}
           </div>
           <div className="col-sm-6 d-flex flex-wrap">
             <div style={styles} className="col-sm-6 align-self-center">
@@ -195,11 +262,11 @@ class ClientViewPost extends Component {
             <div className="d-flex flex-column">
               <div>PLATFORMS</div>
               <div className="d-flex row col-sm-12">
-                <div>{item.facebook && (<p>Facebook</p>)}</div>
-                <div>{item.instagram && (<p>Instagram</p>)}</div>
-                <div>{item.twitter && (<p>Twitter</p>)}</div>
-                <div>{item.linkedin && (<p>Linkedin</p>)}</div>
-                <div>{item.other && (<p>Other</p>)}</div>
+                <div>{item.facebook && <p>Facebook</p>}</div>
+                <div>{item.instagram && <p>Instagram</p>}</div>
+                <div>{item.twitter && <p>Twitter</p>}</div>
+                <div>{item.linkedin && <p>Linkedin</p>}</div>
+                <div>{item.other && <p>Other</p>}</div>
               </div>
             </div>
 
@@ -214,7 +281,6 @@ class ClientViewPost extends Component {
               <div className="col-sm-4">POST MEDIUM</div>
             </div>
           </div>
-          */}
         </div>
       );
     });
@@ -224,6 +290,21 @@ class ClientViewPost extends Component {
         <AuthUserContext.Consumer>
           {authUser => (
             <div className="container">
+            <div class="col-md-5">
+              {this.state.showChat && (
+                <div>
+                  <AdminChatLog messages={this.state.messages} deletePost={this.deletePostParent} />
+                  <textarea
+                    onChange={this.setMessage}
+                    value={this.state.message}
+                    onKeyDown={this.captureKey.bind(this)}
+                  />
+                </div>
+              )}
+              <button onClick={this.toggleChat} type="button">
+                <img src={require('../assets/chatbox.svg')} />
+              </button>
+              </div>
               {this.state.showPopUp ? (
                 <div style={popUpStyles}>
                   You have changed the approval of this post

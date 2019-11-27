@@ -72,6 +72,7 @@ class CalendarSingle extends Component {
                     approved={item.data().approved}
                     clientRead={item.data().clientRead}
                     clientNotifcation={item.data().clientNotifcation}
+                    adminNotifcation={item.data().adminNotification}
                   />
                 </div>
               );

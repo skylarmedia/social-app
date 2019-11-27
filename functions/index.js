@@ -42,9 +42,66 @@ exports.readMonths = functions.https.onCall(data => {
     .get();
 });
 
-exports.readClientMessages = functions.https.onCall(data => {
-    console.log('RAN CLIENT MESSAGES')
-    console.log('RAN CLIENT MESSAGES DATA', data)
+exports.readMonthsAdmin = functions.https.onCall(data => {
+  console.log('FINAL DATA', data);
+  return admin
+    .firestore()
+    .collection('chats')
+    .doc(data.userId)
+    .collection('messages')
+    .where('month', '==', data.month)
+    .where('readByAdmin', '==', false)
+    .where('admin', '==', false)
+    .get()
+});
+
+// exports.readClientMessages = functions.https.onCall(data => {
+//     console.log('RAN CLIENT MESSAGES')
+//     console.log('RAN CLIENT MESSAGES DATA', data)
+//   return admin
+//     .firestore()
+//     .collection('chats')
+//     .doc(data.userId)
+//     .collection('messages')
+//     .where('postId', '==', data.postId)
+//     .get()
+//     .then(snapshot => {
+//       let batch = admin.firestore().batch();
+//       console.log('batch', batch)
+//       snapshot.forEach(function(doc) {
+//         console.log('RES OF SNAP', doc);
+//       });
+//     });
+// });
+
+// Update Home User Unread Messages
+exports.updateHomeClientMessages = functions.https.onCall(data => {
+  return admin
+  .firestore()
+  .collection('chats')
+  .doc(data.userId)
+  .collection('messages')
+  .where('readByAdmin', '==', false)
+  .get()
+})
+
+// Updat notification for Admin from Client
+exports.updateClientNotification  = functions.https.onCall(data => {
+  console.log('data in client noticcation', data);
+  return admin
+  .firestore()
+  .collection('users')
+  .doc(data.userId)
+  .collection('posts')
+  .doc(data.postId)
+  .update({
+    adminNotification:true
+  })
+})
+
+
+// Update client messages by month
+exports.updateClientMessages = functions.https.onCall(data => {
   return admin
     .firestore()
     .collection('chats')
@@ -54,23 +111,33 @@ exports.readClientMessages = functions.https.onCall(data => {
     .get()
     .then(snapshot => {
       let batch = admin.firestore().batch();
-      console.log('batch', batch)
-      snapshot.forEach(function(doc) {
-        console.log('RES OF SNAP', doc);
-      });
-    });
+      snapshot.docs.map(item => {
+        console.log('item ID', item.id)
+        const messageRef = admin
+        .firestore()
+        .collection('chats')
+        .doc(data.userId)
+        .collection('messages')
+        .doc(item.id)
+        batch.update(messageRef,{readByAdmin:true})
+      })
+      return batch.commit();
+    }).then(() => {
+      console.log('SUCCESS')
+    })
+    .catch(err => {
+      console.log(`error ${err}`)
+    })
 });
 
-
-// Get Previous Value of Messages in Months
+// Update Admin Messages
 exports.updateClientMessages = functions.https.onCall(data => {
-  // console.log('DATA MONTH', data);
   return admin
     .firestore()
     .collection('chats')
-    .doc('fblo')
+    .doc(data.userId)
     .collection('messages')
-    .where('postId', '==', 'D5YZMfCuKstlATzFN5IZ')
+    .where('postId', '==', data.postId)
     .get()
     .then(snapshot => {
       let batch = admin.firestore().batch();
@@ -79,7 +146,7 @@ exports.updateClientMessages = functions.https.onCall(data => {
         const messageRef = admin
         .firestore()
         .collection('chats')
-        .doc('fblo')
+        .doc(data.userId)
         .collection('messages')
         .doc(item.id)
         batch.update(messageRef,{readByClient:true})
@@ -91,25 +158,4 @@ exports.updateClientMessages = functions.https.onCall(data => {
     .catch(err => {
       console.log(`error ${err}`)
     })
-    // .then(snapshot => {
-
-    //   console.log('batch', batch)
-    //   snapshot.forEach(function(doc) {
-    //     console.log('RES OF SNAP', doc);
-    //   });
-    // });
-  // const docRef = admin
-  // .firestore()
-  // .collection("users")
-  // .doc('fblo')
-  // .collection('dates')
-  // .where('month', '==', 11)
-  // .get()
-  // .then(function(snap){
-  //   snap.docs.map(item => {
-  //     return item.data().clientUnreadMessages
-  //   })
-  // });
-
-  console.log('doc ref new', docRef)
 });
