@@ -1,19 +1,19 @@
 import React, { Component } from 'react';
-import TimePicker from 'antd/es/time-picker';
+import { TimePicker } from 'antd';
 import { Checkbox } from 'antd';
 import CustomCalendarComponent from '../CustomCalendarComponent';
 import DatePicker from 'react-datepicker';
-
+import "react-datepicker/dist/react-datepicker.css";
 import { withFirebase } from '../Firebase';
-
 import moment from 'moment';
 import TextField from '@material-ui/core/TextField';
-
 import EmojiField from 'emoji-picker-textfield';
 import 'emoji-mart/css/emoji-mart.css';
 import { Picker } from 'emoji-mart';
-
 import { connect } from 'react-redux';
+import { Collapse } from 'antd';
+import { Input } from 'antd';
+const { Panel } = Collapse;
 
 class SubPost extends Component {
   constructor(props) {
@@ -71,8 +71,6 @@ class SubPost extends Component {
 
   uploadFiles = fb => {
     this.state.file.map((file, i) => {
-      console.log('storage', this.props.firebase.storage);
-      console.log('file', file.type);
       const storageRef = this.props.firebase.storage;
       const storageParent = this.props.firebase.storageParent;
       const metadata = {
@@ -90,8 +88,6 @@ class SubPost extends Component {
             metaImageFiles: [...this.state.metaImageFiles, encodedUrl]
           });
         });
-
-      console.log('store', this.props.firebase.storage, this.props.firebase.storageParent);
     });
   };
 
@@ -436,7 +432,7 @@ class SubPost extends Component {
       <div className="d-flex row">
         <div className="col-sm-6">
           <TextField
-            className="outlined-title"
+            className="outlined-title title-input"
             label="Post Title"
             name="title"
             value={this.state.value}
@@ -449,12 +445,11 @@ class SubPost extends Component {
             <div className="upload-files-wrapper d-flex flex-wrap">{renderMedia}</div>
           ) : (
             <div id="red-outline-wrapper">
-              <div class="red-center">
+              <div className="red-center">
                 <input type="file" multiple onChange={this.addFile} className="red-dashed-input" />
               </div>
             </div>
           )}
-
           <div className="copy-wrapper">
             <TextField
               className="outlined-copy"
@@ -466,8 +461,8 @@ class SubPost extends Component {
               margin="normal"
               variant="outlined"
             />
-            <button onClick={this.openIcons} className="smile-wrapper">
-              <img src={require('../assets/happy-face.svg')} className="smile-logo" />
+            <button onClick={this.openIcons} className="smile-wrapper clear-btn" type="button">
+              <i class="fa fa-smile-o" aria-hidden="true"></i>
             </button>
           </div>
           {this.state.showEmoji && (
@@ -477,7 +472,7 @@ class SubPost extends Component {
           )}
         </div>
         <div className="inner-form-wrapper1 col-sm-6">
-          <div class="d-flex justify-content-between">
+          <div className="d-flex justify-content-between mb-20">
             <div>
               <Checkbox
                 onChange={this.handleFacebook}
@@ -485,7 +480,7 @@ class SubPost extends Component {
                 value={this.state.facebook}
                 id="facebook"
               />
-              <label for="facebook" class="margin-label">
+              <label for="facebook" className="margin-label">
                 Facebook
               </label>
             </div>
@@ -496,7 +491,7 @@ class SubPost extends Component {
                 value={this.state.instagram}
                 id="instagram"
               />
-              <label for="instagram" class="margin-label">
+              <label for="instagram" className="margin-label">
                 Instagram
               </label>
             </div>
@@ -507,7 +502,7 @@ class SubPost extends Component {
                 value={this.state.twitter}
                 id="twitter"
               />
-              <label for="twitter" class="margin-label">
+              <label for="twitter" className="margin-label">
                 Twitter
               </label>
             </div>
@@ -518,7 +513,7 @@ class SubPost extends Component {
                 value={this.state.linkedin}
                 id="linkedin"
               />
-              <label for="linkedin" class="margin-label">
+              <label for="linkedin" className="margin-label">
                 LinkedIn
               </label>
             </div>
@@ -529,108 +524,102 @@ class SubPost extends Component {
                 value={this.state.other}
                 id="other"
               />
-              <label for="other" class="margin-label">
+              <label for="other" className="margin-label">
                 Other
               </label>
             </div>
           </div>
-          <div class="date-button-wrapper d-flex">
+          <div className="date-button-wrapper d-flex row justify-content-between">
             {this.state.showDatePicker && (
-              <div id="choose-date-wrapper">
-                <button
-                  class="toggle-btn clear-btn"
-                  type="button"
-                  onClick={this.toggleDate.bind(this)}
-                >
-                  <span>POST DATE</span>
-                </button>
-                {this.state.toggleDate && (
-                  <DatePicker
-                    placeholderText="Post Date"
-                    onChange={value => this.handleDPChange(value)}
-                    customInput={
-                      <CustomCalendarComponent
-                        ipDate={this.state.ipDate}
-                        placeholderText="Post Date"
-                        handleIpChange={val => this.handleIpChange(val)}
-                      />
-                    }
-                    dateFormat={'MM/dd/yyyy'}
-                    showMonthDropdown
-                    showYearDropdown
-                    dropdownMode="select"
-                  />
-                )}
+              <div id="choose-date-wrapper" className="col-sm-4">
+                <Collapse>
+                  <Panel header="POST DATE">
+                    <DatePicker
+                      placeholderText="Post Date"
+                      onChange={value => this.handleDPChange(value)}
+                      customInput={
+                        <CustomCalendarComponent
+                          ipDate={this.state.ipDate}
+                          placeholderText="Post Date"
+                          handleIpChange={val => this.handleIpChange(val)}
+                        />
+                      }
+                      dateFormat={'MM/dd/yyyy'}
+                      showMonthDropdown
+                      showYearDropdown
+                      dropdownMode="select"
+                    />
+                  </Panel>
+                </Collapse>
               </div>
             )}
-            <div>
+            <div className="col-sm-4">
               <TimePicker
                 onChange={this.handlePostTime}
-                class="toggle-btn"
+                className="toggle-btn"
                 placeholder="POST TIME"
               />
             </div>
-            <div>
-              <TextField
-                className="outlined-title no-margin"
-                label="POST MEDIUM"
+            <div className="col-sm-4">
+              <Input
+                className="outlined-title no-margin medium-title"
                 name="postMedium"
                 value={this.state.postMedium}
                 onChange={this.handleChange}
                 margin="normal"
                 variant="outlined"
+                placeholder="POST MEDIUM"
               />
             </div>
           </div>
-          {/* date-button-wrapper */}
-          <div>
-            <div>
-              <Checkbox onChange={this.handleAd} name="other" checked={this.state.ad} id="ad" />
-              <label>Ad or Sponsored Post</label>
-            </div>
 
-            {this.state.ad && (
-              <div class="bg-white col-md-12">
-                <div class="d-flex justify-content-between date-picker-wrapper flex-85 align-items-center">
-                  <DatePicker
-                    selected={this.state.startDpDate}
-                    placeholderText="Post Date"
-                    onChange={value => this.handleStartDpChange(value)}
-                    dateFormat={'MM/dd/yyyy'}
-                    showMonthDropdown
-                    showYearDropdown
-                    dropdownMode="select"
-                  />
-                  <span>-</span>
-                  <DatePicker
-                    selected={this.state.endDpDate}
-                    onChange={value => this.handleEndDpChange(value)}
-                    customInput={
-                      <CustomCalendarComponent
-                        ipDate={this.state.endIpDate}
-                        handleIpChange={val => this.handleEndIpChange(val)}
-                        placeholderText="Post Date"
-                      />
-                    }
-                    placeholderText="Post Date"
-                    dateFormat={'MM/dd/yyyy'}
-                    showMonthDropdown
-                    showYearDropdown
-                    dropdownMode="select"
-                  />
-                </div>
-                <div class="d-flex flex-85 align-items-center">
-                  <label class="budget-text">Budget</label>
-                  <input
-                    type="text"
-                    placeholder="$0.00"
-                    class="budget-input"
-                    onChange={this.handleBudget.bind(this)}
-                  />
-                </div>
-              </div>
-            )}
+          <div class="sponsored-label">
+            <Checkbox onChange={this.handleAd} name="other" checked={this.state.ad} id="ad" />
+            <label>Ad or Sponsored Post</label>
           </div>
+
+          {this.state.ad && (
+            <div className="col-md-12 row mt-20">
+              <div className="d-flex justify-content-between date-picker-wrapper flex-85 align-items-center">
+                <DatePicker
+                  selected={this.state.startDpDate}
+                  placeholderText="Post Date"
+                  onChange={value => this.handleStartDpChange(value)}
+                  dateFormat={'MM/dd/yyyy'}
+                  showMonthDropdown
+                  showYearDropdown
+                  dropdownMode="select"
+                />
+                <span>-</span>
+                <DatePicker
+                  selected={this.state.endDpDate}
+                  onChange={value => this.handleEndDpChange(value)}
+                  customInput={
+                    <CustomCalendarComponent
+                      ipDate={this.state.endIpDate}
+                      handleIpChange={val => this.handleEndIpChange(val)}
+                      placeholderText="Post Date"
+                    />
+                  }
+                  placeholderText="Post Date"
+                  dateFormat={'MM/dd/yyyy'}
+                  showMonthDropdown
+                  showYearDropdown
+                  dropdownMode="select"
+                />
+              </div>
+              <div className="d-flex flex-85 align-items-center mt-20">
+                <label className="budget-text">Budget</label>
+                <input
+                  type="text"
+                  placeholder="$0.00"
+                  className="budget-input"
+                  onChange={this.handleBudget.bind(this)}
+                />
+              </div>
+            </div>
+          )}
+
           <div>
             <TextField
               className="outlined-hash w-100"
@@ -646,29 +635,26 @@ class SubPost extends Component {
           <div>
             {this.state.values.map((el, i) => (
               <div key={i}>
-                <div class="d-flex align-self-center">
+                <div className="d-flex align-self-center">
+                  <TextField
+                    className="outlined-title"
+                    label="Add Links"
+                    value={el.value || ''}
+                    onChange={e => this.handleLinks(i, e)}
+                    margin="normal"
+                    variant="outlined"
+                  />
 
-                <TextField
-                  className="outlined-title"
-                  label="Add Links"
-                  value={el.value || ''}
-                  onChange={e => this.handleLinks(i, e)}
-                  margin="normal"
-                  variant="outlined"
-                />
-
-                {i == this.state.values.length - 1 ?
-                  <button type="button" onClick={() => this.addClick()} class="clear-btn" ><img src={require('../assets/select.svg')}/></button>
-                  : <input type="button" value="remove" onClick={() => this.removeClick(i)} />
-                }
-                
+                  {i == this.state.values.length - 1 ? (
+                    <button type="button" onClick={() => this.addClick()} className="clear-btn">
+                      <img src={require('../assets/select.svg')} />
+                    </button>
+                  ) : (
+                    <input type="button" value="remove" onClick={() => this.removeClick(i)} />
+                  )}
                 </div>
-                
-                
               </div>
             ))}
-
-            
           </div>
         </div>
       </div>

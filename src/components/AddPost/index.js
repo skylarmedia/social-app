@@ -314,7 +314,7 @@ class AddPost extends Component {
             <br />
           </p>
           <div className="grey-background">
-            <div className="container">
+            <div className="container position-relative add-post-container">
               <EditCategoryForm
                 clientId={this.props.match.params.clientId}
                 getSelectedCategory={this.getSelectedCategory}
@@ -329,13 +329,13 @@ class AddPost extends Component {
                     onChange={this.handleApproval}
                     id="approvePost"
                   />
-                  <label for="approvePost">APPROVE POST</label>
+                  <label for="approvePost" className="color-blue">APPROVE POST</label>
                 </div>
                 {this.createForms()}
 
-                <button onClick={() => this.addForm()} class="clear-btn" type="button">
+                <button onClick={() => this.addForm()} className="clear-btn add-platform-btn" type="button">
                   <img src={require('../assets/select.svg')} />
-                  <span>Add Platform</span>
+                  <span className="color-blue">Add Platform</span>
                 </button>
                 <div className="text-center">
                   <button className="save-draft-btn" onClick={this.saveDraft.bind(this)}>

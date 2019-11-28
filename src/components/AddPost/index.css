@@ -194,13 +194,62 @@
 
 .toggle-btn{
     background: transparent;
-    border: 2px solid #002D5B;
-    width: 90%;
-    /* text-align: center; */
+    width: 100%;
     margin: 0 auto;
     height: 37px;
     color: #707070;
     font-size: 16px;
+}
+
+
+.sponsored-label{
+    font-size: 20px;
+    font-weight: 500;
+    margin-top: 21px;
+}
+
+.sponsored-label .ant-checkbox-wrapper{
+    margin-right:20px;
+}
+
+.title-input{
+    height:auto
+}
+
+.medium-title{
+    background: transparent;
+    border-radius: 0;
+    height: 37px;
+    border: 2px solid #002D5B;
+}
+
+#choose-date-wrapper{
+    width:30%;
+}
+
+
+
+.ant-collapse{
+    background: transparent;
+    border: 2px solid #002D5B;
+    border-radius: 0;
+    height: 37px;
+}
+
+.date-button-wrapper .ant-collapse > .ant-collapse-item > .ant-collapse-header{
+    background:transparent;
+    padding: 7px 0 0 15px;
+}
+
+.date-button-wrapper .ant-collapse > .ant-collapse-item > .ant-collapse-header .ant-collapse-arrow{
+    top: 65%;
+    left: auto;
+    right: 14px;
+}
+
+.ant-collapse-item{
+    border-bottom:none;
+    height:100%;
 }
 
 .ant-time-picker-input{
@@ -315,4 +364,21 @@
 
 .approval-wrapper{
     margin-top:20px;
+}
+
+.inner-form-wrapper1 .react-datepicker__input-container input {
+    border: 2px solid #002D5B;
+    height: 37px;
+    color: #707070;
+    width: 195px;
+    background-color: transparent;
+    padding-left: 15px;
+}
+
+.add-platform-btn{
+    position: absolute;
+    right: 40%;
+    bottom: 130px;
+    margin-left:10px;
+    right: 39.5%;
 }

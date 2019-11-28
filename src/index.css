@@ -31,6 +31,10 @@ img{
   right: 20%;
 }
 
+.container {
+  max-width: 1260px !important;
+}
+
 .calendar-popup-wrapper{
   position:relative;
 }
@@ -61,8 +65,37 @@ h1{
   border:2px solid #EFB83B;
 }
 
+.approval-wrapper{
+  position: absolute;
+  right: 0px;
+}
+
+.mb-20{
+  margin-bottom:20px;
+}
+
+.mt-20{
+  margin-top:20px;
+}
+
+.react-datepicker-popper{
+  z-index:2;
+}
+
+.inner-form-wrapper1{
+  margin-top: 82px;
+}
+
 .icon{
-  width:18px;
-  height:18px;
+  width:7.2px;
+  height:7.2px;
   border-radius:50%;
+}
+
+.color-blue{
+  color:#002D5B;
+}
+
+.add-post-container{
+  padding-top:50px;
 }

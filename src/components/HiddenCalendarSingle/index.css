@@ -18,6 +18,10 @@
   justify-content: center;
 }
 
+.date-button-wrapper .ant-collapse-content-box{
+  padding:0;
+}
+
 .hidden-post > div{
   background: #fff;
   width: 558px;
@@ -40,8 +44,33 @@
   word-break:break-all;
 }
 
+*{
+  line-height:normal;
+}
+
+.image-of-ad{
+  margin-left:8px;
+}
+
+.hidden-calendar-wrapper .icon{
+  margin-left:8px;
+}
+
+.calendar-popup-wrapper{
+  margin-top:15px;
+}
+
 .label-button{
     position:relative;
+    height: 15px;
+    line-height: normal;
+    text-align: left;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color:#002D5B;
+    max-width: 104px;
 }
 
 .not-read{

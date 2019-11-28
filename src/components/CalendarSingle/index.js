@@ -38,7 +38,7 @@ class CalendarSingle extends Component {
           if (item.data().month == this.props.month) {
             if (item.data().day === this.props.day) {
               return (
-                <div class="hidden-calendar-wrapper d-flex flex-column">
+                <div class="hidden-calendar-wrapper">
                   {item.data().draft}
                   {/* {item.data().approved ? (
                     <img src={require('../assets/check.svg')} className="check" />
