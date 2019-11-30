@@ -12,3 +12,38 @@
     right:0;
     text-align:right;
 }
+
+.edit-form-main-wrapper{
+    padding-top: 130px;
+}
+
+.edit-form-main-wrapper .ant-time-picker{
+    width:100%;
+}
+
+.edit-social-icons{
+    margin-top:31px;
+}
+
+.edit-social-icons label:nth-child(2){
+    padding-left:10px;
+}
+
+.ad-edit{
+    font-size: 20px;
+    font-weight: 500;
+    margin-left:20px;
+}
+
+.react-datepicker-wrapper input{
+    border:none;
+}
+.inner-form-wrapper2 input{
+    border: none;
+    height: 37px;
+    color: #707070;
+    width: 195px;
+    background-color: transparent;
+    padding-left: 15px;
+    z-index: 999;
+}

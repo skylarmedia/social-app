@@ -20,7 +20,7 @@ const ImagePosts = props => {
     <div  className="upload-files-wrapper d-flex flex-wrap">
       {imageSrc &&
         imageSrc.map(item => {
-          console.log('item', item);
+          console.log('item IN INNER IMAGE', item);
           if (getType(item) == 'video') {
             return (
               <video height="200" width="200" controls>

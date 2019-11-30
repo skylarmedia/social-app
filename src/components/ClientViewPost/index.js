@@ -7,6 +7,8 @@ import moment from 'moment';
 import app from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/firestore';
+import './index.css';
+import ImagePosts from '../ImagePosts';
 
 class ClientViewPost extends Component {
   constructor(props) {
@@ -28,7 +30,7 @@ class ClientViewPost extends Component {
       color: '#fff',
       openedChat: false,
       updatedMessages: false,
-      clientRead:false
+      clientRead: false
     };
 
     this.handleCheckbox = this.handleCheckbox.bind(this);
@@ -38,7 +40,6 @@ class ClientViewPost extends Component {
   }
 
   componentWillMount() {
-
     // Get Post
     app
       .firestore()
@@ -48,7 +49,7 @@ class ClientViewPost extends Component {
       .doc(this.props.match.params.id)
       .get()
       .then(res => {
-        console.log('RES IN VIEW POST', res)
+        console.log('RES IN VIEW POST', res);
         this.setState({
           posts: res.data().post,
           category: res.data().selectedCategoryName,
@@ -94,18 +95,17 @@ class ClientViewPost extends Component {
     updateClientMessages(functionObj);
 
     //update readByClient
-    if(this.state.clientRead == false){
+    if (this.state.clientRead == false) {
       app
-      .firestore()
-      .collection('users')
-      .doc(this.state.userId)
-      .collection('posts')
-      .doc(this.props.match.params.id)
-      .update({
-        clientRead: true
-      })
+        .firestore()
+        .collection('users')
+        .doc(this.state.userId)
+        .collection('posts')
+        .doc(this.props.match.params.id)
+        .update({
+          clientRead: true
+        });
     }
-
   }
 
   toggleChat = () => {
@@ -180,11 +180,10 @@ class ClientViewPost extends Component {
 
       const updateClientNotification = this.functions.httpsCallable('updateClientNotification');
       let newId = this.props.match.params.id;
-      let  noteObj = new Object();
+      let noteObj = new Object();
       noteObj.postId = newId;
       noteObj.userId = this.state.userId;
       updateClientNotification(noteObj);
-
     }
   };
 
@@ -216,7 +215,6 @@ class ClientViewPost extends Component {
     });
   };
 
-  
   render() {
     console.log(this.state, 'read or not read');
     const approveStyles = {
@@ -233,52 +231,44 @@ class ClientViewPost extends Component {
       zIndex: 1
     };
 
-    const posts = this.state.posts.map(item => {
-      console.log("ITEM POST in client", item)
+    const posts = this.state.posts.map((item, index) => {
+      console.log('ITEM POST in client', item);
       const styles = {
         backgroundColor: this.state.categoryColor
       };
       return (
-        <div className="d-flex">
-          <div>
-            <p>Title:{item.title}</p>
-            <p>Copy:{item.copy}</p>
-          </div>
-          <div>IMAGES
-            {item.images.map( image => {
-              return (
-                <img src={image} />
-              )
-            })}
-          </div>
-          <div className="col-sm-6 d-flex flex-wrap">
-            <div style={styles} className="col-sm-6 align-self-center">
-              {this.state.category}
+        <div className="d-flex row client-item" key={index}>
+          <div className="container mx-auto row">
+            <div className="col-sm-6">
+              <div className="w-100 color-blue p-border">{item.title}</div>
+              <ImagePosts imageSrc={item.images} />
+              <div className="w-100 color-blue p-border copy-margin">POST COPY</div>
+              <p>{item.copy}</p>
             </div>
-            <div className="col-sm-6 d-flex align-items-center">
-              <input type="checkbox" checked={item.approved} />
-              <label>APPROVE POST</label>
-            </div>
-            <div className="d-flex flex-column">
-              <div>PLATFORMS</div>
-              <div className="d-flex row col-sm-12">
-                <div>{item.facebook && <p>Facebook</p>}</div>
-                <div>{item.instagram && <p>Instagram</p>}</div>
-                <div>{item.twitter && <p>Twitter</p>}</div>
-                <div>{item.linkedin && <p>Linkedin</p>}</div>
-                <div>{item.other && <p>Other</p>}</div>
+            <div className="col-sm-6">
+              <div>
+                <div className="w-100 color-blue p-border">PLATFORMS</div>
+                <div id="client-social" className="d-flex">
+                  {item.facebook && <p>Facebook</p>}
+                  {item.instagram && <p>Instagram</p>}
+                  {item.twitter && <p>Twitter</p>}
+                  {item.linkedin && <p>Linkedin</p>}
+                  {item.other && <p>Other</p>}
+                </div>
+                <div className="blue-border row">
+                  <p className="col-sm-3">POST DATE</p>
+                  <p className="col-sm-3">POST TIME</p>
+                  <p className="col-sm-3">POST MEDIUM</p>
+                </div>
+                <div className="times-border row">
+                  <p className="col-sm-3">POST DATE</p>
+                  <p className="col-sm-3">POST TIME</p>
+                  <p className="col-sm-3">POST MEDIUM</p>
+                </div>
+                <div>
+                  {/* {new Date(item.postDate)} */}
+                </div>
               </div>
-            </div>
-
-            <div className="row justify-content-between col-sm-12">
-              <div className="col-sm-4">POST DATE</div>
-              <div className="col-sm-4">POST TIME</div>
-              <div className="col-sm-4">POST MEDIUM</div>
-            </div>
-            <div className="row justify-content-between col-sm-12">
-              <div className="col-sm-4">{item.ipDate}</div>
-              <div className="col-sm-4">{item.postTime}</div>
-              <div className="col-sm-4">POST MEDIUM</div>
             </div>
           </div>
         </div>
@@ -289,21 +279,24 @@ class ClientViewPost extends Component {
       <React.Fragment>
         <AuthUserContext.Consumer>
           {authUser => (
-            <div className="container">
-            <div class="col-md-5">
-              {this.state.showChat && (
-                <div>
-                  <AdminChatLog messages={this.state.messages} deletePost={this.deletePostParent} />
-                  <textarea
-                    onChange={this.setMessage}
-                    value={this.state.message}
-                    onKeyDown={this.captureKey.bind(this)}
-                  />
-                </div>
-              )}
-              <button onClick={this.toggleChat} type="button">
-                <img src={require('../assets/chatbox.svg')} />
-              </button>
+            <div>
+              <div className="col-md-5 client-chat">
+                {this.state.showChat && (
+                  <div>
+                    <AdminChatLog
+                      messages={this.state.messages}
+                      deletePost={this.deletePostParent}
+                    />
+                    <textarea
+                      onChange={this.setMessage}
+                      value={this.state.message}
+                      onKeyDown={this.captureKey.bind(this)}
+                    />
+                  </div>
+                )}
+                <button onClick={this.toggleChat} type="button">
+                  <img src={require('../assets/chatbox.svg')} />
+                </button>
               </div>
               {this.state.showPopUp ? (
                 <div style={popUpStyles}>
@@ -313,7 +306,7 @@ class ClientViewPost extends Component {
               ) : (
                 ''
               )}
-              {this.state.posts && <p>{posts}</p>}
+              {this.state.posts && <div className="client-view-post">{posts}</div>}
             </div>
           )}
         </AuthUserContext.Consumer>

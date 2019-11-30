@@ -1,0 +1,52 @@
+.client-chat{
+    position: fixed;
+    bottom: 0;
+    right: 0;
+}
+
+.p-border{
+    border-bottom: 2px solid #002D5B;
+    padding-bottom: 10px;
+    font-size:16px;
+}
+
+.client-item{
+    padding-top: 40px;
+    padding-bottom: 71px;
+}
+
+.copy-margin{
+    margin-bottom: 10px;
+    margin-top: 20px;
+}
+
+.client-view-post .client-item:nth-child(odd){
+    background:#f0f0f0;
+}
+
+.client-view-post .client-item:nth-child(even){
+    background:#fff;
+}
+
+#client-social{
+    color: #707070;
+    margin-top: 16px;
+    margin-bottom: 21px;
+}
+
+.blue-border{
+    border-bottom: 2px solid #002D5B;
+}
+
+#client-social p:nth-child(n + 2){
+    margin-left: 30px;
+}
+
+.col-sm-6{
+    overflow: hidden;
+}
+
+.blue-border p{
+    font-size: 16px;
+    color: #002D5B;
+}

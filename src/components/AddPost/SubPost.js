@@ -362,8 +362,8 @@ class SubPost extends Component {
   }
 
   handleStartDpChange(val) {
-    this.setState({ startDpDate: val, startIpDate: moment(val).format('MM/DD/YYYY') }, () => {
-      console.log('ip', this.state.startDpDate, this.state.startIpDate);
+    this.setState({ 
+      startDpDate: val, startIpDate: moment(val).format('MM/DD/YYYY') 
     });
   }
 
@@ -406,8 +406,6 @@ class SubPost extends Component {
   };
 
   render() {
-
-
     return (
       <div className="d-flex row">
         <div className="col-sm-6">
@@ -465,9 +463,7 @@ class SubPost extends Component {
                 value={this.state.facebook}
                 id="facebook"
               />
-              <label className="margin-label">
-                Facebook
-              </label>
+              <label className="margin-label">Facebook</label>
             </div>
             <div>
               <Checkbox
@@ -476,9 +472,7 @@ class SubPost extends Component {
                 value={this.state.instagram}
                 id="instagram"
               />
-              <label className="margin-label">
-                Instagram
-              </label>
+              <label className="margin-label">Instagram</label>
             </div>
             <div>
               <Checkbox
@@ -487,9 +481,7 @@ class SubPost extends Component {
                 value={this.state.twitter}
                 id="twitter"
               />
-              <label className="margin-label">
-                Twitter
-              </label>
+              <label className="margin-label">Twitter</label>
             </div>
             <div>
               <Checkbox
@@ -498,9 +490,7 @@ class SubPost extends Component {
                 value={this.state.linkedin}
                 id="linkedin"
               />
-              <label className="margin-label">
-                LinkedIn
-              </label>
+              <label className="margin-label">LinkedIn</label>
             </div>
             <div>
               <Checkbox
@@ -509,35 +499,32 @@ class SubPost extends Component {
                 value={this.state.other}
                 id="other"
               />
-              <label className="margin-label">
-                Other
-              </label>
+              <label className="margin-label">Other</label>
             </div>
           </div>
           <div className="date-button-wrapper d-flex row justify-content-between">
-            {this.state.showDatePicker && (
-              <div id="choose-date-wrapper" className="col-sm-4">
-                <Collapse>
-                  <Panel header="POST DATE">
-                    <DatePicker
-                      placeholderText="Post Date"
-                      onChange={value => this.handleDPChange(value)}
-                      customInput={
-                        <CustomCalendarComponent
-                          ipDate={this.state.ipDate}
-                          placeholderText="Post Date"
-                          handleIpChange={val => this.handleIpChange(val)}
-                        />
-                      }
-                      dateFormat={'MM/dd/yyyy'}
-                      showMonthDropdown
-                      showYearDropdown
-                      dropdownMode="select"
-                    />
-                  </Panel>
-                </Collapse>
-              </div>
-            )}
+            <div id="choose-date-wrapper" className="col-sm-4">
+              <Collapse>
+                <Panel header="POST DATE">
+                  <DatePicker
+                    placeholderText="Post Date"
+                    onChange={value => this.handleDPChange(value)}
+                    customInput={
+                      <CustomCalendarComponent
+                        ipDate={this.state.ipDate}
+                        placeholderText="Post Date"
+                        handleIpChange={val => this.handleIpChange(val)}
+                      />
+                    }
+                    dateFormat={'MM/dd/yyyy'}
+                    showMonthDropdown
+                    showYearDropdown
+                    dropdownMode="select"
+                  />
+                </Panel>
+              </Collapse>
+            </div>
+
             <div className="col-sm-4">
               <TimePicker
                 onChange={this.handlePostTime}
