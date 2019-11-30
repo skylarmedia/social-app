@@ -3,7 +3,7 @@ import { TimePicker } from 'antd';
 import { Checkbox } from 'antd';
 import CustomCalendarComponent from '../CustomCalendarComponent';
 import DatePicker from 'react-datepicker';
-import "react-datepicker/dist/react-datepicker.css";
+import 'react-datepicker/dist/react-datepicker.css';
 import { withFirebase } from '../Firebase';
 import moment from 'moment';
 import TextField from '@material-ui/core/TextField';
@@ -13,6 +13,9 @@ import { Picker } from 'emoji-mart';
 import { connect } from 'react-redux';
 import { Collapse } from 'antd';
 import { Input } from 'antd';
+import { Select } from 'antd';
+
+const { TextArea } = Input;
 const { Panel } = Collapse;
 
 class SubPost extends Component {
@@ -194,8 +197,6 @@ class SubPost extends Component {
   };
 
   handleChange = e => {
-    console.log('CHANGE', e.target.value);
-    console.log('COPY STATe', this.state);
     this.setState({
       [e.target.name]: e.target.value
     });
@@ -203,16 +204,9 @@ class SubPost extends Component {
 
   handlePostDate = date => {
     let postDateFormatted = date.toLocaleDateString('en-US');
-    this.setState(
-      {
-        postDate: postDateFormatted
-      },
-      () => {
-        console.log('DATE IN METHOD', this.state.postDate);
-      }
-    );
-
-    console.log('post date', this.state.postDate.toLocaleDateString('en-US'));
+    this.setState({
+      postDate: postDateFormatted
+    });
   };
 
   showDate = e => {
@@ -431,18 +425,21 @@ class SubPost extends Component {
     return (
       <div className="d-flex row">
         <div className="col-sm-6">
-          <TextField
-            className="outlined-title title-input"
-            label="Post Title"
+          <Input
+            className="blue-input"
+            placeholder="POST TITLE"
             name="title"
-            value={this.state.value}
+            value={this.state.title}
             onChange={this.handleChange}
             margin="normal"
             variant="outlined"
           />
 
           {this.state.metaImageFiles.length > 0 ? (
-            <div className="upload-files-wrapper d-flex flex-wrap">{renderMedia}</div>
+            <div>
+              <div className="upload-files-wrapper d-flex flex-wrap">{renderMedia}</div>
+              <input type="file" multiple onChange={this.addFile} id="render-input" />
+            </div>
           ) : (
             <div id="red-outline-wrapper">
               <div className="red-center">
@@ -455,14 +452,13 @@ class SubPost extends Component {
               className="outlined-copy"
               label="Copy"
               name="copy"
-              multiline
               value={this.state.copy}
               onChange={this.handleChange}
               margin="normal"
               variant="outlined"
             />
             <button onClick={this.openIcons} className="smile-wrapper clear-btn" type="button">
-              <i class="fa fa-smile-o" aria-hidden="true"></i>
+              <i className="fa fa-smile-o" aria-hidden="true"></i>
             </button>
           </div>
           {this.state.showEmoji && (
@@ -480,7 +476,7 @@ class SubPost extends Component {
                 value={this.state.facebook}
                 id="facebook"
               />
-              <label for="facebook" className="margin-label">
+              <label className="margin-label">
                 Facebook
               </label>
             </div>
@@ -491,7 +487,7 @@ class SubPost extends Component {
                 value={this.state.instagram}
                 id="instagram"
               />
-              <label for="instagram" className="margin-label">
+              <label className="margin-label">
                 Instagram
               </label>
             </div>
@@ -502,7 +498,7 @@ class SubPost extends Component {
                 value={this.state.twitter}
                 id="twitter"
               />
-              <label for="twitter" className="margin-label">
+              <label className="margin-label">
                 Twitter
               </label>
             </div>
@@ -513,7 +509,7 @@ class SubPost extends Component {
                 value={this.state.linkedin}
                 id="linkedin"
               />
-              <label for="linkedin" className="margin-label">
+              <label className="margin-label">
                 LinkedIn
               </label>
             </div>
@@ -524,7 +520,7 @@ class SubPost extends Component {
                 value={this.state.other}
                 id="other"
               />
-              <label for="other" className="margin-label">
+              <label className="margin-label">
                 Other
               </label>
             </div>
@@ -573,7 +569,7 @@ class SubPost extends Component {
             </div>
           </div>
 
-          <div class="sponsored-label">
+          <div className="sponsored-label mb-20">
             <Checkbox onChange={this.handleAd} name="other" checked={this.state.ad} id="ad" />
             <label>Ad or Sponsored Post</label>
           </div>
@@ -621,11 +617,10 @@ class SubPost extends Component {
           )}
 
           <div>
-            <TextField
-              className="outlined-hash w-100"
-              label="Hashtags"
+            <TextArea
+              className="outlined-hash w-100 blue-input"
+              placeholder="HASHTAGS"
               name="postHashTag"
-              multiline
               value={this.state.postHashTag}
               onChange={this.handleChange}
               margin="normal"
@@ -636,9 +631,9 @@ class SubPost extends Component {
             {this.state.values.map((el, i) => (
               <div key={i}>
                 <div className="d-flex align-self-center">
-                  <TextField
-                    className="outlined-title"
-                    label="Add Links"
+                  <Input
+                    className="blue-input ant-link"
+                    placeholder="ADD LINKS"
                     value={el.value || ''}
                     onChange={e => this.handleLinks(i, e)}
                     margin="normal"
@@ -662,11 +657,4 @@ class SubPost extends Component {
   }
 }
 
-const mapDispatchToProps = dispatch => {};
-
-export default withFirebase(
-  connect(
-    null,
-    mapDispatchToProps
-  )(SubPost)
-);
+export default withFirebase(SubPost);

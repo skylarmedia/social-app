@@ -40,11 +40,6 @@ class CalendarSingle extends Component {
               return (
                 <div class="hidden-calendar-wrapper">
                   {item.data().draft}
-                  {/* {item.data().approved ? (
-                    <img src={require('../assets/check.svg')} className="check" />
-                  ) : (
-                    ''
-                  )} */}
 
                   <HiddenCalendarSingle
                     title={item.data().post[0].title}

@@ -3,13 +3,8 @@ import { withRouter } from 'react-router-dom';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import './index.css'
-import MenuItem from '@material-ui/core/MenuItem';
-import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
-import clsx from 'clsx';
-import { SignUpLink } from '../SignUp';
 import { withFirebase } from '../Firebase';
-import * as ROUTES from '../../constants/routes';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 

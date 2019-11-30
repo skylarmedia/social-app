@@ -12,8 +12,6 @@ import EmojiField from 'emoji-picker-textfield';
 import 'emoji-mart/css/emoji-mart.css';
 import { Picker } from 'emoji-mart';
 
-
-
 class AddPost extends Component {
   constructor(props) {
     super(props);
@@ -41,13 +39,9 @@ class AddPost extends Component {
     this.handlePostTime = this.handlePostTime.bind(this);
     this.receivedValues = this.receivedValues.bind(this);
     this.saveDraft = this.saveDraft.bind(this);
-
   }
 
-  componentWillMount(){
-
-  }
-
+  componentWillMount() {}
 
   onSubmitForm = e => {
     e.preventDefault();
@@ -64,7 +58,7 @@ class AddPost extends Component {
         tempHold: [...previousState.tempHold, state],
         postAd: adState
       }));
-    }else{
+    } else {
       this.setState(previousState => ({
         tempHold: [...previousState.tempHold, state]
       }));
@@ -258,7 +252,7 @@ class AddPost extends Component {
   createForms() {
     return this.state.subPosts.map((el, i) => (
       <div className="form-wrapper d-flex" key={i}>
-        <div className="main-form-wrapper">
+        <div className="main-form-wrapper container">
           <SubPost
             i={i}
             ref={this.getValues}
@@ -276,9 +270,6 @@ class AddPost extends Component {
   }
 
   render() {
-    // console.log('this db', this.db.httpsCallable('readMonths'))
-    // const changeUdata = functions
-    // console.log('THIS DB functions', this.db.functions())
     const buttonStyles = {
       backgroundColor: '#EF463B',
       borderColor: '#007bff',
@@ -313,15 +304,16 @@ class AddPost extends Component {
             Client {this.props.match.params.clientId} Calendar
             <br />
           </p>
-          <div className="grey-background">
-            <div className="container position-relative add-post-container">
-              <EditCategoryForm
-                clientId={this.props.match.params.clientId}
-                getSelectedCategory={this.getSelectedCategory}
-                category={this.state.selectedCategory}
-                month={this.props.match.params.month}
-              />
-              <form onSubmit={this.onSubmitForm}>
+          <div>
+            <div className="position-relative add-post-container">
+              <div className="d-flex align-items-center container ">
+                <EditCategoryForm
+                  clientId={this.props.match.params.clientId}
+                  getSelectedCategory={this.getSelectedCategory}
+                  category={this.state.selectedCategory}
+                  month={this.props.match.params.month}
+                  className="main-edit-form"
+                />
                 <div className="d-flex approval-wrapper">
                   <Checkbox
                     name="approved"
@@ -329,19 +321,28 @@ class AddPost extends Component {
                     onChange={this.handleApproval}
                     id="approvePost"
                   />
-                  <label for="approvePost" className="color-blue">APPROVE POST</label>
+                  <label className="color-blue">APPROVE POST</label>
                 </div>
+              </div>
+
+              <form onSubmit={this.onSubmitForm} id="sub-post-form">
                 {this.createForms()}
 
-                <button onClick={() => this.addForm()} className="clear-btn add-platform-btn" type="button">
+                <button
+                  onClick={() => this.addForm()}
+                  className="clear-btn add-platform-btn"
+                  type="button"
+                >
                   <img src={require('../assets/select.svg')} />
-                  <span className="color-blue">Add Platform</span>
+                  <span className="color-blue blue-p">Add Platform</span>
                 </button>
                 <div className="text-center">
                   <button className="save-draft-btn" onClick={this.saveDraft.bind(this)}>
                     SAVE DRAFT
                   </button>
-                  <input type="submit" value="Submit" className="add-date-btn" />
+                  <button type="submit" onClick={this.onSubmitForm} className="add-date-btn">
+                    Submit
+                  </button>
                 </div>
                 <button onClick={this.openIcons} className="smile-wrapper" type="button">
                   <img src={require('../assets/happy-face.svg')} className="smile-logo" />

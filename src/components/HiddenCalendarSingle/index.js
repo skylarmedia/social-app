@@ -6,6 +6,9 @@ import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import './index.css';
 import Icons from '../Icons';
 import Ad from '../Ad';
+import { Checkbox } from 'antd';
+import Lightbox from '../Lightbox';
+import app from 'firebase/app';
 
 let timer = 0;
 let delay = 200;
@@ -18,19 +21,23 @@ class HiddenCalendarSingle extends Component {
     this.state = {
       isHiddenCalendar: false,
       clientId: '',
-      image: ''
+      image: '',
+      approved: false
     };
 
     this.toggleIsHidden = this.toggleIsHidden.bind(this);
+    this.db = app.firestore();
   }
 
-  componentWillMount() {
+  componentDidMount() {
     var url_string = window.location.href; //window.location.href
     var url = new URL(url_string);
+    console.log('hidden calendar', this.props);
     var c = url.searchParams.get('clientId');
 
     this.setState({
-      clientId: c
+      clientId: c,
+      approved: this.props.approved
     });
   }
 
@@ -62,6 +69,20 @@ class HiddenCalendarSingle extends Component {
     );
   }
 
+  handleApproval = () => {
+    this.setState({
+      approved: !this.state.approved
+    });
+    this.db
+      .collection('users')
+      .doc(this.props.clientId)
+      .collection('posts')
+      .doc(this.props.itemId)
+      .update({
+        approved: !this.state.approved
+      });
+  };
+
   handleDoubleClick() {
     clearTimeout(timer);
     prevent = true;
@@ -77,25 +98,17 @@ class HiddenCalendarSingle extends Component {
   };
 
   ellipse = text => {
-    let ellipseText
-    if(text.length > 8){
-      ellipseText = `${text.substring(0, 8) + '...'}`
+    let ellipseText;
+    if (text.length > 8) {
+      ellipseText = `${text.substring(0, 8) + '...'}`;
+    } else {
+      ellipseText = text;
     }
-    else{
-      ellipseText = text
-    }
-    return(
-      <React.Fragment>{ellipseText}</React.Fragment>
-    )
-  }
-
-
+    return <React.Fragment>{ellipseText}</React.Fragment>;
+  };
 
   render() {
-
     const hiddenPost = () => {
-      console.log('hiddenpost', this.props);
-      console.log('props images', this.props.images);
       const date = new Date(this.props.ipDate);
       let string = this.props.copy;
       let maxLength = 200;
@@ -106,15 +119,19 @@ class HiddenCalendarSingle extends Component {
       );
 
       let image = this.props.images[0];
+      this.props.images.shift();
+        
+      let underImageEl = this.props.images.map(item => <img src={item} />);
+      console.log('type of under image', typeof(underImages))
       return (
         <div className="hidden-inner">
           <h4 className="text-center">{this.props.title}</h4>
           <div class="social-wrapper d-flex justify-content-center">
-            {this.props.facebook == true && <p>Facebook</p>}
-            {this.props.instagram == true && <p>Instagram</p>}
-            {this.props.linkedin == true && <p>LinkedIn</p>}
-            {this.props.twitter == true && <p>Twitter</p>}
-            {this.props.other == true && <p>Other</p>}
+            {this.props.facebook === true && <p>Facebook</p>}
+            {this.props.instagram === true && <p>Instagram</p>}
+            {this.props.linkedin === true && <p>LinkedIn</p>}
+            {this.props.twitter === true && <p>Twitter</p>}
+            {this.props.other === true && <p>Other</p>}
           </div>
           <p className="text-center">
             {date.toString().split('00')[0]} @ {this.props.ipDate}
@@ -122,11 +139,23 @@ class HiddenCalendarSingle extends Component {
           <div className="d-flex">
             <div className="col-md-6">
               <img src={image} className="w-100" />
-
+              {/* <Lightbox productsImages={this.props.images}/> */}
               <p className="props-copy">{this.props.copy.substr(0, 200)}</p>
               <div>{this.props.hashtags}</div>
             </div>
-            <div className="col-md-6">Label</div>
+            <div className="col-md-6">
+              <div className="d-flex approval-wrapper">
+                <Checkbox
+                  name="approved"
+                  onChange={this.handleApproval}
+                  id="approvePost"
+                  checked={this.state.approved}
+                />
+                <label for="approvePost" className="color-blue">
+                  APPROVE POST
+                </label>
+              </div>
+            </div>
           </div>
           <div className="text-center">
             <Link
@@ -156,7 +185,7 @@ class HiddenCalendarSingle extends Component {
               {this.ellipse(this.props.title)}
               {this.props.adminRead != false ? '' : ''}
             </button>
-            <Ad ad={this.props.ad} class="ad-icon"/>
+            <Ad ad={this.props.ad} class="ad-icon" />
             <Icons
               approved={this.props.approved}
               clientRead={this.props.clientRead}

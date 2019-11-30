@@ -3,6 +3,7 @@ import EditCategoryForm from '../EditCategoryForm';
 import { Picker } from 'emoji-mart';
 import AdminChatLog from '../ChatLog';
 import './index.css';
+import { Input } from 'antd';
 import { Checkbox } from 'antd';
 import CustomCalendarComponent from '../CustomCalendarComponent';
 import DatePicker from 'react-datepicker';
@@ -12,6 +13,7 @@ import 'emoji-mart/css/emoji-mart.css';
 import { withFirebase } from '../Firebase';
 
 import app from 'firebase/app';
+const { TextArea } = Input;
 
 class EditPost extends Component {
   constructor(props) {
@@ -118,14 +120,11 @@ class EditPost extends Component {
       });
 
   componentWillMount() {
-    console.log('clientid', );
-    console.log('post id', this.props.match.params.postId);
-
     const updateAdminMessages = this.functions.httpsCallable('updateAdminMessages');
     let newId = this.props.match.params.id;
     let functionObj = new Object();
     functionObj.postId = this.props.match.params.clientId;
-    functionObj.userId = this.props.match.params.postId
+    functionObj.userId = this.props.match.params.postId;
     updateAdminMessages(functionObj);
 
     this.props.firebase
@@ -281,9 +280,9 @@ class EditPost extends Component {
     }
 
     this.props.firebase.updateClientNotification(
-      this.props.match.params.postId, // Client, 
-      this.props.match.params.clientId,
-    )
+      this.props.match.params.postId, // Client,
+      this.props.match.params.clientId
+    );
   };
 
   addEmoji = e => {
@@ -323,16 +322,19 @@ class EditPost extends Component {
   };
 
   render() {
-    console.log('props id ', this.props.match.params.postId);
     const posts = this.state.posts.map((post, index) => {
       let image = this.state.posts[index].images.map(item => {
-        return <img src={item} key={item} />;
+        return (
+          <div>
+            <img src={item} key={item} />
+          </div>
+        );
       });
       return (
-        <div>
-          <div>
-            <input
-              className="outlined-title"
+        <div className="d-flex row">
+          <div className="col-sm-6">
+            <Input
+              className="outlined-title blue-input"
               label="Post Title"
               name="title"
               index={index}
@@ -341,10 +343,9 @@ class EditPost extends Component {
               onChange={this.handleTitle}
               margin="normal"
             />
-            <div />
-            {image}
-            <input
-              className="outlined-copy"
+            <div className="upload-files-wrapper d-flex flex-wrap">{image}</div>
+            <TextArea
+              className="blue-input copy-input"
               label="Copy"
               name="copy"
               value={this.state.posts[index].copy}
@@ -353,68 +354,71 @@ class EditPost extends Component {
               variant="outlined"
               index={index}
             />
+          </div>
+          <div className="col-sm-6">
             <EditCategoryForm
               clientId={this.props.match.params.postId}
               getSelectedCategory={this.getSelectedCategory}
               category={this.state.selectedCategory}
               currentCat={this.state.selectedCategoryName}
             />
-            <div>
-              <input
-                type="checkbox"
-                name="facebook"
-                value={this.state.posts[index].facebook}
-                checked={this.state.posts[index].facebook}
-                onChange={this.handleFacebook}
-                index={index}
-              />
-              <label>Facebook</label>
+            <div className="d-flex justify-content-between mb-20">
+              <div>
+                <Checkbox
+                  type="checkbox"
+                  name="facebook"
+                  value={this.state.posts[index].facebook}
+                  checked={this.state.posts[index].facebook}
+                  onChange={this.handleFacebook}
+                  index={index}
+                />
+                <label>Facebook</label>
+              </div>
+              <div>
+                <Checkbox
+                  type="checkbox"
+                  name="instagram"
+                  value={this.state.posts[index].instagram}
+                  checked={this.state.posts[index].instagram}
+                  onChange={this.handleInstagram}
+                  index={index}
+                />
+                <label>Instagram</label>
+              </div>
+              <div>
+                <Checkbox
+                  type="checkbox"
+                  name="twitter"
+                  value={this.state.posts[index].twitter}
+                  checked={this.state.posts[index].twitter}
+                  onChange={this.handleTwitter}
+                  index={index}
+                />
+                <label>Twitter</label>
+              </div>
+              <div>
+                <Checkbox
+                  type="checkbox"
+                  name="linkedin"
+                  value={this.state.posts[index].linkedin}
+                  checked={this.state.posts[index].linkedin}
+                  onChange={this.handleLinkedin}
+                  index={index}
+                />
+                <label>LinkedIn</label>
+              </div>
+              <div>
+                <Checkbox
+                  type="checkbox"
+                  name="other"
+                  value={this.state.posts[index].other}
+                  checked={this.state.posts[index].other}
+                  onChange={this.handleOther}
+                  index={index}
+                />
+                <label>Other</label>
+              </div>
             </div>
-            <div>
-              <input
-                type="checkbox"
-                name="instagram"
-                value={this.state.posts[index].instagram}
-                checked={this.state.posts[index].instagram}
-                onChange={this.handleInstagram}
-                index={index}
-              />
-              <label>Instagram</label>
-            </div>
-            <div>
-              <input
-                type="checkbox"
-                name="twitter"
-                value={this.state.posts[index].twitter}
-                checked={this.state.posts[index].twitter}
-                onChange={this.handleTwitter}
-                index={index}
-              />
-              <label>Twitter</label>
-            </div>
-            <div>
-              <input
-                type="checkbox"
-                name="linkedin"
-                value={this.state.posts[index].linkedin}
-                checked={this.state.posts[index].linkedin}
-                onChange={this.handleLinkedin}
-                index={index}
-              />
-              <label>LinkedIn</label>
-            </div>
-            <div>
-              <input
-                type="checkbox"
-                name="other"
-                value={this.state.posts[index].other}
-                checked={this.state.posts[index].other}
-                onChange={this.handleOther}
-                index={index}
-              />
-              <label>Other</label>
-            </div>
-
             <DatePicker
               selected={this.state.dpDate}
               placeholderText="Post Date"
@@ -455,7 +459,6 @@ class EditPost extends Component {
               />
               <label for="ad">Ad or Sponsored Post</label>
             </div>
-            <div></div>
             <div>
               <textarea
                 placeholder="Hashtags"
@@ -474,16 +477,20 @@ class EditPost extends Component {
     });
     return (
       <div className="container add-post edit-post">
-        <input
-          type="checkbox"
-          name="approved"
-          value={this.state.approved}
-          onChange={this.handleApproval}
-          checked={this.state.approved}
-          id="approvePost"
-        />
+        <div className="d-flex approval-wrapper">
+          <Checkbox
+            name="approved"
+            value={this.state.approved}
+            onChange={this.handleApproval}
+            checked={this.state.approved}
+            id="approvePost"
+          />
+          <label for="approvePost" className="color-blue">
+            APPROVE POST
+          </label>
+        </div>
         {posts}
-        <div class="fixed-bottom container position_relative col-md-4">
+        <div className="fixed-bottom container position_relative col-md-4">
           {this.state.showChat && (
             <div>
               <div>
