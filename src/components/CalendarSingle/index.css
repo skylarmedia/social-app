@@ -17,6 +17,7 @@
 
 .calendar-popup-wrapper{
     padding-left: 10px;
+    padding-top:20px;
 }
 
 .add-post-link{
@@ -38,6 +39,7 @@
 
 .hidden-calendar-wrapper{
     position:relative;
+    margin-bottom:5px;
 }
 
 .check{

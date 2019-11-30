@@ -253,11 +253,12 @@ class AddPost extends Component {
     return this.state.subPosts.map((el, i) => (
       <div className="form-wrapper d-flex" key={i}>
         <div className="main-form-wrapper container">
+
+        {/* add this bakc if if it breaks ref={this.getValues} */}
+        {/* ref="child" */}
           <SubPost
             i={i}
-            ref={this.getValues}
             triggerValues={this.triggerValues}
-            ref="child"
             completed={this.state.completed}
             id={this.props.match.params.clientId}
             month={this.props.match.params.month}
@@ -306,7 +307,7 @@ class AddPost extends Component {
           </p>
           <div>
             <div className="position-relative add-post-container">
-              <div className="d-flex align-items-center container ">
+              <div className="d-flex align-items-center container mb-20">
                 <EditCategoryForm
                   clientId={this.props.match.params.clientId}
                   getSelectedCategory={this.getSelectedCategory}

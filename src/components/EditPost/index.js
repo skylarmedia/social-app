@@ -346,7 +346,7 @@ class EditPost extends Component {
             <div className="upload-files-wrapper d-flex flex-wrap">{image}</div>
             <TextArea
               className="blue-input copy-input"
-              label="Copy"
+              placeholder="Copy"
               name="copy"
               value={this.state.posts[index].copy}
               onChange={this.handleCopy}

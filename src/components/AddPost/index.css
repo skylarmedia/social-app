@@ -134,6 +134,10 @@
 	margin-right: 12px;
 }
 
+.date-picker-wrapper > div{
+	border: 2px solid #002d5b;
+    font-size: 16px;
+}
 .archive-x {
 	background: transparent;
 	border: none;
@@ -155,34 +159,59 @@
 }
 
 .upload-files-wrapper div:first-child {
-	width: 100%;
-	display: flex;
-	text-align: center;
-	margin: 0 auto;
-	text-align: center;
-	width: 100%;
+    width: 100%;
+    display: flex;
+    text-align: center;
+    margin: 0 auto;
+    text-align: center;
+    width: 100%;
+    object-fit: cover;
+    height: auto;
+    margin-bottom: 40px;
+}
+
+.mb-20 {
+	margin-bottom: 20px;
+}
+
+.budget-input{
+	padding-left:15px;
+}
+
+.main-edit-form form .ant-select{
+	width:100% !important;
+}
+.object-fit {
+	height: 90px;
 	object-fit: cover;
 }
 
-.mb-20{
-	margin-bottom:20px;
-}
-
-.object-fit{
-	height: 90px;
-    object-fit: cover;
-}
-
-#render-input{
+#render-input {
 	position: relative;
-    margin-left: 9px;
+
+	margin-top: 30px;
+	margin-bottom: 10px;
+}
+
+.edit-form .upload-files-wrapper div:first-child img {
+	margin-top:0;
+}
+
+.mb-15{
+	margin-bottom:15px;
 }
 
 .upload-files-wrapper div:nth-child(n + 2) {
 	width: 25%;
+    height: 90px;
+    object-fit: cover;
+    margin: 0 5px;
+}
 
-	height: 100%;
-	object-fit: cover;
+.ad-dollar{
+	font-size: 26px;
+	width: 20px;
+	margin-right:15px;
 }
 
 .upload-files-wrapper div:first-child img {
@@ -213,10 +242,6 @@
 	color: #707070;
 	font-size: 16px;
 }
-
-
-
-
 
 .sponsored-label {
 	font-size: 20px;
@@ -389,15 +414,15 @@
 	width: 195px;
 	background-color: transparent;
 	padding-left: 15px;
-	z-index:999;
+	z-index: 999;
 }
 
 .add-platform-btn {
 	position: absolute;
-	right: 40%;
-	bottom: 130px;
-	margin-left: 10px;
-	right: 39.5%;
+    right: 40%;
+    bottom: 140px;
+    margin-left: 10px;
+    right: 30.5%;
 }
 
 /* INPUTS */
@@ -453,39 +478,55 @@ input.blue-input {
 	margin-top: 0;
 }
 
-.form-wrapper:nth-child(even){
-	background:#fff;
-    padding-top: 108px;
-    padding-bottom: 40.5px;
+.form-wrapper:nth-child(even) {
+	background: #fff;
+	padding-top: 108px;
+	padding-bottom: 40.5px;
 }
 
-.form-wrapper-edit{
+.form-wrapper-edit {
 	transform: translateY(65px);
 }
 
 .ant-checkbox-inner {
-    border: 2px solid #002D5B;
+	border: 2px solid #002d5b;
 }
 
-.form-wrapper:nth-child(odd){
+.form-wrapper:nth-child(odd) {
 	background: #f0f0f0;
 	padding-top: 108px;
-    padding-bottom: 40.5px;
+	padding-bottom: 40.5px;
 }
 
 .ant-select-selection--single {
-    position: relative;
-    height: 32px;
-    cursor: pointer;
-    background: transparent;
-    border-radius: 0;
-    border: 2px solid #002d5b;
-    height: 37px;
-    width: 261px;
-    color: #002d5b;
+	position: relative;
+	height: 32px;
+	cursor: pointer;
+	background: transparent;
+	border-radius: 0;
+	border: 2px solid #002d5b;
+	height: 37px;
+	width: 261px;
+	color: #002d5b;
 }
 
-.main-edit-form{
+.main-edit-form {
 	width: 261px;
-	margin-right:135px;
+	margin-right: 135px;
+}
+
+.image-render {
+	height:90px;
+}
+
+.image-render img{
+	height:100%;
+}
+
+.left-margin {
+	margin-left: 10px;
+}
+
+textarea.blue-input.copy-input{
+	height: 190px !important;
 }

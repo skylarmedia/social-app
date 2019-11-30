@@ -14,6 +14,7 @@ import { connect } from 'react-redux';
 import { Collapse } from 'antd';
 import { Input } from 'antd';
 import { Select } from 'antd';
+import ImagePosts from '../ImagePosts';
 
 const { TextArea } = Input;
 const { Panel } = Collapse;
@@ -405,22 +406,7 @@ class SubPost extends Component {
   };
 
   render() {
-    const renderMedia = this.state.metaImageFiles.map(item => {
-      console.log('item', item);
-      if (this.getType(item) == 'video') {
-        return (
-          <video height="200" width="200" controls>
-            <source src={item} />
-          </video>
-        );
-      } else {
-        return (
-          <div>
-            <img src={item} />
-          </div>
-        );
-      }
-    });
+
 
     return (
       <div className="d-flex row">
@@ -437,7 +423,10 @@ class SubPost extends Component {
 
           {this.state.metaImageFiles.length > 0 ? (
             <div>
-              <div className="upload-files-wrapper d-flex flex-wrap">{renderMedia}</div>
+              <div className="d-flex flex-wrap">
+                <ImagePosts imageSrc={this.state.metaImageFiles} className="upload-files-wrapper" />
+                {/* {renderMedia} */}
+              </div>
               <input type="file" multiple onChange={this.addFile} id="render-input" />
             </div>
           ) : (
@@ -575,7 +564,7 @@ class SubPost extends Component {
           </div>
 
           {this.state.ad && (
-            <div className="col-md-12 row mt-20">
+            <div className="col-md-12 row mt-20 mb-20">
               <div className="d-flex justify-content-between date-picker-wrapper flex-85 align-items-center">
                 <DatePicker
                   selected={this.state.startDpDate}
@@ -630,9 +619,9 @@ class SubPost extends Component {
           <div>
             {this.state.values.map((el, i) => (
               <div key={i}>
-                <div className="d-flex align-self-center">
+                <div className="d-flex align-self-center ant-link">
                   <Input
-                    className="blue-input ant-link"
+                    className="blue-input"
                     placeholder="ADD LINKS"
                     value={el.value || ''}
                     onChange={e => this.handleLinks(i, e)}

@@ -10,8 +10,8 @@ const Legend = props => {
   console.log('legend props', props);
   return (
     <div>
-      <p className="container">Details</p>
-      <div className="border" />
+      <p className="container p-details">Details</p>
+      <div className="border mb-15"></div>
       <section className="d-flex justify-content-between container row mx-auto">
         <div>
           <h4>CATEGORIES</h4>
@@ -66,7 +66,7 @@ const Legend = props => {
               <p className="mb-0">Approved</p>
             </li>
             <li className="col-sm-6  d-flex align-items-center">
-              <img src={require('../assets/ad.svg')} />
+              <span className="ad-dollar color-blue">$</span>
               <p className="mb-0">Ad</p>
             </li>
           </ul>

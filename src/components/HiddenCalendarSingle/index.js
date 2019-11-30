@@ -7,7 +7,7 @@ import './index.css';
 import Icons from '../Icons';
 import Ad from '../Ad';
 import { Checkbox } from 'antd';
-import Lightbox from '../Lightbox';
+import ImagePosts from '../ImagePosts';
 import app from 'firebase/app';
 
 let timer = 0;
@@ -32,17 +32,12 @@ class HiddenCalendarSingle extends Component {
   componentDidMount() {
     var url_string = window.location.href; //window.location.href
     var url = new URL(url_string);
-    console.log('hidden calendar', this.props);
     var c = url.searchParams.get('clientId');
 
     this.setState({
       clientId: c,
       approved: this.props.approved
     });
-  }
-
-  componentDidUpdate(prevProps, prevState, snapshot) {
-    console.log(prevProps, 'prev props');
   }
 
   toggleIsHidden = () => {
@@ -118,15 +113,15 @@ class HiddenCalendarSingle extends Component {
         Math.min(trimmedString.length, trimmedString.lastIndexOf(' '))
       );
 
-      let image = this.props.images[0];
-      this.props.images.shift();
+      // let image = this.props.images[0];
+      // this.props.images.shift();
         
-      let underImageEl = this.props.images.map(item => <img src={item} />);
-      console.log('type of under image', typeof(underImages))
+      // let underImageEl = this.props.images.map(item => <img src={item} />);
+      // console.log('type of under image', typeof(underImages))
       return (
         <div className="hidden-inner">
           <h4 className="text-center">{this.props.title}</h4>
-          <div class="social-wrapper d-flex justify-content-center">
+          <div className="social-wrapper d-flex justify-content-center">
             {this.props.facebook === true && <p>Facebook</p>}
             {this.props.instagram === true && <p>Instagram</p>}
             {this.props.linkedin === true && <p>LinkedIn</p>}
@@ -137,9 +132,9 @@ class HiddenCalendarSingle extends Component {
             {date.toString().split('00')[0]} @ {this.props.ipDate}
           </p>
           <div className="d-flex">
-            <div className="col-md-6">
-              <img src={image} className="w-100" />
-              {/* <Lightbox productsImages={this.props.images}/> */}
+            <div className="col-md-6 edit-form">
+              <ImagePosts imageSrc={this.props.images} />
+              {/* <img src={image} className="w-100" /> */}
               <p className="props-copy">{this.props.copy.substr(0, 200)}</p>
               <div>{this.props.hashtags}</div>
             </div>
@@ -160,7 +155,7 @@ class HiddenCalendarSingle extends Component {
           <div className="text-center">
             <Link
               to={`/edit-post/${this.props.postId}/${this.props.clientId}`}
-              class="save-draft-btn"
+              className="save-draft-btn"
             >
               Edit Post
             </Link>
@@ -174,8 +169,8 @@ class HiddenCalendarSingle extends Component {
     };
     return (
       <React.Fragment>
-        <TransitionGroup component={null}>
-          <div class="d-flex align-items-center">
+
+          <div className="d-flex align-items-center">
             <button
               onClick={this.toggleIsHidden}
               onDoubleClick={this.handleDoubleClick.bind(this)}
@@ -185,7 +180,7 @@ class HiddenCalendarSingle extends Component {
               {this.ellipse(this.props.title)}
               {this.props.adminRead != false ? '' : ''}
             </button>
-            <Ad ad={this.props.ad} class="ad-icon" />
+            <Ad ad={this.props.ad} className="ad-icon" />
             <Icons
               approved={this.props.approved}
               clientRead={this.props.clientRead}
@@ -194,11 +189,8 @@ class HiddenCalendarSingle extends Component {
             />
           </div>
           {this.state.isHiddenCalendar && (
-            <CSSTransition classNames="dialog" timeout={300}>
-              <div class="hidden-post">{hiddenPost()}</div>
-            </CSSTransition>
+            <div className="hidden-post">{hiddenPost()}</div>
           )}
-        </TransitionGroup>
       </React.Fragment>
     );
   }
