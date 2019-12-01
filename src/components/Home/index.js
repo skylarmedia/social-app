@@ -374,7 +374,6 @@ class Home extends Component {
               </form>
             </div>
           </Modal>
-        )}
       </div>
     );
   }
