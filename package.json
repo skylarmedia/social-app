@@ -1,5 +1,4 @@
 {
-  "homepage": "http://skylarmedia.github.io/social-app",
   "name": "skylar-social",
   "proxy": "http://localhost:3001",
   "version": "0.1.0",
