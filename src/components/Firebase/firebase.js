@@ -192,21 +192,33 @@ class Firebase {
         }
       );
 
-  sendCategories = (user, categories) => {
-    categories.forEach(function(category) {
-      app
-        .firestore()
-        .collection('users')
-        .doc(user)
-        .collection('categories')
-        .doc(category.name)
-        .set({
-          color: category.color,
-          name: category.name,
-          selected: false,
-          month: new Array()
-        });
-    });
+  sendCategories = (user, category) => {
+
+    app.firestore()
+    .collection('users')
+    .doc(user)
+    .collection('categories')
+    .doc(category.name)
+    .set({
+      color:category.color,
+      name:category.name,
+      selected:false,
+      month:new Array()
+    })
+    // categories.forEach(function(category) {
+    //   app
+    //     .firestore()
+    //     .collection('users')
+    //     .doc(user)
+    //     .collection('categories')
+    //     .doc(category.name)
+    //     .set({
+    //       color: category.color,
+    //       name: category.name,
+    //       selected: false,
+    //       month: new Array()
+    //     });
+    // });
   };
 
   adminSendMessage = (role, date, time, client, message, postId, timestamp, month, year) => {

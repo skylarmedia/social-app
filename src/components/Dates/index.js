@@ -5,9 +5,10 @@ import { compose } from 'recompose';
 import Calendar from '../Calendar';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import './index.css';
-import InputLabel from '@material-ui/core/InputLabel';
 import CalendarImage from '../CalendarImage';
-import { Modal, Button } from 'antd';
+import { Modal } from 'antd';
+import { Popover, Button } from 'antd';
+import { Row, Col } from 'antd';
 
 // Category List
 import SelectCategory from '../SelectCategory';
@@ -32,7 +33,7 @@ class Dates extends Component {
       chosenMonth: '',
       categories: [],
       chosenYear: '',
-      showCat: false,
+      showCat: true,
       showCalendar: false,
       clientId: '',
       isLoading: false,
@@ -40,17 +41,10 @@ class Dates extends Component {
       isLoading: false,
       removedCategories: [],
       visible: false,
-      passDates: (month, year) => {
-        this.setState({
-          chosenMonth: month,
-          chosenYear: year,
-          showCalendar: true
-        });
-      }
+      visibleCategories: false
     };
 
     this.submitForm = this.submitForm.bind(this);
-    this.closeCat = this.closeCat.bind(this);
 
     this.db = app.functions();
   }
@@ -121,22 +115,22 @@ class Dates extends Component {
 
   //*** START OF CATEGORY METHODS ***/
 
-  removeCategory = (index, name) => {
+  hide = () => {
     this.setState({
-      categories: this.state.categories.filter((_, i) => i !== index),
-      removedCategories: [...this.state.removedCategories, name]
+      visibleCategories: false
     });
-
-    this.props.firebase.removeCategoryNew(this.props.match.params.id, name);
   };
 
-  showCategories = e => {
-    e.preventDefault();
+  handleVisibleChange = visible => {
+    this.setState({ visible: true });
+  };
+
+  showCat = () => {
     this.setState({
       showCat: !this.state.showCat
-    });
-  };
-
+    })
+  }
+ 
   //** END OF CATEGORY METHODS ***/
 
   toggleAddDate() {
@@ -158,7 +152,7 @@ class Dates extends Component {
       this.setState({
         showAddDate: !this.state.showAddDate,
         date: [...this.state.date, tempDateObj],
-        visible:false
+        visible: false
       });
     }
   };
@@ -198,12 +192,6 @@ class Dates extends Component {
     });
   };
 
-  closeCat = () => {
-    this.setState({
-      showCat: !this.state.showCat
-    });
-  };
-
   deleteDate = (id, index) => {
     if (this.props.match.params.id !== undefined) {
       this.props.firebase.deleteDate(this.props.match.params.id, id);
@@ -214,22 +202,23 @@ class Dates extends Component {
     });
   };
 
-  sendCategories = (arr, arr2) => {
-    const currentCat = [...this.state.categories];
-    arr.map(item => {
-      currentCat.push(item);
-    });
+  sendCategories = cat => {
+    this.setState(
+      {
+        categories: [...this.state.categories, cat],
+        visibleCategories: false
+      },
+      () => {
+        console.log('categoires parent', this.state.categories);
+      }
+    );
 
-    this.setState({
-      showCat: !this.state.showCat,
-      categories: currentCat
-    });
-    this.props.firebase.sendCategories(this.props.match.params.id, arr2);
+    this.props.firebase.sendCategories(this.props.match.params.id, cat);
   };
 
   render() {
     const renderDates = this.state.date.map((item, index) => (
-      <div className="position-relative date-map-item " key={index}>
+      <Col Col span={6} className="position-relative date-map-item" key={index}>
         <CalendarImage
           year={item.year}
           month={item.month}
@@ -239,7 +228,7 @@ class Dates extends Component {
         <div className="d-flex justify-content-between">
           <Link
             to={`/calendar/${item.year}/${item.month}/${this.props.match.params.id}`}
-            className="main-link"
+            className="main-link color-blue"
           >
             {this.convert(item.month)} {item.year}
             <br />
@@ -248,9 +237,21 @@ class Dates extends Component {
             <img src={require('../assets/xsvg.svg')} />
           </button>
         </div>
-      </div>
+      </Col>
     ));
 
+    const content = (
+      <div class="position-relative">
+        <SelectCategory
+          className="selected-categoryComponent"
+          userId={this.props.match.params.clientId}
+          getCategories={this.sendCategories}
+        />
+        <div className="position-absolute cat-outter-list">
+                    <CategoryList colors={this.state.categories} />
+                  </div>
+      </div>
+    );
     return this.state.isLoading && this.state.date.length > 0 ? (
       <div className="container row mx-auto date-page">
         <div className="col-sm-3">
@@ -261,43 +262,34 @@ class Dates extends Component {
             </Link>
           </div>
 
-          <div id="outter-cat-wrapper">
+          <div id="outter-cat-wrapper" className="position-relative">
             <div>
-              <button
-                onClick={this.showCategories}
-                id="add-category-button"
-                className="clear-btn d-flex"
-              >
-                <img src={require('../assets/select.svg')} />
-                <p className="no-margin">Create Category</p>
-              </button>
-
-              {this.state.showCat && (
-                <div className="category-main-wrapper">
-                  <button onClick={() => this.closeCat()}>close</button>
-                  <SelectCategory
-                    className="selected-categoryComponent"
-                    userId={this.props.match.params.clientId}
-                    getCategories={this.sendCategories}
-                    removeCategory={() => this.removeCategory}
-                  />
-                  <CategoryList
-                    colors={this.state.categories}
-                    removeCategory={this.removeCategory}
-                  />
+              <h4 className="color-blue f-16 mt-87">CATEGORIES</h4>
+              <div id="trans-cat">
+                <div className="position-relative">
+                  <Popover content={content} trigger="click">
+                    <Button className="d-flex color-blue clear-btn align-items-center p-0" onClick={this.showCat}>
+                      <img src={require('../assets/select.svg')} />
+                      <p className="ml-10 color-blue">Create Category</p>
+                    </Button>
+                  </Popover>
+                  { this.state.showCat && (
+                    <CategoryList colors={this.state.categories} />
+                  )}
+                  
                 </div>
-              )}
+              </div>
             </div>
           </div>
         </div>
         <div className="col-sm-9">
-          <h2 className="text-center" id="client-heading">
-            Client {this.props.match.params.clientId} Calendars
+          <h2 className="text-center color-blue" id="client-heading">
+            Client {this.props.match.params.id} Calendars
           </h2>
-          <p className="text-left margin-40">Select a month to view it’s calendar.</p>
-          <div id="dates-list" className="d-flex date-wrapper">
+          <p className="text-left margin-70 color-blue">Select a month to view it’s calendar.</p>
+          <Row gutter={30} id="dates-list">
             {renderDates}
-          </div>
+          </Row>
           <Modal
             visible={this.state.visible}
             onOk={this.handleOk}
@@ -347,7 +339,7 @@ class Dates extends Component {
           {this.state.showCalender ? <Calendar impData={this.state} /> : ''}
           <div className="text-center add-btn-wrapper">
             <button onClick={this.showModal} className="add-date-btn">
-              Add New1
+              Add New
             </button>
           </div>
         </div>

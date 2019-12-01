@@ -1,12 +1,11 @@
 .category-color{
     margin-bottom: 5px;
-    width: 185px;
-    padding-left: 12px;
-    height: 15px;
+    width: 265px;
+    height: 21px;
     display: flex;
     align-items: center;
-    padding: 15px 20px;
-    position:relative;
+    position: relative;
+    padding-left: 15px;
 }
 
 .category-color button{

@@ -46,6 +46,12 @@ body .ant-btn-primary{
     width: 149px;
     border-radius: 11px;
 }
+
+#client-list img{
+	height:178px;
+	object-fit:cover;
+}
+
 #add-new-form-wrapper {
     display: flex;
     flex-direction: column;
@@ -230,9 +236,15 @@ body .ant-btn-primary{
 	right: 15px;
 }
 
+.mt-10{
+	margin-top:10px;
+}
+
 .archive-x {
 	position: absolute;
 	right: 0;
+	margin-right:15px;
+	margin-top:7px;
 }
 
 .bm-burger-bars {

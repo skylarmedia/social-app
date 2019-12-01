@@ -133,6 +133,10 @@ select {
 	margin-top: 36px;
 }
 
+.categories-modal .ant-modal-close{
+	display:none;
+}
+
 .inner-date-wrapper .ant-select-selection__rendered{
 	display:flex;
 	align-items:center;
@@ -160,8 +164,31 @@ select {
 	width: 100%;
 }
 
-.margin-40 {
-	margin-bottom: 40px;
+.categories-modal .ant-modal-content{
+	width: 200px;
+    background: transparent;
+    box-shadow: none;
+    left: -70%;
+    top: 187px;
+}
+
+.cat-outter-list {
+	left: -15px !important;
+    bottom: -95px !important;
+}
+
+.sketch-picker{
+	width: 215px !important;
+	border-radius: 0 !important;
+	box-shadow:none !important;
+}
+
+.mt-87{
+	margin-top:87px;
+}
+
+.margin-70 {
+	margin-bottom: 50px;
 }
 
 #client-heading {
@@ -177,8 +204,12 @@ select {
 
 .add-btn-wrapper {
 	position: absolute;
-	top: 26%;
+	top: 106px;
 	right: 25px;
+}
+
+.date-map-item{
+	margin-bottom: 45px;
 }
 
 .cal-img {
@@ -277,6 +308,7 @@ body .bm-menu {
 
 #outter-cat-wrapper {
 	position: absolute;
+	margin-top:85px;
 }
 
 .margin-btn {
@@ -292,4 +324,13 @@ body .bm-menu {
 
 .label-button{
   width:100%;
+}
+
+.ml-10{
+	margin-left:10px;
+	margin-bottom:0;
+}
+
+#trans-cat button{
+	margin-bottom:7px;
 }

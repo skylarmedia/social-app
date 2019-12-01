@@ -29,9 +29,9 @@ code {
   width: 43px;
   height: 43px;
   border-radius: 50%;
-  right: 0;
-  color:#fff;
-  top:-20px;
+  right: -10px;
+  color: #fff;
+  top: -24px;
 }
 
 .f-16{

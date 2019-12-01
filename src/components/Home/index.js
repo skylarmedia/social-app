@@ -10,6 +10,7 @@ import './index.css';
 import { Modal, Button } from 'antd';
 import MainButton from '../MainButton';
 import ClientImage from '../ClientImage';
+import { Row, Col } from 'antd';
 
 import app from 'firebase/app';
 
@@ -159,7 +160,7 @@ class Home extends Component {
   handleCancel = e => {
     console.log(e);
     this.setState({
-      visible: false,
+      visible: false
     });
   };
 
@@ -247,136 +248,134 @@ class Home extends Component {
         ) : (
           ''
         )}
-          <img src={require('../assets/skylar_Icon_wingPortion.svg')} id="wing-logo" />
-          <h2 className="text-center welcome">Welcome Home!</h2>
-
-          {this.state.isLoading && this.state.users.length > 0 ? (
-            <div>
-              <p className="text-center">What client do you want to work on today?</p>
-              <div id="client-list" className="row justify-content-between">
-                {this.state.users.map((user, index) => {
-                  return (
-                    <div
-                      data-id={user.userId}
-                      className="client-wrapper flex-column d-flex"
-                      key={index}
-                    >
-                      <Link to={`/dates/${user.urlName}`}>
-                        <ClientImage logo={user.logo} name={user.name} />
-                        {/* <img src={user.logo} className="user-background" /> */}
-                      </Link>
-                      <div class="d-flex align-items-center align-items-center">
-                        <div className="x-wrapper">
-                          <Link to={`/dates/${user.urlName}`}>{user.name}</Link>
-                        </div>
-                        <button
-                          onClick={() => this.archiveClient(user.urlName, index)}
-                          className="archive-x"
-                        >
-                          x
-                        </button>
+        <img src={require('../assets/skylar_Icon_wingPortion.svg')} id="wing-logo" />
+        <h2 className="text-center welcome">Welcome Home!</h2>
+        {this.state.isLoading && this.state.users.length > 0 ? (
+          <div>
+            <p className="text-center">What client do you want to work on today?</p>
+            <Row gutter={30} id="client-list">
+              {this.state.users.map((user, index) => {
+                return (
+                  <Col
+                    data-id={user.userId}
+                    className="gutter-row client-wrapper flex-column d-flex"
+                    span={6}
+                    key={index}
+                  >
+                    <Link to={`/dates/${user.urlName}`}>
+                      <ClientImage logo={user.logo} name={user.name} />
+                    </Link>
+                    <div class="d-flex align-items-center align-items-center">
+                      <div className="x-wrapper mt-10">
+                        <Link to={`/dates/${user.urlName}`}>{user.name}</Link>
                       </div>
+                      <button
+                        onClick={() => this.archiveClient(user.urlName, index)}
+                        className="archive-x"
+                      >
+                        x
+                      </button>
                     </div>
-                  );
-                })}
-              </div>
-              <div id="add-new-btn-wrapper" className="text-center">
-                <button  onClick={this.showModal} className="add-date-btn hidden-add">
-                  Add New1
-                </button>
-              </div>
+                  </Col>
+                );
+              })}
+            </Row>
+            <div id="add-new-btn-wrapper" className="text-center">
+              <button onClick={this.showModal} className="add-date-btn hidden-add">
+                Add New1
+              </button>
             </div>
-          ) : this.state.isLoading && this.state.users.length == 0 ? (
-            <div>
-              <p className="text-center para-margin">
-                You don’t seem to have any client calendars set up yet. Click below to add one and
-                get started!
-              </p>
-              <div id="add-new-btn-wrapper" className="text-center mt-88">
-                <button
-                  onClick={this.toggleAddNew.bind(this)}
-                  className="add-date-btn empty-add-date"
-                >
-                  Add New2
-                </button>
-              </div>
-              <div className="empty-state">
-                <div className="row justify-content-between">
-                  <div className="dashed" />
+          </div>
+        ) : this.state.isLoading && this.state.users.length == 0 ? (
+          <div>
+            <p className="text-center para-margin">
+              You don’t seem to have any client calendars set up yet. Click below to add one and get
+              started!
+            </p>
+            <div id="add-new-btn-wrapper" className="text-center mt-88">
+              <button
+                onClick={this.toggleAddNew.bind(this)}
+                className="add-date-btn empty-add-date"
+              >
+                Add New2
+              </button>
+            </div>
+            <div className="empty-state">
+              <div className="row justify-content-between">
+                <div className="dashed" />
 
-                  <div className="dashed" />
+                <div className="dashed" />
 
-                  <div className="dashed" />
+                <div className="dashed" />
 
-                  <div className="dashed dashed-wrapper">
-                    <img src={require('../assets/round-arrow.png')} class="round-arrow" />
-                  </div>
+                <div className="dashed dashed-wrapper">
+                  <img src={require('../assets/round-arrow.png')} class="round-arrow" />
                 </div>
               </div>
             </div>
-          ) : (
-            <div className="progress-wrapper">
-            </div>
-          )}
-
-         <Modal 
-          visible={this.state.visible}
-          onOk={this.handleOk}
-          className="home-modal"
-          onCancel={this.handleCancel}
-          footer={[
-            <Button onClick={this.onSubmit} className="add-date-btn">Submit</Button>
-          ]}
+          </div>
+        ) : (
+          <div className="progress-wrapper"></div>
+        )}
+          <Modal
+            visible={this.state.visible}
+            onOk={this.handleOk}
+            className="home-modal"
+            onCancel={this.handleCancel}
+            footer={[
+              <Button onClick={this.onSubmit} className="add-date-btn">
+                Submit
+              </Button>
+            ]}
           >
+            <div id="add-new-form-wrapper">
+              <form onSubmit={this.onSubmit} id="add-new-form" className="d-flex flex-column">
+                <div
+                  id="avatar-upload"
+                  className="d-flex align-items-end justify-content-center align-items-center"
+                  style={backgroundUrlStyle}
+                >
+                  <input type="file" onChange={this.addFile} id="add-file" />
+                  {this.state.loadSpinner === true ? (
+                    <CircularProgress style={progressStyles} />
+                  ) : (
+                    ''
+                  )}
+                </div>
+                <TextField
+                  margin="normal"
+                  variant="outlined"
+                  name="username"
+                  value={this.state.username}
+                  onChange={this.onChange}
+                  type="text"
+                  label="CLIENT_NAME"
+                />
+                <TextField
+                  margin="normal"
+                  variant="outlined"
+                  name="email"
+                  value={this.state.email}
+                  onChange={this.onChange}
+                  type="text"
+                  label="CLIENT_EMAIL"
+                />
+                <TextField
+                  margin="normal"
+                  variant="outlined"
+                  name="passwordOne"
+                  value={this.state.passwordOne}
+                  onChange={this.onChange}
+                  type="password"
+                  label="PASSWORD"
+                />
 
-              <div id="add-new-form-wrapper">
-                <form onSubmit={this.onSubmit} id="add-new-form" className="d-flex flex-column">
-                  <div
-                    id="avatar-upload"
-                    className="d-flex align-items-end justify-content-center align-items-center"
-                    style={backgroundUrlStyle}
-                  >
-                    <input type="file" onChange={this.addFile} id="add-file" />
-                    {this.state.loadSpinner === true ? (
-                      <CircularProgress style={progressStyles} />
-                    ) : (
-                      ''
-                    )}
-                  </div>
-                  <TextField
-                    margin="normal"
-                    variant="outlined"
-                    name="username"
-                    value={this.state.username}
-                    onChange={this.onChange}
-                    type="text"
-                    label="CLIENT_NAME"
-                  />
-                  <TextField
-                    margin="normal"
-                    variant="outlined"
-                    name="email"
-                    value={this.state.email}
-                    onChange={this.onChange}
-                    type="text"
-                    label="CLIENT_EMAIL"
-                  />
-                  <TextField
-                    margin="normal"
-                    variant="outlined"
-                    name="passwordOne"
-                    value={this.state.passwordOne}
-                    onChange={this.onChange}
-                    type="password"
-                    label="PASSWORD"
-                  />
-                  
-                  {this.state.error && <p>{this.state.error.message}</p>}
-                </form>
-              </div>
-            </Modal>
-          )}
-      </div>  
+                {this.state.error && <p>{this.state.error.message}</p>}
+              </form>
+            </div>
+          </Modal>
+        )}
+      </div>
     );
   }
 }

@@ -3,7 +3,6 @@ import { SketchPicker } from 'react-color';
 import { withFirebase } from '../Firebase';
 import { compose } from 'recompose';
 import './index.css';
-import DeleteIcon from '@material-ui/icons/Delete';
 
 class SelectCategory extends Component {
   constructor(props) {
@@ -18,7 +17,6 @@ class SelectCategory extends Component {
       sendCategory: []
     };
 
-    // this.removeCategory = this.removeCategory.bind(this);
     this.passCategories = this.passCategories.bind(this);
   }
 
@@ -51,16 +49,12 @@ class SelectCategory extends Component {
     });
   };
 
-  removeCategory = event => {
-    let index = event.target.getAttribute('data-index');
-    let setCategories = [...this.state.setCategories];
-    setCategories.splice(index, 1);
-    this.setState({ setCategories });
-  };
-
   passCategories = e => {
     e.preventDefault();
-    this.props.getCategories(this.state.setCategories, this.state.sendCategory);
+    let catObj = new Object;
+    catObj.name = this.state.name;
+    catObj.color = this.state.color
+    this.props.getCategories(catObj);
   };
 
   render() {
@@ -68,12 +62,8 @@ class SelectCategory extends Component {
       let categoryStyle = {
         background: item.color
       };
-      console.log('catt list', this.s);
       return (
         <li key={i} className="category-list-item">
-          <button onClick={this.removeCategory} data-index={i}>
-            <DeleteIcon className="delete-category" />
-          </button>
           <div className="d-flex align-items-center">
             <div className="hex-color" style={categoryStyle}>
               {item.name}
@@ -88,20 +78,20 @@ class SelectCategory extends Component {
           <input
             type="text"
             onChange={this.selectCategory.bind(this)}
-            class="light-input"
+            className="light-input"
             placeholder="CATEGORY_NAME"
           />
           <SketchPicker
             color={this.state.color}
             onChangeComplete={this.handleChangeComplete.bind(this)}
           />
-          <div class="d-flex flex-column justify-content align-items-center">
+          <div className="d-flex flex-column justify-content align-items-center">
             <ul id="selected-categories">{categoryList}</ul>
-            <button onClick={this.submitCategories} class="gen-red-btn">
+            {/* <button onClick={this.submitCategories} className="gen-red-btn">
               Add Categories
             </button>
-            <br />
-            <button onClick={this.passCategories} class="gen-red-btn">
+            <br /> */}
+            <button onClick={this.passCategories} className="gen-red-btn">
               Submit
             </button>
           </div>

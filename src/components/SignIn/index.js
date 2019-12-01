@@ -92,6 +92,7 @@ class SignInFormBase extends Component {
     return (
       <React.Fragment>
         <img src={require('../assets/skylar_Icon_wingPortion.svg')} id="wing-logo" />
+        Version.1
         <form onSubmit={this.onSubmit} className="d-flex flex-column align-items-center">
           <TextField
             name="email"

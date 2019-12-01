@@ -54,7 +54,7 @@ class ClientImage extends Component {
   render() {
     return (
       <div class="position-relative">
-        <p>{this.state.size}</p>
+        <p className="size-int">{this.state.size}</p>
         <img src={this.props.logo} />
       </div>
     );
