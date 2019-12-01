@@ -125,12 +125,19 @@ class Dates extends Component {
     this.setState({ visible: true });
   };
 
-  showCat = () => {
+  showCat = e => {
+    // e.stopPropagation()
     this.setState({
       showCat: !this.state.showCat
-    })
-  }
- 
+    });
+  };
+
+  hideCat = e => {
+    this.setState({
+      showCat: !this.state.showCat
+    });
+  };
+
   //** END OF CATEGORY METHODS ***/
 
   toggleAddDate() {
@@ -219,12 +226,17 @@ class Dates extends Component {
   render() {
     const renderDates = this.state.date.map((item, index) => (
       <Col Col span={6} className="position-relative date-map-item" key={index}>
-        <CalendarImage
-          year={item.year}
-          month={item.month}
-          userId={this.props.match.params.id}
-          admin={true}
-        />
+        <Link
+          to={`/calendar/${item.year}/${item.month}/${this.props.match.params.id}`}
+          className="main-link color-blue"
+        >
+          <CalendarImage
+            year={item.year}
+            month={item.month}
+            userId={this.props.match.params.id}
+            admin={true}
+          />
+        </Link>
         <div className="d-flex justify-content-between">
           <Link
             to={`/calendar/${item.year}/${item.month}/${this.props.match.params.id}`}
@@ -248,8 +260,8 @@ class Dates extends Component {
           getCategories={this.sendCategories}
         />
         <div className="position-absolute cat-outter-list">
-                    <CategoryList colors={this.state.categories} />
-                  </div>
+          <CategoryList colors={this.state.categories} />
+        </div>
       </div>
     );
     return this.state.isLoading && this.state.date.length > 0 ? (
@@ -267,16 +279,18 @@ class Dates extends Component {
               <h4 className="color-blue f-16 mt-87">CATEGORIES</h4>
               <div id="trans-cat">
                 <div className="position-relative">
-                  <Popover content={content} trigger="click">
-                    <Button className="d-flex color-blue clear-btn align-items-center p-0" onClick={this.showCat}>
+                  <Popover
+                    content={content}
+                    trigger="click"
+                    onChange={this.showCat}
+                    onVisibleChange={this.hideCat}
+                  >
+                    <Button className="d-flex color-blue clear-btn align-items-center p-0">
                       <img src={require('../assets/select.svg')} />
                       <p className="ml-10 color-blue">Create Category</p>
                     </Button>
                   </Popover>
-                  { this.state.showCat && (
-                    <CategoryList colors={this.state.categories} />
-                  )}
-                  
+                  {this.state.showCat && <CategoryList colors={this.state.categories} />}
                 </div>
               </div>
             </div>
