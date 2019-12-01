@@ -39,8 +39,8 @@ class CalendarImage extends Component {
 
   render() {
     return (
-      <div>
-        <p>{this.state.size}</p>
+      <div className="position-relative">
+        <p className="position-absolute bg-red size-int f-16 d-inline-flex justify-content-center align-items-center">{this.state.size}</p>
         <img src={require('../assets/grouped-single-calendar.svg')} className="cal-img" />
       </div>
     );

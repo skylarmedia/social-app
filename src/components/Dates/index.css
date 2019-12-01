@@ -103,6 +103,53 @@ select {
 	margin-left: 15px;
 }
 
+.anticon svg{
+	font-size:20px;
+	color:#EF463B;
+	font-weight:bold;
+}
+
+.ant-select-arrow .ant-select-arrow-icon svg {
+    color: #000;
+}
+
+.inner-date-wrapper .ant-select-selection--single .ant-select-selection__rendered{
+	height:37px;
+}
+
+.inner-date-wrapper .ant-select-selection--single{
+	background: #fff;
+    color: #707070;
+    font-size: 16px; 
+	height: 37px;
+	border:1px solid #707070;
+}
+
+.inner-date-wrapper .selection__rendered{
+	height:37px;
+}
+
+.inner-date-wrapper .ant-modal-footer{
+	margin-top: 36px;
+}
+
+.inner-date-wrapper .ant-select-selection__rendered{
+	display:flex;
+	align-items:center;
+}
+
+.date-modal .ant-modal-content{
+	background:transparent;
+	box-shadow:none;
+}
+
+.date-modal.ant-modal{
+	top: 0;
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
 .single-calendar-wrapper {
 	background-image: url('../assets/grouped-single-calendar.svg');
 	height: 240px;

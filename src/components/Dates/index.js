@@ -39,7 +39,7 @@ class Dates extends Component {
       newColors: [],
       isLoading: false,
       removedCategories: [],
-      visible:false,
+      visible: false,
       passDates: (month, year) => {
         this.setState({
           chosenMonth: month,
@@ -81,8 +81,6 @@ class Dates extends Component {
       });
     });
 
-    
-
     this.props.firebase.getUserUnusedCategories(this.props.match.params.id).then(snapshot => {
       console.log('snapshot in cat,', snapshot);
       console.log('rpos match parms', this.props.match.params.id);
@@ -102,7 +100,6 @@ class Dates extends Component {
   }
 
   showModal = () => {
-    alert('ran')
     this.setState({
       visible: true
     });
@@ -118,7 +115,7 @@ class Dates extends Component {
   handleCancel = e => {
     console.log(e);
     this.setState({
-      visible: false,
+      visible: false
     });
   };
 
@@ -150,21 +147,18 @@ class Dates extends Component {
 
   submitForm = e => {
     e.preventDefault();
-    let tempDateObj = {};
+    let tempDateObj = new Object();
     tempDateObj.month = this.state.month;
     tempDateObj.year = this.state.year;
 
     if (this.state.date.filter(e => e.month === tempDateObj.month).length > 0) {
       alert('Sorry that month is already in use, please select again');
     } else {
-      this.props.firebase
-        .addDate(this.props.match.params.id, this.state.month, this.state.year)
-        .then(() => {
-          window.location.reload();
-        });
+      this.props.firebase.addDate(this.props.match.params.id, this.state.month, this.state.year);
       this.setState({
         showAddDate: !this.state.showAddDate,
-        date: [...this.state.date, tempDateObj]
+        date: [...this.state.date, tempDateObj],
+        visible:false
       });
     }
   };
@@ -191,16 +185,16 @@ class Dates extends Component {
   }
 
   handleMonth = e => {
-    console.log(e.target.value, 'month event');
+    console.log(e, 'month event');
     this.setState({
-      month: e.target.value
+      month: e
     });
   };
 
   handleYear = e => {
     console.log(e, 'year event');
     this.setState({
-      year: e.target.value
+      year: e
     });
   };
 
@@ -257,21 +251,6 @@ class Dates extends Component {
       </div>
     ));
 
-    const selectStyles = {
-      backgroundColor: '#fff',
-      width: '269px',
-      paddingLeft: '20px'
-    };
-
-    const formControlStyles = {
-      margin: '20px',
-      minWidth: 120
-    };
-
-    const inputStyles = {
-      color: '#fff'
-    };
-
     return this.state.isLoading && this.state.date.length > 0 ? (
       <div className="container row mx-auto date-page">
         <div className="col-sm-3">
@@ -319,23 +298,23 @@ class Dates extends Component {
           <div id="dates-list" className="d-flex date-wrapper">
             {renderDates}
           </div>
-          <Modal 
-          visible={this.state.visible}
-          onOk={this.handleOk}
-          className="home-modal"
-          onCancel={this.handleCancel}
-          footer={[
-            <Button onClick={this.onSubmit} className="add-date-btn">Submit</Button>
-          ]}>
+          <Modal
+            visible={this.state.visible}
+            onOk={this.handleOk}
+            className="date-modal"
+            onCancel={this.handleCancel}
+            footer={[
+              <Button onClick={this.submitForm.bind(this)} className="add-date-btn">
+                Submit
+              </Button>
+            ]}
+          >
             <form className="add-date-form" onSubmit={this.submitForm.bind(this)}>
               DATE!
               <div className="d-flex justify-content-between inner-date-wrapper">
-                <InputLabel htmlFor="month-helper">Month</InputLabel>
-
-                {/* <Select
+                <Select
                   onChange={this.handleMonth.bind(this)}
                   className="select-date"
-                  value={this.state.month}
                   id="month-helper"
                   placeholder="MONTH"
                 >
@@ -355,19 +334,16 @@ class Dates extends Component {
 
                 <Select
                   onChange={this.handleYear.bind(this)}
-                  style={selectStyles}
                   className="select-date"
                   id="month-helper"
-                  value={this.state.year}
                   placeholder="YEAR"
                 >
                   <Option value="2019">2019</Option>
                   <Option value="2020">2020</Option>
-                </Select> */}
+                </Select>
               </div>
-              <input type="submit" value="Submit" className="add-date-btn" />
             </form>
-            </Modal>
+          </Modal>
           {this.state.showCalender ? <Calendar impData={this.state} /> : ''}
           <div className="text-center add-btn-wrapper">
             <button onClick={this.showModal} className="add-date-btn">
@@ -387,14 +363,13 @@ class Dates extends Component {
           </div>
         </div>
         <div className="col-md-8 position-relative">
- 
-            <form className="add-date-form" onSubmit={this.submitForm.bind(this)}>
-              <button onClick={this.toggleAddDate.bind(this)} className="toggle-close">
-                x
-              </button>
-              ADD DATE 2
-              <div className="d-flex justify-content-between date-wrapper month-wrapper">
-                {/* <Select
+          <form className="add-date-form" onSubmit={this.submitForm.bind(this)}>
+            <button onClick={this.toggleAddDate.bind(this)} className="toggle-close">
+              x
+            </button>
+            ADD DATE 2
+            <div className="d-flex justify-content-between date-wrapper month-wrapper">
+              {/* <Select
                   onChange={this.handleMonth.bind(this)}
                   value={this.state.month}
                   placeholder="MONTH"
@@ -420,14 +395,14 @@ class Dates extends Component {
                   Placeholder
                   <Option value="2019">2019</Option>
                 </Select> */}
-              </div>
-              <input
-                type="submit"
-                value="Submit"
-                className="add-date-btn"
-                onSubmit={this.submitForm.bind(this)}
-              />
-            </form>
+            </div>
+            <input
+              type="submit"
+              value="Submit"
+              className="add-date-btn"
+              onSubmit={this.submitForm.bind(this)}
+            />
+          </form>
           <h2 className="text-center" id="client-heading">
             Client A-Game’s Calendars
           </h2>
@@ -448,7 +423,7 @@ class Dates extends Component {
         </div>
         <div className="col-md-1 margin-btn">
           <button onClick={this.showModal} className="add-date-btn">
-            Add New1 
+            Add New1
           </button>
         </div>
       </div>
