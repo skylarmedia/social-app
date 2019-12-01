@@ -30,7 +30,7 @@ import Logout from '../Logout';
 import ClientDates from '../ClientDates';
 
 const App = () => (
-  <Router basename={'/social-app-deploy'}>
+  <Router>
     <div id="outer-container">
       <div className="d-flex nav-wrapper align-items-center">
         <div className="d-flex justify-content-between w-100">
