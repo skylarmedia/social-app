@@ -6,8 +6,8 @@ import 'firebase/storage';
 import TextField from '@material-ui/core/TextField';
 import { withAuthorization } from '../Session';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import './index.css';
+import { Modal, Button } from 'antd';
 import MainButton from '../MainButton';
 import ClientImage from '../ClientImage';
 
@@ -32,7 +32,8 @@ class Home extends Component {
       backgroundUrl: '',
       uploadComplete: false,
       loadSpinner: false,
-      showButton: false
+      showButton: false,
+      visible: false
     };
 
     this.baseState = this.state;
@@ -40,7 +41,7 @@ class Home extends Component {
     this.handleLogoUpload = this.handleLogoUpload.bind(this);
     this.addFile = this.addFile.bind(this);
     this.confirmArchive = this.confirmArchive.bind(this);
-    this.db = app.firestore()
+    this.db = app.firestore();
     this.functions = app.functions();
   }
 
@@ -130,7 +131,7 @@ class Home extends Component {
             const encodedUrl = `https://firebasestorage.googleapis.com/v0/b/skylar-social-17190.appspot.com/o/${encodeURIComponent(
               snapshot.metadata.fullPath
             )}?alt=media`;
-           console.log('encoded URL in ');
+            console.log('encoded URL in ');
             this.setState({
               backgroundUrl: encodedUrl,
               uploadComplete: true,
@@ -139,6 +140,27 @@ class Home extends Component {
           });
       }
     );
+  };
+
+  // Ant Design
+  showModal = () => {
+    this.setState({
+      visible: true
+    });
+  };
+
+  handleOk = e => {
+    console.log(e);
+    this.setState({
+      visible: false
+    });
+  };
+
+  handleCancel = e => {
+    console.log(e);
+    this.setState({
+      visible: false,
+    });
   };
 
   confirmArchive = e => {
@@ -197,7 +219,7 @@ class Home extends Component {
   };
 
   render() {
-    console.log(this.state.backgroundUrl, 'encoded URl')
+    console.log(this.state.backgroundUrl, 'encoded URl');
     const backgroundUrlStyle = {
       backgroundImage: `url(${this.state.backgroundUrl})`,
       backgroundSize: 'cover'
@@ -205,10 +227,6 @@ class Home extends Component {
 
     const progressStyles = {
       color: '#ee463a'
-    };
-
-    const textFieldStyles = {
-      borderColor: 'red'
     };
 
     const isInvalid =
@@ -229,7 +247,6 @@ class Home extends Component {
         ) : (
           ''
         )}
-        <TransitionGroup component={null}>
           <img src={require('../assets/skylar_Icon_wingPortion.svg')} id="wing-logo" />
           <h2 className="text-center welcome">Welcome Home!</h2>
 
@@ -245,7 +262,7 @@ class Home extends Component {
                       key={index}
                     >
                       <Link to={`/dates/${user.urlName}`}>
-                        <ClientImage logo={user.logo} name={user.name}/>
+                        <ClientImage logo={user.logo} name={user.name} />
                         {/* <img src={user.logo} className="user-background" /> */}
                       </Link>
                       <div class="d-flex align-items-center align-items-center">
@@ -264,19 +281,23 @@ class Home extends Component {
                 })}
               </div>
               <div id="add-new-btn-wrapper" className="text-center">
-                <button onClick={this.toggleAddNew.bind(this)} className="add-date-btn hidden-add">
-                  Add New
+                <button  onClick={this.showModal} className="add-date-btn hidden-add">
+                  Add New1
                 </button>
               </div>
             </div>
           ) : this.state.isLoading && this.state.users.length == 0 ? (
             <div>
               <p className="text-center para-margin">
-              You don’t seem to have any client calendars set up yet. Click below to add one and get started!
+                You don’t seem to have any client calendars set up yet. Click below to add one and
+                get started!
               </p>
               <div id="add-new-btn-wrapper" className="text-center mt-88">
-                <button onClick={this.toggleAddNew.bind(this)} className="add-date-btn empty-add-date">
-                  Add New
+                <button
+                  onClick={this.toggleAddNew.bind(this)}
+                  className="add-date-btn empty-add-date"
+                >
+                  Add New2
                 </button>
               </div>
               <div className="empty-state">
@@ -295,21 +316,20 @@ class Home extends Component {
             </div>
           ) : (
             <div className="progress-wrapper">
-              <CircularProgress />
             </div>
           )}
 
-          {this.state.isHidden ? (
-            <CSSTransition classNames="dialog" timeout={300}>
-              <div id="add-new-form-wrapper">
-                <button
-                  onClick={this.toggleAddNew.bind(this)}
-                  id="x-add-new"
-                  className="toggle-close"
-                >
-                  x
-                </button>
+         <Modal 
+          visible={this.state.visible}
+          onOk={this.handleOk}
+          className="home-modal"
+          onCancel={this.handleCancel}
+          footer={[
+            <Button onClick={this.onSubmit} className="add-date-btn">Submit</Button>
+          ]}
+          >
 
+              <div id="add-new-form-wrapper">
                 <form onSubmit={this.onSubmit} id="add-new-form" className="d-flex flex-column">
                   <div
                     id="avatar-upload"
@@ -350,28 +370,13 @@ class Home extends Component {
                     type="password"
                     label="PASSWORD"
                   />
-
-                  <div id="add-new-btn-wrapper" className="text-center mt-88">
-                    <button
-                      disabled={isInvalid}
-                      type="submit"
-                      className={`add-date-btn ${
-                        this.state.uploadComplete ? 'complete' : 'uncomplete'
-                      }`}
-                    >
-                      SUBMIT
-                    </button>
-                  </div>
-
+                  
                   {this.state.error && <p>{this.state.error.message}</p>}
                 </form>
               </div>
-            </CSSTransition>
-          ) : (
-            ''
+            </Modal>
           )}
-        </TransitionGroup>
-      </div>
+      </div>  
     );
   }
 }

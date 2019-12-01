@@ -10,7 +10,6 @@ import SubPost from './SubPost';
 
 import EmojiField from 'emoji-picker-textfield';
 import 'emoji-mart/css/emoji-mart.css';
-import { Picker } from 'emoji-mart';
 
 class AddPost extends Component {
   constructor(props) {
@@ -52,7 +51,7 @@ class AddPost extends Component {
 
   triggerValues = state => {
     let adState = false;
-    if (state.ad == true && this.state.postAd == false) {
+    if (state.ad === true && this.state.postAd === false) {
       adState = true;
       this.setState(previousState => ({
         tempHold: [...previousState.tempHold, state],
@@ -271,14 +270,7 @@ class AddPost extends Component {
   }
 
   render() {
-    const buttonStyles = {
-      backgroundColor: '#EF463B',
-      borderColor: '#007bff',
-      width: '40px',
-      height: '40px'
-    };
-
-    if (this.state.subPosts.length == this.state.tempHold.length) {
+    if (this.state.subPosts.length === this.state.tempHold.length) {
       this.props.firebase
         .addPost(
           this.props.match.params.clientId,

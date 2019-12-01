@@ -5,16 +5,19 @@ import { compose } from 'recompose';
 import Calendar from '../Calendar';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import './index.css';
-import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
 import CalendarImage from '../CalendarImage';
+import { Modal, Button } from 'antd';
 
 // Category List
 import SelectCategory from '../SelectCategory';
 import CategoryList from '../CategoryList';
 
 import app from 'firebase/app';
+
+import { Select } from 'antd';
+
+const { Option } = Select;
 
 class Dates extends Component {
   constructor(props) {
@@ -36,6 +39,7 @@ class Dates extends Component {
       newColors: [],
       isLoading: false,
       removedCategories: [],
+      visible:false,
       passDates: (month, year) => {
         this.setState({
           chosenMonth: month,
@@ -77,9 +81,11 @@ class Dates extends Component {
       });
     });
 
+    
+
     this.props.firebase.getUserUnusedCategories(this.props.match.params.id).then(snapshot => {
-      console.log('snapshot in cat,', snapshot)
-      console.log('rpos match parms', this.props.match.params.id)
+      console.log('snapshot in cat,', snapshot);
+      console.log('rpos match parms', this.props.match.params.id);
       const catArr = [...this.state.categories];
       // console.log('cat arr', catArr)
       snapshot.docs.map((category, index) => {
@@ -95,6 +101,27 @@ class Dates extends Component {
     });
   }
 
+  showModal = () => {
+    alert('ran')
+    this.setState({
+      visible: true
+    });
+  };
+
+  handleOk = e => {
+    console.log(e);
+    this.setState({
+      visible: false
+    });
+  };
+
+  handleCancel = e => {
+    console.log(e);
+    this.setState({
+      visible: false,
+    });
+  };
+
   //*** START OF CATEGORY METHODS ***/
 
   removeCategory = (index, name) => {
@@ -104,8 +131,6 @@ class Dates extends Component {
     });
 
     this.props.firebase.removeCategoryNew(this.props.match.params.id, name);
-
-    // console.log(this.state.removedCategories, 'removed categories');
   };
 
   showCategories = e => {
@@ -210,17 +235,17 @@ class Dates extends Component {
 
   render() {
     const renderDates = this.state.date.map((item, index) => (
-      <div class="position-relative date-map-item ">
-        <CalendarImage 
-            year={item.year}
-            month={item.month}
-            userId={this.props.match.params.id}
-            admin={true}
+      <div className="position-relative date-map-item " key={index}>
+        <CalendarImage
+          year={item.year}
+          month={item.month}
+          userId={this.props.match.params.id}
+          admin={true}
         />
-        <div class="d-flex justify-content-between">
+        <div className="d-flex justify-content-between">
           <Link
             to={`/calendar/${item.year}/${item.month}/${this.props.match.params.id}`}
-            class="main-link"
+            className="main-link"
           >
             {this.convert(item.month)} {item.year}
             <br />
@@ -248,11 +273,11 @@ class Dates extends Component {
     };
 
     return this.state.isLoading && this.state.date.length > 0 ? (
-      <div class="container row mx-auto">
-        <div class="col-sm-3">
-          <div class="d-flex  back-wrapper">
+      <div className="container row mx-auto date-page">
+        <div className="col-sm-3">
+          <div className="d-flex  back-wrapper">
             <img src={require('../assets/back.svg')} />
-            <Link to={`dates/${this.props.match.params.clientId}`} class="back-link">
+            <Link to={`dates/${this.props.match.params.clientId}`} className="back-link">
               Back To All Clients
             </Link>
           </div>
@@ -262,10 +287,10 @@ class Dates extends Component {
               <button
                 onClick={this.showCategories}
                 id="add-category-button"
-                class="clear-btn d-flex"
+                className="clear-btn d-flex"
               >
                 <img src={require('../assets/select.svg')} />
-                <p class="no-margin">Create Category</p>
+                <p className="no-margin">Create Category</p>
               </button>
 
               {this.state.showCat && (
@@ -286,7 +311,7 @@ class Dates extends Component {
             </div>
           </div>
         </div>
-        <div class="col-sm-9">
+        <div className="col-sm-9">
           <h2 className="text-center" id="client-heading">
             Client {this.props.match.params.clientId} Calendars
           </h2>
@@ -294,11 +319,16 @@ class Dates extends Component {
           <div id="dates-list" className="d-flex date-wrapper">
             {renderDates}
           </div>
-          {this.state.showAddDate ? (
+          <Modal 
+          visible={this.state.visible}
+          onOk={this.handleOk}
+          className="home-modal"
+          onCancel={this.handleCancel}
+          footer={[
+            <Button onClick={this.onSubmit} className="add-date-btn">Submit</Button>
+          ]}>
             <form className="add-date-form" onSubmit={this.submitForm.bind(this)}>
-              <button onClick={this.toggleAddDate.bind(this)} className="toggle-close">
-                x
-              </button>
+              DATE!
               <div className="d-flex justify-content-between inner-date-wrapper">
                 <InputLabel htmlFor="month-helper">Month</InputLabel>
 
@@ -306,89 +336,89 @@ class Dates extends Component {
                   onChange={this.handleMonth.bind(this)}
                   className="select-date"
                   value={this.state.month}
-                  style={selectStyles}
                   id="month-helper"
+                  placeholder="MONTH"
                 >
-                  <MenuItem value="1">January</MenuItem>
-                  <MenuItem value="2">February</MenuItem>
-                  <MenuItem value="3">March</MenuItem>
-                  <MenuItem value="4">April</MenuItem>
-                  <MenuItem value="5">May</MenuItem>
-                  <MenuItem value="6">June</MenuItem>
-                  <MenuItem value="7">July</MenuItem>
-                  <MenuItem value="8">August</MenuItem>
-                  <MenuItem value="9">September</MenuItem>
-                  <MenuItem value="10">October</MenuItem>
-                  <MenuItem value="11">November</MenuItem>
-                  <MenuItem value="12">December</MenuItem>
+                  <Option value="1">January</Option>
+                  <Option value="2">February</Option>
+                  <Option value="3">March</Option>
+                  <Option value="4">April</Option>
+                  <Option value="5">May</Option>
+                  <Option value="6">June</Option>
+                  <Option value="7">July</Option>
+                  <Option value="8">August</Option>
+                  <Option value="9">September</Option>
+                  <Option value="10">October</Option>
+                  <Option value="11">November</Option>
+                  <Option value="12">December</Option>
                 </Select>
 
                 <Select
                   onChange={this.handleYear.bind(this)}
                   style={selectStyles}
-                  class="select-date"
+                  className="select-date"
                   id="month-helper"
                   value={this.state.year}
+                  placeholder="YEAR"
                 >
-                  <MenuItem value="2019">2019</MenuItem>
-                  <MenuItem value="2020">2020</MenuItem>
+                  <Option value="2019">2019</Option>
+                  <Option value="2020">2020</Option>
                 </Select>
               </div>
               <input type="submit" value="Submit" className="add-date-btn" />
             </form>
-          ) : (
-            ''
-          )}
+            </Modal>
           {this.state.showCalender ? <Calendar impData={this.state} /> : ''}
           <div className="text-center add-btn-wrapper">
-            <button onClick={this.toggleAddDate.bind(this)} className="add-date-btn">
-              Add New
+            <button onClick={this.showModal.bind(this)} className="add-date-btn">
+              Add New1
             </button>
           </div>
         </div>
       </div>
     ) : this.state.isLoading && this.state.date.length == 0 ? (
-      <div class="row justify-content-between container mx-auto">
-        <div class="col-md-3">
-          <div class="d-flex  back-wrapper">
+      <div className="row justify-content-between container mx-auto date-page">
+        <div className="col-md-3">
+          <div className="d-flex  back-wrapper">
             <img src={require('../assets/back.svg')} />
-            <Link to={`dates/${this.props.match.params.clientId}`} class="back-link">
+            <Link to={`dates/${this.props.match.params.clientId}`} className="back-link">
               Back To All Clients
             </Link>
           </div>
         </div>
         <div className="col-md-8 position-relative">
-          {this.state.showAddDate ? (
+ 
             <form className="add-date-form" onSubmit={this.submitForm.bind(this)}>
               <button onClick={this.toggleAddDate.bind(this)} className="toggle-close">
                 x
               </button>
+              ADD DATE 2
               <div className="d-flex justify-content-between date-wrapper month-wrapper">
                 <Select
                   onChange={this.handleMonth.bind(this)}
                   value={this.state.month}
-                  style={selectStyles}
+                  placeholder="MONTH"
                 >
-                  <MenuItem value="1">January</MenuItem>
-                  <MenuItem value="2">February</MenuItem>
-                  <MenuItem value="3">March</MenuItem>
-                  <MenuItem value="4">April</MenuItem>
-                  <MenuItem value="5">May</MenuItem>
-                  <MenuItem value="6">June</MenuItem>
-                  <MenuItem value="7">July</MenuItem>
-                  <MenuItem value="8">August</MenuItem>
-                  <MenuItem value="9">September</MenuItem>
-                  <MenuItem value="10">October</MenuItem>
-                  <MenuItem value="11">November</MenuItem>
-                  <MenuItem value="12">December</MenuItem>
+                  <Option value="1">January</Option>
+                  <Option value="2">February</Option>
+                  <Option value="3">March</Option>
+                  <Option value="4">April</Option>
+                  <Option value="5">May</Option>
+                  <Option value="6">June</Option>
+                  <Option value="7">July</Option>
+                  <Option value="8">August</Option>
+                  <Option value="9">September</Option>
+                  <Option value="10">October</Option>
+                  <Option value="11">November</Option>
+                  <Option value="12">December</Option>
                 </Select>
                 <Select
                   onChange={this.handleYear.bind(this)}
-                  style={selectStyles}
                   value={this.state.year}
+                  placeholder="YEAR"
                 >
                   Placeholder
-                  <MenuItem value="2019">2019</MenuItem>
+                  <Option value="2019">2019</Option>
                 </Select>
               </div>
               <input
@@ -398,9 +428,6 @@ class Dates extends Component {
                 onSubmit={this.submitForm.bind(this)}
               />
             </form>
-          ) : (
-            ''
-          )}
           <h2 className="text-center" id="client-heading">
             Client A-Game’s Calendars
           </h2>
@@ -408,20 +435,20 @@ class Dates extends Component {
             You don’t seem to have any calendars set up yet. Click below to add one and <br />
             get started!
           </p>
-          <div class="text-center">
+          <div className="text-center">
             <img
               src={require('../assets/single-grid.svg')}
               id="no-date-calendar"
-              class="col-md-4"
+              className="col-md-4"
             />
           </div>
           <div className="text-center arrow-wrapper">
             <img src={require('../assets/curly-arrow.svg')} id="arrow" />
           </div>
         </div>
-        <div class="col-md-1 margin-btn">
-          <button onClick={this.toggleAddDate.bind(this)} className="add-date-btn">
-            Add New
+        <div className="col-md-1 margin-btn">
+          <button onClick={this.showModal} className="add-date-btn">
+            Add New1 
           </button>
         </div>
       </div>

@@ -41,7 +41,7 @@ class CalendarImage extends Component {
     return (
       <div>
         <p>{this.state.size}</p>
-        <img src={require('../assets/grouped-single-calendar.svg')} class="cal-img" />
+        <img src={require('../assets/grouped-single-calendar.svg')} className="cal-img" />
       </div>
     );
   }

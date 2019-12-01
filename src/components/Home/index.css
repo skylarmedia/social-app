@@ -12,18 +12,41 @@
 	background: #fff;
 }
 
+body .ant-modal-footer{
+	text-align:center;
+	border:none;
+	border:none;
+}
+
+.ant-modal-footer{
+	text-align:center !important;
+}
+
+.home-modal .ant-modal-body{
+	padding-bottom:0;
+}
+
+body .ant-btn-primary{
+	background: #ef463b;
+    text-transform: uppercase;
+    color: #fff;
+    border: none;
+    height: 48px;
+    width: 149px;
+    border-radius: 11px;
+}
 #add-new-form-wrapper {
-	height: 100vh;
-	width: 100vw;
-	position: fixed;
-	background: rgba(0, 0, 0, 0.8);
-	z-index: 999999;
-	top: 0;
-	display: flex;
-	flex-direction: column;
-	left: 0;
-	align-items: center;
-	justify-content: center;
+    display: flex;
+    flex-direction: column;
+    left: 0;
+    align-items: center;
+    justify-content: center;
+}
+
+.home-modal .ant-modal-content{
+	background: transparent;
+    border: none;
+    box-shadow: none;
 }
 
 .margin-border {
