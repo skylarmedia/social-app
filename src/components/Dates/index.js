@@ -332,7 +332,7 @@ class Dates extends Component {
               <div className="d-flex justify-content-between inner-date-wrapper">
                 <InputLabel htmlFor="month-helper">Month</InputLabel>
 
-                <Select
+                {/* <Select
                   onChange={this.handleMonth.bind(this)}
                   className="select-date"
                   value={this.state.month}
@@ -363,14 +363,14 @@ class Dates extends Component {
                 >
                   <Option value="2019">2019</Option>
                   <Option value="2020">2020</Option>
-                </Select>
+                </Select> */}
               </div>
               <input type="submit" value="Submit" className="add-date-btn" />
             </form>
             </Modal>
           {this.state.showCalender ? <Calendar impData={this.state} /> : ''}
           <div className="text-center add-btn-wrapper">
-            <button onClick={this.showModal.bind(this)} className="add-date-btn">
+            <button onClick={this.showModal} className="add-date-btn">
               Add New1
             </button>
           </div>
@@ -394,7 +394,7 @@ class Dates extends Component {
               </button>
               ADD DATE 2
               <div className="d-flex justify-content-between date-wrapper month-wrapper">
-                <Select
+                {/* <Select
                   onChange={this.handleMonth.bind(this)}
                   value={this.state.month}
                   placeholder="MONTH"
@@ -419,7 +419,7 @@ class Dates extends Component {
                 >
                   Placeholder
                   <Option value="2019">2019</Option>
-                </Select>
+                </Select> */}
               </div>
               <input
                 type="submit"

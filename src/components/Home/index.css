@@ -18,6 +18,17 @@ body .ant-modal-footer{
 	border:none;
 }
 
+body .ant-modal-mask {
+    background-color: rgba(0, 0, 0, 0.8);
+}
+
+.ant-icon svg{
+	color: #ef463b;
+    font-size: 25px;
+    font-weight: bold;
+    margin-top: 8px;
+}
+
 .ant-modal-footer{
 	text-align:center !important;
 }
