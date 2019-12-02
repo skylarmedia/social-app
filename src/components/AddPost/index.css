@@ -453,7 +453,7 @@ input.blue-input {
 }
 
 .mb-10 {
-	margin-bottom: 10;
+	margin-bottom: 10px;
 }
 
 .upload-files-wrapper div:nth-child(n + 2) .map-img {
@@ -500,14 +500,15 @@ input.blue-input {
 
 .ant-select-selection--single {
 	position: relative;
-	height: 32px;
-	cursor: pointer;
-	background: transparent;
-	border-radius: 0;
-	border: 2px solid #002d5b;
-	height: 37px;
-	width: 261px;
-	color: #002d5b;
+    cursor: pointer;
+    background: transparent;
+    border-radius: 0;
+    border: 2px solid #002d5b;
+    height: padding;
+    width: 261px;
+    color: #002d5b;
+    padding: 3px 0;
+    height: auto;
 }
 
 .main-edit-form {

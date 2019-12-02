@@ -5,12 +5,10 @@ import './calendar.css';
 import CalendarSingle from '../CalendarSingle';
 import { withFirebase } from '../Firebase';
 import { compose } from 'redux';
-import SelectCategory from '../SelectCategory';
-import CategoryList from '../CategoryList';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { withAuthorizationAdmin } from '../Session';
 import { AuthUserContext } from '../Session';
-import Switch from '@material-ui/core/Switch';
+import { Switch } from 'antd';
 import Legend from '../Legend';
 import ListMode from '../ListMode';
 
@@ -76,11 +74,9 @@ class Calendar extends React.Component {
       )
       .then(item => {
         item.docs.map(snapshot => {
-          this.setState(
-            {
-              selectedCategories: [...this.state.selectedCategories, snapshot.data()]
-            }
-          );
+          this.setState({
+            selectedCategories: [...this.state.selectedCategories, snapshot.data()]
+          });
         });
       });
 
@@ -91,25 +87,6 @@ class Calendar extends React.Component {
         clientId: this.props.match.params.clientId
       });
     });
-
-    // this.props.firebase
-    //   .getPrivacy(
-    //     this.props.match.params.clientId,
-    //     parseInt(this.props.match.params.year),
-    //     parseInt(this.props.match.params.month)
-    //   )
-    //   .then(snapshot => {
-    //     snapshot.docs.map(item => {
-    //       console.log('privacy', item)
-    //       this.setState(
-    //         {
-    //           private: item.data().private,
-    //           oldPrivate: item.data().private,
-    //           privateId: item.id
-    //         }
-    //       );
-    //     });
-    //   });
 
     this.setState({
       authUser: JSON.parse(localStorage.getItem('authUser')).email
@@ -135,6 +112,7 @@ class Calendar extends React.Component {
   month = () => {
     return this.state.dateObject.format('MMMM');
   };
+
   showMonth = (e, month) => {
     this.setState({
       showMonthTable: !this.state.showMonthTable,
@@ -151,6 +129,7 @@ class Calendar extends React.Component {
       showCalendarTable: !this.state.showCalendarTable
     });
   };
+
   MonthList = props => {
     let months = [];
     props.data.map(data => {
@@ -350,14 +329,26 @@ class Calendar extends React.Component {
   };
 
   handleSwitch = () => {
-    this.setState({
-      private: !this.state.private
-    });
+    this.setState(
+      {
+        private: !this.state.private
+      },
+      this.props.firebase
+        .getPrivacy(
+          this.props.match.params.clientId,
+          parseInt(this.props.match.params.year),
+          parseInt(this.props.match.params.month)
+        )
+        .then(snapshot => {
+          snapshot.docs.map(item => {
+            console.log('privacy', item, 'item-data', item.data());
+          });
+        })
+    );
   };
 
   componentWillUnmount() {
-    console.log(this.props)
- 
+    console.log(this.props);
   }
 
   render() {
@@ -381,9 +372,7 @@ class Calendar extends React.Component {
             history={this.props.history}
           />
           <Link
-            to={`/add-post/2019/${this.props.match.params.month}/${d}/${
-              this.props.match.params.clientId
-            }`}
+            to={`/add-post/2019/${this.props.match.params.month}/${d}/${this.props.match.params.clientId}`}
             className="add-post-link"
           >
             +

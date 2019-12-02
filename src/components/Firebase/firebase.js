@@ -596,7 +596,7 @@ class Firebase {
       .doc(id)
       .delete();
 
-  getPrivacy = (id, year, month) => {
+  getPrivacy = (id, year, month) => 
     this.db
       .collection('users')
       .doc(id)
@@ -605,6 +605,6 @@ class Firebase {
       .where('year', '==', year)
       .get();
   };
-}
+
 
 export default Firebase;
