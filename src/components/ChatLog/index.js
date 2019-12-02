@@ -4,6 +4,7 @@ import { withFirebase } from '../Firebase';
 import { connect } from 'react-redux';
 import './index.css';
 import app from 'firebase/app';
+import { Popover, Button } from 'antd';
 
 class AdminChatLog extends Component {
   constructor(props) {
@@ -53,20 +54,31 @@ class AdminChatLog extends Component {
     const { messages } = this.props;
     console.log('chatlog props', this.props.adminClient);
     return (
-      <div className="d-flex justify-content-end">
+      <div className="d-flex">
         {messages &&
           this.props.messages.map((item, i) => {
             console.log('tiemstmasp', item.timestamp);
             if (item.admin == true) {
+              let content = (
+                <button
+                  type="button"
+                  className="clear-btn d-flex"
+                  onClick={() => this.deleteMessage(this.props.adminClient, item.timestamp, i)}
+                >
+                <i class="fas fa-trash"></i>
+                  <span className="ml-10">DELETE</span>
+                </button>
+              );
               return (
-                <div class="admin-message-wrap">
-                  <button
-                    type="button"
-                    onClick={() => this.deleteMessage(this.props.adminClient, item.timestamp, i)}
-                  >
-                    <i class="fas fa-ellipsis-h"></i>
-                  </button>
-                  {item.message}
+                <div className="admin-message-wrap position-relative w-100">
+                  <div className="inner-admin-message w-100">
+                    <Popover placement="topRight" content={content} trigger="click">
+                      <Button className="clear-btn">
+                        <i className="fas fa-ellipsis-v"></i>
+                      </Button>
+                    </Popover>
+                    <div className="admin-mesage">{item.message}</div>
+                  </div>
                 </div>
               );
             } else {

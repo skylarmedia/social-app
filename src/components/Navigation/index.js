@@ -26,9 +26,9 @@ const NavigationAuth = props => {
   return (
     <div>
       <Button type="primary" onClick={() => toggleDrawer(true)} className="burger-button">
-        <span class="bm-burger-bars"></span>
-        <span class="bm-burger-bars"></span>
-        <span class="bm-burger-bars"></span>
+        <span className="bm-burger-bars"></span>
+        <span className="bm-burger-bars"></span>
+        <span className="bm-burger-bars"></span>
       </Button>
       <Drawer
         placement="left"

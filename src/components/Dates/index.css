@@ -50,6 +50,21 @@
 	font-family: 'Panton' !important;
 }
 
+.fas{
+	font-family: 'Font Awesome 5 Free' !important;
+}
+
+.admin-message-wrap .ant-btn{
+	position: absolute;
+    left: 30px;
+    bottom: 4px;
+}
+
+.admin-message-wrap .ant-btn:hover{
+	background:transparent;
+	color:#002d5b;
+}
+
 #no-date-calendar {
 	width: 100%;
 }
@@ -107,6 +122,12 @@ select {
 	font-size:20px;
 	color:#EF463B;
 	font-weight:bold;
+}
+
+.admin-message-wrap textarea{
+	border: none;
+    margin-bottom: 0;
+    border-top: 2px solid #002d5b;
 }
 
 .ant-select-arrow .ant-select-arrow-icon svg {

@@ -60,7 +60,6 @@ class EditPost extends Component {
     let index = e.target.getAttribute('index');
     let state = [...this.state.posts];
     state[index].postHashTag = e.target.value;
-
     this.setState({
       posts: state
     });
@@ -667,7 +666,8 @@ class EditPost extends Component {
         <div className="fixed-bottom container position_relative col-md-4">
           {this.state.showChat && (
             <div>
-              <div>
+              <div className="d-flex flex-column align-items-end">
+                <div className="inner-chat-log bg-white">
                 <AdminChatLog
                   deletePost={this.deletePostParent}
                   adminClient={this.props.match.params.postId}
@@ -680,13 +680,14 @@ class EditPost extends Component {
                     onKeyDown={this.captureKey}
                   />
                 </form>
+                </div>
                 <span>
                   <Picker onSelect={this.addEmoji} />
                 </span>
               </div>
             </div>
           )}
-          <button onClick={this.toggleChat} type="button">
+          <button onClick={this.toggleChat} type="button" className="clear-btn">
             <img src={require('../assets/chatbox.svg')} />
           </button>
         </div>
