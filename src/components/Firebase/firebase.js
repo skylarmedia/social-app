@@ -113,13 +113,13 @@ class Firebase {
       .get();
   };
 
-  getSelectedCategoriesPre = id => {
-    this.db
-      .collection('users')
-      .doc(id)
-      .collection('categories')
-      .get();
-  };
+  // getSelectedCategoriesPre = id => {
+  //   this.db
+  //     .collection('users')
+  //     .doc(id)
+  //     .collection('categories')
+  //     .get();
+  // };
 
   // Start of client FB calls
 
@@ -203,7 +203,7 @@ class Firebase {
       color:category.color,
       name:category.name,
       selected:false,
-      month:new Array()
+      months:[null]
     })
     // categories.forEach(function(category) {
     //   app
@@ -241,18 +241,7 @@ class Firebase {
       });
   };
 
-  getSelectedCategories = (id, year, month) =>
-    this.db
-      .collection('users')
-      .doc(id)
-      .collection('categories')
-      .where('selected', '==', true)
-      .where('month', 'array-contains', month)
-      .get()
-      .catch(function(err) {
-        console.log(err);
-      });
-
+ 
   getAdminPost = (user, postId) =>
     this.db
       .collection('users')
@@ -596,15 +585,16 @@ class Firebase {
       .doc(id)
       .delete();
 
-  getPrivacy = (id, year, month) => 
-    this.db
-      .collection('users')
-      .doc(id)
-      .collection('dates')
-      .where('month', '==', month)
-      .where('year', '==', year)
-      .get();
-  };
+  // getPrivacy = (id, year, month) => 
+  //   this.db
+  //     .collection('users')
+  //     .doc(id)
+  //     .collection('dates')
+  //     .where('month', '==', month)
+  //     .where('year', '==', year)
+  //     .get();
+  // };
 
+    }
 
 export default Firebase;

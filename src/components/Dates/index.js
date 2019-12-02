@@ -214,11 +214,7 @@ class Dates extends Component {
       {
         categories: [...this.state.categories, cat],
         visibleCategories: false
-      },
-      () => {
-        console.log('categoires parent', this.state.categories);
-      }
-    );
+      });
 
     this.props.firebase.sendCategories(this.props.match.params.id, cat);
   };

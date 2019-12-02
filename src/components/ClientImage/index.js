@@ -47,9 +47,6 @@ class ClientImage extends Component {
     // this.unsubscribe();
   }
 
-  componentWillUnmount() {
-    // this.unsubscribe();
-  }
 
   render() {
     return (

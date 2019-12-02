@@ -15,9 +15,7 @@ class NavigationWrapper extends Component {
   render() {
     if (localStorage.getItem('loggedIn') == "true") {
       return (
-        <Menu id="main-menu" noOverlay>
           <Navigation />
-        </Menu>
       );
     }else{
         return (

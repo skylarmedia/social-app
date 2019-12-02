@@ -2,12 +2,11 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 const Legend = props => {
-
+  console.log('SELECTED CATEGORES', props.selectedCategories)
   let unassignCategoryChild = (name, index) => {
     props.removeCategory(name, index)
   }
 
-  console.log('legend props', props);
   return (
     <div>
       <p className="container p-details">Details</p>

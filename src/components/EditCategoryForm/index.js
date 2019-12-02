@@ -16,12 +16,10 @@ class EditCategoryForm extends Component {
   }
 
   currentCategory = e => {
-    if (e.target.value !== undefined) {
-      let color = e.target.value.split('|||')[1];
-      let name = e.target.value.split('|||')[0];
-
+    console.log('E', e)
+      let color = e.split('|||')[1];
+      let name = e.split('|||')[0];
       this.props.getSelectedCategory(color, name);
-    }
   };
 
   componentDidMount() {

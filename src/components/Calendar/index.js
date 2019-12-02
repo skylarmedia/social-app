@@ -11,6 +11,7 @@ import { AuthUserContext } from '../Session';
 import { Switch } from 'antd';
 import Legend from '../Legend';
 import ListMode from '../ListMode';
+import firebase from 'firebase';
 
 import { withAuthorization } from '../Session';
 
@@ -49,6 +50,7 @@ class Calendar extends React.Component {
     this.showCategories = this.showCategories.bind(this);
     this.handleSwitch = this.handleSwitch.bind(this);
     this.unassignCategory = this.unassignCategory.bind(this);
+    this.db = firebase.firestore();
   }
 
   weekdayshort = moment.weekdaysShort();
@@ -65,20 +67,50 @@ class Calendar extends React.Component {
     });
   }
 
-  componentWillMount() {
-    this.props.firebase
-      .getSelectedCategories(
-        this.props.match.params.clientId,
-        parseInt(this.props.match.params.year),
-        parseInt(this.props.match.params.month)
-      )
-      .then(item => {
-        item.docs.map(snapshot => {
-          this.setState({
-            selectedCategories: [...this.state.selectedCategories, snapshot.data()]
-          });
-        });
-      });
+  componentDidMount() {
+
+    // getSelectedCategories = (id, year, month) =>
+    // this.db
+    //   .collection('users')
+    //   .doc(id)
+    //   .collection('categories')
+    //   .where('selected', '==', true)
+    //   .where('month', 'array-contains', month)
+    //   .get()
+    //   .catch(function(err) {
+    //     console.log(err);
+    //   });
+
+    // console.log(this.props.match.params.clientId)
+    this.db
+    .collection('users')
+    .doc(this.props.match.params.clientId)
+    .collection('categories')
+    .where('selected', '==', true)
+    .where('months', 'array-contains', parseInt(this.props.match.params.month))
+    .get()
+    .then(snapshot => {
+      console.log('SNAP CAT', snapshot, snapshot.size);
+      snapshot.docs.map(item => {
+        this.setState({
+          selectedCategories:[...this.state.selectedCategories, item.data()]
+        })
+      })
+    })
+
+    // this.props.firebase
+    //   .getSelectedCategories(
+    //     this.props.match.params.clientId,
+    //     parseInt(this.props.match.params.year),
+    //     parseInt(this.props.match.params.month)
+    //   )
+    //   .then(item => {
+    //     item.docs.map(snapshot => {
+    //       this.setState({
+    //         selectedCategories: [...this.state.selectedCategories, snapshot.data()]
+    //       });
+    //     });
+    //   });
 
     this.props.firebase.getSocialPosts(this.props.match.params.clientId).then(snapshot => {
       this.setState({
@@ -418,7 +450,7 @@ class Calendar extends React.Component {
           </div>
           <img src={require('../assets/skylar_Icon_wingPortion.svg')} id="wing-logo" />
           <div>
-            <div class="d-flex justify-content-between align-items-center">
+            <div class="d-flex justify-content-between align-items-center mb-10">
               <div>
                 <button onClick={() => this.listMode()} class="clear-btn">
                   {this.state.grid ? (
@@ -439,6 +471,7 @@ class Calendar extends React.Component {
                 value={this.state.private}
                 checked={this.state.private}
                 onChange={this.handleSwitch}
+                
               />
             </div>
             {this.state.isLoading ? (
