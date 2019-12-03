@@ -17,6 +17,16 @@
     font-weight: 600;
 }
 
+#sign-in-wrapper input{
+    width: 19vw;
+    max-width: 320px;
+    font-size: 16px;
+}
+
+#sign-in-wrapper input[name="password"]{
+    margin-bottom:31px;
+}
+
 .inner-chat-log{
     border: 2px solid #002D5B;
     border-radius: 3px;

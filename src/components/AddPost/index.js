@@ -252,9 +252,6 @@ class AddPost extends Component {
     return this.state.subPosts.map((el, i) => (
       <div className="form-wrapper d-flex" key={i}>
         <div className="main-form-wrapper container">
-
-        {/* add this bakc if if it breaks ref={this.getValues} */}
-        {/* ref="child" */}
           <SubPost
             i={i}
             triggerValues={this.triggerValues}

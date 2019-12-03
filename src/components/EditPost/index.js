@@ -12,6 +12,7 @@ import moment from 'moment';
 import 'emoji-mart/css/emoji-mart.css';
 import { withFirebase } from '../Firebase';
 import { Collapse } from 'antd';
+import { Popover, Button } from 'antd';
 import app from 'firebase/app';
 const { TextArea } = Input;
 const { Panel } = Collapse;
@@ -25,6 +26,7 @@ class EditPost extends Component {
       currentTime: null,
       approved: false,
       showChat: false,
+      showIcons: true,
       message: '',
       messages: [],
       currentMonth: null,
@@ -253,7 +255,6 @@ class EditPost extends Component {
 
   submitMessage = e => {
     e.preventDefault();
-    alert('submitted');
   };
 
   handleBudget = e => {
@@ -355,7 +356,7 @@ class EditPost extends Component {
   };
 
   handleLinks(event) {
-    console.log('i handle links', event)
+    console.log('i handle links', event);
     // let values = [...this.state.values];
     // values[i].value = event.target.value;
     // this.setState({ values });
@@ -369,6 +370,12 @@ class EditPost extends Component {
       </div>
     ));
   }
+
+  toggleIcon = e => {
+    this.setState({
+      showIcons: !this.state.showIcons
+    });
+  };
 
   // removeClick(i) {
   //   let values = [...this.state.values];
@@ -384,13 +391,15 @@ class EditPost extends Component {
     // });
     // posts[index].linkedin = !posts[index].linkedin;
 
-    console.log('STATE in ad form', i)
+    console.log('STATE in ad form', i);
     let posts = [...this.state.posts];
-    posts[i].values = posts[i].values
+    posts[i].values = posts[i].values;
     // this.setState(prevState => ({
     //   values: [...prevState.posts[i].values, { value: null }]
     // }));
   }
+  
+ 
 
   render() {
     console.log('POSTS', this.state.posts);
@@ -632,7 +641,11 @@ class EditPost extends Component {
                     />
 
                     {i == this.state.posts[index].values.length - 1 ? (
-                      <button type="button" onClick={() => this.addClick(index)} className="clear-btn">
+                      <button
+                        type="button"
+                        onClick={() => this.addClick(index)}
+                        className="clear-btn"
+                      >
                         <img src={require('../assets/select.svg')} />
                       </button>
                     ) : (
@@ -650,6 +663,19 @@ class EditPost extends Component {
         </div>
       );
     });
+    console.log('final postId', this.props.match.params.postId, this.props.match.params.clientId)
+    let content = (
+      <button
+        type="button"
+        className="clear-btn d-flex"
+        onClick={() => this.clearMessages(this.props.match.params.postId, this.props.match.params.clientId)}
+      >
+      <i class="fas fa-trash"></i>
+        <span className="ml-10">CLEAR</span>
+      </button>
+    );
+
+
     return (
       <div className="container add-post edit-post">
         <div className="d-flex approval-wrapper">
@@ -667,21 +693,33 @@ class EditPost extends Component {
           {this.state.showChat && (
             <div>
               <div className="d-flex flex-column align-items-end">
-                <div className="inner-chat-log bg-white">
-                <AdminChatLog
-                  deletePost={this.deletePostParent}
-                  adminClient={this.props.match.params.postId}
-                  messages={this.state.messages}
-                />
-                <form onSubmit={this.submitMessage}>
-                  <textarea
-                    onChange={this.setMessage}
-                    value={this.state.message}
-                    onKeyDown={this.captureKey}
+                <div className="inner-chat-log bg-white position-relative">
+                  <AdminChatLog
+                    deletePost={this.deletePostParent}
+                    adminClient={this.props.match.params.postId}
+                    messages={this.state.messages}
                   />
-                </form>
+                  <form onSubmit={this.submitMessage} className="d-flex mt-30">
+                    <textarea
+                      onChange={this.setMessage}
+                      value={this.state.message}
+                      onKeyDown={this.captureKey}
+                    />
+                  </form>
+                  <button
+                    type="button"
+                    onClick={this.toggleIcon.bind(this)}
+                    className="clear-btn position-absolute happy-btn"
+                  >
+                    <i className="fas fa-smile-beam"></i>
+                  </button>
+                  <Popover placement="topRight" content={content} trigger="click">
+                    <Button className="clear-btn clear-message-button position-absolute">
+                      <i className="fas fa-ellipsis-v"></i>
+                    </Button>
+                  </Popover>
                 </div>
-                <span>
+                <span className={this.state.showIcons ? 'hidden' : 'not-hidden'}>
                   <Picker onSelect={this.addEmoji} />
                 </span>
               </div>

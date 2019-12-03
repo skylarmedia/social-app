@@ -43,8 +43,6 @@ class AdminChatLog extends Component {
           .collection('messages')
           .doc(res.docs[0].id)
           .delete();
-        // console.log('id in res', res)
-        // console.log('doc res client', client, timestamp)
       });
 
     this.props.deletePost(i);
@@ -54,7 +52,7 @@ class AdminChatLog extends Component {
     const { messages } = this.props;
     console.log('chatlog props', this.props.adminClient);
     return (
-      <div className="d-flex">
+      <div className="d-flex flex-wrap messages-wrapper">
         {messages &&
           this.props.messages.map((item, i) => {
             console.log('tiemstmasp', item.timestamp);
@@ -77,7 +75,10 @@ class AdminChatLog extends Component {
                         <i className="fas fa-ellipsis-v"></i>
                       </Button>
                     </Popover>
-                    <div className="admin-mesage">{item.message}</div>
+                    <div className="admin-mesage">
+                      <span className="grey-text">{`${item.date}, ${item.time}`}</span>
+                      <span class="color-blue">{item.message}</span>
+                    </div>
                   </div>
                 </div>
               );

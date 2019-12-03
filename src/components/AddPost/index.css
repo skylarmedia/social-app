@@ -452,6 +452,11 @@ input.blue-input {
 .sub-post-form {
 }
 
+.clock-circle .anticon svg {
+
+    color: #d9d9d9 !important;
+}
+
 .mb-10 {
 	margin-bottom: 10px;
 }

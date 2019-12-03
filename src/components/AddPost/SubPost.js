@@ -285,8 +285,6 @@ class SubPost extends Component {
   // END OF SOCIAL METHODS
 
   handlePostTime = (time, timeString) => {
-    console.log('TIME', time);
-    console.log('TIMEString', timeString);
     this.setState({
       postTime: timeString
     });
@@ -460,45 +458,46 @@ class SubPost extends Component {
                 onChange={this.handleFacebook}
                 name="facebook"
                 value={this.state.facebook}
-                id="facebook"
+                id={`facebook-${this.props.i}`}
+
               />
-              <label className="margin-label">Facebook</label>
+              <label className="margin-label" for={`facebook-${this.props.i}`}>Facebook</label>
             </div>
             <div>
               <Checkbox
                 onChange={this.handleInstagram}
                 name="instagram"
                 value={this.state.instagram}
-                id="instagram"
+                id={`-instagram${this.props.i}`}
               />
-              <label className="margin-label">Instagram</label>
+              <label className="margin-label" for={`instagram-${this.props.i}`}>Instagram</label>
             </div>
             <div>
               <Checkbox
                 onChange={this.handleTwitter}
                 name="twitter"
                 value={this.state.twitter}
-                id="twitter"
+                id={`twitter-${this.props.i}`}
               />
-              <label className="margin-label">Twitter</label>
+              <label className="margin-label" for={`twitter-${this.props.i}`}> Twitter</label>
             </div>
             <div>
               <Checkbox
                 onChange={this.handleLinkedin}
                 name="linkedin"
                 value={this.state.linkedin}
-                id="linkedin"
+                id={`linkedin-${this.props.i}`}
               />
-              <label className="margin-label">LinkedIn</label>
+              <label className="margin-label" for={`linkedin-${this.props.i}`}>LinkedIn</label>
             </div>
             <div>
               <Checkbox
                 onChange={this.handleOther}
                 name="other"
                 value={this.state.other}
-                id="other"
+                for={`other-${this.props.i}`}
               />
-              <label className="margin-label">Other</label>
+              <label className="margin-label" for={`other-${this.props.i}`}>Other</label>
             </div>
           </div>
           <div className="date-button-wrapper d-flex row justify-content-between">
@@ -545,8 +544,8 @@ class SubPost extends Component {
           </div>
 
           <div className="sponsored-label mb-20">
-            <Checkbox onChange={this.handleAd} name="other" checked={this.state.ad} id="ad" />
-            <label>Ad or Sponsored Post</label>
+            <Checkbox onChange={this.handleAd} name="other" checked={this.state.ad} id={`ad-${this.props.i}`}/>
+            <label for={`ad-${this.props.i}`}>Ad or Sponsored Post</label>
           </div>
 
           {this.state.ad && (

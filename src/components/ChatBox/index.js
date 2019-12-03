@@ -16,10 +16,6 @@ class ChatBox extends Component {
 
   }
 
-
-
-  componentDidMount() {}
-
   static getDerivedStateFromProps(props, state) {
     if (props.authUser !== state.authUser) {
       return {

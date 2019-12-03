@@ -8,6 +8,37 @@
     margin-top:0;
 }
 
+.clear-message-btn{
+    position: absolute;
+    right: 50px;
+    bottom: 5px;
+    font-size: 20px;
+    font-size: 14px;
+}
+
+.hidden{
+    display:none !important;
+}
+
+.admin-mesage{
+    width: 85%;
+    text-align: left;
+    float: right;
+}
+
+.messages-wrapper:last-child{
+    margin-bottom:30px;
+}
+
+.mt-30{
+    margin-top:30px;
+}
+
+.clear-message-btn{
+    right: 53px;
+    bottom: 5px;    
+}
+
 .fixed-bottom{
     right:0;
     text-align:right;
@@ -35,6 +66,12 @@
     margin-left:20px;
 }
 
+.inner-chat-log textarea{
+    margin: 0;
+    height: 46px;
+    border-top: 2px solid #002D5B;
+}
+
 .react-datepicker-wrapper input{
     border:none;
 }
@@ -46,4 +83,14 @@
     background-color: transparent;
     padding-left: 15px;
     z-index: 999;
+}
+
+.happy-btn{
+    right: 0px;
+    bottom: 0px;
+    height: 45px;
+    width: 50px;
+    /* border: none; */
+    border-left: 2px solid #002D5B !important;
+    font-size: 24px;
 }

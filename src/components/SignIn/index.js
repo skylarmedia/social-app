@@ -93,16 +93,16 @@ class SignInFormBase extends Component {
     return (
       <React.Fragment>
         <img src={require('../assets/skylar_Icon_wingPortion.svg')} id="wing-logo" />
-        Version.2
+        Version.3
         <form onSubmit={this.onSubmit} className="d-flex flex-column align-items-center">
           <Input
             name="email"
             label="email"
             value={email}
-            className="blue-input f-16"
+            className="blue-input mb-10 f-16"
             onChange={this.onChange}
             type="text"
-            placeholder="Email Address"
+            placeholder="EMAIL"
             margin="normal"
             variant="outlined"
           />
@@ -114,7 +114,7 @@ class SignInFormBase extends Component {
             onChange={this.onChange}
             type="password"
             variant="outlined"
-            placeholder="Password"
+            placeholder="PASSWORD"
           />
           <div id="sign-in-button-wrap">
             <Button disabled={isInvalid} type="submit" variant="contained" color="primary" id="sign-in-button">Sign In</Button>
