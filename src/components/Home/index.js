@@ -40,10 +40,12 @@ class Home extends Component {
     this.baseState = this.state;
     this.toggleAddNew = this.toggleAddNew.bind(this);
     this.handleLogoUpload = this.handleLogoUpload.bind(this);
+    this.onSubmit = this.onSubmit.bind(this);
     this.addFile = this.addFile.bind(this);
     this.confirmArchive = this.confirmArchive.bind(this);
     this.db = app.firestore();
     this.functions = app.functions();
+    this.auth = app.auth();
   }
 
   // Component lifecycle methods
@@ -132,7 +134,7 @@ class Home extends Component {
             const encodedUrl = `https://firebasestorage.googleapis.com/v0/b/skylar-social-17190.appspot.com/o/${encodeURIComponent(
               snapshot.metadata.fullPath
             )}?alt=media`;
-            console.log('encoded URL in ');
+            console.log('encoded URL in', encodedUrl);
             this.setState({
               backgroundUrl: encodedUrl,
               uploadComplete: true,
@@ -198,16 +200,12 @@ class Home extends Component {
 
   onSubmit = event => {
     event.preventDefault();
-    this.props.firebase.addUser(
-      this.state.email,
-      this.state.passwordOne,
-      this.state.username,
-      this.state.backgroundUrl
-    );
-    const userObj = {};
+
+    this.props.firebase.addUser(this.state.email, this.state.passwordOne, this.state.username, this.state.backgroundUrl);
+    const userObj = {}
     userObj.logo = this.state.backgroundUrl;
     userObj.name = this.state.username;
-    userObj.urlName = this.state.username.toLowerCase().replace(/ /g, '-');
+    userObj.urlName = this.state.username.toLowerCase().replace(/ /g, '-')
     this.setState({
       isHidden: !this.state.isHidden,
       users: [...this.state.users, userObj],
@@ -216,7 +214,7 @@ class Home extends Component {
       passwordOne: '',
       email: '',
       file: null
-    });
+    })
   };
 
   render() {
@@ -265,7 +263,7 @@ class Home extends Component {
                     <Link to={`/dates/${user.urlName}`}>
                       <ClientImage logo={user.logo} name={user.name} />
                     </Link>
-                    <div class="d-flex align-items-center align-items-center">
+                    <div className="d-flex align-items-center align-items-center">
                       <div className="x-wrapper mt-10">
                         <Link to={`/dates/${user.urlName}`}>{user.name}</Link>
                       </div>
@@ -309,7 +307,7 @@ class Home extends Component {
                 <div className="dashed" />
 
                 <div className="dashed dashed-wrapper">
-                  <img src={require('../assets/round-arrow.png')} class="round-arrow" />
+                  <img src={require('../assets/round-arrow.png')} className="round-arrow" />
                 </div>
               </div>
             </div>
@@ -323,7 +321,7 @@ class Home extends Component {
             className="home-modal"
             onCancel={this.handleCancel}
             footer={[
-              <Button onClick={this.onSubmit} className="add-date-btn">
+              <Button onClick={this.onSubmit} disabled={isInvalid} className="add-date-btn" type="button">
                 Submit
               </Button>
             ]}

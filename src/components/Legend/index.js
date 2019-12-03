@@ -11,8 +11,8 @@ const Legend = props => {
     <div>
       <p className="container p-details">Details</p>
       <div className="border mb-15"></div>
-      <section className="d-flex justify-content-between container row mx-auto">
-        <div>
+      <section className="d-flex justify-content-between container mx-auto">
+        <div className="row d-flex flex-column">
           <h4>CATEGORIES</h4>
           <Link
             to={{

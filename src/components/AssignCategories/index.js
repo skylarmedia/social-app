@@ -79,11 +79,17 @@ class AssignCategories extends Component {
   //     {
   //       categories: categories
   //     });
-  // };
+  // };'
 
-  selectCategories = e => {
-    // this.props.history.goBack();
-  };
+  // isValid(selected, months) {
+  //   console.log('this months', months, this.props.match.params.month)
+  //   if(selected === true && months.includes(this.props.match.params.month)){
+  //     return true;
+  //   }else{
+  //     return false;
+  //   }
+  // }
+
 
   render() {
     console.log(this.state.categories, 'CATEGORISE');
@@ -95,11 +101,11 @@ class AssignCategories extends Component {
       return (
         <div className="d-flex assign-cat justify-content-center mb-10">
           <Checkbox
-            checked={item.selected}
+            checked={this.state.categories[i].selected}
             onChange={() => this.handleChange(item.name, item.color, i)}
             value={item.name}
           />
-          <div style={style} class="align-self-center col-md-3 ml-10">
+          <div style={style} className="align-self-center col-md-3 ml-10">
             {item.name}
           </div>
         </div>
@@ -110,12 +116,14 @@ class AssignCategories extends Component {
       <div id="assign-categories-wrapper">
         <form
           onSubmit={this.selectCategories}
-          class="col-sm-6 d-flex flex-column mx-auto bg-white form-cat position-relative"
+          className="col-sm-6 d-flex flex-column mx-auto bg-white form-cat position-relative"
         >
           <h5 className="cat-h5">Categories</h5>
           {this.state.categories.length > 0 && categories}
-          <Link className="align-self-center save-draft-btn submit-cat d-flex" to={`/calendar/${this.props.match.params.year}/${this.props.match.params.month}/${this.props.match.params.id}`}>Save</Link>
-        </form>
+          <div className="text-center d-flex justify-content-center">
+          <Link className="align-items-center save-draft-btn submit-cat d-flex justify-content-center color-red fw-16" to={`/calendar/${this.props.match.params.year}/${this.props.match.params.month}/${this.props.match.params.id}`}>SAVE</Link>
+          </div>
+         </form>
       </div>
     );
   }

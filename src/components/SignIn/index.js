@@ -3,6 +3,7 @@ import { withRouter } from 'react-router-dom';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import './index.css'
+import { Input } from 'antd';
 import TextField from '@material-ui/core/TextField';
 import { withFirebase } from '../Firebase';
 import Button from '@material-ui/core/Button';
@@ -94,19 +95,21 @@ class SignInFormBase extends Component {
         <img src={require('../assets/skylar_Icon_wingPortion.svg')} id="wing-logo" />
         Version.2
         <form onSubmit={this.onSubmit} className="d-flex flex-column align-items-center">
-          <TextField
+          <Input
             name="email"
             label="email"
             value={email}
+            className="blue-input f-16"
             onChange={this.onChange}
             type="text"
             placeholder="Email Address"
             margin="normal"
             variant="outlined"
           />
-          <TextField
+          <Input
             name="password"
             value={password}
+            className="blue-input f-16"
             label="password"
             onChange={this.onChange}
             type="password"

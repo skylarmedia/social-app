@@ -8,20 +8,28 @@ import SignOutButton from '../SignOut';
 import * as ROUTES from '../../constants/routes';
 import { AuthUserContext } from '../Session';
 
-const Navigation = ({ authUser }) => (
-  <AuthUserContext.Consumer>
-    {authUser =>
-      authUser ? (
-        <NavigationAuth authUser={authUser} id="page-wrap" />
-      ) : (
-        <NavigationNonAuth id="page-wrap" />
-      )
-    }
-  </AuthUserContext.Consumer>
-);
+const Navigation = ({ authUser }) => {
+  let downCaret =  document.querySelector('.anticon-down')
+  console.log('down', downCaret);
+  return (
+    <AuthUserContext.Consumer>
+      {authUser =>
+        authUser ? (
+          <NavigationAuth authUser={authUser} id="page-wrap" />
+        ) : (
+          <NavigationNonAuth id="page-wrap" />
+        )
+      }
+    </AuthUserContext.Consumer>
+  );
+
+}
 
 const NavigationAuth = props => {
   const [drawerState, toggleDrawer] = useState(false);
+  var elem = document.querySelector('.anticon-down');
+  console.log(elem)
+
 
   return (
     <div>

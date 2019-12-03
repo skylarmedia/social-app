@@ -25,6 +25,18 @@ code {
   background:#EF463B;
 }
 
+#downcaret{
+  position: relative;
+}
+
+#downcaret:before{
+  position: absolute;
+  font-family: 'FontAwesome';
+  top: 0;
+  left: 10px;
+  content: "\f0da";
+}
+
 .size-int{
   width: 43px;
   height: 43px;

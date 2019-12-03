@@ -50,6 +50,10 @@
 	font-family: 'Panton' !important;
 }
 
+body .ant-select-selection__placeholder{
+	top:42%;
+}
+
 .fas{
 	font-family: 'Font Awesome 5 Free' !important;
 }

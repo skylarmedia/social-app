@@ -367,21 +367,21 @@ class Firebase {
       .get();
 
   addUser = (email, password, name, logo) => {
-    console.log('sent logo', logo);
-    this.auth.createUserWithEmailAndPassword(email, password).then(user => {
-      this.db
-        .collection('users')
-        .doc(name.toLowerCase().replace(/ /g, '-'))
-        .set({
-          name: name,
-          logo: logo,
-          userId: user.user.uid,
-          admin: 0,
-          email: email,
-          urlName: name.toLowerCase().replace(/ /g, '-'),
-          archived: false
-        });
-    });
+    // this.auth.createUserWithEmailAndPassword(email, password).then(user => {
+    //   console.log('name in create', name)
+    //   this.db
+    //     .collection('users')
+    //     .doc(name.toLowerCase().replace(/ /g, '-'))
+    //     .set({
+    //       name: name,
+    //       logo: logo,
+    //       userId: user.user.uid,
+    //       admin: 0,
+    //       email: email,
+    //       urlName: name.toLowerCase().replace(/ /g, '-'),
+    //       archived: false
+    //     });
+    // });
   };
 
   // Posts Function
@@ -584,6 +584,8 @@ class Firebase {
       .collection('users')
       .doc(id)
       .delete();
+
+      
 
   // getPrivacy = (id, year, month) => 
   //   this.db

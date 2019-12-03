@@ -210,11 +210,10 @@ class Dates extends Component {
   };
 
   sendCategories = cat => {
-    this.setState(
-      {
-        categories: [...this.state.categories, cat],
-        visibleCategories: false
-      });
+    this.setState({
+      categories: [...this.state.categories, cat],
+      visibleCategories: false
+    });
 
     this.props.firebase.sendCategories(this.props.match.params.id, cat);
   };
@@ -264,8 +263,8 @@ class Dates extends Component {
       <div className="container row mx-auto date-page">
         <div className="col-sm-3">
           <div className="d-flex  back-wrapper">
-            <img src={require('../assets/back.svg')} />
-            <Link to={`dates/${this.props.match.params.clientId}`} className="back-link">
+            <Link to={`/home`} className="back-link">
+              <img src={require('../assets/back.svg')} />
               Back To All Clients
             </Link>
           </div>
@@ -312,7 +311,6 @@ class Dates extends Component {
             ]}
           >
             <form className="add-date-form" onSubmit={this.submitForm.bind(this)}>
-              DATE!
               <div className="d-flex justify-content-between inner-date-wrapper">
                 <Select
                   onChange={this.handleMonth.bind(this)}
@@ -333,7 +331,7 @@ class Dates extends Component {
                   <Option value="11">November</Option>
                   <Option value="12">December</Option>
                 </Select>
-
+                <i class="fas fa-caret-right"></i>
                 <Select
                   onChange={this.handleYear.bind(this)}
                   className="select-date"
@@ -358,52 +356,67 @@ class Dates extends Component {
       <div className="row justify-content-between container mx-auto date-page">
         <div className="col-md-3">
           <div className="d-flex  back-wrapper">
-            <img src={require('../assets/back.svg')} />
-            <Link to={`dates/${this.props.match.params.clientId}`} className="back-link">
+            <Link to={`/home`} className="back-link">
+              <img src={require('../assets/back.svg')} />
               Back To All Clients
             </Link>
           </div>
         </div>
         <div className="col-md-8 position-relative">
           <form className="add-date-form" onSubmit={this.submitForm.bind(this)}>
-            <button onClick={this.toggleAddDate.bind(this)} className="toggle-close">
-              x
-            </button>
-            ADD DATE 2
             <div className="d-flex justify-content-between date-wrapper month-wrapper">
-              {/* <Select
-                  onChange={this.handleMonth.bind(this)}
-                  value={this.state.month}
-                  placeholder="MONTH"
-                >
-                  <Option value="1">January</Option>
-                  <Option value="2">February</Option>
-                  <Option value="3">March</Option>
-                  <Option value="4">April</Option>
-                  <Option value="5">May</Option>
-                  <Option value="6">June</Option>
-                  <Option value="7">July</Option>
-                  <Option value="8">August</Option>
-                  <Option value="9">September</Option>
-                  <Option value="10">October</Option>
-                  <Option value="11">November</Option>
-                  <Option value="12">December</Option>
-                </Select>
-                <Select
-                  onChange={this.handleYear.bind(this)}
-                  value={this.state.year}
-                  placeholder="YEAR"
-                >
-                  Placeholder
-                  <Option value="2019">2019</Option>
-                </Select> */}
+              <Modal
+                visible={this.state.visible}
+                onOk={this.handleOk}
+                className="date-modal"
+                onCancel={this.handleCancel}
+                footer={[
+                  <Button onClick={this.submitForm.bind(this)} className="add-date-btn">
+                    Submit
+                  </Button>
+                ]}
+              >
+                <form className="add-date-form" onSubmit={this.submitForm.bind(this)}>
+                  DATE!
+                  <div className="d-flex justify-content-between inner-date-wrapper">
+                    <div className="position-relative">
+                      <Select
+                        onChange={this.handleMonth.bind(this)}
+                        className="select-date"
+                        id="month-helper"
+                        placeholder="MONTH"
+                      >
+                        <Option value="1">January</Option>
+                        <Option value="2">February</Option>
+                        <Option value="3">March</Option>
+                        <Option value="4">April</Option>
+                        <Option value="5">May</Option>
+                        <Option value="6">June</Option>
+                        <Option value="7">July</Option>
+                        <Option value="8">August</Option>
+                        <Option value="9">September</Option>
+                        <Option value="10">October</Option>
+                        <Option value="11">November</Option>
+                        <Option value="12">December</Option>
+                      </Select>
+                      <i class="fas fa-caret-right"></i>
+                    </div>
+                    <div className="position-relative">
+                      <Select
+                        onChange={this.handleYear.bind(this)}
+                        className="select-date"
+                        id="month-helper"
+                        placeholder="YEAR"
+                      >
+                        <Option value="2019">2019</Option>
+                        <Option value="2020">2020</Option>
+                      </Select>
+                    </div>
+                    <i class="fas fa-caret-right"></i>
+                  </div>
+                </form>
+              </Modal>
             </div>
-            <input
-              type="submit"
-              value="Submit"
-              className="add-date-btn"
-              onSubmit={this.submitForm.bind(this)}
-            />
           </form>
           <h2 className="text-center" id="client-heading">
             Client A-Game’s Calendars
@@ -425,7 +438,7 @@ class Dates extends Component {
         </div>
         <div className="col-md-1 margin-btn">
           <button onClick={this.showModal} className="add-date-btn">
-            Add New1
+            Add New
           </button>
         </div>
       </div>

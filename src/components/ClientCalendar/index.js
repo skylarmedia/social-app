@@ -1,17 +1,14 @@
 import React, { Component } from 'react';
-import moment, { relativeTimeThreshold } from "moment";
-import { range } from "moment-range";
+import moment from "moment";
 import "./calendar.css";
 import { withFirebase } from '../Firebase';
-import CalendarSingle from '../CalendarSingle';
-import { Link } from 'react-router-dom';
 import { compose } from 'recompose';
 import ClientCalendarSingle from '../ClientCalendarSingle';
 import CategoryList from '../CategoryList';
 
 
 
-class ClientCalendar extends React.Component {
+class ClientCalendar extends Component {
     weekdayshort = moment.weekdaysShort();
 
     state = {

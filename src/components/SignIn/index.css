@@ -8,6 +8,15 @@
     top: 6vw;
 }
 
+.fa-caret-down{
+    font-size: 44px;
+    position: absolute;
+    right: 75px;
+    z-index: 11;
+    color: #002D5B;
+    font-weight: 600;
+}
+
 .inner-chat-log{
     border: 2px solid #002D5B;
     border-radius: 3px;

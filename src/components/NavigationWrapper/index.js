@@ -12,6 +12,12 @@ class NavigationWrapper extends Component {
     };
   }
 
+  compenentDidMount(){
+    let downCaret =  document.querySelector('.anticon-down')
+    console.log('down', downCaret);
+    
+  }
+
   render() {
     if (localStorage.getItem('loggedIn') == "true") {
       return (
