@@ -280,7 +280,7 @@ class Home extends Component {
             </Row>
             <div id="add-new-btn-wrapper" className="text-center">
               <button onClick={this.showModal} className="add-date-btn hidden-add">
-                Add New1
+                Add New
               </button>
             </div>
           </div>

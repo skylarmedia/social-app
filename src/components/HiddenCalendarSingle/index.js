@@ -56,14 +56,6 @@ class HiddenCalendarSingle extends Component {
     });
   }
 
-  doDoubleClickAction() {
-    // if(this.props)
-    let friendlyUrl = 'test';
-    this.props.push.push(
-      `/admin-view-post/${this.props.month}/${this.props.day}/${friendlyUrl}/${this.props.clientId}/${this.props.itemId}`
-    );
-  }
-
   handleApproval = () => {
     this.setState({
       approved: !this.state.approved
@@ -77,12 +69,6 @@ class HiddenCalendarSingle extends Component {
         approved: !this.state.approved
       });
   };
-
-  handleDoubleClick() {
-    clearTimeout(timer);
-    prevent = true;
-    this.doDoubleClickAction();
-  }
 
   truncate = input => (input.length > 200 ? `${input.substring(0, 200)}...` : input);
 
@@ -173,7 +159,6 @@ class HiddenCalendarSingle extends Component {
           <div className="d-flex align-items-center">
             <button
               onClick={this.toggleIsHidden}
-              onDoubleClick={this.handleDoubleClick.bind(this)}
               style={buttonStyle}
               className="label-button"
             >

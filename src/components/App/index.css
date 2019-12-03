@@ -1,11 +1,27 @@
-.menu-wrapper{
-    background: #002D5B;
+.menu-wrapper {
+	background: #002d5b;
 }
 
-.color-red{
-    color:#EF463B;
+.color-red {
+	color: #ef463b;
 }
 
-h4{
-    font-size:16px;
+h4 {
+	font-size: 16px;
+}
+
+#outer-container {
+	position: relative;
+}
+
+.child-route {
+	position: absolute;
+}
+
+.switch-wrapper {
+	position: relative;
+}
+
+.switch-wrapper > div {
+	position: absolute;
 }
