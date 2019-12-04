@@ -82,12 +82,6 @@ const App = () => {
             </div>
            
           </div>
-          <AnimatedSwitch
-          atEnter={{ opacity: 0 }}
-          atLeave={{ opacity: 0 }}
-          atActive={{ opacity: 1 }}
-          className="switch-wrapper"
-        >
             <Route  className="child-route" exact path={`${process.env.PUBLIC_URL + '/'}`} component={SignInPage} />
             <Route  className="child-route" path={`/add-post/:year/:month/:day/:clientId`} component={AddPost} />
             <Route  className="child-route" path={`/sign-up`} component={SignUpPage} />
@@ -106,7 +100,7 @@ const App = () => {
               component={ClientViewPost}
               
               />
-            />
+
             <Route className="child-route"
               path="/admin-view-post/:month/:day/:title/:client/:itemId"
               component={AdminViewPost}
@@ -115,7 +109,6 @@ const App = () => {
             <Route className="child-route" path="/calendar/:year/:month/:clientId" component={Calendar} />
             <Route className="child-route" path="/settings" component={Settings} />
             <Route className="child-route" component={NoMatch} />
-           </AnimatedSwitch>
           )
         </div>
       </Router>
@@ -123,7 +116,5 @@ const App = () => {
   )
   
 }
-
-const NoMatch = ({ location }) => <div>Sorry this page at {location.pathname} doesn't exist</div>;
 
 export default withAuthentication(App);
