@@ -483,6 +483,14 @@ input.blue-input {
 	margin-bottom: 11px;
 }
 
+.outter-modal{
+	width:60% !important;
+}
+
+.outter-modal .ant-modal-close{
+	display:none;
+}
+
 .hidden-post .approval-wrapper {
 	margin-top: 0;
 }

@@ -420,7 +420,6 @@ class SubPost extends Component {
             <div>
               <div className="d-flex flex-wrap">
                 <ImagePosts imageSrc={this.state.metaImageFiles} className="upload-files-wrapper" />
-                {/* {renderMedia} */}
               </div>
               <input type="file" multiple onChange={this.addFile} id="render-input" />
             </div>
@@ -468,7 +467,7 @@ class SubPost extends Component {
                 onChange={this.handleInstagram}
                 name="instagram"
                 value={this.state.instagram}
-                id={`instagram${this.props.i}`}
+                id={`instagram-${this.props.i}`}
               />
               <label className="margin-label" for={`instagram-${this.props.i}`}>Instagram</label>
             </div>

@@ -351,8 +351,14 @@ body .bm-menu {
   width:100%;
 }
 
+.remove-wrapper{
+	position: absolute;
+    bottom: 110px;
+    left: 51%;
+}
+
 .ml-10{
-	margin-left:10px;
+	margin-left:10px !important;
 	margin-bottom:0;
 }
 

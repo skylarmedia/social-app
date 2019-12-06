@@ -145,7 +145,10 @@ class ListMode extends Component {
                         </div>
                       ))
                     ) : (
-                      <p>RED BOX</p>
+                      <div id="red-outline-wrapper" className="p-0">
+                        <div class="red-center list-center">
+                        </div>
+                      </div>
                     )}
                   </div>
                   <div class="w-100">

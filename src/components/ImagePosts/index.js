@@ -19,7 +19,7 @@ const ImagePosts = props => {
   return (
     <div  className="upload-files-wrapper d-flex flex-wrap">
       {imageSrc &&
-        imageSrc.map(item => {
+        imageSrc.map((item, index )=> {
           console.log('item IN INNER IMAGE', item);
           if (getType(item) == 'video') {
             return (
@@ -29,7 +29,7 @@ const ImagePosts = props => {
             );
           } else {
             return (
-              <div className="image-render" l>
+              <div className="image-render">
                 <img src={item} />
               </div>
             );
@@ -41,19 +41,3 @@ const ImagePosts = props => {
 
 export default ImagePosts;
 
-// const renderMedia = this.state.metaImageFiles.map(item => {
-//   console.log('item', item);
-//   if (this.getType(item) == 'video') {
-//     return (
-//       <video height="200" width="200" controls>
-//         <source src={item} />
-//       </video>
-//     );
-//   } else {
-//     return (
-//       <div className="image-render"l>
-//         <img src={item} />
-//       </div>
-//     );
-//   }
-// });

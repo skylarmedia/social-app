@@ -172,6 +172,12 @@ class AddPost extends Component {
     });
   };
 
+  removePlatform(index){
+    this.setState({
+      subPosts: this.state.subPosts.filter((_, i) => i !== index)
+    });
+  }
+
   handleOther = () => {
     this.setState({
       other: !this.state.other
@@ -262,6 +268,13 @@ class AddPost extends Component {
             year={this.props.match.params.year}
           />
         </div>
+        {i == 1 && (
+          <div className="remove-wrapper container">
+            <button type="button" onClick={() => this.removePlatform(i)}>
+              Remove
+            </button>
+          </div>
+        )}
       </div>
     ));
   }
@@ -311,21 +324,22 @@ class AddPost extends Component {
                     onChange={this.handleApproval}
                     id="approvePost"
                   />
-                  <label className="color-blue">APPROVE POST</label>
+                  <label className="color-blue" for="approvePost">APPROVE POST</label>
                 </div>
               </div>
 
               <form onSubmit={this.onSubmitForm} id="sub-post-form">
                 {this.createForms()}
                 <div className="add-plat-form-button">
-                <button
-                  onClick={() => this.addForm()}
-                  className="clear-btn add-platform-btn"
-                  type="button"
-                >
-                  <img src={require('../assets/select.svg')} />
-                  <span className="color-blue blue-p">Add Platform</span>
-                </button></div>
+                  <button
+                    onClick={() => this.addForm()}
+                    className="clear-btn add-platform-btn"
+                    type="button"
+                  >
+                    <img src={require('../assets/select.svg')} />
+                    <span className="color-blue blue-p">Add Platform</span>
+                  </button>
+                </div>
                 <div className="text-center">
                   <button className="save-draft-btn" onClick={this.saveDraft.bind(this)}>
                     SAVE DRAFT

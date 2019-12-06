@@ -9,6 +9,7 @@ import Ad from '../Ad';
 import { Checkbox } from 'antd';
 import ImagePosts from '../ImagePosts';
 import app from 'firebase/app';
+import { Modal } from 'antd';
 
 let timer = 0;
 let delay = 200;
@@ -19,7 +20,7 @@ class HiddenCalendarSingle extends Component {
     super(props);
 
     this.state = {
-      isHiddenCalendar: false,
+      visible: false,
       clientId: '',
       image: '',
       approved: false
@@ -28,6 +29,20 @@ class HiddenCalendarSingle extends Component {
     this.toggleIsHidden = this.toggleIsHidden.bind(this);
     this.db = app.firestore();
   }
+
+  handleOk = e => {
+    console.log(e);
+    this.setState({
+      visible: false
+    });
+  };
+
+  handleCancel = e => {
+    console.log(e);
+    this.setState({
+      visible: false
+    });
+  };
 
   componentDidMount() {
     var url_string = window.location.href; //window.location.href
@@ -52,7 +67,7 @@ class HiddenCalendarSingle extends Component {
 
   doClickAction() {
     this.setState({
-      isHiddenCalendar: !this.state.isHiddenCalendar
+      visible: true
     });
   }
 
@@ -98,12 +113,6 @@ class HiddenCalendarSingle extends Component {
         0,
         Math.min(trimmedString.length, trimmedString.lastIndexOf(' '))
       );
-
-      // let image = this.props.images[0];
-      // this.props.images.shift();
-        
-      // let underImageEl = this.props.images.map(item => <img src={item} />);
-      // console.log('type of under image', typeof(underImages))
       return (
         <div className="hidden-inner">
           <h4 className="text-center">{this.props.title}</h4>
@@ -155,27 +164,22 @@ class HiddenCalendarSingle extends Component {
     };
     return (
       <React.Fragment>
-
-          <div className="d-flex align-items-center">
-            <button
-              onClick={this.toggleIsHidden}
-              style={buttonStyle}
-              className="label-button"
-            >
-              {this.ellipse(this.props.title)}
-              {this.props.adminRead != false ? '' : ''}
-            </button>
-            <Ad ad={this.props.ad} className="ad-icon" />
-            <Icons
-              approved={this.props.approved}
-              clientRead={this.props.clientRead}
-              clientNotifcation={this.props.clientNotifcation}
-              adminNotification={this.props.adminNotifcation}
-            />
-          </div>
-          {this.state.isHiddenCalendar && (
-            <div className="hidden-post">{hiddenPost()}</div>
-          )}
+        <div className="d-flex align-items-center">
+          <button onClick={this.toggleIsHidden} style={buttonStyle} className="label-button">
+            {this.ellipse(this.props.title)}
+            {this.props.adminRead != false ? '' : ''}
+          </button>
+          <Ad ad={this.props.ad} className="ad-icon" />
+          <Icons
+            approved={this.props.approved}
+            clientRead={this.props.clientRead}
+            clientNotifcation={this.props.clientNotifcation}
+            adminNotification={this.props.adminNotifcation}
+          />
+        </div>
+        <Modal className="outter-modal"  footer={null} visible={this.state.visible} onOk={this.handleOk} onCancel={this.handleCancel} cancelButtonProps={{ style: { display: 'none' } }}>
+          <div className="hidden-post">{hiddenPost()}</div>
+        </Modal>
       </React.Fragment>
     );
   }
