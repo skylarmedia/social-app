@@ -41,7 +41,6 @@ class Home extends Component {
     this.toggleAddNew = this.toggleAddNew.bind(this);
     this.handleLogoUpload = this.handleLogoUpload.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
-    this.addFile = this.addFile.bind(this);
     this.confirmArchive = this.confirmArchive.bind(this);
     this.db = app.firestore();
     this.functions = app.functions();
@@ -50,7 +49,7 @@ class Home extends Component {
 
   // Component lifecycle methods
 
-  componentWillMount() {
+  componentDidMount() {
     this.props.firebase.getClients().then(snapshot => {
       const opened = snapshot.docs;
 
@@ -66,12 +65,12 @@ class Home extends Component {
     });
   }
 
-  componentWillUnmount() {
-    this.setState({
-      file: null,
-      username: ''
-    });
-  }
+  // componentWillUnmount() {
+  //   this.setState({
+  //     file: null,
+  //     username: ''
+  //   });
+  // }
 
   toggleAddNew() {
     this.setState({
@@ -112,7 +111,6 @@ class Home extends Component {
 
   handleLogoUpload = event => {
     const file = Array.from(event.target.files);
-
     this.setState({
       file: file[0]
     });
@@ -122,10 +120,10 @@ class Home extends Component {
     this.setState(
       {
         file: event.target.files[0],
-        backgroundUrl: '',
         loadSpinner: !this.state.loadSpinner
       },
       () => {
+        console.log('USER ', this.state.username);
         this.state.firestorageRef
           .ref()
           .child(`${this.state.username}/logo/`)
@@ -148,7 +146,11 @@ class Home extends Component {
   // Ant Design
   showModal = () => {
     this.setState({
-      visible: true
+      visible: true,
+      username:'',
+      backgroundUrl:'',
+      passwordOne:'',
+      email:''
     });
   };
 
@@ -196,25 +198,48 @@ class Home extends Component {
 
   onChange = event => {
     this.setState({ [event.target.name]: event.target.value });
+    console.log('Change name', event.target.value)
   };
 
   onSubmit = event => {
     event.preventDefault();
+    this.state.firestorageRef
+    .ref()
+    .child(`${this.state.username}/logo/`)
+    .put(this.state.file)
+    .then(snapshot => {
+      const encodedUrl = `https://firebasestorage.googleapis.com/v0/b/skylar-social-17190.appspot.com/o/${encodeURIComponent(
+        snapshot.metadata.fullPath
+      )}?alt=media`;
+      alert(`state${this.state.username}`)
+      console.log('encoded URL in', encodedUrl);
+      const userObj = {};
+      userObj.logo = this.state.backgroundUrl;
+      userObj.name = this.state.username;
+      userObj.urlName = this.state.username.toLowerCase().replace(/ /g, '-');
+      console.log(`URL STATE ${this.state.backgroundUrl}`);
+      this.props.firebase.addUser(
+        this.state.email,
+        this.state.passwordOne,
+        this.state.username,
+        this.state.backgroundUrl
+      );
 
-    this.props.firebase.addUser(this.state.email, this.state.passwordOne, this.state.username, this.state.backgroundUrl);
-    const userObj = {}
-    userObj.logo = this.state.backgroundUrl;
-    userObj.name = this.state.username;
-    userObj.urlName = this.state.username.toLowerCase().replace(/ /g, '-')
-    this.setState({
-      isHidden: !this.state.isHidden,
-      users: [...this.state.users, userObj],
-      backgroundUrl: '',
-      username: '',
-      passwordOne: '',
-      email: '',
-      file: null
-    })
+      this.setState({
+        loadSpinner: false,
+        visible: false,
+        users: [...this.state.users, userObj],
+        passwordOne: '',
+        email: '',
+        file: null,
+      });
+    }, () => {
+
+      this.setState({
+
+      });
+    });
+
   };
 
   render() {
@@ -256,7 +281,7 @@ class Home extends Component {
                 return (
                   <Col
                     data-id={user.userId}
-                    className="gutter-row client-wrapper flex-column d-flex"
+                    className="gutter-row client-wrapper flex-column d-flex mb-20"
                     span={6}
                     key={index}
                   >
@@ -315,63 +340,64 @@ class Home extends Component {
         ) : (
           <div className="progress-wrapper"></div>
         )}
-          <Modal
-            visible={this.state.visible}
-            onOk={this.handleOk}
-            className="home-modal"
-            onCancel={this.handleCancel}
-            footer={[
-              <Button onClick={this.onSubmit} disabled={isInvalid} className="add-date-btn" type="button">
-                Submit
-              </Button>
-            ]}
-          >
-            <div id="add-new-form-wrapper">
-              <form onSubmit={this.onSubmit} id="add-new-form" className="d-flex flex-column">
-                <div
-                  id="avatar-upload"
-                  className="d-flex align-items-end justify-content-center align-items-center"
-                  style={backgroundUrlStyle}
-                >
-                  <input type="file" onChange={this.addFile} id="add-file" />
-                  {this.state.loadSpinner === true ? (
-                    <CircularProgress style={progressStyles} />
-                  ) : (
-                    ''
-                  )}
-                </div>
-                <TextField
-                  margin="normal"
-                  variant="outlined"
-                  name="username"
-                  value={this.state.username}
-                  onChange={this.onChange}
-                  type="text"
-                  label="CLIENT_NAME"
-                />
-                <TextField
-                  margin="normal"
-                  variant="outlined"
-                  name="email"
-                  value={this.state.email}
-                  onChange={this.onChange}
-                  type="text"
-                  label="CLIENT_EMAIL"
-                />
-                <TextField
-                  margin="normal"
-                  variant="outlined"
-                  name="passwordOne"
-                  value={this.state.passwordOne}
-                  onChange={this.onChange}
-                  type="password"
-                  label="PASSWORD"
-                />
+        <Modal
+          visible={this.state.visible}
+          onOk={this.handleOk}
+          className="home-modal"
+          onCancel={this.handleCancel}
+          footer={[
+            <Button
+              onClick={this.onSubmit}
+              disabled={isInvalid}
+              className="add-date-btn"
+              type="button"
+            >
+              Submit
+            </Button>
+          ]}
+        >
+          <div id="add-new-form-wrapper">
+            <form onSubmit={this.onSubmit} id="add-new-form" className="d-flex flex-column">
+              <div
+                id="avatar-upload"
+                className="d-flex align-items-end justify-content-center align-items-center"
+                style={backgroundUrlStyle}
+              >
+                <input type="file" onChange={this.addFile} id="add-file" />
+                {this.state.loadSpinner === true ? <CircularProgress style={progressStyles} /> : ''}
+              </div>
+              <TextField
+                margin="normal"
+                variant="outlined"
+                name="username"
+                value={this.state.username}
+                onChange={this.onChange}
+                type="text"
+                label="CLIENT_NAME"
+              />
+              <TextField
+                margin="normal"
+                variant="outlined"
+                name="email"
+                value={this.state.email}
+                onChange={this.onChange}
+                type="text"
+                label="CLIENT_EMAIL"
+              />
+              <TextField
+                margin="normal"
+                variant="outlined"
+                name="passwordOne"
+                value={this.state.passwordOne}
+                onChange={this.onChange}
+                type="password"
+                label="PASSWORD"
+              />
 
-                {this.state.error && <p>{this.state.error.message}</p>}
-              </form>
-            </div>
-          </Modal>
+              {this.state.error && <p>{this.state.error.message}</p>}
+            </form>
+          </div>
+        </Modal>
       </div>
     );
   }

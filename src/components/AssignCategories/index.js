@@ -104,10 +104,11 @@ class AssignCategories extends Component {
             checked={this.state.categories[i].selected}
             onChange={() => this.handleChange(item.name, item.color, i)}
             value={item.name}
+            id={item.name}
           />
-          <div style={style} className="align-self-center col-md-3 ml-10">
+          <label style={style} className="align-self-center col-md-3 ml-10" for={item.name}>
             {item.name}
-          </div>
+          </label>
         </div>
       );
     });

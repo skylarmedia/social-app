@@ -22,6 +22,10 @@ body .ant-modal-mask {
     background-color: rgba(0, 0, 0, 0.8);
 }
 
+.gutter-row.client-wrapper.flex-column.d-flex.mb-20{
+	margin-bottom:80px;
+}
+
 .ant-icon svg{
 	color: #ef463b;
     font-size: 25px;

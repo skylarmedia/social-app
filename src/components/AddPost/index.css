@@ -420,7 +420,7 @@
 .add-platform-btn {
 	position: absolute;
     right: 40%;
-    bottom: 140px;
+    bottom: 108px;
     margin-left: 10px;
     right: 30.5%;
 }
@@ -450,6 +450,10 @@ input.blue-input {
 }
 
 .sub-post-form {
+}
+
+.main-edit-form .ant-select-selection__placeholder {
+    top: 50%;
 }
 
 .clock-circle .anticon svg {

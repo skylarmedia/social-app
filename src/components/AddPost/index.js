@@ -317,7 +317,7 @@ class AddPost extends Component {
 
               <form onSubmit={this.onSubmitForm} id="sub-post-form">
                 {this.createForms()}
-
+                <div className="add-plat-form-button">
                 <button
                   onClick={() => this.addForm()}
                   className="clear-btn add-platform-btn"
@@ -325,7 +325,7 @@ class AddPost extends Component {
                 >
                   <img src={require('../assets/select.svg')} />
                   <span className="color-blue blue-p">Add Platform</span>
-                </button>
+                </button></div>
                 <div className="text-center">
                   <button className="save-draft-btn" onClick={this.saveDraft.bind(this)}>
                     SAVE DRAFT

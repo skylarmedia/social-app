@@ -70,51 +70,54 @@ const App = () => {
 
   return(
     (
-      <Router>
-        <div id="outer-container">
-          <div className="d-flex nav-wrapper align-items-center">
-            <div className="d-flex justify-content-between w-100">
-              <div className="d-flex align-items-center">
-                <NavigationWrapper />
-                <h5>Skylar Media</h5>
-              </div>
-              <img src={require('../assets/skylar-logo.svg')} id="sky-logo" className="align-self-center" />
+      <Router basename={'/social-app-deploy'}>
+      <div id="outer-container">
+        <div className="d-flex nav-wrapper align-items-center">
+          <div className="d-flex justify-content-between w-100">
+            <div className="d-flex align-items-center">
+              <NavigationWrapper />
+              <h5>Skylar Media</h5>
             </div>
-           
+            <img src={require('../assets/skylar-logo.svg')} id="sky-logo" className="align-self-center" />
           </div>
-            <Route  className="child-route" exact path={`${process.env.PUBLIC_URL + '/'}`} component={SignInPage} />
-            <Route  className="child-route" path={`/add-post/:year/:month/:day/:clientId`} component={AddPost} />
-            <Route  className="child-route" path={`/sign-up`} component={SignUpPage} />
-            <Route  className="child-route" path={ROUTES.SIGN_IN} component={SignInPage} />
-            <Route  className="child-route" exact path={ROUTES.HOME} component={HomePage} />
-            <Route  className="child-route" path={ROUTES.CLIENTS} component={Clients} />
-            <Route  className="child-route" path={ROUTES.DATES} component={Dates} />
-            <Route  className="child-route" path="/edit-post/:clientId/:postId" component={EditPost} />
-            <Route  className="child-route" path="/assign-categories/:year/:month/:id" component={AssignCategories} />
-            <Route  className="child-route" exact path={`/calendar-single/:year/:month/:day`} component={CalendarSingle} />
-            <Route  className="child-route" path="/client-calendar/:year/:month" component={ClientCalendar} />
-            <Route  className="child-route" exact path="/client/:id/dates" component={ClientDates}/>
-            <Route className="child-route"
-              exact
-              path="/view-post/:month/:day/:id"
-              component={ClientViewPost}
-              
-              />
-
-            <Route className="child-route"
-              path="/admin-view-post/:month/:day/:title/:client/:itemId"
-              component={AdminViewPost}
-            />
-            <Route className="child-route" path="/logout" component={Logout} />
-            <Route className="child-route" path="/calendar/:year/:month/:clientId" component={Calendar} />
-            <Route className="child-route" path="/settings" component={Settings} />
-            <Route className="child-route" component={NoMatch} />
-          )
+         
         </div>
-      </Router>
+        <Switch>
+          <Route exact path={`${process.env.PUBLIC_URL + '/'}`} component={SignInPage} />
+          <Route path={`/add-post/:year/:month/:day/:clientId`} component={AddPost} />
+          <Route path={`/sign-up`} component={SignUpPage} />
+          <Route path={ROUTES.SIGN_IN} component={SignInPage} />
+          <Route exact path={ROUTES.HOME} component={HomePage} />
+          <Route path={ROUTES.CLIENTS} component={Clients} />
+          <Route path={ROUTES.DATES} component={Dates} />
+          <Route path="/edit-post/:clientId/:postId" component={EditPost} />
+          <Route path="/assign-categories/:year/:month/:id" component={AssignCategories} />
+          <Route exact path={`/calendar-single/:year/:month/:day`} component={CalendarSingle} />
+          <Route path="/client-calendar/:year/:month" component={ClientCalendar} />
+          <Route exact path="/client/:id/dates" component={ClientDates}/>
+          <Route
+            exact
+            path="/view-post/:month/:day/:id"
+            component={ClientViewPost}
+            
+            />
+          />
+          <Route
+            path="/admin-view-post/:month/:day/:title/:client/:itemId"
+            component={AdminViewPost}
+          />
+          <Route path="/logout" component={Logout} />
+          <Route path="/calendar/:year/:month/:clientId" component={Calendar} />
+          <Route path="/settings" component={Settings} />
+          <Route component={NoMatch} />
+        </Switch>
+        )
+      </div>
+    </Router>
     )
   )
-  
 }
+
+const NoMatch = ({ location }) => <div>Sorry this page at {location.pathname} doesn't exist</div>;
 
 export default withAuthentication(App);
