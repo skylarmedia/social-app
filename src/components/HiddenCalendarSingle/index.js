@@ -150,9 +150,9 @@ class HiddenCalendarSingle extends Component {
           <div className="text-center">
             <Link
               to={`/edit-post/${this.props.postId}/${this.props.clientId}`}
-              className="save-draft-btn"
+              className="save-draft-btn color-red"
             >
-              Edit Post
+              VIEW POST
             </Link>
           </div>
         </div>
