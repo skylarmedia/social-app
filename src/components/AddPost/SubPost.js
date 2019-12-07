@@ -494,7 +494,7 @@ class SubPost extends Component {
                 onChange={this.handleOther}
                 name="other"
                 value={this.state.other}
-                for={`other-${this.props.i}`}
+                id={`other-${this.props.i}`}
               />
               <label className="margin-label" for={`other-${this.props.i}`}>Other</label>
             </div>
@@ -614,11 +614,11 @@ class SubPost extends Component {
                   />
 
                   {i == this.state.values.length - 1 ? (
-                    <button type="button" onClick={() => this.addClick()} className="clear-btn">
+                    <button type="button" onClick={() => this.addClick()} className="clear-btn ml-7">
                       <img src={require('../assets/select.svg')} />
                     </button>
                   ) : (
-                    <input type="button" value="remove" onClick={() => this.removeClick(i)} />
+                    <button type="button" onClick={() => this.removeClick(i)} ><img src={require('../assets/x.png')} /></button>
                   )}
                 </div>
               </div>

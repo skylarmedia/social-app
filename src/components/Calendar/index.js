@@ -42,7 +42,7 @@ class Calendar extends React.Component {
       currentYear: 0,
       posts: [],
       private: true,
-      privateId:null,
+      privateId: null,
       selectedCategories: [],
       grid: true
     };
@@ -95,9 +95,9 @@ class Calendar extends React.Component {
         console.log('privacy', snapshot);
         snapshot.docs.map(item => {
           this.setState({
-            private:snapshot.docs[0].data().private,
-            privateId:snapshot.docs[0].id
-          })
+            private: snapshot.docs[0].data().private,
+            privateId: snapshot.docs[0].id
+          });
         });
       });
 
@@ -360,7 +360,7 @@ class Calendar extends React.Component {
       .collection('dates')
       .doc(this.state.privateId)
       .update({
-        private:this.state.private
+        private: this.state.private
       });
   };
 
@@ -416,14 +416,14 @@ class Calendar extends React.Component {
 
     return (
       <React.Fragment>
-        <div class="container">
-          <div>
+        <div>
+          <div className="container">
             <Link to={`/home`} class="back-link" class="d-flex align-items-center">
               <img src={require('../assets/back.svg')} />
               Back to All Calendar Months
             </Link>
           </div>
-          <div className="calendar-heading">
+          <div className="calendar-heading container mx-auto">
             <h2 className="text-center">Client {this.props.match.params.clientId} Calendar </h2>
             <p className="text-center">
               {this.month()} {this.year()}
@@ -431,7 +431,7 @@ class Calendar extends React.Component {
           </div>
           <img src={require('../assets/skylar_Icon_wingPortion.svg')} id="wing-logo" />
           <div>
-            <div class="d-flex justify-content-between align-items-center mb-10">
+            <div class="d-flex justify-content-between align-items-center mb-10 container row mx-auto p-0">
               <div>
                 <button onClick={() => this.listMode()} class="clear-btn">
                   {this.state.grid ? (
@@ -456,14 +456,13 @@ class Calendar extends React.Component {
             </div>
             {this.state.isLoading ? (
               <div className="tail-datetime-calendar">
-                <div className="calendar-navi" />
+                <div className={this.state.grid == true? 'container calendar-navi mx-auto' : 'hidden'}></div>
                 <div className="calendar-date">
                   {this.state.showYearNav && <this.YearTable props={this.year()} />}
                   {this.state.showMonthTable && <this.MonthList data={moment.months()} />}
                 </div>
-
                 {this.state.showCalendarTable && this.state.grid && (
-                  <div className="calendar-date">
+                  <div className="calendar-date container mx-auto">
                     <table className="calendar-day">
                       <thead>
                         <tr id="weekdays">{weekdayshortname}</tr>

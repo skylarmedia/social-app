@@ -355,6 +355,21 @@ class EditPost extends Component {
     return strTime;
   };
 
+  clearMessages = () => {
+    const clearClientMessages = this.functions.httpsCallable('clearClientMessages');
+    console.log('does client exist',postId = this.props.match.params.clientId, 'post id', this.props.match.params.postId)
+    const id = this.props.match.params.postId;
+    const postId = this.props.match.params.clientId;
+    clearClientMessages(id, postId);
+
+    // this.db
+    // .collection('chats')
+    // .doc(this.props.match.params.clientId)
+    // .collection('messages')
+    // .where('postId', '==', this.props.match.params.postId)
+    // .delete();
+  }
+
   handleLinks(event) {
     console.log('i handle links', event);
     // let values = [...this.state.values];
@@ -670,7 +685,7 @@ class EditPost extends Component {
         className="clear-btn d-flex"
         onClick={() => this.clearMessages(this.props.match.params.postId, this.props.match.params.clientId)}
       >
-      <i class="fas fa-trash"></i>
+      <i className="fas fa-trash"></i>
         <span className="ml-10">CLEAR</span>
       </button>
     );
@@ -699,12 +714,17 @@ class EditPost extends Component {
                     adminClient={this.props.match.params.postId}
                     messages={this.state.messages}
                   />
-                  <form onSubmit={this.submitMessage} className="d-flex mt-30">
+                  <form onSubmit={this.submitMessage} className="d-flex mt-30 position-relative">
                     <textarea
                       onChange={this.setMessage}
                       value={this.state.message}
                       onKeyDown={this.captureKey}
                     />
+                    <Popover placement="topRight" content={content} trigger="click" className="position-absolute">
+                    <Button className="clear-btn clear-message-button position-absolute send-clear">
+                      <i className="fas fa-ellipsis-v"></i>
+                    </Button>
+                  </Popover>
                   </form>
                   <button
                     type="button"
@@ -713,11 +733,7 @@ class EditPost extends Component {
                   >
                     <i className="fas fa-smile-beam"></i>
                   </button>
-                  <Popover placement="topRight" content={content} trigger="click">
-                    <Button className="clear-btn clear-message-button position-absolute">
-                      <i className="fas fa-ellipsis-v"></i>
-                    </Button>
-                  </Popover>
+
                 </div>
                 <span className={this.state.showIcons ? 'hidden' : 'not-hidden'}>
                   <Picker onSelect={this.addEmoji} />

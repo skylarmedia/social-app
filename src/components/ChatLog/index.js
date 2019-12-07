@@ -62,6 +62,7 @@ class AdminChatLog extends Component {
                   type="button"
                   className="clear-btn d-flex"
                   onClick={() => this.deleteMessage(this.props.adminClient, item.timestamp, i)}
+                  key={i}
                 >
                 <i class="fas fa-trash"></i>
                   <span className="ml-10">DELETE</span>

@@ -100,6 +100,34 @@ exports.updateClientNotification  = functions.https.onCall(data => {
 })
 
 
+exports.clearClientMessages = functions.https.onCall(data => {
+  console.log("ran clear messages")
+  return admin
+  .firestore()
+  .collection('chats')
+  .doc(data.id)
+  .collection('messages')
+  .where('postId', '==', data.postId)
+  .then(snapshot => {
+    let batch = admin.firestore().batch();
+    snapshot.docs.map(item => {
+      console.log('item ID', item.id)
+      .firestore()
+      .collection('chats')
+      .doc(data.id)
+      .collection('messages')
+      .doc(item.id)
+      batch.delete()
+    })
+    return batch.commit();
+  }).then(() => {
+    console.log('SUCCESS')
+  })
+  .catch(err => {
+    console.log(`error ${err}`)
+  })
+})
+
 // Update client messages by month
 exports.updateClientMessages = functions.https.onCall(data => {
   return admin
