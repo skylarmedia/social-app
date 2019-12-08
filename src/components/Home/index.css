@@ -154,18 +154,6 @@ body .ant-btn-primary{
 	padding-bottom: 7px;
 	margin-bottom: 0;
 }
-.inner-btn {
-	width: 558px;
-	height: 277px;
-	width: 600px;
-	height: 277px;
-	background: #fff;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	flex-direction: column;
-	background: #fff;
-}
 
 .main-button {
 	height: 48px;

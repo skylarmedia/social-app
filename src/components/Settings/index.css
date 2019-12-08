@@ -1,8 +1,3 @@
-.settings-client img{
-    height:178px;
-    object-fit: cover;
-}
-
 .top-delete{
     position: absolute;
     right: 0;
@@ -11,5 +6,14 @@
     top: 5px;
     font-weight: bold;
     font-size: 22px;
+}
 
+.bg-image{
+    height:178px;
+    background-size:cover;
+}
+
+.f-20{
+    font-size:20px;
+    font-weight: 600;
 }

@@ -10,7 +10,6 @@ const withAuthorization = condition => Component => {
   console.log('useru context', AuthUserContext);
   class WithAuthorization extends React.Component {
     componentDidMount() {
-      alert('ran from admin');
       this.listener = this.props.firebase.auth.onAuthStateChanged(authUser => {
         authUser ? this.setState({ authUser }) : console.log('not allowed');
       });

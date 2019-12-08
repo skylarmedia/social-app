@@ -25,3 +25,21 @@ h4 {
 .switch-wrapper > div {
 	position: absolute;
 }
+
+.red-border-btn{
+	border:2px solid solid #EF463B;
+	background:#FFF;
+	color:#EF463B;
+}
+
+.red-btn {
+	background:#EF463B;
+	color:#fff;
+}
+
+.delete-btn-main{
+	height:48px;
+	border-radius:11px;
+	font-size:16px;
+	width:150px;
+}
