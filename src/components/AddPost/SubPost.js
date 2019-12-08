@@ -301,6 +301,12 @@ class SubPost extends Component {
     ));
   }
 
+  removeImageParent = (index) => {
+    this.setState({
+      metaImageFiles: this.state.metaImageFiles.filter((_, i) => i !== index)
+    });
+  }
+
   handleLinks(i, event) {
     let values = [...this.state.values];
     values[i].value = event.target.value;
@@ -420,7 +426,7 @@ class SubPost extends Component {
           {this.state.metaImageFiles.length > 0 ? (
             <div>
               <div className="d-flex flex-wrap">
-                <ImagePosts imageSrc={this.state.metaImageFiles} className="upload-files-wrapper" />
+                <ImagePosts imageSrc={this.state.metaImageFiles} className="upload-files-wrapper" removeImage={this.removeImageParent}/>
               </div>
               <input type="file" multiple onChange={this.addFile} id="render-input" />
             </div>
@@ -463,7 +469,7 @@ class SubPost extends Component {
         </div>
         <div className="inner-form-wrapper1 col-sm-6">
           <div className="d-flex justify-content-between mb-20">
-            <div>
+            <div className="mt-20">
               <Checkbox
                 onChange={this.handleFacebook}
                 name="facebook"

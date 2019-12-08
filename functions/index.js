@@ -123,10 +123,40 @@ exports.clearClientMessages = functions.https.onCall(data => {
     })
     batch.commit()
   }).then(() => {
-    console.log('SUCCESS')
+    console.log('Success')
   })
   .catch(err => {
     console.log(`error ${err}`)
+  });
+});
+
+
+//Create Admin
+
+exports.createAdmin = functions.https.onCall(data => {
+  console.log(`data in uid${data.uid}`);
+  console.log(`data ${data}`);
+  admin.auth().setCustomUserClaims(data.uid, {skylarAdmin: true})
+  .then((res) => {
+    console.log(`res ${res} success`);
+    return `this user has been created an admin`
+   })
+   .catch( err => {
+     console.log(`Error`, err);
+     return err
+   })
+});
+
+//Get UID
+
+exports.getUid = functions.https.onCall(data => {
+  return admin.auth().getUserByEmail(data.email)
+  .then(res => {
+    console.log('res json', res.customClaims.skylarAdmin)
+    return {isAdmin:res.customClaims.skylarAdmin}
+  })
+  .catch(err => {
+    console.log(`There was an err ${err}`)
   })
 })
 

@@ -1,7 +1,7 @@
 import React from 'react';
 
 const ImagePosts = props => {
-  const { imageSrc } = props;
+  const { imageSrc, removeImage } = props;
   function getType(url) {
     if (url !== 'No Files') {
       var checkUrl = new URL(url);
@@ -14,10 +14,6 @@ const ImagePosts = props => {
 
       return type;
     }
-  }
-
-  function removeImage(){
-    alert('ran removed images')
   }
 
   return (
@@ -34,8 +30,8 @@ const ImagePosts = props => {
             );
           } else {
             return (
-              <div className="image-render" key={index}>
-                <button onClick={this.removeImage(index)}>X</button>
+              <div className="image-render position-relative" key={index}>
+                {removeImage && <button type="button" className="position-absolute" onClick={() => {removeImage(index)}}>X</button>}
                 <img src={item} />
               </div>
             );

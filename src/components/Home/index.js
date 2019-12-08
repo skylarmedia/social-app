@@ -11,6 +11,7 @@ import { Modal, Button } from 'antd';
 import MainButton from '../MainButton';
 import ClientImage from '../ClientImage';
 import { Row, Col } from 'antd';
+import { Checkbox } from 'antd';
 
 import app from 'firebase/app';
 
@@ -34,7 +35,8 @@ class Home extends Component {
       uploadComplete: false,
       loadSpinner: false,
       showButton: false,
-      visible: false
+      visible: false,
+      admin: false
     };
 
     this.baseState = this.state;
@@ -65,12 +67,12 @@ class Home extends Component {
     });
   }
 
-  // componentWillUnmount() {
-  //   this.setState({
-  //     file: null,
-  //     username: ''
-  //   });
-  // }
+  handleAdmin = () => {
+    this.setState(
+      {
+        admin: !this.state.admin
+      })
+  };
 
   toggleAddNew() {
     this.setState({
@@ -147,10 +149,10 @@ class Home extends Component {
   showModal = () => {
     this.setState({
       visible: true,
-      username:'',
-      backgroundUrl:'',
-      passwordOne:'',
-      email:''
+      username: '',
+      backgroundUrl: '',
+      passwordOne: '',
+      email: ''
     });
   };
 
@@ -198,48 +200,74 @@ class Home extends Component {
 
   onChange = event => {
     this.setState({ [event.target.name]: event.target.value });
-    console.log('Change name', event.target.value)
+    console.log('Change name', event.target.value);
   };
 
   onSubmit = event => {
     event.preventDefault();
     this.state.firestorageRef
-    .ref()
-    .child(`${this.state.username}/logo/`)
-    .put(this.state.file)
-    .then(snapshot => {
-      const encodedUrl = `https://firebasestorage.googleapis.com/v0/b/skylar-social-17190.appspot.com/o/${encodeURIComponent(
-        snapshot.metadata.fullPath
-      )}?alt=media`;
-      alert(`state${this.state.username}`)
-      console.log('encoded URL in', encodedUrl);
-      const userObj = {};
-      userObj.logo = this.state.backgroundUrl;
-      userObj.name = this.state.username;
-      userObj.urlName = this.state.username.toLowerCase().replace(/ /g, '-');
-      console.log(`URL STATE ${this.state.backgroundUrl}`);
-      this.props.firebase.addUser(
-        this.state.email,
-        this.state.passwordOne,
-        this.state.username,
-        this.state.backgroundUrl
+      .ref()
+      .child(`${this.state.username}/logo/`)
+      .put(this.state.file)
+      .then(
+        snapshot => {
+          const encodedUrl = `https://firebasestorage.googleapis.com/v0/b/skylar-social-17190.appspot.com/o/${encodeURIComponent(
+            snapshot.metadata.fullPath
+          )}?alt=media`;
+          console.log('encoded URL in', encodedUrl);
+          const userObj = {};
+          userObj.logo = this.state.backgroundUrl;
+          userObj.name = this.state.username;
+          userObj.urlName = this.state.username.toLowerCase().replace(/ /g, '-');
+          console.log(`URL STATE ${this.state.backgroundUrl}`);
+
+          this.auth
+            .createUserWithEmailAndPassword(this.state.email, this.state.passwordOne)
+            .then(user => {
+              console.log(`user Obj`, user)
+              this.db
+                .collection('users')
+                .doc(this.state.username)
+                .set({
+                  name: this.state.username,
+                  logo: this.state.backgroundUrl,
+                  userId: user.user.uid,
+                  admin: this.state.admin,
+                  email: this.state.email,
+                  urlName: this.state.username.toLowerCase().replace(/ /g, '-'),
+                  archived: false,
+                  uid: user.user.uid
+                });
+                if(this.state.admin === true){
+                  console.log('user Uid', user.user.uid)
+                  const createAdmin = this.functions.httpsCallable('createAdmin');
+                  const currentUser = new Object();
+                  currentUser.uid = user.user.uid
+
+                  createAdmin(currentUser)
+                }
+            });
+
+          // this.props.firebase.addUser(
+          //   this.state.email,
+          //   this.state.passwordOne,
+          //   this.state.username,
+          //   this.state.backgroundUrl
+          // );
+
+          this.setState({
+            loadSpinner: false,
+            visible: false,
+            users: [...this.state.users, userObj],
+            passwordOne: '',
+            email: '',
+            file: null
+          });
+        },
+        () => {
+          this.setState({});
+        }
       );
-
-      this.setState({
-        loadSpinner: false,
-        visible: false,
-        users: [...this.state.users, userObj],
-        passwordOne: '',
-        email: '',
-        file: null,
-      });
-    }, () => {
-
-      this.setState({
-
-      });
-    });
-
   };
 
   render() {
@@ -289,7 +317,7 @@ class Home extends Component {
                       <ClientImage logo={user.logo} name={user.name} />
                     </Link>
                     <div className="d-flex align-items-center align-items-center">
-                      <div className="x-wrapper mt-10">
+                      <div className="x-wrapper mt-20">
                         <Link to={`/dates/${user.urlName}`}>{user.name}</Link>
                       </div>
                       <button
@@ -365,6 +393,17 @@ class Home extends Component {
               >
                 <input type="file" onChange={this.addFile} id="add-file" />
                 {this.state.loadSpinner === true ? <CircularProgress style={progressStyles} /> : ''}
+              </div>
+              <div>
+                <Checkbox
+                  onChange={this.handleAdmin}
+                  name="admin"
+                  value={this.state.admin}
+                  id="admin"
+                />
+                <label className="margin-label ml-10 mt-10 color-white" for="admin">
+                  Admin
+                </label>
               </div>
               <TextField
                 margin="normal"

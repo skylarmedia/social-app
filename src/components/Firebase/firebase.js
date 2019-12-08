@@ -366,23 +366,23 @@ class Firebase {
       .where('urlName', '==', urlName)
       .get();
 
-  addUser = (email, password, name, logo) => {
-    this.auth.createUserWithEmailAndPassword(email, password).then(user => {
-      alert(`name in create ${name}`)
-      this.db
-        .collection('users')
-        .doc(name)
-        .set({
-          name: name,
-          logo: logo,
-          userId: user.user.uid,
-          admin: 0,
-          email: email,
-          urlName: name.toLowerCase().replace(/ /g, '-'),
-          archived: false
-        });
-    });
-  };
+  // addUser = (email, password, name, logo) => {
+  //   this.auth.createUserWithEmailAndPassword(email, password).then(user => {
+  //     alert(`name in create ${name}`)
+  //     this.db
+  //       .collection('users')
+  //       .doc(name)
+  //       .set({
+  //         name: name,
+  //         logo: logo,
+  //         userId: user.user.uid,
+  //         admin: 0,
+  //         email: email,
+  //         urlName: name.toLowerCase().replace(/ /g, '-'),
+  //         archived: false
+  //       });
+  //   });
+  // };
 
   // Posts Function
 

@@ -17,7 +17,6 @@ const withAuthorization = condition => Component => {
                         : console.log('not allowed')
                 },
             );
-            console.log(this.props, 'props in auth')
         }
 
         componentWillUnmount() {

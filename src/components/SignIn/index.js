@@ -2,22 +2,25 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
-import './index.css'
+import './index.css';
 import { Input } from 'antd';
 import TextField from '@material-ui/core/TextField';
 import { withFirebase } from '../Firebase';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
+import app from 'firebase/app';
+
 const SignInPage = () => (
   <React.Fragment>
-    <div id="sign-in-wrapper" className="d-flex justify-content-center align-items-center flex-column">
+    <div
+      id="sign-in-wrapper"
+      className="d-flex justify-content-center align-items-center flex-column"
+    >
       <SignInForm />
     </div>
   </React.Fragment>
 );
-
-
 
 const INITIAL_STATE = {
   email: '',
@@ -26,8 +29,7 @@ const INITIAL_STATE = {
   loading: false
 };
 
-
-const currentClientMonth = new Date().getMonth()
+const currentClientMonth = new Date().getMonth();
 const currentClientYear = new Date().getFullYear();
 
 class SignInFormBase extends Component {
@@ -39,54 +41,64 @@ class SignInFormBase extends Component {
       month: currentClientMonth + 1,
       year: currentClientYear
     };
+
+    this.functions = app.functions();
   }
 
-
   onSubmit = event => {
+    event.preventDefault();
     this.setState({
       loading: !this.state.loading
-    })
+    });
     const { email, password } = this.state;
-
-    this.props.firebase
-      .doSignInWithEmailAndPassword(email, password).then(value => {
-        if (value.docs[0].data().admin == 1) {
-          localStorage.setItem('loggedIn', true);
-          this.props.history.push({
-            pathname: `/home`,
-            state: {
-              userId: value.docs[0].data().userId
-            }
-          })
+    this.props.firebase.doSignInWithEmailAndPassword(email, password).then(value => {
+      console.log(`value in console: ${value}`);
+      const getUid = this.functions.httpsCallable('getUid');
+      const currentEmail = new Object();
+      currentEmail.email = email;
+      getUid(currentEmail).then(res => {
+        console.log('RES PROPS', res);
+        if(res.data.isAdmin === true){
+          localStorage.setItem('skylarAdmin', true);
+           this.props.history.push('/home')
         }
-        else {
-          console.log('return value in signIn', value);
-          localStorage.setItem('userId', value.docs[0].data().urlName)
-          this.props.history.push({
-            pathname: `/client/${localStorage.getItem('userId')}/dates`,
-            state: {
-              userId: value.docs[0].data().urlName
-            }
-          });
-
-        }
-      })
-      .catch(error => {
-        this.setState({ error });
       });
+    });
 
-    event.preventDefault();
+    //   if (value.docs[0].data().admin == 1) {
+    //     localStorage.setItem('loggedIn', true);
+    //     this.props.history.push({
+    //       pathname: `/home`,
+    //       state: {
+    //         userId: value.docs[0].data().userId
+    //       }
+    //     })
+    //   }
+    //   else {
+    //     console.log('return value in signIn', value);
+    //     localStorage.setItem('userId', value.docs[0].data().urlName)
+    //     this.props.history.push({
+    //       pathname: `/client/${localStorage.getItem('userId')}/dates`,
+    //       state: {
+    //         userId: value.docs[0].data().urlName
+    //       }
+    //     });
+
+    //   }
+    // })
+    // .catch(error => {
+    //   this.setState({ error });
+    // });
+
+    // event.preventDefault();
   };
 
   onChange = event => {
     this.setState({ [event.target.name]: event.target.value });
   };
 
-
-
   render() {
-
-    console.log(this.props, 'props for settings user')
+    console.log(this.props, 'props for settings user');
     const { email, password, error } = this.state;
     const isInvalid = password === '' || email === '';
 
@@ -117,23 +129,26 @@ class SignInFormBase extends Component {
             placeholder="PASSWORD"
           />
           <div id="sign-in-button-wrap">
-            <Button disabled={isInvalid} type="submit" variant="contained" color="primary" id="sign-in-button">Sign In</Button>
+            <Button
+              disabled={isInvalid}
+              type="submit"
+              variant="contained"
+              color="primary"
+              id="sign-in-button"
+            >
+              Sign In
+            </Button>
           </div>
           {error && <p>{error.message}</p>}
         </form>
-        {
-          this.state.loading && (
-            <CircularProgress />
-          )
-        }
+        {this.state.loading && <CircularProgress />}
       </React.Fragment>
     );
   }
 }
 
 const mapDispatchToProps = dispatch => ({
-  onSetUserId: authUser =>
-    dispatch({ type: 'SET_USER_ID', authUser }),
+  onSetUserId: authUser => dispatch({ type: 'SET_USER_ID', authUser })
 });
 
 const SignInForm = compose(
@@ -142,7 +157,7 @@ const SignInForm = compose(
   connect(
     null,
     mapDispatchToProps
-  ),
+  )
 )(SignInFormBase);
 
 export default SignInPage;
