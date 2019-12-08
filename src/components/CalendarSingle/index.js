@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { withFirebase } from '../Firebase';
 import { compose } from 'recompose';
-import { Link } from 'react-router-dom';
-import * as ROUTES from '../../constants/routes';
 import HiddenCalendarSingle from '../HiddenCalendarSingle';
 import './index.css';
 import Icons from '../Icons';
