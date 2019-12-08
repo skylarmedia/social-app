@@ -34,6 +34,14 @@
     margin-top:30px;
 }
 
+.small-red-wrapper{
+    border:3px dashed #EF463B;
+    width:80px;
+    height:80px;
+    margin-right:20px;
+    margin-top:20px;
+}
+
 .ant-popover.ant-popover-placement-topRight{
     position:fixed !important;
 }

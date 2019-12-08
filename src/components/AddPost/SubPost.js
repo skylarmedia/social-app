@@ -359,8 +359,9 @@ class SubPost extends Component {
   }
 
   handleStartDpChange(val) {
-    this.setState({ 
-      startDpDate: val, startIpDate: moment(val).format('MM/DD/YYYY') 
+    this.setState({
+      startDpDate: val,
+      startIpDate: moment(val).format('MM/DD/YYYY')
     });
   }
 
@@ -424,10 +425,20 @@ class SubPost extends Component {
               <input type="file" multiple onChange={this.addFile} id="render-input" />
             </div>
           ) : (
-            <div id="red-outline-wrapper">
-              <div className="red-center">
-                <input type="file" multiple onChange={this.addFile} className="red-dashed-input" />
+            <div className="red-main-outter flex-wrap d-flex">
+              <div id="red-outline-wrapper" className="w-100">
+                <div className="red-center">
+                  <input
+                    type="file"
+                    multiple
+                    onChange={this.addFile}
+                    className="red-dashed-input"
+                  />
+                </div>
               </div>
+              <div className="small-red-wrapper"></div>
+              <div className="small-red-wrapper"></div>
+              <div className="small-red-wrapper"></div>
             </div>
           )}
           <div className="copy-wrapper">
@@ -458,9 +469,10 @@ class SubPost extends Component {
                 name="facebook"
                 value={this.state.facebook}
                 id={`facebook-${this.props.i}`}
-
               />
-              <label className="margin-label" for={`facebook-${this.props.i}`}>Facebook</label>
+              <label className="margin-label" for={`facebook-${this.props.i}`}>
+                Facebook
+              </label>
             </div>
             <div>
               <Checkbox
@@ -469,7 +481,9 @@ class SubPost extends Component {
                 value={this.state.instagram}
                 id={`instagram-${this.props.i}`}
               />
-              <label className="margin-label" for={`instagram-${this.props.i}`}>Instagram</label>
+              <label className="margin-label" for={`instagram-${this.props.i}`}>
+                Instagram
+              </label>
             </div>
             <div>
               <Checkbox
@@ -478,7 +492,10 @@ class SubPost extends Component {
                 value={this.state.twitter}
                 id={`twitter-${this.props.i}`}
               />
-              <label className="margin-label" for={`twitter-${this.props.i}`}> Twitter</label>
+              <label className="margin-label" for={`twitter-${this.props.i}`}>
+                {' '}
+                Twitter
+              </label>
             </div>
             <div>
               <Checkbox
@@ -487,7 +504,9 @@ class SubPost extends Component {
                 value={this.state.linkedin}
                 id={`linkedin-${this.props.i}`}
               />
-              <label className="margin-label" for={`linkedin-${this.props.i}`}>LinkedIn</label>
+              <label className="margin-label" for={`linkedin-${this.props.i}`}>
+                LinkedIn
+              </label>
             </div>
             <div>
               <Checkbox
@@ -496,7 +515,9 @@ class SubPost extends Component {
                 value={this.state.other}
                 id={`other-${this.props.i}`}
               />
-              <label className="margin-label" for={`other-${this.props.i}`}>Other</label>
+              <label className="margin-label" for={`other-${this.props.i}`}>
+                Other
+              </label>
             </div>
           </div>
           <div className="date-button-wrapper d-flex row justify-content-between">
@@ -543,7 +564,12 @@ class SubPost extends Component {
           </div>
 
           <div className="sponsored-label mb-20">
-            <Checkbox onChange={this.handleAd} name="other" checked={this.state.ad} id={`ad-${this.props.i}`}/>
+            <Checkbox
+              onChange={this.handleAd}
+              name="other"
+              checked={this.state.ad}
+              id={`ad-${this.props.i}`}
+            />
             <label for={`ad-${this.props.i}`}>Ad or Sponsored Post</label>
           </div>
 
@@ -614,11 +640,17 @@ class SubPost extends Component {
                   />
 
                   {i == this.state.values.length - 1 ? (
-                    <button type="button" onClick={() => this.addClick()} className="clear-btn ml-7">
+                    <button
+                      type="button"
+                      onClick={() => this.addClick()}
+                      className="clear-btn ml-7"
+                    >
                       <img src={require('../assets/select.svg')} />
                     </button>
                   ) : (
-                    <button type="button" onClick={() => this.removeClick(i)} ><img src={require('../assets/x.png')} /></button>
+                    <button type="button" onClick={() => this.removeClick(i)}>
+                      <img src={require('../assets/x.png')} />
+                    </button>
                   )}
                 </div>
               </div>
