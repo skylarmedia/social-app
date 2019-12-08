@@ -16,20 +16,26 @@ const ImagePosts = props => {
     }
   }
 
+  function removeImage(){
+    alert('ran removed images')
+  }
+
   return (
-    <div  className="upload-files-wrapper d-flex flex-wrap">
+    <div className="upload-files-wrapper d-flex flex-wrap">
       {imageSrc &&
-        imageSrc.map((item, index )=> {
-          console.log('item IN INNER IMAGE', item);
+        imageSrc.map((item, index) => {
           if (getType(item) == 'video') {
             return (
-              <video height="200" width="200" controls>
-                <source src={item} />
-              </video>
+              <div key={index}>
+                <video height="200" width="200" controls>
+                  <source src={item} />
+                </video>
+              </div>
             );
           } else {
             return (
-              <div className="image-render">
+              <div className="image-render" key={index}>
+                <button onClick={this.removeImage(index)}>X</button>
                 <img src={item} />
               </div>
             );
@@ -40,4 +46,3 @@ const ImagePosts = props => {
 };
 
 export default ImagePosts;
-
