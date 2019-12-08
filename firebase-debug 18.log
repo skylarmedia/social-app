@@ -1,0 +1,89 @@
+[debug] [2019-12-08T04:15:29.645Z] ----------------------------------------------------------------------
+[debug] [2019-12-08T04:15:29.648Z] Command:       /usr/local/bin/node /usr/local/bin/firebase deploy --only functions
+[debug] [2019-12-08T04:15:29.648Z] CLI Version:   7.7.0
+[debug] [2019-12-08T04:15:29.648Z] Platform:      darwin
+[debug] [2019-12-08T04:15:29.648Z] Node Version:  v10.15.3
+[debug] [2019-12-08T04:15:29.649Z] Time:          Sat Dec 07 2019 23:15:29 GMT-0500 (Eastern Standard Time)
+[debug] [2019-12-08T04:15:29.649Z] ----------------------------------------------------------------------
+[debug] [2019-12-08T04:15:29.649Z] 
+[debug] [2019-12-08T04:15:29.661Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2019-12-08T04:15:29.662Z] > authorizing via signed-in user
+[debug] [2019-12-08T04:15:29.662Z] [iam] checking project skylar-social-17190 for permissions ["cloudfunctions.functions.create","cloudfunctions.functions.delete","cloudfunctions.functions.get","cloudfunctions.functions.list","cloudfunctions.functions.update","cloudfunctions.operations.get","firebase.projects.get"]
+[debug] [2019-12-08T04:15:29.663Z] > refreshing access token with scopes: ["email","https://www.googleapis.com/auth/cloud-platform","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","openid"]
+[debug] [2019-12-08T04:15:29.663Z] >>> HTTP REQUEST POST https://www.googleapis.com/oauth2/v3/token  
+ <request body omitted>
+[debug] [2019-12-08T04:15:29.890Z] <<< HTTP RESPONSE 200
+[debug] [2019-12-08T04:15:29.924Z] >>> HTTP REQUEST POST https://cloudresourcemanager.googleapis.com/v1/projects/skylar-social-17190:testIamPermissions  
+
+[debug] [2019-12-08T04:15:30.284Z] <<< HTTP RESPONSE 200
+[info] 
+[info] === Deploying to 'skylar-social-17190'...
+[info] 
+[info] i  deploying functions
+[debug] [2019-12-08T04:15:34.775Z] > [functions] package.json contents: {
+  "name": "functions",
+  "description": "Cloud Functions for Firebase",
+  "scripts": {
+    "serve": "firebase serve --only functions",
+    "shell": "firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "8"
+  },
+  "dependencies": {
+    "firebase-admin": "^8.6.0",
+    "firebase-functions": "^3.3.0"
+  },
+  "devDependencies": {
+    "firebase-functions-test": "^0.1.6"
+  },
+  "private": true
+}
+[info] i  functions: ensuring necessary APIs are enabled...
+[debug] [2019-12-08T04:15:34.777Z] >>> HTTP REQUEST GET https://serviceusage.googleapis.com/v1/projects/skylar-social-17190/services/cloudfunctions.googleapis.com  
+ 
+[debug] [2019-12-08T04:15:34.778Z] >>> HTTP REQUEST GET https://serviceusage.googleapis.com/v1/projects/skylar-social-17190/services/runtimeconfig.googleapis.com  
+ 
+[debug] [2019-12-08T04:15:35.161Z] <<< HTTP RESPONSE 200
+[debug] [2019-12-08T04:15:35.171Z] <<< HTTP RESPONSE 200
+[info] ✔  functions: all necessary APIs are enabled
+[debug] [2019-12-08T04:15:35.172Z] >>> HTTP REQUEST GET https://firebase.googleapis.com/v1beta1/projects/skylar-social-17190/adminSdkConfig  
+ 
+[debug] [2019-12-08T04:15:35.492Z] <<< HTTP RESPONSE 200
+[info] i  functions: preparing functions directory for uploading...
+[debug] [2019-12-08T04:15:35.494Z] >>> HTTP REQUEST GET https://runtimeconfig.googleapis.com/v1beta1/projects/skylar-social-17190/configs  
+ 
+[debug] [2019-12-08T04:15:35.696Z] <<< HTTP RESPONSE 200
+[info] i  functions: packaged functions (25.77 KB) for uploading
+[debug] [2019-12-08T04:15:35.942Z] >>> HTTP REQUEST POST https://cloudfunctions.googleapis.com/v1/projects/skylar-social-17190/locations/us-central1/functions:generateUploadUrl  
+ 
+[debug] [2019-12-08T04:15:36.974Z] <<< HTTP RESPONSE 200
+[debug] [2019-12-08T04:15:36.975Z] >>> HTTP REQUEST PUT https://storage.googleapis.com/gcf-upload-us-central1-13fad88a-a511-4d5c-aa1d-168b38ed74fd/7b8ee241-d77d-4407-b3b2-71a477fd328b.zip?GoogleAccessId=service-861778122764@gcf-admin-robot.iam.gserviceaccount.com&Expires=1575780303&Signature=4DT3ln%2FvkRyinA%2FY1pzO0jbdj0UmJKj8JbZY2O4mx2IcoCCo8T%2FYfKIPyx354%2Fcr6HdAnHJqZBwKesXp9f6e7rJNi7R%2F6K%2F74TUQO8XbwBmo2%2FNiwr9IyJRMPmBpgvwSFJMHxlHTLg8IKBPz7xzCUX0qO1egZRK9SH7eQCbM1S4qSq2g%2BTjfDQKLq1mZGs1jf0QlUcSC%2FXMRhkoo%2FBvgrfNRYYXI%2Fcza5ors11RhCFcsSlDdtsagZrHLFuaMJ%2Bwg7F4vjY4K404uEQq3hkUdA%2Fc57kHOlyPsacz%2FXDJx4zl2lKTzAQcg151x9HlkyYh%2Fb5U4pQtvdthHzWg%2BTOnA%2Bg%3D%3D  
+ <request body omitted>
+[debug] [2019-12-08T04:15:37.311Z] <<< HTTP RESPONSE 200
+[info] ✔  functions: functions folder uploaded successfully
+[debug] [2019-12-08T04:15:37.315Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/projects/skylar-social-17190/locations/-/functions  
+ 
+[debug] [2019-12-08T04:15:37.717Z] <<< HTTP RESPONSE 200
+[info] i  functions: updating Node.js 8 function readMonths(us-central1)...
+[debug] [2019-12-08T04:15:37.723Z] Trigger is:  {"httpsTrigger":{}}
+[info] i  functions: updating Node.js 8 function readMonthsAdmin(us-central1)...
+[debug] [2019-12-08T04:15:37.724Z] Trigger is:  {"httpsTrigger":{}}
+[info] i  functions: updating Node.js 8 function clearClientMessages(us-central1)...
+[debug] [2019-12-08T04:15:37.724Z] Trigger is:  {"httpsTrigger":{}}
+[info] i  functions: updating Node.js 8 function createAdmin(us-central1)...
+[debug] [2019-12-08T04:15:37.725Z] Trigger is:  {"httpsTrigger":{}}
+[info] i  functions: updating Node.js 8 function getUid(us-central1)...
+[debug] [2019-12-08T04:15:37.725Z] Trigger is:  {"httpsTrigger":{}}
+[info] 
+The following functions are found in your project but do not exist in your local source code:
+	countUnread(us-central1)
+	updateClientMessages(us-central1)
+	updateClientNotification(us-central1)
+	updateHomeClientMessages(us-central1)
+
+If you are renaming a function or changing its region, it is recommended that you create the new function first before deleting the old one to prevent event loss. For more info, visit https://firebase.google.com/docs/functions/manage-functions#modify
+

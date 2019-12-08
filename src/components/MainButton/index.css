@@ -1,14 +1,31 @@
-.black-bg{
-    position: fixed;
-    background: rgba(0,0,0,0.9);
-    width: 100vw;
-    height: 100vh;
-    left: 0;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 2;
+.message-modal .ant-modal-content{
+    border-radius: 0;
+    text-align: center;
+    padding-bottom: 74px;
+    padding-top: 50px;
+}
+
+.mt-5px{
+    margin-top:5px;
+}
+
+.m-320{
+    max-width:320px;
+}
+
+.message-modal .ant-modal-body{
+    padding:24px 50px;
+}
+
+body .ant-input:hover {
+    border-color: #ef463b;
+    border-right-width: 1px !important;
+}
+
+body .ant-input:focus {
+    border-color: #ef463b;
+    border-right-width: 1px !important;
+    outline: 0;
+    -webkit-box-shadow: 0 0 0 2px 0 0 0 2px rgba(232, 90, 81, 0.2);
+    box-shadow: 0 0 0 2px 0 0 0 2px rgba(232, 90, 81, 0.2);
 }

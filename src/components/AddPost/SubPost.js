@@ -11,10 +11,9 @@ import EmojiField from 'emoji-picker-textfield';
 import 'emoji-mart/css/emoji-mart.css';
 import { Picker } from 'emoji-mart';
 import { Collapse } from 'antd';
-import { Input } from 'antd';
 import { Select } from 'antd';
 import ImagePosts from '../ImagePosts';
-
+import { Input } from 'antd';
 const { TextArea } = Input;
 const { Panel } = Collapse;
 

@@ -158,7 +158,28 @@ exports.getUid = functions.https.onCall(data => {
   .catch(err => {
     console.log(`There was an err ${err}`)
   })
-})
+});
+
+
+// Delete User 
+
+exports.deleteByUid = functions.https.onCall(data => {
+  console.log(`DATA Whole: ${data}`)
+  console.log(`Data ID: ${data.uid}`)
+  console.log(`Data Name: ${data.name}`)
+  return admin
+  .firestore()
+  .collection('users')
+  .doc(data.name)
+  .delete()
+  .then(() => {
+    console.log('Successfully Deleted from Firestore')
+    admin.auth().deleteUser(data.uid)
+  })
+  .catch(err => {
+    console.log(`Sorry there was an error: ${err}`)
+  })
+});
 
 // // Update client messages by month
 // exports.updateClientMessages = functions.https.onCall(data => {

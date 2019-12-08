@@ -139,13 +139,24 @@
     font-size: 16px;
 }
 .archive-x {
-	background: transparent;
-	border: none;
-	color: #002d5b;
-	font-size: 23px;
-	font-weight: bold;
-	height: auto;
-	padding: 0;
+    background: transparent;
+    border: none;
+    color: #002d5b;
+    font-size: 23px;
+    font-weight: bold;
+    height: auto;
+    padding: 0;
+    margin: 0 15px 0 0;
+    line-height: 1;
+    padding-bottom: 5px;
+}
+
+.archive-x{
+	transition:all 0.3s linear;
+}
+
+a:hover, .archive-x:hover{
+    color: #ef463b;
 }
 
 #nav-id li {

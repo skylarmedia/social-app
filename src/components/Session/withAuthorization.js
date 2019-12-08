@@ -4,37 +4,30 @@ import { compose } from 'recompose';
 
 import AuthUserContext from './context';
 import { withFirebase } from '../Firebase';
-import { Redirect } from 'react-router-dom';
+import * as ROUTES from '../../constants/routes';
 
 const withAuthorization = condition => Component => {
-  console.log('useru context', AuthUserContext);
   class WithAuthorization extends React.Component {
     componentDidMount() {
-      this.listener = this.props.firebase.auth.onAuthStateChanged(authUser => {
-        authUser ? this.setState({ authUser }) : console.log('not allowed');
-      });
+      this.listener = this.props.firebase.auth.onAuthStateChanged(
+        authUser => {
+          if (!condition(authUser)) {
+            this.props.history.push(ROUTES.SIGN_IN);
+          }
+        },
+      );
     }
 
     componentWillUnmount() {
-      //   this.listener();
+      this.listener();
     }
-
-    notAdmin = e => {
-      alert('not authorized');
-      // this.props.history.push(`/`);
-    };
 
     render() {
       return (
         <AuthUserContext.Consumer>
-          {authUser => {
-            console.log('auth user', authUser);
-            if (authUser && localStorage.getItem('skylarAdmin') === 'true') {
-              return <Component {...this.props} />;
-            } else {
-              return <Redirect to="/" />;
-            }
-          }}
+          {authUser =>
+            condition(authUser) ? <Component {...this.props} /> : null
+          }
         </AuthUserContext.Consumer>
       );
     }
@@ -42,7 +35,7 @@ const withAuthorization = condition => Component => {
 
   return compose(
     withRouter,
-    withFirebase
+    withFirebase,
   )(WithAuthorization);
 };
 

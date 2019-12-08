@@ -3,7 +3,6 @@ import { withFirebase } from '../Firebase';
 import { Link } from 'react-router-dom';
 import { compose } from 'recompose';
 import 'firebase/storage';
-import TextField from '@material-ui/core/TextField';
 import { withAuthorization } from '../Session';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import './index.css';
@@ -12,7 +11,7 @@ import MainButton from '../MainButton';
 import ClientImage from '../ClientImage';
 import { Row, Col } from 'antd';
 import { Checkbox } from 'antd';
-
+import { Input } from 'antd';
 import app from 'firebase/app';
 
 class Home extends Component {
@@ -36,14 +35,14 @@ class Home extends Component {
       loadSpinner: false,
       showButton: false,
       visible: false,
-      admin: false
+      admin: false,
+      visible2: false
     };
 
     this.baseState = this.state;
     this.toggleAddNew = this.toggleAddNew.bind(this);
     this.handleLogoUpload = this.handleLogoUpload.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
-    this.confirmArchive = this.confirmArchive.bind(this);
     this.db = app.firestore();
     this.functions = app.functions();
     this.auth = app.auth();
@@ -54,9 +53,9 @@ class Home extends Component {
   componentDidMount() {
     this.props.firebase.getClients().then(snapshot => {
       const opened = snapshot.docs;
-
       let setArr = [...this.state.users];
       opened.map(item => {
+        console.log('snapshot item', snapshot);
         setArr.push(item.data());
       });
 
@@ -68,10 +67,9 @@ class Home extends Component {
   }
 
   handleAdmin = () => {
-    this.setState(
-      {
-        admin: !this.state.admin
-      })
+    this.setState({
+      admin: !this.state.admin
+    });
   };
 
   toggleAddNew() {
@@ -157,41 +155,56 @@ class Home extends Component {
   };
 
   handleOk = e => {
-    console.log(e);
     this.setState({
       visible: false
     });
   };
 
   handleCancel = e => {
-    console.log(e);
     this.setState({
       visible: false
     });
   };
 
-  confirmArchive = e => {
-    if (e.target.value == 'true') {
-      this.props.firebase.archiveClient(localStorage.getItem('archiveId'));
-      this.setState(
-        {
-          users: this.state.users.filter(
-            (_, i) => i !== parseInt(localStorage.getItem('tempIndex'))
-          )
-        },
-        () => {
-          localStorage.removeItem('tempIndex');
-        }
-      );
-    }
+  // Start Archive Modal
+  showModal2 = () => {
     this.setState({
-      showButton: !this.state.showButton
+      visible2: true
     });
+  };
+
+  handleOk2 = e => {
+    console.log(e);
+    this.setState({
+      visible2: false
+    });
+  };
+
+  handleCancel2 = e => {
+    console.log(e);
+    this.setState({
+      visible2: false
+    });
+  };
+
+  // End Archive Modal
+
+  confirmArchive = e => {
+    this.props.firebase.archiveClient(localStorage.getItem('archiveId'));
+    this.setState(
+      {
+        visible2: false,
+        users: this.state.users.filter((_, i) => i !== parseInt(localStorage.getItem('tempIndex')))
+      },
+      () => {
+        localStorage.removeItem('tempIndex');
+      }
+    );
   };
 
   archiveClient = (user, index) => {
     this.setState({
-      showButton: true
+      visible2: true
     });
 
     localStorage.setItem('archiveId', user);
@@ -200,7 +213,6 @@ class Home extends Component {
 
   onChange = event => {
     this.setState({ [event.target.name]: event.target.value });
-    console.log('Change name', event.target.value);
   };
 
   onSubmit = event => {
@@ -224,7 +236,7 @@ class Home extends Component {
           this.auth
             .createUserWithEmailAndPassword(this.state.email, this.state.passwordOne)
             .then(user => {
-              console.log(`user Obj`, user)
+              console.log(`user Obj`, user);
               this.db
                 .collection('users')
                 .doc(this.state.username)
@@ -238,14 +250,13 @@ class Home extends Component {
                   archived: false,
                   uid: user.user.uid
                 });
-                if(this.state.admin === true){
-                  console.log('user Uid', user.user.uid)
-                  const createAdmin = this.functions.httpsCallable('createAdmin');
-                  const currentUser = new Object();
-                  currentUser.uid = user.user.uid
-
-                  createAdmin(currentUser)
-                }
+              if (this.state.admin === true) {
+                console.log('user Uid', user.user.uid);
+                const createAdmin = this.functions.httpsCallable('createAdmin');
+                const currentUser = new Object();
+                currentUser.uid = user.user.uid;
+                createAdmin(currentUser);
+              }
             });
 
           // this.props.firebase.addUser(
@@ -289,23 +300,15 @@ class Home extends Component {
 
     return (
       <div id="home-page" className="container">
-        {this.state.showButton ? (
-          <MainButton
-            title="Archive Client?"
-            subtitle="Are you sure you would like to archive this client?"
-            buttonText="Archive"
-            confirmArchive={this.confirmArchive.bind(this)}
-          />
-        ) : (
-          ''
-        )}
         <img src={require('../assets/skylar_Icon_wingPortion.svg')} id="wing-logo" />
         <h2 className="text-center welcome">Welcome Home!</h2>
+        <Link to="/settings">GO TO SETTINGS TEMPORARY</Link>
         {this.state.isLoading && this.state.users.length > 0 ? (
           <div>
             <p className="text-center">What client do you want to work on today?</p>
             <Row gutter={30} id="client-list">
               {this.state.users.map((user, index) => {
+                console.log('Loggeged User', user);
                 return (
                   <Col
                     data-id={user.userId}
@@ -313,26 +316,56 @@ class Home extends Component {
                     span={6}
                     key={index}
                   >
+                    <Modal
+                      visible={this.state.visible2}
+                      onOk={this.handleOk2}
+                      onCancel={this.handleCancel2}
+                      wrapClassName="message-modal"
+                      footer={[
+                        <React.Fragment>
+                          <button
+                            value={false}
+                            onClick={this.handleCancel2}
+                            className="main-button red-button"
+                            type="button"
+                          >
+                            CANCEL
+                          </button>
+                          <button
+                            value={true}
+                            onClick={this.confirmArchive}
+                            className="main-button white-button color-red"
+                            type="button"
+                          >
+                            ARCHIVE
+                          </button>
+                        </React.Fragment>
+                      ]}
+                    >
+                      <h6>Archive Client?</h6>
+                      <p>Are you sure you would like to archive this client?</p>
+                    </Modal>
                     <Link to={`/dates/${user.urlName}`}>
                       <ClientImage logo={user.logo} name={user.name} />
                     </Link>
                     <div className="d-flex align-items-center align-items-center">
-                      <div className="x-wrapper mt-20">
+                      <div className="position-relative x-wrapper mt-20 d-flex justify-content-center align-items-center w-100">
                         <Link to={`/dates/${user.urlName}`}>{user.name}</Link>
+                        <button
+                          onClick={() => this.archiveClient(user.urlName, index)}
+                          className="archive-x"
+                          type="button"
+                        >
+                          x
+                        </button>
                       </div>
-                      <button
-                        onClick={() => this.archiveClient(user.urlName, index)}
-                        className="archive-x"
-                      >
-                        x
-                      </button>
                     </div>
                   </Col>
                 );
               })}
             </Row>
             <div id="add-new-btn-wrapper" className="text-center">
-              <button onClick={this.showModal} className="add-date-btn hidden-add">
+              <button type="button" onClick={this.showModal} className="add-date-btn hidden-add">
                 Add New
               </button>
             </div>
@@ -345,10 +378,11 @@ class Home extends Component {
             </p>
             <div id="add-new-btn-wrapper" className="text-center mt-88">
               <button
-                onClick={this.toggleAddNew.bind(this)}
+                type="button"
+                onClick={this.showModal}
                 className="add-date-btn empty-add-date"
               >
-                Add New2
+                Add New
               </button>
             </div>
             <div className="empty-state">
@@ -374,14 +408,14 @@ class Home extends Component {
           className="home-modal"
           onCancel={this.handleCancel}
           footer={[
-            <Button
+            <button
               onClick={this.onSubmit}
               disabled={isInvalid}
               className="add-date-btn"
               type="button"
             >
               Submit
-            </Button>
+            </button>
           ]}
         >
           <div id="add-new-form-wrapper">
@@ -394,7 +428,7 @@ class Home extends Component {
                 <input type="file" onChange={this.addFile} id="add-file" />
                 {this.state.loadSpinner === true ? <CircularProgress style={progressStyles} /> : ''}
               </div>
-              <div>
+              <div className="mb-20">
                 <Checkbox
                   onChange={this.handleAdmin}
                   name="admin"
@@ -405,32 +439,26 @@ class Home extends Component {
                   Admin
                 </label>
               </div>
-              <TextField
-                margin="normal"
-                variant="outlined"
+              <Input
                 name="username"
                 value={this.state.username}
                 onChange={this.onChange}
                 type="text"
-                label="CLIENT_NAME"
+                placeholder="CLIENT_NAME"
               />
-              <TextField
-                margin="normal"
-                variant="outlined"
+              <Input
                 name="email"
                 value={this.state.email}
                 onChange={this.onChange}
                 type="text"
-                label="CLIENT_EMAIL"
+                placeholder="CLIENT_EMAIL"
               />
-              <TextField
-                margin="normal"
-                variant="outlined"
+              <Input
                 name="passwordOne"
                 value={this.state.passwordOne}
                 onChange={this.onChange}
                 type="password"
-                label="PASSWORD"
+                placeholder="PASSWORD"
               />
 
               {this.state.error && <p>{this.state.error.message}</p>}

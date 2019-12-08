@@ -6,6 +6,11 @@
 	margin: 0 auto;
 }
 
+#add-new-form-wrapper .ant-input{
+    width: 320px;
+    border-radius: 0;
+    margin-bottom: 11px;
+}
 #add-new-form .MuiInputBase-input {
 	color: #707070;
 	width: 310px;
@@ -19,7 +24,15 @@ body .ant-modal-footer{
 }
 
 body .ant-modal-mask {
-    background-color: rgba(0, 0, 0, 0.8);
+    background-color: #000;
+}
+
+.ant-modal-close-x{
+	display:none !important;
+}
+
+.ant-modal-close-x{
+	display:none;
 }
 
 .gutter-row.client-wrapper.flex-column.d-flex.mb-20{
@@ -54,6 +67,7 @@ body .ant-btn-primary{
 #client-list img{
 	height:178px;
 	object-fit:cover;
+	width:100%;
 }
 
 #add-new-form-wrapper {

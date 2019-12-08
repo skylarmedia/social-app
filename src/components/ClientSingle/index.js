@@ -11,15 +11,16 @@ class ClientSingle extends Component {
     };
   }
 
-  closeDelete = clientId => {
-    this.props.confirmDelete(clientId);
+  closeDelete = (clientId, name) => {
+  
     this.setState({
       open: false
+    }, () => {
+      this.props.confirmDelete(clientId, name);
     });
   };
 
   showModal = () => {
-    alert('ran');
     this.setState({
       open: true
     });
@@ -42,26 +43,27 @@ class ClientSingle extends Component {
     };
 
     return (
-      <div className="col-sm-3 mb-20">
+      <div className="">
         <div style={styles} className="bg-image">
           <Modal
             visible={this.state.open}
             maskStyle={maskStyle}
             onCancel={this.handleCancel}
-            wrapClassName="modal-wrapper"
+            wrapClassName="modal-wrapper message-modal"
             footer={[
               <div>
                 <button
                   type="button"
                   onClick={this.handleCancel}
                   className="red-btn delete-btn-main"
+                  type="button"
                 >
                   CANCEL
                 </button>
                 <button
                   type="button"
                   className="red-border-btn delete-btn-main"
-                  onClick={() => this.closeDelete(clientId)}
+                  onClick={() => this.closeDelete(clientId, name)}
                 >
                   DELETE
                 </button>
@@ -74,14 +76,13 @@ class ClientSingle extends Component {
                 Are you sure you would like to delete this client? This action is permanent and
                 cannot be un-done.
               </p>
-              <div></div>
             </div>
           </Modal>
-          <button className="clear-btn top-delete color-blue f-16" onClick={() => this.showModal()}>
+          <button className="clear-btn top-delete color-blue f-16" onClick={() => this.showModal()} type="button">
             x
           </button>
         </div>
-        <p>{name}</p>
+        <p className="text-center mt-5px mb-10">{name}</p>
       </div>
     );
   }

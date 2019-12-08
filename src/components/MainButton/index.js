@@ -3,7 +3,7 @@ import './index.css';
 
 const MainButton = ({title, subtitle, buttonText, confirmArchive}) => {
     return(
-        <div className="black-bg">
+        <div>
             <div className="inner-btn">
                 <h6>{title}</h6>
                 <p>{subtitle}</p>

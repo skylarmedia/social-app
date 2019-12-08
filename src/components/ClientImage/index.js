@@ -49,10 +49,15 @@ class ClientImage extends Component {
 
 
   render() {
+    const styles = {
+      backgroundImage:`url(${this.props.logo}`,
+      width: "100%",
+      height: "178px",
+      backgroundSize: "cover"
+    }
     return (
-      <div class="position-relative">
+      <div class="position-relative new-home-bg" style={styles}>
         <p className="size-int position-absolute bg-red f-16 d-inline-flex align-items-center justify-content-center">{this.state.size}</p>
-        <img src={this.props.logo} />
       </div>
     );
   }

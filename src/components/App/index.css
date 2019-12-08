@@ -2,8 +2,20 @@
 	background: #002d5b;
 }
 
+.empty-state{
+	margin-top:108px;
+}
+
 .color-red {
 	color: #ef463b;
+}
+
+h2{
+	font-size:20px;
+}
+
+p{
+	font-size:14px;
 }
 
 h4 {
@@ -27,9 +39,10 @@ h4 {
 }
 
 .red-border-btn{
-	border:2px solid solid #EF463B;
+	border:2px solid #EF463B;
 	background:#FFF;
 	color:#EF463B;
+	font-weight:600;
 }
 
 .red-btn {

@@ -320,7 +320,7 @@ class Firebase {
     this.db
       .collection('users')
       .where('archived', '==', false)
-      .where('admin', '==', 0)
+      .where('admin', '==', false)
       .get();
 
   getPostId = id =>

@@ -59,7 +59,9 @@ class SignInFormBase extends Component {
       getUid(currentEmail).then(res => {
         console.log('RES PROPS', res);
         if(res.data.isAdmin === true){
+          alert('true')
           localStorage.setItem('skylarAdmin', true);
+          localStorage.setItem('key', password);
            this.props.history.push('/home')
         }
       });
