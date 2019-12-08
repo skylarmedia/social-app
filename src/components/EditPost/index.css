@@ -34,6 +34,10 @@
     margin-top:30px;
 }
 
+.ant-popover.ant-popover-placement-topRight{
+    position:fixed !important;
+}
+
 .clear-message-btn{
     right: 53px;
     bottom: 5px;    

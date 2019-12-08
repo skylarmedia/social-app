@@ -31,7 +31,8 @@ class EditPost extends Component {
       messages: [],
       currentMonth: null,
       currentYear: null,
-      updatedMessages: false
+      updatedMessages: false,
+      postId: null
     };
 
     this.handleFacebook = this.handleFacebook.bind(this);
@@ -122,13 +123,13 @@ class EditPost extends Component {
         });
       });
 
-  componentWillMount() {
+  componentDidMount() {
     const updateAdminMessages = this.functions.httpsCallable('updateAdminMessages');
     let newId = this.props.match.params.id;
     let functionObj = new Object();
     functionObj.postId = this.props.match.params.clientId;
     functionObj.userId = this.props.match.params.postId;
-    updateAdminMessages(functionObj);
+    // updateAdminMessages(functionObj);
 
     this.props.firebase
       .editPostFirebase(this.props.match.params.clientId, this.props.match.params.postId)
@@ -139,7 +140,8 @@ class EditPost extends Component {
             selectedCategoryName: item.data().selectedCategoryName,
             approved: item.data().approved,
             currentMonth: item.data().month,
-            curretYear: item.data().year
+            curretYear: item.data().year,
+            postId: item.id
           });
         }
       });
@@ -355,19 +357,16 @@ class EditPost extends Component {
     return strTime;
   };
 
-  clearMessages = () => {
+  clearMessages = (id, postId) => {
     const clearClientMessages = this.functions.httpsCallable('clearClientMessages');
-    console.log('does client exist',postId = this.props.match.params.clientId, 'post id', this.props.match.params.postId)
-    const id = this.props.match.params.postId;
-    const postId = this.props.match.params.clientId;
-    clearClientMessages(id, postId);
-
-    // this.db
-    // .collection('chats')
-    // .doc(this.props.match.params.clientId)
-    // .collection('messages')
-    // .where('postId', '==', this.props.match.params.postId)
-    // .delete();
+    const clearObj = new Object;
+    clearObj.id = id;
+    clearObj.postId = this.state.postId
+    console.log('clear obj', clearObj)
+    clearClientMessages(clearObj);
+    this.setState({
+      messages:[]
+    })
   }
 
   handleLinks(event) {
@@ -438,11 +437,11 @@ class EditPost extends Component {
               onChange={this.handleTitle}
               margin="normal"
             />
-            <div className="upload-files-wrapper d-flex flex-wrap">
+            <div className="d-flex flex-wrap">
               {image.length > 0 ? (
                 image
-              ) : (
-                <div id="red-outline-wrapper">
+              ) : (                
+                <div id="red-outline-wrapper" className="w-100">
                   <div className="red-center">
                     <input
                       type="file"

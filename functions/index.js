@@ -2,30 +2,31 @@ const functions = require('firebase-functions');
 const admin = require('firebase-admin');
 admin.initializeApp(functions.config().firestore);
 
-const updateClientStatus = (clientId, postId) => {
-  return admin
-    .firestore()
-    .collection('users')
-    .doc(clientId)
-    .collection('posts')
-    .doc(postId)
-    .update({
-      clientNotification: true
-    });
-};
+// const updateClientStatus = (clientId, postId) => {
+//   return admin
+//     .firestore()
+//     .collection('users')
+//     .doc(clientId)
+//     .collection('posts')
+//     .doc(postId)
+//     .update({
+//       clientNotification: true
+//     });
+// };
 
-exports.countUnread = functions.firestore
-  .document('chats/{userId}/messages/{message}')
-  .onCreate(doc => {
-    const client = doc.data().client;
-    const postId = doc.data().postId;
-    const month = doc.data().month;
-    console.log(doc.data());
-    console.log('id', doc.id);
-    if (doc.data().role == 'admin') {
-      return updateClientStatus(client, postId);
-    }
-  });
+
+// exports.countUnread = functions.firestore
+//   .document('chats/{userId}/messages/{message}')
+//   .onCreate(doc => {
+//     const client = doc.data().client;
+//     const postId = doc.data().postId;
+//     const month = doc.data().month;
+//     console.log(doc.data());
+//     console.log('id', doc.id);
+//     if (doc.data().role == 'admin') {
+//       return updateClientStatus(client, postId);
+//     }
+//   });
 
 
 // Update Client read messages
@@ -75,51 +76,52 @@ exports.readMonthsAdmin = functions.https.onCall(data => {
 // });
 
 // Update Home User Unread Messages
-exports.updateHomeClientMessages = functions.https.onCall(data => {
-  return admin
-  .firestore()
-  .collection('chats')
-  .doc(data.userId)
-  .collection('messages')
-  .where('readByAdmin', '==', false)
-  .get()
-})
+// exports.updateHomeClientMessages = functions.https.onCall(data => {
+//   return admin
+//   .firestore()
+//   .collection('chats')
+//   .doc(data.userId)
+//   .collection('messages')
+//   .where('readByAdmin', '==', false)
+//   .get()
+// })
 
 // Updat notification for Admin from Client
-exports.updateClientNotification  = functions.https.onCall(data => {
-  console.log('data in client noticcation', data);
-  return admin
-  .firestore()
-  .collection('users')
-  .doc(data.userId)
-  .collection('posts')
-  .doc(data.postId)
-  .update({
-    adminNotification:true
-  })
-})
-
+// exports.updateClientNotification  = functions.https.onCall(data => {
+//   console.log('data in client noticcation', data);
+//   return admin
+//   .firestore()
+//   .collection('users')
+//   .doc(data.userId)
+//   .collection('posts')
+//   .doc(data.postId)
+//   .update({
+//     adminNotification:true
+//   })
+// })
 
 exports.clearClientMessages = functions.https.onCall(data => {
-  console.log("ran clear messages")
+  console.log(`ran clientMessages clientId:${data.id}, postId: ${data.postId}`)
+  console.log('post id', data)
   return admin
   .firestore()
   .collection('chats')
   .doc(data.id)
   .collection('messages')
   .where('postId', '==', data.postId)
+  .get()
   .then(snapshot => {
     let batch = admin.firestore().batch();
     snapshot.docs.map(item => {
-      console.log('item ID', item.id)
+      const messagesRef = admin
       .firestore()
       .collection('chats')
       .doc(data.id)
       .collection('messages')
       .doc(item.id)
-      batch.delete()
+      batch.delete(messagesRef)
     })
-    return batch.commit();
+    batch.commit()
   }).then(() => {
     console.log('SUCCESS')
   })
@@ -128,62 +130,63 @@ exports.clearClientMessages = functions.https.onCall(data => {
   })
 })
 
-// Update client messages by month
-exports.updateClientMessages = functions.https.onCall(data => {
-  return admin
-    .firestore()
-    .collection('chats')
-    .doc(data.userId)
-    .collection('messages')
-    .where('postId', '==', data.postId)
-    .get()
-    .then(snapshot => {
-      let batch = admin.firestore().batch();
-      snapshot.docs.map(item => {
-        console.log('item ID', item.id)
-        const messageRef = admin
-        .firestore()
-        .collection('chats')
-        .doc(data.userId)
-        .collection('messages')
-        .doc(item.id)
-        batch.update(messageRef,{readByAdmin:true})
-      })
-      return batch.commit();
-    }).then(() => {
-      console.log('SUCCESS')
-    })
-    .catch(err => {
-      console.log(`error ${err}`)
-    })
-});
+// // Update client messages by month
+// exports.updateClientMessages = functions.https.onCall(data => {
+//   return admin
+//     .firestore()
+//     .collection('chats')
+//     .doc(data.userId)
+//     .collection('messages')
+//     .where('postId', '==', data.postId)
+//     .get()
+//     .then(snapshot => {
+//       let batch = admin.firestore().batch();
+//       snapshot.docs.map(item => {
+//         console.log('item ID', item.id)
+//         const messageRef = admin
+//         .firestore()
+//         .collection('chats')
+//         .doc(data.userId)
+//         .collection('messages')
+//         .doc(item.id)
+//         batch.update(messageRef,{readByAdmin:true})
+//       })
+//       return batch.commit();
+//     }).then(() => {
+//       console.log('SUCCESS')
+//     })
+//     .catch(err => {
+//       console.log(`error ${err}`)
+//     })
+// });
 
-// Update Admin Messages
-exports.updateClientMessages = functions.https.onCall(data => {
-  return admin
-    .firestore()
-    .collection('chats')
-    .doc(data.userId)
-    .collection('messages')
-    .where('postId', '==', data.postId)
-    .get()
-    .then(snapshot => {
-      let batch = admin.firestore().batch();
-      snapshot.docs.map(item => {
-        console.log('item ID', item.id)
-        const messageRef = admin
-        .firestore()
-        .collection('chats')
-        .doc(data.userId)
-        .collection('messages')
-        .doc(item.id)
-        batch.update(messageRef,{readByClient:true})
-      })
-      return batch.commit();
-    }).then(() => {
-      console.log('SUCCESS')
-    })
-    .catch(err => {
-      console.log(`error ${err}`)
-    })
-});
+
+// // Update Admin Messages
+// exports.updateClientMessages = functions.https.onCall(data => {
+//   return admin
+//     .firestore()
+//     .collection('chats')
+//     .doc(data.userId)
+//     .collection('messages')
+//     .where('postId', '==', data.postId)
+//     .get()
+//     .then(snapshot => {
+//       let batch = admin.firestore().batch();
+//       snapshot.docs.map(item => {
+//         console.log('item ID', item.id)
+//         const messageRef = admin
+//         .firestore()
+//         .collection('chats')
+//         .doc(data.userId)
+//         .collection('messages')
+//         .doc(item.id)
+//         batch.update(messageRef,{readByClient:true})
+//       })
+//       return batch.commit();
+//     }).then(() => {
+//       console.log('SUCCESS')
+//     })
+//     .catch(err => {
+//       console.log(`error ${err}`)
+//     })
+// });
