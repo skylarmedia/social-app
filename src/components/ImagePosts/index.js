@@ -17,7 +17,7 @@ const ImagePosts = props => {
   }
 
   return (
-    <div className="upload-files-wrapper d-flex flex-wrap">
+    <div className="upload-files-wrapper d-flex flex-wrap w-100 justify-content-between">
       {imageSrc &&
         imageSrc.map((item, index) => {
           if (getType(item) == 'video') {
@@ -29,10 +29,13 @@ const ImagePosts = props => {
               </div>
             );
           } else {
+
+            let styles = {
+              backgroundImage:`url(${item})`
+            }
             return (
-              <div className="image-render position-relative" key={index}>
-                {removeImage && <button type="button" className="position-absolute" onClick={() => {removeImage(index)}}>X</button>}
-                <img src={item} />
+              <div className="image-render position-relative" key={index} style={styles}>
+                {removeImage && <button type="button" className="position-absolute delete-abs clear-btn" onClick={() => {removeImage(index)}}>X</button>}
               </div>
             );
           }

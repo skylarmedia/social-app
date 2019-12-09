@@ -39,27 +39,28 @@ class EditCategoryForm extends Component {
       });
   }
 
-  handleText = string => {
-    if (string !== undefined) {
-      return string.split('|||')[0];
-    }
-  };
-
   render() {
+    console.log('PROPS TEST', this.props)
     const options = this.state.categories.map((item, index) => {
-      if (this.handleText(this.props.category) == item.name) {
-        return (
-          <option value={`${item.name}|||${item.color}`} selected key={index}>
-            {item.name}
-          </option>
-        );
-      } else {
-        return (
+      console.log('item', item)
+      return(
           <option value={`${item.name}|||${item.color}`} key={index}>
             {item.name}
           </option>
-        );
-      }
+      )
+      // if (this.handleText(this.props.category) == item.name) {
+      //   return (
+      //     <option value={`${item.name}|||${item.color}`} selected key={index}>
+      //       {item.name}
+      //     </option>
+      //   );
+      // } else {
+      //   return (
+      //     <option value={`${item.name}|||${item.color}`} key={index}>
+      //       {item.name}
+      //     </option>
+      //   );
+      // }
     });
 
     return (

@@ -468,7 +468,7 @@ class SubPost extends Component {
         </div>
         <div className="inner-form-wrapper1 col-sm-6">
           <div className="d-flex justify-content-between mb-20">
-            <div className="mt-20">
+            <div>
               <Checkbox
                 onChange={this.handleFacebook}
                 name="facebook"

@@ -14,6 +14,7 @@ import { withFirebase } from '../Firebase';
 import { Collapse } from 'antd';
 import { Popover, Button } from 'antd';
 import app from 'firebase/app';
+import ImagePosts from '../ImagePosts';
 const { TextArea } = Input;
 const { Panel } = Collapse;
 
@@ -32,7 +33,9 @@ class EditPost extends Component {
       currentMonth: null,
       currentYear: null,
       updatedMessages: false,
-      postId: null
+      postId: null,
+      selectedCategory: null,
+      selectedCategoryName: null
     };
 
     this.handleFacebook = this.handleFacebook.bind(this);
@@ -339,6 +342,13 @@ class EditPost extends Component {
     }
   };
 
+  getSelectedCategoryParent = (color, name) => {
+    this.setState({
+      selectedCategory: color,
+      selectedCategoryName: name
+    });
+  };
+
   setMessage = e => {
     e.preventDefault();
     this.setState({
@@ -359,15 +369,14 @@ class EditPost extends Component {
 
   clearMessages = (id, postId) => {
     const clearClientMessages = this.functions.httpsCallable('clearClientMessages');
-    const clearObj = new Object;
+    const clearObj = new Object();
     clearObj.id = id;
-    clearObj.postId = this.state.postId
-    console.log('clear obj', clearObj)
+    clearObj.postId = this.state.postId;
     clearClientMessages(clearObj);
     this.setState({
-      messages:[]
-    })
-  }
+      messages: []
+    });
+  };
 
   handleLinks(event) {
     console.log('i handle links', event);
@@ -391,11 +400,11 @@ class EditPost extends Component {
     });
   };
 
-  // removeClick(i) {
-  //   let values = [...this.state.values];
-  //   values.splice(i, 1);
-  //   this.setState({ values });
-  // }
+  removeClick(i) {
+    let values = [...this.state.values];
+    values.splice(i, 1);
+    this.setState({ values });
+  }
 
   addClick(i) {
     // let posts = [...this.state.posts];
@@ -412,19 +421,10 @@ class EditPost extends Component {
     //   values: [...prevState.posts[i].values, { value: null }]
     // }));
   }
-  
- 
 
   render() {
-    console.log('POSTS', this.state.posts);
+    console.log('selected category', this.state.selectedCategory);
     const posts = this.state.posts.map((post, index) => {
-      let image = this.state.posts[index].images.map((item, index) => {
-        return (
-          <div key={index}>
-            <img src={item} key={item} />
-          </div>
-        );
-      });
       return (
         <div className="d-flex row edit-form-main-wrapper">
           <div className="col-sm-6">
@@ -438,10 +438,13 @@ class EditPost extends Component {
               margin="normal"
             />
             <div className="d-flex flex-wrap">
-              {image.length > 0 ? (
-                image
-              ) : (                
-                <div id="red-outline-wrapper" className="w-100">
+              {this.state.posts[index].images.length > 0 ? (
+                <ImagePosts
+                  imageSrc={this.state.posts[index].images}
+                  className="upload-files-wrapper"
+                />
+              ) : (
+                <div id="red-outline-wrapper" className="w-100 mb-20">
                   <div className="red-center">
                     <input
                       type="file"
@@ -467,7 +470,7 @@ class EditPost extends Component {
           <div className="col-sm-6">
             <EditCategoryForm
               clientId={this.props.match.params.postId}
-              getSelectedCategory={this.getSelectedCategory}
+              getSelectedCategory={this.getSelectedCategoryParent}
               category={this.state.selectedCategory}
               currentCat={this.state.selectedCategoryName}
             />
@@ -480,8 +483,9 @@ class EditPost extends Component {
                   checked={this.state.posts[index].facebook}
                   onChange={this.handleFacebook}
                   index={index}
+                  id={`facebook-${index}`}
                 />
-                <label>Facebook</label>
+                <label for={`facebook-${index}`}>Facebook</label>
               </div>
               <div>
                 <Checkbox
@@ -491,8 +495,9 @@ class EditPost extends Component {
                   checked={this.state.posts[index].instagram}
                   onChange={this.handleInstagram}
                   index={index}
+                  id={`instagram-${index}`}
                 />
-                <label>Instagram</label>
+                <label for={`instagram-${index}`}>Instagram</label>
               </div>
               <div>
                 <Checkbox
@@ -502,8 +507,9 @@ class EditPost extends Component {
                   checked={this.state.posts[index].twitter}
                   onChange={this.handleTwitter}
                   index={index}
+                  id={`twitter-${index}`}
                 />
-                <label>Twitter</label>
+                <label for={`twitter-${index}`}>Twitter</label>
               </div>
               <div>
                 <Checkbox
@@ -513,8 +519,9 @@ class EditPost extends Component {
                   checked={this.state.posts[index].linkedin}
                   onChange={this.handleLinkedin}
                   index={index}
+                  id={`linkedin-${index}`}
                 />
-                <label>LinkedIn</label>
+                <label for={`linkedin-${index}`}>LinkedIn</label>
               </div>
               <div>
                 <Checkbox
@@ -524,8 +531,9 @@ class EditPost extends Component {
                   checked={this.state.posts[index].other}
                   onChange={this.handleOther}
                   index={index}
+                  id={`other-${index}`}
                 />
-                <label>Other</label>
+                <label id={`other-${index}`}>Other</label>
               </div>
             </div>
             <div className="date-button-wrapper d-flex row justify-content-between">
@@ -577,11 +585,13 @@ class EditPost extends Component {
                 <Checkbox
                   checked={this.state.posts[index].ad}
                   onChange={this.handleAd}
-                  id="ad"
+                  id={`ad-${index}`}
                   index={index}
                 />
 
-                <label className="color-blue ad-edit">Ad or Sponsored Post</label>
+                <label className="color-blue ad-edit" for={`ad-${index}`}>
+                  Ad or Sponsored Post
+                </label>
               </div>
               {this.state.posts[index].ad && (
                 <div className="col-md-12 row mt-20 mb-20">
@@ -670,79 +680,86 @@ class EditPost extends Component {
               ))}
             </div>
 
-            <button onClick={this.submitEdits} className="add-date-btn">
+          </div>
+
+          <button onClick={this.submitEdits} className="add-date-btn">
               Submit Edits
             </button>
-          </div>
         </div>
       );
     });
-    console.log('final postId', this.props.match.params.postId, this.props.match.params.clientId)
     let content = (
       <button
         type="button"
         className="clear-btn d-flex"
-        onClick={() => this.clearMessages(this.props.match.params.postId, this.props.match.params.clientId)}
+        onClick={() =>
+          this.clearMessages(this.props.match.params.postId, this.props.match.params.clientId)
+        }
       >
-      <i className="fas fa-trash"></i>
+        <i className="fas fa-trash"></i>
         <span className="ml-10">CLEAR</span>
       </button>
     );
 
-
     return (
-      <div className="container add-post edit-post">
-        <div className="d-flex approval-wrapper">
-          <Checkbox
-            name="approved"
-            value={this.state.approved}
-            onChange={this.handleApproval}
-            checked={this.state.approved}
-            id="approvePost"
-          />
-          <label className="color-blue">APPROVE POST</label>
-        </div>
-        {posts}
-        <div className="fixed-bottom container position_relative col-md-4">
-          {this.state.showChat && (
-            <div>
-              <div className="d-flex flex-column align-items-end">
-                <div className="inner-chat-log bg-white position-relative">
-                  <AdminChatLog
-                    deletePost={this.deletePostParent}
-                    adminClient={this.props.match.params.postId}
-                    messages={this.state.messages}
-                  />
-                  <form onSubmit={this.submitMessage} className="d-flex mt-30 position-relative">
-                    <textarea
-                      onChange={this.setMessage}
-                      value={this.state.message}
-                      onKeyDown={this.captureKey}
+      <div className="add-post edit-post">
+        <div className="container">
+          <div className="d-flex approval-wrapper">
+            <Checkbox
+              name="approved"
+              value={this.state.approved}
+              onChange={this.handleApproval}
+              checked={this.state.approved}
+              id="approvePost"
+            />
+            <label className="color-blue" for="approvePost">APPROVE POST</label>
+          </div>
+          {posts}
+          <div className="fixed-bottom container position_relative col-md-4">
+            {this.state.showChat && (
+              <div>
+                <div className="d-flex flex-column align-items-end">
+                  <div className="inner-chat-log bg-white position-relative">
+                    <AdminChatLog
+                      deletePost={this.deletePostParent}
+                      adminClient={this.props.match.params.postId}
+                      messages={this.state.messages}
                     />
-                    <Popover placement="topRight" content={content} trigger="click" className="position-absolute">
-                    <Button className="clear-btn clear-message-button position-absolute send-clear">
-                      <i className="fas fa-ellipsis-v"></i>
-                    </Button>
-                  </Popover>
-                  </form>
-                  <button
-                    type="button"
-                    onClick={this.toggleIcon.bind(this)}
-                    className="clear-btn position-absolute happy-btn"
-                  >
-                    <i className="fas fa-smile-beam"></i>
-                  </button>
-
+                    <form onSubmit={this.submitMessage} className="d-flex mt-30 position-relative">
+                      <textarea
+                        onChange={this.setMessage}
+                        value={this.state.message}
+                        onKeyDown={this.captureKey}
+                      />
+                      <Popover
+                        placement="topRight"
+                        content={content}
+                        trigger="click"
+                        className="position-absolute"
+                      >
+                        <Button className="clear-btn clear-message-button position-absolute send-clear">
+                          <i className="fas fa-ellipsis-v"></i>
+                        </Button>
+                      </Popover>
+                    </form>
+                    <button
+                      type="button"
+                      onClick={this.toggleIcon.bind(this)}
+                      className="clear-btn position-absolute happy-btn"
+                    >
+                      <i className="fas fa-smile-beam"></i>
+                    </button>
+                  </div>
+                  <span className={this.state.showIcons ? 'hidden' : 'not-hidden'}>
+                    <Picker onSelect={this.addEmoji} />
+                  </span>
                 </div>
-                <span className={this.state.showIcons ? 'hidden' : 'not-hidden'}>
-                  <Picker onSelect={this.addEmoji} />
-                </span>
               </div>
-            </div>
-          )}
-          <button onClick={this.toggleChat} type="button" className="clear-btn">
-            <img src={require('../assets/chatbox.svg')} />
-          </button>
+            )}
+            <button onClick={this.toggleChat} type="button" className="clear-btn">
+              <img src={require('../assets/chatbox.svg')} />
+            </button>
+          </div>
         </div>
       </div>
     );
