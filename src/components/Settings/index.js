@@ -6,7 +6,7 @@ import app from 'firebase/app';
 import ClientSingle from '../ClientSingle';
 import { Modal } from 'antd';
 import './index.css';
-
+import EditClients from '../EditClients';
 
 class Settings extends Component {
   constructor(props) {
@@ -18,9 +18,12 @@ class Settings extends Component {
       deleteClient: '',
       deleteIndex: null,
       modalState: false,
-      email:'',
-      password:'',
-      error: null
+      email: '',
+      password: '',
+      error: null,
+      editClients: [],
+      chosenClient: {},
+      editModal: false
     };
 
     this.reactivateClient = this.reactivateClient.bind(this);
@@ -28,10 +31,26 @@ class Settings extends Component {
     this.confirmArchive = this.confirmArchive.bind(this);
 
     this.auth = app.auth();
-    this.functions = app.functions()
+    this.functions = app.functions();
+    this.db = app.firestore();
   }
 
-  componentWillMount() {
+  componentDidMount() {
+
+    // this.db
+    // .collection('users')
+    // .get()
+    // .then(snapshot => {
+    //   let editClients = [...this.state.editClients];
+    //   snapshot.docs.map(item => {
+    //     editClients.push(item.data());
+    //     this.setState({
+    //       editClients: editClients
+    //     });
+    //   });
+    // });
+
+
     this.props.firebase.getArchivedClients().then(snapshot => {
       let archivedClients = [...this.state.clients];
       snapshot.docs.map(item => {
@@ -62,6 +81,13 @@ class Settings extends Component {
     });
   };
 
+  getClientParent = client => {
+    this.setState({
+      chosenClient: client,
+      editModal: true
+    });
+  };
+
   deleteClient = (id, index) => {
     this.setState({
       deleteClient: id,
@@ -75,25 +101,38 @@ class Settings extends Component {
     });
   };
 
+  handleCancelEdit = e => {
+    this.setState({
+      editModal: false
+    });
+  };
+
   submitDeletion = () => {
     const auth = this.auth;
-    if(this.state.password === localStorage.getItem('key') && auth.currentUser.email === this.state.username){
-
+    console.log(this.state.username);
+    if (
+      this.state.password === localStorage.getItem('key') &&
+      auth.currentUser.email === this.state.username
+    ) {
       const deleteByUid = this.functions.httpsCallable('deleteByUid');
       let data = new Object();
       data.uid = localStorage.getItem('tempDeleteUserId');
       data.name = localStorage.getItem('tempDeleteUser');
       deleteByUid(data).then(res => {
-        console.log(`response: ${res}`)
+        console.log(`response: ${res}`);
       });
-    }else{
       this.setState({
-        error:'Sorry there was an error with your submission'
-      })
+        visible: false,
+        clients: this.state.clients.filter(
+          (_, i) => i !== parseInt(localStorage.getItem('tempIndex'))
+        )
+      });
+    } else {
+      this.setState({
+        error: 'Sorry there was an error with your submission'
+      });
     }
-
-
-  }
+  };
 
   handleCancel = e => {
     this.setState({
@@ -107,11 +146,11 @@ class Settings extends Component {
     });
   };
 
-  confirmDeleteParent = (id, name )=> {
-
+  confirmDeleteParent = (id, name, index) => {
     // Save user ID in localStorage to send up with
     localStorage.setItem('tempDeleteUser', name);
     localStorage.setItem('tempDeleteUserId', id);
+    localStorage.setItem('tempIndex', index);
     this.setState({
       visible: true
     });
@@ -125,29 +164,38 @@ class Settings extends Component {
     return (
       <div>
         <Modal
+          visible={this.state.editModal}
+          onOk={this.handleOkEdit}
+          onCancel={this.handleCancelEdit}
+        >
+          <p>Some contents...</p>
+          <p>Some contents...</p>
+          <p>Some contents...</p>
+        </Modal>
+        <Modal
           visible={this.state.visible}
           onOk={this.handleOk}
           onCancel={this.handleCancel}
           wrapClassName="message-modal"
           footer={[
-              <div>
-                <button
-                  type="button"
-                  onClick={this.handleCancel}
-                  className="red-btn delete-btn-main"
-                  type="button"
-                >
-                  CANCEL
-                </button>
-                <button
-                  type="button"
-                  className="red-border-btn delete-btn-main"
-                  onClick={this.submitDeletion}
-                >
-                  DELETE
-                </button>
-              </div>
-            ]}
+            <div>
+              <button
+                type="button"
+                onClick={this.handleCancel}
+                className="red-btn delete-btn-main"
+                type="button"
+              >
+                CANCEL
+              </button>
+              <button
+                type="button"
+                className="red-border-btn delete-btn-main"
+                onClick={this.submitDeletion}
+              >
+                DELETE
+              </button>
+            </div>
+          ]}
         >
           <div>
             <h6 className="f-20 color-blue text-center">Delete Client?</h6>
@@ -171,17 +219,22 @@ class Settings extends Component {
               className="mb-10 blue-input m-320"
               placeholder="PASSWORD"
             />
-            {this.state.error && (
-              <span className="color-red">{this.state.error}</span>
-            )}
+            {this.state.error && <span className="color-red">{this.state.error}</span>}
           </div>
         </Modal>
-        <h4 className="text-center">Settings</h4>
+        <h4 className="text-center f-20 mb-20">Settings</h4>
+        <div className="row container mx-auto">
+          <div className="col-md-12">
+            <h2>Edit Client Info</h2>
+            <p>Select a client below to re-set their username and/or password.</p>
+            <EditClients clients={this.state.editClients} getClient={this.getClientParent} />
+          </div>
+        </div>
+        <h4 className="text-center f-20 mb-20">Archived Clients</h4>
         <div className="row container mx-auto settings-client">
           {this.state.clients.map((item, index) => {
-            console.log('client item', item);
             return (
-              <div className="col-sm-3">
+              <div className="col-sm-3" key={index}>
                 <ClientSingle
                   name={item.name}
                   logo={item.logo}
@@ -189,6 +242,7 @@ class Settings extends Component {
                   modalState={this.state.modalState}
                   className="w-100"
                   confirmDelete={this.confirmDeleteParent}
+                  index={index}
                 />
                 <button
                   onClick={() => this.reactivateClient(item.name, index)}

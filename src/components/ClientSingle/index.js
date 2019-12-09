@@ -16,7 +16,7 @@ class ClientSingle extends Component {
     this.setState({
       open: false
     }, () => {
-      this.props.confirmDelete(clientId, name);
+      this.props.confirmDelete(clientId, name, this.props.index);
     });
   };
 
@@ -33,7 +33,7 @@ class ClientSingle extends Component {
   };
 
   render() {
-    const { logo, name, clientId } = this.props;
+    const { logo, name, clientId, index } = this.props;
     const styles = {
       backgroundImage: `url(${logo})`
     };

@@ -9,6 +9,7 @@ import * as ROUTES from '../../constants/routes';
 import { AuthUserContext } from '../Session';
 
 const Navigation = ({ authUser }) => {
+  console.log('auth user', authUser)
   let downCaret = document.querySelector('.anticon-down');
   console.log('down', downCaret);
   return <NavigationAuth authUser={authUser} id="page-wrap" />;

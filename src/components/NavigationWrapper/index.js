@@ -24,7 +24,7 @@ class NavigationWrapper extends Component {
     if (this.state.mobile === true) {
       return <Redirect to="no-mobile" />;
     }
-    if (localStorage.getItem('loggedIn') === 'true') {
+    if (localStorage.getItem('skylarAdmin') === 'true') {
       return <Navigation />;
     } else {
       return <div></div>;
