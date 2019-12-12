@@ -5,7 +5,6 @@ import { Select } from 'antd';
 
 const { Option } = Select;
 
-
 class EditCategoryForm extends Component {
   constructor(props) {
     super(props);
@@ -16,10 +15,10 @@ class EditCategoryForm extends Component {
   }
 
   currentCategory = e => {
-    console.log('E', e)
-      let color = e.split('|||')[1];
-      let name = e.split('|||')[0];
-      this.props.getSelectedCategory(color, name);
+    console.log('E', e);
+    let color = e.split('|||')[1];
+    let name = e.split('|||')[0];
+    this.props.getSelectedCategory(color, name);
   };
 
   componentDidMount() {
@@ -40,14 +39,14 @@ class EditCategoryForm extends Component {
   }
 
   render() {
-    console.log('PROPS TEST', this.props)
+    console.log('PROPS TEST', this.props);
     const options = this.state.categories.map((item, index) => {
-      console.log('item', item)
-      return(
-          <option value={`${item.name}|||${item.color}`} key={index}>
-            {item.name}
-          </option>
-      )
+      console.log('item', item);
+      return (
+        <option value={`${item.name}|||${item.color}`} key={index}>
+          {item.name}
+        </option>
+      );
       // if (this.handleText(this.props.category) == item.name) {
       //   return (
       //     <option value={`${item.name}|||${item.color}`} selected key={index}>
@@ -66,7 +65,13 @@ class EditCategoryForm extends Component {
     return (
       <React.Fragment>
         <form className="main-edit-form">
-          <Select name="options" style={{ width: 120 }} onChange={this.currentCategory.bind(this)} placeholder="CATEGORY">
+          <Select
+            name="options"
+            style={{ width: 120 }}
+            onChange={this.currentCategory.bind(this)}
+            placeholder="CATEGORY"
+            suffixIcon={<img src={require('../assets/arrow.svg')} />}
+          >
             {this.props.currentCat ? (
               <Option value={`${this.props.currentCat} ||| #fff`} selected>
                 {this.props.currentCat}

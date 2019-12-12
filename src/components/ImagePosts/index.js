@@ -1,4 +1,5 @@
 import React from 'react';
+import { Row, Col } from 'antd';
 
 const ImagePosts = props => {
   const { imageSrc, removeImage } = props;
@@ -34,9 +35,9 @@ const ImagePosts = props => {
               backgroundImage:`url(${item})`
             }
             return (
-              <div className="image-render position-relative" key={index} style={styles}>
+              <Row gutter={16} className="image-render position-relative" key={index} style={styles}>
                 {removeImage && <button type="button" className="position-absolute delete-abs clear-btn" onClick={() => {removeImage(index)}}>X</button>}
-              </div>
+              </Row>
             );
           }
         })}

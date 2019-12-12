@@ -418,7 +418,7 @@ class Calendar extends React.Component {
       <React.Fragment>
         <div>
           <div className="container">
-            <Link to={`/home`} class="back-link" class="d-flex align-items-center">
+            <Link to={`/home`} class="back-link" class="d-flex align-items-center" id="main-backlink">
               <img src={require('../assets/back.svg')} />
               Back to All Calendar Months
             </Link>

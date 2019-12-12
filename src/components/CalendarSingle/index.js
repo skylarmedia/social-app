@@ -31,7 +31,6 @@ class CalendarSingle extends Component {
     return (
       <div className="calendar-popup-wrapper">
         <p className="calendar-single-day">{this.props.day}</p>
-        <br />
         {this.props.posts.map((item, index) => {
           if (item.data().month == this.props.month) {
             if (item.data().day === this.props.day) {

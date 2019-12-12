@@ -10,12 +10,38 @@
 	color: #ef463b;
 }
 
+.calendar-popup-wrapper{
+	padding-top:3.3px;
+}
+
+.tail-datetime-calendar .calendar-date table tbody tr > * {
+    width: 158px;
+    height: 90px;
+}
+
+.tail-datetime-calendar{
+	z-index: 800;
+    position: relative;
+}
+
+.upload-files-wrapper div:first-child{
+	background-size:cover;
+}
+
+.upload-files-wrapper div{
+	background-size:cover;
+}
+
 h2{
 	font-size:20px;
 }
 
 p{
 	font-size:14px;
+}
+
+#main-backlink{
+	padding-left:0;
 }
 
 h4 {

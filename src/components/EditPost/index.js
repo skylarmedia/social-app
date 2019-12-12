@@ -132,7 +132,7 @@ class EditPost extends Component {
     let functionObj = new Object();
     functionObj.postId = this.props.match.params.clientId;
     functionObj.userId = this.props.match.params.postId;
-    // updateAdminMessages(functionObj);
+    updateAdminMessages(functionObj);
 
     this.props.firebase
       .editPostFirebase(this.props.match.params.clientId, this.props.match.params.postId)
@@ -681,9 +681,10 @@ class EditPost extends Component {
             </div>
 
           </div>
-
+          EDIT PAGE
+          
           <button onClick={this.submitEdits} className="add-date-btn">
-              Submit Edits
+              SAVE
             </button>
         </div>
       );

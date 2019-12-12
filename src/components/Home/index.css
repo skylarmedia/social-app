@@ -318,7 +318,7 @@ body .ant-btn-primary{
 }
 
 .container {
-	max-width: 1140px;
+    max-width: 1440px;
 }
 
 #home-page {
@@ -355,6 +355,10 @@ body .ant-btn-primary{
 a.d-flex{
     color:#002D5B;
     margin-top:15px;
+}
+
+a.save-draft-btn.d-flex{
+	color: #ef463b;	
 }
 
 a.d-flex img{

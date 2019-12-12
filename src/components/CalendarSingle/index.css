@@ -37,9 +37,13 @@
     margin: 0 10px 10px 0;
 }
 
+.calendar-popup-wrapper {
+    padding-top: 3.3px;
+}
+
 .hidden-calendar-wrapper{
     position:relative;
-    margin-bottom:5px;
+    margin-bottom:3px;
 }
 
 .check{

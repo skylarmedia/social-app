@@ -99,10 +99,55 @@ body .ant-select-selection__placeholder{
 	background: #ef463b;
 	text-transform: uppercase;
 	color: #fff;
-	border: none;
+	border: 2px solid #ef463b;
 	height: 48px;
 	width: 149px;
 	border-radius: 11px;
+	transition:all 0.3s ease-in-out;
+}
+
+.anticon-down{
+	position:relative;
+}
+
+.ant-select-enabled img{
+	transform:rotate(0deg);
+}
+
+.ant-select-arrow{
+	top:46%;
+}
+
+.ant-select-selection-selected-value {
+    padding-bottom: 2px;
+}
+
+.ant-select-enabled.ant-select-open img{
+	transform:rotate(90deg);
+}
+
+.ant-select-selection__placeholder{
+	color: #707070;
+}
+
+.anticon-down:before{
+	font-family:"Font Awesome 5 Free"; 
+	font-weight: 900; 
+	content: "\f007";
+	position:absolute;
+}
+
+.back-link:hover{
+	color:#ef463b !important;
+}
+
+.ant-btn:hover{
+	border-color:#ef463b;
+}
+
+.add-date-btn:hover{
+	background:#fff;
+	color:#ef463b;
 }
 
 .react-time-picker__inputGroup__input {
@@ -348,7 +393,7 @@ body .bm-menu {
 }
 
 .label-button{
-  width:100%;
+  width:107.4px
 }
 
 .remove-wrapper{

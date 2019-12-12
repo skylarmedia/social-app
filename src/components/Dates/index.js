@@ -9,6 +9,7 @@ import CalendarImage from '../CalendarImage';
 import { Modal } from 'antd';
 import { Popover, Button } from 'antd';
 import { Row, Col } from 'antd';
+import { Icon } from 'antd';
 
 // Category List
 import SelectCategory from '../SelectCategory';
@@ -219,6 +220,9 @@ class Dates extends Component {
   };
 
   render() {
+    const antIcon = () => (
+      <div>Node</div>
+    )
     const renderDates = this.state.date.map((item, index) => (
       <Col Col span={6} className="position-relative date-map-item" key={index}>
         <Link
@@ -253,6 +257,7 @@ class Dates extends Component {
           className="selected-categoryComponent"
           userId={this.props.match.params.clientId}
           getCategories={this.sendCategories}
+          suffixIcon={<img src={require('../assets/arrow.svg')} />}
         />
         <div className="position-absolute cat-outter-list">
           <CategoryList colors={this.state.categories} />
@@ -317,19 +322,20 @@ class Dates extends Component {
                   className="select-date"
                   id="month-helper"
                   placeholder="MONTH"
+                  suffixIcon={<img src={require('../assets/arrow.svg')} />}
                 >
-                  <Option value="1">January</Option>
-                  <Option value="2">February</Option>
-                  <Option value="3">March</Option>
-                  <Option value="4">April</Option>
-                  <Option value="5">May</Option>
-                  <Option value="6">June</Option>
-                  <Option value="7">July</Option>
-                  <Option value="8">August</Option>
-                  <Option value="9">September</Option>
-                  <Option value="10">October</Option>
-                  <Option value="11">November</Option>
-                  <Option value="12">December</Option>
+                  <Select.Option value="1">January</Select.Option>
+                  <Select.Option value="2">February</Select.Option>
+                  <Select.Option value="3">March</Select.Option>
+                  <Select.Option value="4">April</Select.Option>
+                  <Select.Option value="5">May</Select.Option>
+                  <Select.Option value="6">June</Select.Option>
+                  <Select.Option value="7">July</Select.Option>
+                  <Select.Option value="8">August</Select.Option>
+                  <Select.Option value="9">September</Select.Option>
+                  <Select.Option value="10">October</Select.Option>
+                  <Select.Option value="11">November</Select.Option>
+                  <Select.Option value="12">December</Select.Option>
                 </Select>
                 <i class="fas fa-caret-right"></i>
                 <Select
@@ -337,6 +343,7 @@ class Dates extends Component {
                   className="select-date"
                   id="month-helper"
                   placeholder="YEAR"
+                  suffixIcon={<img src={require('../assets/arrow.svg')} />}
                 >
                   <Option value="2019">2019</Option>
                   <Option value="2020">2020</Option>
@@ -385,19 +392,20 @@ class Dates extends Component {
                         className="select-date"
                         id="month-helper"
                         placeholder="MONTH"
-                      >
-                        <Option value="1">January</Option>
-                        <Option value="2">February</Option>
-                        <Option value="3">March</Option>
-                        <Option value="4">April</Option>
-                        <Option value="5">May</Option>
-                        <Option value="6">June</Option>
-                        <Option value="7">July</Option>
-                        <Option value="8">August</Option>
-                        <Option value="9">September</Option>
-                        <Option value="10">October</Option>
-                        <Option value="11">November</Option>
-                        <Option value="12">December</Option>
+                        suffixIcon={<img src={require('../assets/arrow.svg')} />}
+                        >
+                        <Select.Option value="1">January</Select.Option>
+                        <Select.Option value="2">February</Select.Option>
+                        <Select.Option value="3">March</Select.Option>
+                        <Select.Option value="4">April</Select.Option>
+                        <Select.Option value="5">May</Select.Option>
+                        <Select.Option value="6">June</Select.Option>
+                        <Select.Option value="7">July</Select.Option>
+                        <Select.Option value="8">August</Select.Option>
+                        <Select.Option value="9">September</Select.Option>
+                        <Select.Option value="10">October</Select.Option>
+                        <Select.Option value="11">November</Select.Option>
+                        <Select.Option value="12">December</Select.Option>
                       </Select>
                       <i class="fas fa-caret-right"></i>
                     </div>
@@ -407,9 +415,10 @@ class Dates extends Component {
                         className="select-date"
                         id="month-helper"
                         placeholder="YEAR"
+                        suffixIcon={<img src={require('../assets/arrow.svg')} />}
                       >
-                        <Option value="2019">2019</Option>
-                        <Option value="2020">2020</Option>
+                        <Select.Option value="2019">2019</Select.Option>
+                        <Select.Option value="2020">2020</Select.Option>
                       </Select>
                     </div>
                     <i class="fas fa-caret-right"></i>

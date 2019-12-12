@@ -301,7 +301,7 @@ class Home extends Component {
       <div id="home-page" className="container">
         <img src={require('../assets/skylar_Icon_wingPortion.svg')} id="wing-logo" />
         <h2 className="text-center welcome">Welcome Home!</h2>
-        <Link to="/settings">GO TO SETTINGS TEMPORARY</Link>
+
         {this.state.isLoading && this.state.users.length > 0 ? (
           <div>
             <p className="text-center">What client do you want to work on today?</p>

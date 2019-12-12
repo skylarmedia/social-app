@@ -48,7 +48,7 @@ class SignInFormBase extends Component {
   onSubmit = event => {
     event.preventDefault();
     this.setState({
-      loading: !this.state.loading
+      loading: false
     });
     const { email, password } = this.state;
     this.props.firebase.doSignInWithEmailAndPassword(email, password).then(value => {
@@ -113,7 +113,7 @@ class SignInFormBase extends Component {
     return (
       <React.Fragment>
         <img src={require('../assets/skylar_Icon_wingPortion.svg')} id="wing-logo" />
-        Version.4
+        Version.8
         <form onSubmit={this.onSubmit} className="d-flex flex-column align-items-center">
           <Input
             name="email"
