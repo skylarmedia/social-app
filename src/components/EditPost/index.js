@@ -681,8 +681,6 @@ class EditPost extends Component {
             </div>
 
           </div>
-          EDIT PAGE
-          
           <button onClick={this.submitEdits} className="add-date-btn">
               SAVE
             </button>

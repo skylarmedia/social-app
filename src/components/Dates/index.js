@@ -9,7 +9,6 @@ import CalendarImage from '../CalendarImage';
 import { Modal } from 'antd';
 import { Popover, Button } from 'antd';
 import { Row, Col } from 'antd';
-import { Icon } from 'antd';
 
 // Category List
 import SelectCategory from '../SelectCategory';

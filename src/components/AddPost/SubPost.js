@@ -408,7 +408,13 @@ class SubPost extends Component {
     }
   };
 
+ 
+
   render() {
+
+    const genExtra = () => (
+      <img src={require('../assets/arrow.svg')} />
+    );
     return (
       <div className="d-flex row">
         <div className="col-sm-6">
@@ -527,8 +533,12 @@ class SubPost extends Component {
           </div>
           <div className="date-button-wrapper d-flex row justify-content-between">
             <div id="choose-date-wrapper" className="col-sm-4">
-              <Collapse>
-                <Panel header="POST DATE">
+              <Collapse
+
+              
+              
+              >
+                <Panel header={this.state.ipDate} extra={genExtra()} showArrow={false}>
                   <DatePicker
                     placeholderText="Post Date"
                     onChange={value => this.handleDPChange(value)}

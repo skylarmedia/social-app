@@ -392,10 +392,6 @@ body .bm-menu {
 	display: inline-block;
 }
 
-.label-button{
-  width:107.4px
-}
-
 .remove-wrapper{
 	position: absolute;
     bottom: 110px;
@@ -408,7 +404,7 @@ body .bm-menu {
 }
 
 #trans-cat button{
-	margin-bottom:7px;
+	margin-bottom:4px;
 }
 
 .main-edit-form .ant-select-selection-selected-value {
