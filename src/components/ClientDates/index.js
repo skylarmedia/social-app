@@ -12,15 +12,22 @@ class ClientDates extends Component {
     this.state = {
       dates: []
     };
-    this.db = app.functions();
+    this.functions = app.functions();
+    this.db = app.firestore();
   }
 
 
   componentDidMount() {
     console.log('ClientDate', this.props);
-    this.props.firebase.getClientMonths(this.props.match.params.id).then(res => {
-      const emptyArr = [];
 
+    this.db
+      .collection('users')
+      .doc(localStorage.getItem('clientName'))
+      .collection('dates')
+      .where('private', '==', false)
+      .get()
+      .then(res => {
+      console.log('res', res)
       res.docs.map(item => {
         let dateObj = new Object();
         dateObj.month = item.data().month;
@@ -76,7 +83,6 @@ class ClientDates extends Component {
     });
     return (
       <div>
-        <p>Client Works</p>
         <ul>{dates}</ul>
       </div>
     );

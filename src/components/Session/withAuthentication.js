@@ -16,12 +16,9 @@ const withAuthentication = Component => {
     componentDidMount() {
       this.listener = this.props.firebase.auth.onAuthStateChanged(
         authUser => {
-          if (authUser) {
-            localStorage.setItem('authUser', JSON.stringify(authUser));
-            this.setState({ authUser });
-          } else {
-            this.setState({ authUser: null });
-          }
+          authUser
+            ? this.setState({ authUser })
+            : this.setState({ authUser: null });
         },
       );
     }

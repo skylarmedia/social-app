@@ -75,13 +75,13 @@ class Firebase {
 
   //**** Client Get Dates ****//
 
-  getClientMonths = user =>
-    this.db
-      .collection('users')
-      .doc(user)
-      .collection('dates')
-      .where('private', '<', 1)
-      .get();
+  // getClientMonths = () =>
+  //   this.db
+  //     .collection('users')
+  //     .doc(localStorage.getItem('clientName'))
+  //     .collection('dates')
+  //     .where('private', '<', 1)
+  //     .get();
 
   assignCategories = (id, year, month, categories) => {
     console.log('main cates', categories);

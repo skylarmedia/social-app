@@ -6,14 +6,10 @@ import CalendarSingle from '../CalendarSingle';
 import { withFirebase } from '../Firebase';
 import { compose } from 'redux';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import { withAuthorizationAdmin } from '../Session';
-import { AuthUserContext } from '../Session';
 import { Switch } from 'antd';
 import Legend from '../Legend';
 import ListMode from '../ListMode';
 import firebase from 'firebase';
-
-import { withAuthorization } from '../Session';
 
 const parts = window.location.search.substr(1).split('&');
 
@@ -22,9 +18,6 @@ for (var i = 0; i < parts.length; i++) {
   var temp = parts[i].split('=');
   $_GET[decodeURIComponent(temp[0])] = decodeURIComponent(temp[1]);
 }
-
-const year = $_GET['year'];
-const month = $_GET['month'];
 
 class Calendar extends React.Component {
   constructor(props) {
@@ -68,6 +61,7 @@ class Calendar extends React.Component {
   }
 
   componentDidMount() {
+    console.log('this props calendar', this.props);
     this.db
       .collection('users')
       .doc(this.props.match.params.clientId)
@@ -109,9 +103,9 @@ class Calendar extends React.Component {
       });
     });
 
-    this.setState({
-      authUser: JSON.parse(localStorage.getItem('authUser')).email
-    });
+    // this.setState({
+    //   authUser: JSON.parse(localStorage.getItem('authUser')).email
+    // });
   }
 
   daysInMonth = () => {
@@ -350,18 +344,21 @@ class Calendar extends React.Component {
   };
 
   handleSwitch = () => {
-    this.setState({
-      private: !this.state.private
-    });
-
-    this.db
-      .collection('users')
-      .doc(this.props.match.params.clientId)
-      .collection('dates')
-      .doc(this.state.privateId)
-      .update({
-        private: this.state.private
-      });
+    this.setState(
+      {
+        private: !this.state.private
+      },
+      () => {
+        this.db
+          .collection('users')
+          .doc(this.props.match.params.clientId)
+          .collection('dates')
+          .doc(this.state.privateId)
+          .update({
+            private: this.state.private
+          });
+      }
+    );
   };
 
   render() {
@@ -418,7 +415,12 @@ class Calendar extends React.Component {
       <React.Fragment>
         <div>
           <div className="container">
-            <Link to={`/home`} class="back-link" class="d-flex align-items-center" id="main-backlink">
+            <Link
+              to={`/home`}
+              class="back-link"
+              class="d-flex align-items-center"
+              id="main-backlink"
+            >
               <img src={require('../assets/back.svg')} />
               Back to All Calendar Months
             </Link>
@@ -456,7 +458,9 @@ class Calendar extends React.Component {
             </div>
             {this.state.isLoading ? (
               <div className="tail-datetime-calendar">
-                <div className={this.state.grid == true? 'container calendar-navi mx-auto' : 'hidden'}></div>
+                <div
+                  className={this.state.grid == true ? 'container calendar-navi mx-auto' : 'hidden'}
+                ></div>
                 <div className="calendar-date">
                   {this.state.showYearNav && <this.YearTable props={this.year()} />}
                   {this.state.showMonthTable && <this.MonthList data={moment.months()} />}
@@ -498,9 +502,6 @@ class Calendar extends React.Component {
     );
   }
 }
-
-const condition = authUser =>
-  JSON.parse(localStorage.getItem('authUser')).email == 'sky5@hotmail.com' && authUser;
 export default compose(
   withFirebase
   // ,withAuthorization(condition)

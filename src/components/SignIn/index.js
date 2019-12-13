@@ -58,16 +58,18 @@ class SignInFormBase extends Component {
       currentEmail.email = email;
       getUid(currentEmail).then(res => {
         console.log('RES PROPS', res);
-        if (res.data.isAdmin === true) {
+        
+        if (res.data.customClaims.skylarAdmin === true) {
+          localStorage.clear();
           localStorage.setItem('skylarAdmin', true);
           localStorage.setItem('key', password);
           this.props.history.push('/home');
         } else {
+          localStorage.clear();
+          localStorage.setItem('clientUid', res.data.uid)
+          localStorage.setItem('clientName', res.data.displayName.toLowerCase().replace(/ /g, '-'))
           this.props.history.push({
-            pathname: `/client/${localStorage.getItem('userId')}/dates`,
-            state: {
-              userId: value.docs[0].data().urlName
-            }
+            pathname: `/client/dates`
           });
         }
       });

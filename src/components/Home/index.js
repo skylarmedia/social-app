@@ -235,6 +235,10 @@ class Home extends Component {
           this.auth
             .createUserWithEmailAndPassword(this.state.email, this.state.passwordOne)
             .then(user => {
+              user.user.updateProfile({
+                displayName:this.state.username,
+                photoURL:this.state.backgroundUrl
+              })
               console.log(`user Obj`, user);
               this.db
                 .collection('users')
@@ -249,13 +253,14 @@ class Home extends Component {
                   archived: false,
                   uid: user.user.uid
                 });
-              if (this.state.admin === true) {
-                console.log('user Uid', user.user.uid);
-                const createAdmin = this.functions.httpsCallable('createAdmin');
-                const currentUser = new Object();
-                currentUser.uid = user.user.uid;
-                createAdmin(currentUser);
-              }
+              console.log('user Uid', user.user.uid);
+              const createAdmin = this.functions.httpsCallable('createAdmin');
+
+              // Creates non-admin from there as well
+              const currentUser = new Object();
+              currentUser.uid = user.user.uid;
+              currentUser.isAdmin = this.state.admin;
+              createAdmin(currentUser);
             });
 
           // this.props.firebase.addUser(

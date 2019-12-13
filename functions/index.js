@@ -136,10 +136,10 @@ exports.clearClientMessages = functions.https.onCall(data => {
 exports.createAdmin = functions.https.onCall(data => {
   console.log(`data in uid${data.uid}`);
   console.log(`data ${data}`);
-  admin.auth().setCustomUserClaims(data.uid, {skylarAdmin: true})
+  admin.auth().setCustomUserClaims(data.uid, {skylarAdmin: data.isAdmin})
   .then((res) => {
-    console.log(`res ${res} success`);
-    return `this user has been created an admin`
+    res
+    return `is Admin: ${data.isAdmin}`
    })
    .catch( err => {
      console.log(`Error`, err);
@@ -152,8 +152,10 @@ exports.createAdmin = functions.https.onCall(data => {
 exports.getUid = functions.https.onCall(data => {
   return admin.auth().getUserByEmail(data.email)
   .then(res => {
+    console.log('RES 2', res)
     console.log('res json', res.customClaims.skylarAdmin)
-    return {isAdmin:res.customClaims.skylarAdmin}
+    return res
+   
   })
   .catch(err => {
     console.log(`There was an err ${err}`)
