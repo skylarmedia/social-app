@@ -14,7 +14,8 @@ const Legend = props => {
       <section className="d-flex justify-content-between container mx-auto">
         <div className="row d-flex flex-column">
           <h4>CATEGORIES</h4>
-          <Link
+          {localStorage.getItem('skylarAdmin') && (
+            <Link
             to={{
               pathname: `/assign-categories/${props.year}/${props.month}/${props.client}`,
               state:{
@@ -25,6 +26,7 @@ const Legend = props => {
           >
             Assign Categories
           </Link>
+          )}
           <div>
             {props.selectedCategories &&
               props.selectedCategories.map((item, index) => {

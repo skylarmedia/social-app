@@ -5,6 +5,7 @@ import { withFirebase } from '../Firebase';
 import { compose } from 'recompose';
 import ClientCalendarSingle from '../ClientCalendarSingle';
 import CategoryList from '../CategoryList';
+import Legend from '../Legend';
 
 
 
@@ -31,14 +32,13 @@ class ClientCalendar extends Component {
         })
 
         this.props.firebase.getUserCategories(localStorage.getItem('clientName')).then(snapshot => {
-
             const catArr = [...this.state.categories]
             snapshot.docs.map(category => {
                 catArr.push(category.data())
-            })
+            });
             this.setState({
                 categories: catArr
-            })
+            });
         })
     }
 
@@ -295,7 +295,7 @@ class ClientCalendar extends Component {
         return (
             <React.Fragment>
                 <CategoryList colors={this.state.categories} />
-                <div className="tail-datetime-calendar">
+                <div className="tail-datetime-calendar container mx-auto">
                     <div className="calendar-heading">
                         <h2 className="text-center">Client {localStorage.userId} Calendar </h2>
                         <p className="text-center">{this.month()}     {this.year()}</p>
@@ -345,8 +345,8 @@ class ClientCalendar extends Component {
                             </table>
                         </div>
                     )}
-                    <button onClick={this.getState.bind(this)}>Get state</button>
                 </div>
+                <Legend />
             </React.Fragment>
         );
     }

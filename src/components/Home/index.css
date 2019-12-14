@@ -122,6 +122,15 @@ body .ant-btn-primary{
 	bottom: 35px;
 }
 
+.mb-40{
+	margin-bottom:40px;
+}
+
+.margin-h2{
+	margin-bottom:35px;
+	margin-top:54px
+}
+
 .p-blue {
 	color: #002d5b;
 }

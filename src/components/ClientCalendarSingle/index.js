@@ -60,11 +60,10 @@ class ClientCalendarSingle extends Component {
       console.log('item in filter', item);
 
       return (
-        <div>
           <Link
             to={`/view-post/${linkMonth}/${this.props.day}/${item.id}`}
             style={clientTitleStyles}
-            className=""
+            className="d-inline-block h-15"
           >
             {item.data().post[0].title}
             <br />
@@ -73,18 +72,12 @@ class ClientCalendarSingle extends Component {
                 ad={item.data().postAd} 
                 clientNotification={item.data().clientNotification} 
             />
-
-            {/* {item.data().clientRead != false ? '' : <img src={require('../assets/not-read.svg')} className="not-read" />}
-                        {
-                            item.data().approved ? <img src={require('../assets/check.svg')} className="check" /> : ''
-                        } */}
           </Link>
-        </div>
       );
     });
 
     return (
-      <div>
+      <div className="h-100">
         <p className="calendar-single-day">{this.props.day}</p>
         {filteredList}
       </div>

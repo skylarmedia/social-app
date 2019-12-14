@@ -83,10 +83,13 @@ class ListMode extends Component {
     );
   }
 
-  componentWillMount() {
+  componentDidMount() {
+    console.log('month', this.props.month);
+    console.log('year', this.props.year);
     this.props.firebase
       .listMode(this.props.user, parseInt(this.props.month), parseInt(this.props.year))
       .then(snapshot => {
+        console.log('Item INUSER ', snapshot)
         snapshot.docs.map(item => {
           let postItem = {};
           postItem['post'] = item.data().post;

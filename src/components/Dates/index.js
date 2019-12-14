@@ -49,7 +49,7 @@ class Dates extends Component {
     this.db = app.functions();
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.props.firebase.getUID(this.props.match.params.id).then(snapshot => {
       snapshot.docs.map(item => {
         this.setState({
