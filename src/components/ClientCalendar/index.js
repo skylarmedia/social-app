@@ -23,16 +23,14 @@ class ClientCalendar extends Component {
         categories: []
     };
 
-    componentWillMount() {
-        console.log(localStorage, 'local storage');
-        this.props.firebase.getUniqueClientPosts(localStorage.getItem('userId'), parseInt(this.props.match.params.month)).then(snapshot => {
-            console.log("FINAL SNAP", snapshot.docs)
+    componentDidMount() {
+        this.props.firebase.getUniqueClientPosts(localStorage.getItem('clientName'), parseInt(this.props.match.params.month)).then(snapshot => {
             this.setState({
                 currentPosts: snapshot.docs
             })
         })
 
-        this.props.firebase.getUserCategories(localStorage.getItem('userId')).then(snapshot => {
+        this.props.firebase.getUserCategories(localStorage.getItem('clientName')).then(snapshot => {
 
             const catArr = [...this.state.categories]
             snapshot.docs.map(category => {

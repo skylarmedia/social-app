@@ -29,49 +29,51 @@ class CalendarSingle extends Component {
 
   render() {
     return (
-      <div className="calendar-popup-wrapper">
+      <React.Fragment>
         <p className="calendar-single-day">{this.props.day}</p>
-        {this.props.posts.map((item, index) => {
-          if (item.data().month == this.props.month) {
-            if (item.data().day === this.props.day) {
-              return (
-                <div class="hidden-calendar-wrapper">
-                  {item.data().draft}
+        <div className="calendar-popup-wrapper">
+          {this.props.posts.map((item, index) => {
+            if (item.data().month == this.props.month) {
+              if (item.data().day === this.props.day) {
+                return (
+                  <div class="hidden-calendar-wrapper">
+                    {item.data().draft}
 
-                  <HiddenCalendarSingle
-                    title={item.data().post[0].title}
-                    facebook={item.data().post[0].facebook}
-                    instagram={item.data().post[0].instagram}
-                    linkedin={item.data().post[0].linkedin}
-                    twitter={item.data().post[0].twitter}
-                    other={item.data().post[0].other}
-                    postDate={item.data().post[0].postDate}
-                    ipDate={item.data().post[0].ipDate}
-                    copy={item.data().post[0].copy}
-                    hashtags={item.data().post[0].postHashTag}
-                    postId={item.id}
-                    clientId={this.props.clientId}
-                    images={item.data().post[0].images}
-                    time={item.data().time}
-                    links={item.data().links}
-                    day={item.data().day}
-                    month={item.data().month}
-                    itemId={item.id}
-                    push={this.props.history}
-                    selectedCategory={item.data().color}
-                    adminRead={item.data().adminRead}
-                    ad={item.data().post[0].ad}
-                    approved={item.data().approved}
-                    clientRead={item.data().clientRead}
-                    clientNotifcation={item.data().clientNotifcation}
-                    adminNotifcation={item.data().adminNotification}
-                  />
-                </div>
-              );
+                    <HiddenCalendarSingle
+                      title={item.data().post[0].title}
+                      facebook={item.data().post[0].facebook}
+                      instagram={item.data().post[0].instagram}
+                      linkedin={item.data().post[0].linkedin}
+                      twitter={item.data().post[0].twitter}
+                      other={item.data().post[0].other}
+                      postDate={item.data().post[0].postDate}
+                      ipDate={item.data().post[0].ipDate}
+                      copy={item.data().post[0].copy}
+                      hashtags={item.data().post[0].postHashTag}
+                      postId={item.id}
+                      clientId={this.props.clientId}
+                      images={item.data().post[0].images}
+                      time={item.data().time}
+                      links={item.data().links}
+                      day={item.data().day}
+                      month={item.data().month}
+                      itemId={item.id}
+                      push={this.props.history}
+                      selectedCategory={item.data().color}
+                      adminRead={item.data().adminRead}
+                      ad={item.data().post[0].ad}
+                      approved={item.data().approved}
+                      clientRead={item.data().clientRead}
+                      clientNotifcation={item.data().clientNotifcation}
+                      adminNotifcation={item.data().adminNotification}
+                    />
+                  </div>
+                );
+              }
             }
-          }
-        })}
-      </div>
+          })}
+        </div>
+      </React.Fragment>
     );
   }
 }
