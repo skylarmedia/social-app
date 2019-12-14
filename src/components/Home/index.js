@@ -240,6 +240,7 @@ class Home extends Component {
                 photoURL:this.state.backgroundUrl
               })
               console.log(`user Obj`, user);
+              alert(this.state.email)
               this.db
                 .collection('users')
                 .doc(this.state.username)

@@ -73,7 +73,10 @@ class SignInFormBase extends Component {
           });
         }
       });
-    });
+    })
+    .catch(err => {
+      console.log(`There was an err ${err}`)
+    })
 
     //   if (value.docs[0].data().admin == 1) {
     //     localStorage.setItem('loggedIn', true);

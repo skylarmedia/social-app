@@ -165,6 +165,13 @@ class Firebase {
   getPostImages = () =>
     this.storage.refFromURL('gs://skylar-social-17190.appspot.com/test123/logo');
 
+    getAllClients  = () => 
+      this.db
+      .collection('users')
+      .get();
+    
+
+
   getArchivedClients = () =>
     this.db
       .collection('users')

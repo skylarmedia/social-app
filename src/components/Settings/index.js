@@ -21,9 +21,11 @@ class Settings extends Component {
       email: '',
       password: '',
       error: null,
-      editClients: [],
+      allClients: [],
       chosenClient: {},
-      editModal: false
+      passwordModal: false,
+      mainPassword: '',
+      passwordTwo: ''
     };
 
     this.reactivateClient = this.reactivateClient.bind(this);
@@ -36,28 +38,26 @@ class Settings extends Component {
   }
 
   componentDidMount() {
-
-    // this.db
-    // .collection('users')
-    // .get()
-    // .then(snapshot => {
-    //   let editClients = [...this.state.editClients];
-    //   snapshot.docs.map(item => {
-    //     editClients.push(item.data());
-    //     this.setState({
-    //       editClients: editClients
-    //     });
-    //   });
-    // });
-
+    this.db
+      .collection('users')
+      .get()
+      .then(snapshot => {
+        let allClients = [...this.state.allClients];
+        snapshot.docs.map(item => {
+          allClients.push(item.data());
+        });
+        this.setState({
+          allClients: allClients
+        });
+      });
 
     this.props.firebase.getArchivedClients().then(snapshot => {
       let archivedClients = [...this.state.clients];
-      snapshot.docs.map(item => {
+      snapshot.docs.filter(item => {
         archivedClients.push(item.data());
-      });
-      this.setState({
-        clients: archivedClients
+        this.setState({
+          clients: archivedClients
+        });
       });
     });
   }
@@ -81,29 +81,24 @@ class Settings extends Component {
     });
   };
 
-  getClientParent = client => {
-    this.setState({
-      chosenClient: client,
-      editModal: true
-    });
+  getClientParent = (client, type) => {
+    if (type === 'password') {
+      this.setState({
+        chosenClient: client,
+        passwordModal: true
+      });
+    } else {
+      this.setState({
+        chosenClient: client,
+        usernameModal: true
+      });
+    }
   };
 
   deleteClient = (id, index) => {
     this.setState({
       deleteClient: id,
       deleteIndex: index
-    });
-  };
-
-  handleOk = e => {
-    this.setState({
-      visible: false
-    });
-  };
-
-  handleCancelEdit = e => {
-    this.setState({
-      editModal: false
     });
   };
 
@@ -156,22 +151,68 @@ class Settings extends Component {
     });
   };
 
+  // Password Methods
+
+  handlePasswordCancel = () => {
+    this.setState({
+      passwordModal: false
+    });
+  };
+
   onChange = event => {
     this.setState({ [event.target.name]: event.target.value });
   };
 
+  changePassword = (e) => {
+    alert(this.state.chosenClient.uid);
+    alert(this.state.mainPassword)
+    e.preventDefault();
+    const changeClientPassword = this.functions.httpsCallable('changeClientPassword');
+    let functionObj = new Object();
+    functionObj.uid = this.state.chosenClient.uid;
+    functionObj.password = this.state.mainPassword;
+    changeClientPassword(functionObj);
+  }
+
   render() {
+    console.log('client uid', this.state);
+    const isValid = () => {
+      if(this.state.mainPassword = this.state.passwordTwo || this.state.mainPassword !== '' || this.state.passwordTwo !== ''){      
+        return false
+      }
+    }
     return (
       <div>
         <Modal
-          visible={this.state.editModal}
-          onOk={this.handleOkEdit}
-          onCancel={this.handleCancelEdit}
+          visible={this.state.passwordModal}
+          onCancel={this.handlePasswordCancel}
+          footer={null}
+          wrapClassName="modal-wrapper message-modal"
         >
-          <p>Some contents...</p>
-          <p>Some contents...</p>
-          <p>Some contents...</p>
+          <h2 className="p-blue f-20 text-center">Change Password</h2>
+          <p className="text-center p-blue">{this.state.chosenClient.name}</p>
+          <p className="text-center p-blue">{this.state.chosenClient.email}</p>
+
+          <Input
+            name="mainPassword"
+            value={this.state.mainPassword}
+            onChange={this.onChange}
+            type="text"
+            placeholder="PASSWORD"
+            className="mb-10 blue-input m-320"
+          />
+          <Input
+            name="passwordTwo"
+            value={this.state.passwordTwo}
+            onChange={this.onChange}
+            type="text"
+            placeholder="VERIFY PASSWORD"
+            className="mb-10 blue-input m-320"
+          /> 
+          <button type="button" onClick={this.changePassword}>Change Password</button>
         </Modal>
+
+        {/*  START DELETE MODAL  */}
         <Modal
           visible={this.state.visible}
           onOk={this.handleOk}
@@ -222,12 +263,16 @@ class Settings extends Component {
             {this.state.error && <span className="color-red">{this.state.error}</span>}
           </div>
         </Modal>
+        {/*  END DELETE MODAL  */}
+
         <h4 className="text-center f-20 mb-20">Settings</h4>
         <div className="row container mx-auto">
           <div className="col-md-12">
             <h2>Edit Client Info</h2>
             <p>Select a client below to re-set their username and/or password.</p>
-            <EditClients clients={this.state.editClients} getClient={this.getClientParent} />
+            {this.state.allClients.map((client, index) => (
+              <EditClients client={client} getClient={this.getClientParent} key={index} />
+            ))}
           </div>
         </div>
         <h4 className="text-center f-20 mb-20">Archived Clients</h4>
@@ -261,43 +306,3 @@ class Settings extends Component {
 }
 
 export default compose(withFirebase(Settings));
-
-{
-  /* <div className="col-sm-3 position-relative" key={index}> */
-}
-{
-  /* <Modal
-                  visible={this.state.visible}
-                  onOk={this.handleOk}
-                  onCancel={this.handleCancel}
-                >
-                  <MainButton
-                    title="Delete Client?"
-                    subtitle="Are you sure you would like to delete this client? This action is permanent and cannot be un-done."
-                    buttonText="Delete"
-                  />
-                </Modal>
-
-                <button
-                  onClick={() => this.showModal()}
-                  className="clear-btn top-delete color-blue f-16"
-                >
-                  x
-                </button>
-                <img src={item.logo} /> */
-}
-
-{
-  /* <p className="text-center">{item.name}</p> */
-}
-{
-  /* <button
-                  onClick={() => this.reactivateClient(item.name, index)}
-                  className="clear-btn text-center color-blue w-100"
-                >
-                  <u>Reactivate Client</u>
-                </button> */
-}
-{
-  /* </div> */
-}

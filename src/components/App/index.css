@@ -14,6 +14,10 @@
 	height:100% !important;
 }
 
+.ant-popover{
+	z-index:500;
+}
+
 .calendar-popup-wrapper{
 	padding-top:3.3px;
 }

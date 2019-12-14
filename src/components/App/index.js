@@ -98,7 +98,7 @@ class App extends Component {
 
 const NoMatch = ({ location }) => <div>Sorry this page at {location.pathname} doesn't exist</div>;
 
-export default withAuthentication(App);
+export default App;
 
 // OLD LAZT LOAD
 // import React, { Suspense } from 'react';
