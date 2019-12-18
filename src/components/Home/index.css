@@ -35,8 +35,12 @@ body .ant-modal-mask {
 	display:none;
 }
 
+#client-list{
+	margin-top:100px;
+}
+
 .gutter-row.client-wrapper.flex-column.d-flex.mb-20{
-	margin-bottom:80px;
+	margin-bottom:120px
 }
 
 .ant-icon svg{

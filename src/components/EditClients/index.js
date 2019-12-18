@@ -12,18 +12,16 @@ const EditClients = props => {
   }
   return (
     <div className="d-flex flex-column align-items-start">
-      <button type="button" onClick={() => togglePopup(true)} className="clear-btn p-0 mb-10">
+      <button type="button" onClick={() => togglePopup(true)} className="clear-btn p-0 mb-10 p-blue">
         <u>{client.name}</u>
       </button>
       <Popover
         content={
           <React.Fragment>
-          <button type="button" onClick={() => runFile('password')}>Change Password</button>
-          <button type="button" onClick={() => runFile('username')}>Change Username</button>
-
+          <button type="button" onClick={() => runFile('password')} className="clear-btn d-block">Change Password</button>
+          <button type="button" onClick={() => runFile('username')} className="clear-btn d-block">Change Username</button>
           </React.Fragment>
           }
-        title="Title"
         trigger="click"
         visible={popupState}
         onVisibleChange={() => togglePopup(false)}

@@ -35,7 +35,8 @@ class EditPost extends Component {
       updatedMessages: false,
       postId: null,
       selectedCategory: null,
-      selectedCategoryName: null
+      selectedCategoryName: null,
+      visible:false
     };
 
     this.handleFacebook = this.handleFacebook.bind(this);
@@ -61,6 +62,12 @@ class EditPost extends Component {
       posts: state
     });
   };
+
+  
+  handleVisibleChange = visible => {
+    this.setState({ visible });
+  };
+
 
   handleHashTags = e => {
     let index = e.target.getAttribute('index');
@@ -437,7 +444,7 @@ class EditPost extends Component {
               onChange={this.handleTitle}
               margin="normal"
             />
-            <div className="d-flex flex-wrap">
+            <div>
               {this.state.posts[index].images.length > 0 ? (
                 <ImagePosts
                   imageSrc={this.state.posts[index].images}
@@ -735,6 +742,8 @@ class EditPost extends Component {
                         content={content}
                         trigger="click"
                         className="position-absolute"
+                        visible={this.state.visible}
+                        onVisibleChange={this.handleVisibleChange}
                       >
                         <Button className="clear-btn clear-message-button position-absolute send-clear">
                           <i className="fas fa-ellipsis-v"></i>

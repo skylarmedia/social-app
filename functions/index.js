@@ -94,6 +94,37 @@ admin.initializeApp(functions.config().firestore);
 //   })
 // })
 
+
+// Clear Client Messages
+exports.changeUsername = functions.https.onCall(data => {
+  console.log('hit here 1');
+  return admin.auth().updateUser(data.uid, {
+    displayName:data.username
+  }).then(() => {
+    console.log('hit here 2');
+    return admin
+    .firestore()
+    .collection('users')
+    .doc(data.oldUsername)
+    .get()
+    .then(doc => {
+      console.log('hit here 3');
+      if(doc && doc.exists){
+        const data = doc.data();
+        return admin.firestore().collection("users").doc(data.username)
+        .set(data)
+        .then(() => {
+          console.log('WE GOT THIS FAR');
+          admin.firestore().collection('users').doc(data.oldUsername).delete()
+        })
+      }
+    })
+  })
+  .catch(err => {
+    return err
+  })
+});
+
 exports.clearClientMessages = functions.https.onCall(data => {
   console.log(`ran clientMessages clientId:${data.id}, postId: ${data.postId}`)
   console.log('post id', data)

@@ -18,16 +18,16 @@ const ImagePosts = props => {
   }
 
   return (
-    <div className="upload-files-wrapper d-flex flex-wrap w-100 justify-content-between">
+    <Row gutter={20} className="upload-files-wrapper">
       {imageSrc &&
         imageSrc.map((item, index) => {
           if (getType(item) == 'video') {
             return (
-              <div key={index}>
+              <Col key={index} span={6}>
                 <video height="200" width="200" controls>
                   <source src={item} />
                 </video>
-              </div>
+              </Col>
             );
           } else {
 
@@ -35,13 +35,13 @@ const ImagePosts = props => {
               backgroundImage:`url(${item})`
             }
             return (
-              <Row gutter={16} className="image-render position-relative" key={index} style={styles}>
+              <Col span={6} className="image-render position-relative" key={index} style={styles}>
                 {removeImage && <button type="button" className="position-absolute delete-abs clear-btn" onClick={() => {removeImage(index)}}>X</button>}
-              </Row>
+              </Col>
             );
           }
         })}
-    </div>
+    </Row>
   );
 };
 

@@ -96,14 +96,15 @@ body .ant-select-selection__placeholder{
 }
 
 .add-date-btn {
-	background: #ef463b;
-	text-transform: uppercase;
-	color: #fff;
-	border: 2px solid #ef463b;
-	height: 48px;
-	width: 149px;
-	border-radius: 11px;
-	transition:all 0.3s ease-in-out;
+    background: #ef463b;
+    text-transform: uppercase;
+    color: #fff;
+    border: 2px solid #ef463b;
+    height: 48px;
+    min-width: 149px;
+    border-radius: 11px;
+    transition: all 0.3s ease-in-out;
+    padding: 0 15px;
 }
 
 .anticon-down{
@@ -184,7 +185,7 @@ select {
 }
 
 .inner-date-wrapper .ant-select-selection--single .ant-select-selection__rendered{
-	height:37px;
+	/* height:37px; */
 }
 
 .inner-date-wrapper .ant-select-selection--single{

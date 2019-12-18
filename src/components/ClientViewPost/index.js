@@ -15,7 +15,7 @@ class ClientViewPost extends Component {
     super(props);
 
     this.state = {
-      userId: localStorage.userId,
+      userId: localStorage.getItem('clientName'),
       posts: [],
       media: [],
       hashtags: [],
@@ -39,7 +39,7 @@ class ClientViewPost extends Component {
     this.functions = app.functions();
   }
 
-  componentWillMount() {
+  componentDidMount() {
     // Get Post
     app
       .firestore()
@@ -63,7 +63,7 @@ class ClientViewPost extends Component {
     // Get Messages
     this.db
       .collection('chats')
-      .doc(localStorage.getItem('userId'))
+      .doc(localStorage.getItem('clientName'))
       .collection('messages')
       .where('postId', '==', this.props.match.params.id)
       .onSnapshot(snap => {
@@ -201,11 +201,11 @@ class ClientViewPost extends Component {
       adminRead: false
     });
 
-    this.props.firebase.adminSendMessage(localStorage.userId, month, day, title, message, logo);
+    this.props.firebase.adminSendMessage(localStorage.getItem('clientName'), month, day, title, message, logo);
   };
 
   componentWillUnmount() {
-    this.props.firebase.editReadAdmin(localStorage.userId, this.state.postId, this.state.adminRead);
+    this.props.firebase.editReadAdmin(localStorage.getItem('clientName'), this.state.postId, this.state.adminRead);
   }
 
   setMessage = e => {
@@ -294,7 +294,7 @@ class ClientViewPost extends Component {
                     />
                   </div>
                 )}
-                <button onClick={this.toggleChat} type="button">
+                <button onClick={this.toggleChat} type="button" type="button" className="clear-btn">
                   <img src={require('../assets/chatbox.svg')} />
                 </button>
               </div>

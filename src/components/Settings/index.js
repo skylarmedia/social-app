@@ -25,7 +25,8 @@ class Settings extends Component {
       chosenClient: {},
       passwordModal: false,
       mainPassword: '',
-      passwordTwo: ''
+      passwordTwo: '',
+      username:''
     };
 
     this.reactivateClient = this.reactivateClient.bind(this);
@@ -163,26 +164,72 @@ class Settings extends Component {
     this.setState({ [event.target.name]: event.target.value });
   };
 
-  changePassword = (e) => {
-    alert(this.state.chosenClient.uid);
-    alert(this.state.mainPassword)
+  changePassword = e => {
     e.preventDefault();
     const changeClientPassword = this.functions.httpsCallable('changeClientPassword');
     let functionObj = new Object();
     functionObj.uid = this.state.chosenClient.uid;
     functionObj.password = this.state.mainPassword;
     changeClientPassword(functionObj);
+    this.setState({
+      passwordModal: false
+    });
+  };
+
+  //  Username Methods
+
+  handleUsernameCancel = () => {
+    this.setState({
+      usernameModal: false
+    });
+  };
+
+  changeUser = (e) => {
+    e.preventDefault();
+    const changeUsername = this.functions.httpsCallable('changeUsername');
+    let functionObj = new Object();
+    functionObj.uid = this.state.chosenClient.uid;
+    functionObj.username = this.state.username;
+    functionObj.oldUsername = this.state.chosenClient.name;
+    // console.log('chosen client', this.state.chosenClient);
+    changeUsername(functionObj);
+    this.setState({
+      usernameModal: false,
+    });
   }
 
   render() {
     console.log('client uid', this.state);
     const isValid = () => {
-      if(this.state.mainPassword = this.state.passwordTwo || this.state.mainPassword !== '' || this.state.passwordTwo !== ''){      
-        return false
+      if (
+        (this.state.mainPassword =
+          this.state.passwordTwo || this.state.mainPassword !== '' || this.state.passwordTwo !== '')
+      ) {
+        return false;
       }
-    }
+    };
     return (
       <div>
+        {/* START PASSWORD MODAL  */}
+        <Modal
+          visible={this.state.usernameModal}
+          onCancel={this.handleUsernameCancel}
+          footer={null}
+          wrapClassName="modal-wrapper message-modal"
+        >
+          <h2 className="p-blue f-20 text-center">Change Password</h2>
+          <p className="text-center p-blue">{this.state.chosenClient.name}</p>
+          <Input
+            name="username"
+            value={this.state.username}
+            onChange={this.onChange}
+            type="text"
+            placeholder="New Username"
+            className="mb-10 blue-input m-320"
+          />
+          <button type="button" className="add-date-btn mt-20" onClick={this.changeUser}>Change Username</button>
+        </Modal>
+        {/* START PASSWORD MODAL  */}
         <Modal
           visible={this.state.passwordModal}
           onCancel={this.handlePasswordCancel}
@@ -192,7 +239,6 @@ class Settings extends Component {
           <h2 className="p-blue f-20 text-center">Change Password</h2>
           <p className="text-center p-blue">{this.state.chosenClient.name}</p>
           <p className="text-center p-blue">{this.state.chosenClient.email}</p>
-
           <Input
             name="mainPassword"
             value={this.state.mainPassword}
@@ -208,9 +254,12 @@ class Settings extends Component {
             type="text"
             placeholder="VERIFY PASSWORD"
             className="mb-10 blue-input m-320"
-          /> 
-          <button type="button" onClick={this.changePassword}>Change Password</button>
+          />
+          <button type="button" onClick={this.changePassword} className="clear-btn add-date-btn">
+            Change Password
+          </button>
         </Modal>
+        {/* END PASSWORD MODAL  */}
 
         {/*  START DELETE MODAL  */}
         <Modal
@@ -265,17 +314,19 @@ class Settings extends Component {
         </Modal>
         {/*  END DELETE MODAL  */}
 
-        <h4 className="text-center f-20 mb-20">Settings</h4>
+        <h4 className="text-center f-20 mb-20 p-blue mt-35">Settings</h4>
         <div className="row container mx-auto">
           <div className="col-md-12">
-            <h2>Edit Client Info</h2>
-            <p>Select a client below to re-set their username and/or password.</p>
+            <h2 className="p-blue">Edit Client Info</h2>
+            <p className="p-blue">
+              Select a client below to re-set their username and/or password.
+            </p>
             {this.state.allClients.map((client, index) => (
               <EditClients client={client} getClient={this.getClientParent} key={index} />
             ))}
           </div>
         </div>
-        <h4 className="text-center f-20 mb-20">Archived Clients</h4>
+        <h4 className="text-center f-20 mb-20 mt-35">Archived Clients</h4>
         <div className="row container mx-auto settings-client">
           {this.state.clients.map((item, index) => {
             return (
