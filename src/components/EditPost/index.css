@@ -85,6 +85,26 @@
     margin-left:20px;
 }
 
+.edit-post .edit-form-main-wrapper .edit-btn-wrapper{
+    display:none;
+}
+
+.edit-post .edit-form-main-wrapper:last-child  .edit-btn-wrapper{
+    display:flex;
+    flex-wrap:wrap;
+    width: 100%;
+    margin-top:50px;
+    justify-content: center;
+}
+
+.blue-border{
+    margin-bottom:10px;
+}
+
+.edit-btn-wrapper .add-date-btn{
+    margin-top:0;
+}
+
 .inner-chat-log textarea{
     margin: 0;
     height: 46px;

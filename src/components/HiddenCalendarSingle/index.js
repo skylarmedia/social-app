@@ -124,6 +124,7 @@ class HiddenCalendarSingle extends Component {
             {this.props.other === true && <p>Other</p>}
           </div>
           <p className="text-center">
+            {this.props.postTime}
             {date.toString().split('00')[0]} @ {this.props.ipDate}
           </p>
           <div className="d-flex">
@@ -152,7 +153,7 @@ class HiddenCalendarSingle extends Component {
               to={`/edit-post/${this.props.postId}/${this.props.clientId}`}
               className="save-draft-btn color-red"
             >
-              VIEW POST
+              EDIT POST
             </Link>
           </div>
         </div>

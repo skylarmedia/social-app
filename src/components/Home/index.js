@@ -6,7 +6,7 @@ import 'firebase/storage';
 import { withAuthorization } from '../Session';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import './index.css';
-import { Modal, Button } from 'antd';
+import { Modal } from 'antd';
 import ClientImage from '../ClientImage';
 import { Row, Col } from 'antd';
 import { Checkbox } from 'antd';

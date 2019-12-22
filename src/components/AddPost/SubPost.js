@@ -13,9 +13,12 @@ import { Picker } from 'emoji-mart';
 import { Collapse } from 'antd';
 import { Select } from 'antd';
 import ImagePosts from '../ImagePosts';
+import 'antd/dist/antd.css';
+import { Upload, Button, Icon } from 'antd';
 import { Input } from 'antd';
 const { TextArea } = Input;
 const { Panel } = Collapse;
+
 
 class SubPost extends Component {
   constructor(props) {
@@ -78,7 +81,6 @@ class SubPost extends Component {
       const metadata = {
         contentType: file.type
       };
-
       storageRef
         .child('images/' + file.name)
         .put(file, metadata)
@@ -300,11 +302,11 @@ class SubPost extends Component {
     ));
   }
 
-  removeImageParent = (index) => {
+  removeImageParent = index => {
     this.setState({
       metaImageFiles: this.state.metaImageFiles.filter((_, i) => i !== index)
     });
-  }
+  };
 
   handleLinks(i, event) {
     let values = [...this.state.values];
@@ -408,13 +410,8 @@ class SubPost extends Component {
     }
   };
 
- 
-
   render() {
-
-    const genExtra = () => (
-      <img src={require('../assets/arrow.svg')} />
-    );
+    const genExtra = () => <img src={require('../assets/arrow.svg')} />;
     return (
       <div className="d-flex row">
         <div className="col-sm-6">
@@ -433,6 +430,11 @@ class SubPost extends Component {
               <div className="d-flex flex-wrap">
                 <ImagePosts imageSrc={this.state.metaImageFiles} className="upload-files-wrapper" removeImage={this.removeImageParent}/>
               </div>
+              {/* <Upload {...props2}>
+                <Button>
+                  <Icon type="upload" /> Upload
+                </Button>
+              </Upload> */}
               <input type="file" multiple onChange={this.addFile} id="render-input" />
             </div>
           ) : (
@@ -533,11 +535,7 @@ class SubPost extends Component {
           </div>
           <div className="date-button-wrapper d-flex row justify-content-between">
             <div id="choose-date-wrapper" className="col-sm-4">
-              <Collapse
-
-              
-              
-              >
+              <Collapse>
                 <Panel header={this.state.ipDate} extra={genExtra()} showArrow={false}>
                   <DatePicker
                     placeholderText="Post Date"
@@ -663,7 +661,7 @@ class SubPost extends Component {
                       <img src={require('../assets/select.svg')} />
                     </button>
                   ) : (
-                    <button type="button" onClick={() => this.removeClick(i)}>
+                    <button type="button" onClick={() => this.removeClick(i)} className="clear-btn">
                       <img src={require('../assets/x.png')} />
                     </button>
                   )}

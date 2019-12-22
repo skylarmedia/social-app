@@ -91,6 +91,20 @@
 	margin-top: 48px;
 }
 
+.ant-upload-select-picture-card i {
+  font-size: 32px;
+  color: #999;
+}
+
+/* .ant-row.upload-files-wrapper{
+	width:100%;
+} */
+
+.ant-upload-select-picture-card .ant-upload-text {
+  margin-top: 8px;
+  color: #666;
+}
+
 .add-post-heading.heading {
 	margin-top: 40px;
 	margin-bottom: 110px;
@@ -540,12 +554,18 @@ label{
 }
 
 .outter-modal{
-	width:60% !important;
+	width:1140px !important;
 }
 
 .outter-modal .ant-modal-close{
 	display:none;
 }
+
+.ant-modal-body .upload-files-wrapper {
+    margin-top: 0;
+}
+
+.ant-modal-body
 
 .hidden-post .approval-wrapper {
 	margin-top: 0;

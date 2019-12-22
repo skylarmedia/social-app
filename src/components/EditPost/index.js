@@ -15,6 +15,8 @@ import { Collapse } from 'antd';
 import { Popover, Button } from 'antd';
 import app from 'firebase/app';
 import ImagePosts from '../ImagePosts';
+import { Row, Col } from 'antd';
+import { Redirect } from 'react-router-dom';
 const { TextArea } = Input;
 const { Panel } = Collapse;
 
@@ -36,7 +38,7 @@ class EditPost extends Component {
       postId: null,
       selectedCategory: null,
       selectedCategoryName: null,
-      visible:false
+      visible: false
     };
 
     this.handleFacebook = this.handleFacebook.bind(this);
@@ -63,11 +65,9 @@ class EditPost extends Component {
     });
   };
 
-  
   handleVisibleChange = visible => {
     this.setState({ visible });
   };
-
 
   handleHashTags = e => {
     let index = e.target.getAttribute('index');
@@ -150,7 +150,7 @@ class EditPost extends Component {
             selectedCategoryName: item.data().selectedCategoryName,
             approved: item.data().approved,
             currentMonth: item.data().month,
-            curretYear: item.data().year,
+            currentYear: item.data().year,
             postId: item.id
           });
         }
@@ -429,6 +429,33 @@ class EditPost extends Component {
     // }));
   }
 
+  saveDraft = () => {
+    console.log('save draft props', this.props)
+    this.db
+    .collection('users')
+    .doc(this.props.match.params.postId)
+    .collection('posts')
+    .doc(this.props.match.params.clientId)  
+    .update({
+      draft:true
+    })
+    .then(() => {
+      this.props.history.push(`/calendar/${this.state.currentYear}/${this.state.currentMonth}/${this.props.match.params.postId}`)
+    })
+  }
+
+  deletePost = () => {
+    this.db
+    .collection('users')
+    .doc(this.props.match.params.postId)
+    .collection('posts')
+    .doc(this.props.match.params.clientId)
+    .delete()
+    .then(() => {
+      this.props.history.push(`/calendar/${this.state.currentYear}/${this.state.currentMonth}/${this.props.match.params.postId}`)
+    })
+  }
+
   render() {
     console.log('selected category', this.state.selectedCategory);
     const posts = this.state.posts.map((post, index) => {
@@ -680,17 +707,34 @@ class EditPost extends Component {
                         <img src={require('../assets/select.svg')} />
                       </button>
                     ) : (
-                      <input type="button" value="remove" onClick={() => this.removeClick(i)} />
+                      <button
+                        type="button"
+                        onClick={() => this.removeClick(i)}
+                        className="clear-btn"
+                      >
+                        <img src={require('../assets/x.png')} />
+                      </button>
                     )}
                   </div>
                 </div>
               ))}
             </div>
-
           </div>
-          <button onClick={this.submitEdits} className="add-date-btn">
+          <Row className="edit-btn-wrapper" gutter={10} row-flex>
+            <Col>
+            <button onClick={this.saveDraft} className="save-draft-btn color-red">
+              SAVE DRAFT
+            </button>
+            </Col>
+            <Col>
+            <button onClick={this.submitEdits} className={'add-date-btn'}>
               SAVE
             </button>
+            </Col>
+            <Col span={24} className="mt-30 text-center">
+                <button type="button" className="p-blue" className="clear-btn" onClick={this.deletePost}><u>Delete Post</u></button>
+            </Col>
+          </Row>
         </div>
       );
     });
@@ -718,56 +762,58 @@ class EditPost extends Component {
               checked={this.state.approved}
               id="approvePost"
             />
-            <label className="color-blue" for="approvePost">APPROVE POST</label>
+            <label className="color-blue" for="approvePost">
+              APPROVE POST
+            </label>
           </div>
           {posts}
-          <div className="fixed-bottom container position_relative col-md-4">
-            {this.state.showChat && (
-              <div>
-                <div className="d-flex flex-column align-items-end">
-                  <div className="inner-chat-log bg-white position-relative">
-                    <AdminChatLog
-                      deletePost={this.deletePostParent}
-                      adminClient={this.props.match.params.postId}
-                      messages={this.state.messages}
+        </div>
+        <div className="fixed-bottom container position_relative col-md-4">
+          {this.state.showChat && (
+            <div>
+              <div className="d-flex flex-column align-items-end">
+                <div className="inner-chat-log bg-white position-relative">
+                  <AdminChatLog
+                    deletePost={this.deletePostParent}
+                    adminClient={this.props.match.params.postId}
+                    messages={this.state.messages}
+                  />
+                  <form onSubmit={this.submitMessage} className="d-flex mt-30 position-relative">
+                    <textarea
+                      onChange={this.setMessage}
+                      value={this.state.message}
+                      onKeyDown={this.captureKey}
                     />
-                    <form onSubmit={this.submitMessage} className="d-flex mt-30 position-relative">
-                      <textarea
-                        onChange={this.setMessage}
-                        value={this.state.message}
-                        onKeyDown={this.captureKey}
-                      />
-                      <Popover
-                        placement="topRight"
-                        content={content}
-                        trigger="click"
-                        className="position-absolute"
-                        visible={this.state.visible}
-                        onVisibleChange={this.handleVisibleChange}
-                      >
-                        <Button className="clear-btn clear-message-button position-absolute send-clear">
-                          <i className="fas fa-ellipsis-v"></i>
-                        </Button>
-                      </Popover>
-                    </form>
-                    <button
-                      type="button"
-                      onClick={this.toggleIcon.bind(this)}
-                      className="clear-btn position-absolute happy-btn"
+                    <Popover
+                      placement="topRight"
+                      content={content}
+                      trigger="click"
+                      className="position-absolute"
+                      visible={this.state.visible}
+                      onVisibleChange={this.handleVisibleChange}
                     >
-                      <i className="fas fa-smile-beam"></i>
-                    </button>
-                  </div>
-                  <span className={this.state.showIcons ? 'hidden' : 'not-hidden'}>
-                    <Picker onSelect={this.addEmoji} />
-                  </span>
+                      <Button className="clear-btn clear-message-button position-absolute send-clear">
+                        <i className="fas fa-ellipsis-v"></i>
+                      </Button>
+                    </Popover>
+                  </form>
+                  <button
+                    type="button"
+                    onClick={this.toggleIcon.bind(this)}
+                    className="clear-btn position-absolute happy-btn"
+                  >
+                    <i className="fas fa-smile-beam"></i>
+                  </button>
                 </div>
+                <span className={this.state.showIcons ? 'hidden' : 'not-hidden'}>
+                  <Picker onSelect={this.addEmoji} />
+                </span>
               </div>
-            )}
-            <button onClick={this.toggleChat} type="button" className="clear-btn">
-              <img src={require('../assets/chatbox.svg')} />
-            </button>
-          </div>
+            </div>
+          )}
+          <button onClick={this.toggleChat} type="button" className="clear-btn">
+            <img src={require('../assets/chatbox.svg')} />
+          </button>
         </div>
       </div>
     );

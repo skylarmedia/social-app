@@ -2,10 +2,10 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 const Legend = props => {
-  console.log('SELECTED CATEGORES', props.selectedCategories)
+  console.log('SELECTED CATEGORES', props.selectedCategories);
   let unassignCategoryChild = (name, index) => {
-    props.removeCategory(name, index)
-  }
+    props.removeCategory(name, index);
+  };
 
   return (
     <div>
@@ -14,23 +14,41 @@ const Legend = props => {
       <section className="d-flex justify-content-between container mx-auto">
         <div className="row d-flex flex-column">
           <h4>CATEGORIES</h4>
+          {props.clientCategories && (
+            <div>
+              {props.clientCategories.map((item, index) => {
+                let categoryStyle = {
+                  background: item.color
+                };
+
+                return (
+                  <div key={index}>
+                    <div>
+                      <div className="category-color" style={categoryStyle}>
+                        {item.name}
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          )}
           {localStorage.getItem('skylarAdmin') && (
             <Link
-            to={{
-              pathname: `/assign-categories/${props.year}/${props.month}/${props.client}`,
-              state:{
-                getClient:props.client
-              }
-            }}
-            class="assign-link"
-          >
-            Assign Categories
-          </Link>
+              to={{
+                pathname: `/assign-categories/${props.year}/${props.month}/${props.client}`,
+                state: {
+                  getClient: props.client
+                }
+              }}
+              class="assign-link"
+            >
+              Assign Categories
+            </Link>
           )}
           <div>
             {props.selectedCategories &&
               props.selectedCategories.map((item, index) => {
-            
                 let categoryStyle = {
                   background: item.color
                 };

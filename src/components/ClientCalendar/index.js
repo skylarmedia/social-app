@@ -294,7 +294,7 @@ class ClientCalendar extends Component {
 
         return (
             <React.Fragment>
-                <CategoryList colors={this.state.categories} />
+                {/* <CategoryList colors= /> */}
                 <div className="tail-datetime-calendar container mx-auto">
                     <div className="calendar-heading">
                         <h2 className="text-center">Client {localStorage.userId} Calendar </h2>
@@ -346,7 +346,7 @@ class ClientCalendar extends Component {
                         </div>
                     )}
                 </div>
-                <Legend />
+                <Legend clientCategories={this.state.categories}/>
             </React.Fragment>
         );
     }

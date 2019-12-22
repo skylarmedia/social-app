@@ -4,7 +4,6 @@ import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import './index.css';
 import { Input } from 'antd';
-import TextField from '@material-ui/core/TextField';
 import { withFirebase } from '../Firebase';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';

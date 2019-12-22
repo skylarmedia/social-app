@@ -58,6 +58,8 @@ class ClientViewPost extends Component {
           clientRead: res.data().clientRead,
           approved: res.data().approved
         });
+      }, () => {
+        console.log(this.state)
       });
 
     // Get Messages
@@ -259,6 +261,11 @@ class ClientViewPost extends Component {
                   <p className="col-sm-3">POST DATE</p>
                   <p className="col-sm-3">POST TIME</p>
                   <p className="col-sm-3">POST MEDIUM</p>
+                </div>
+                <div className="row">
+                  <p className="col-sm-3">{item.ipDate}</p>
+                  <p className="col-sm-3">POST TIME1</p>
+                  <p className="col-sm-3">POST MEDIUM1</p>
                 </div>
                 <div className="times-border row">
                   <p className="col-sm-3">POST DATE</p>

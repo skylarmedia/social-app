@@ -61,7 +61,6 @@ class Calendar extends React.Component {
   }
 
   componentDidMount() {
-    console.log('this props calendar', this.props);
     this.db
       .collection('users')
       .doc(this.props.match.params.clientId)
@@ -102,10 +101,6 @@ class Calendar extends React.Component {
         clientId: this.props.match.params.clientId
       });
     });
-
-    // this.setState({
-    //   authUser: JSON.parse(localStorage.getItem('authUser')).email
-    // });
   }
 
   daysInMonth = () => {
@@ -456,7 +451,7 @@ class Calendar extends React.Component {
                 onChange={this.handleSwitch}
               />
             </div>
-            {this.state.isLoading ? (
+             (
               <div className="tail-datetime-calendar">
                 <div
                   className={this.state.grid == true ? 'container calendar-navi mx-auto' : 'hidden'}
@@ -483,10 +478,6 @@ class Calendar extends React.Component {
                     year={this.props.match.params.year}
                   />
                 )}
-              </div>
-            ) : (
-              <div className="progress-wrapper">
-                <CircularProgress />
               </div>
             )}
           </div>
