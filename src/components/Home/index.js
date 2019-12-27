@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { compose } from 'recompose';
 import 'firebase/storage';
 import { withAuthorization } from '../Session';
-import CircularProgress from '@material-ui/core/CircularProgress';
+import { Skeleton } from 'antd';
 import './index.css';
 import { Modal } from 'antd';
 import ClientImage from '../ClientImage';
@@ -431,7 +431,7 @@ class Home extends Component {
                 style={backgroundUrlStyle}
               >
                 <input type="file" onChange={this.addFile} id="add-file" />
-                {this.state.loadSpinner === true ? <CircularProgress style={progressStyles} /> : ''}
+                {this.state.loadSpinner === true ? <Skeleton active /> : ''}
               </div>
               <div className="mb-20">
                 <Checkbox

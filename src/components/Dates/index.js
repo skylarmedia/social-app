@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { withFirebase } from '../Firebase';
 import { compose } from 'recompose';
 import Calendar from '../Calendar';
-import CircularProgress from '@material-ui/core/CircularProgress';
+import { Skeleton } from 'antd';
 import './index.css';
 import CalendarImage from '../CalendarImage';
 import { Modal } from 'antd';
@@ -452,7 +452,7 @@ class Dates extends Component {
       </div>
     ) : (
       <div className="progress-wrapper">
-        <CircularProgress />
+        <Skeleton active />
       </div>
     );
   }

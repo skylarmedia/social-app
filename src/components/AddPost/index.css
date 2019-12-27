@@ -515,8 +515,6 @@ input.blue-input {
 	margin-bottom: 10px;
 }
 
-.sub-post-form {
-}
 
 .main-edit-form .ant-select-selection__placeholder {
     top: 50%;
@@ -589,6 +587,10 @@ label{
 	background: #f0f0f0;
 	padding-top: 108px;
 	padding-bottom: 40.5px;
+}
+
+.edit-form-main-wrapper:nth-child(odd){
+	background: #f0f0f0;
 }
 
 .ant-select-selection--single {

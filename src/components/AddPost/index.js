@@ -270,7 +270,7 @@ class AddPost extends Component {
         </div>
         {i == 1 && (
           <div className="remove-wrapper container">
-            <button type="button" onClick={() => this.removePlatform(i)} className="clear-btn">
+            <button type="button" onClick={() => this.removePlatform(i)} className="clear-btn d-flex align-items-center">
               <img src={require('../assets/x.png')} />
               <p className="color-red blue-p">Remove Platform</p>
             </button>
@@ -334,7 +334,7 @@ class AddPost extends Component {
                 <div className="add-plat-form-button">
                   <button
                     onClick={() => this.addForm()}
-                    className="clear-btn add-platform-btn"
+                    className="clear-btn add-platform-btn d-flex align-items-center"
                     type="button"
                   >
                     <img src={require('../assets/select.svg')} />

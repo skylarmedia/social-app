@@ -1,5 +1,5 @@
 import React from 'react';
-import TextField from '@material-ui/core/TextField';
+import { Input } from 'antd';
 
 const AdminViewPostContent = props => {
 
@@ -19,26 +19,17 @@ const AdminViewPostContent = props => {
 
     return (
         <React.Fragment>
-            <TextField
+            <Input
                 id="outlined-name"
-                label="Title"
                 value={props.post.title}
-                margin="normal"
-                variant="outlined"
-                InputProps={{
-                    readOnly: true,
-                }}
+                className="blue-input"
+                placeholder="TITLE"
             />
             <br />
-            <TextField
+            <Input
                 id="outlined-name"
-                label="Copy"
                 value={props.post.copy}
-                margin="normal"
-                variant="outlined"
-                InputProps={{
-                    readOnly: true,
-                }}
+                placeholder="COPY"
             />
             <br />
             {renderHashtags}

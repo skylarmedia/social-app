@@ -184,6 +184,13 @@ select {
     color: #000;
 }
 
+.new-home-bg{
+	margin-top:50px;
+}
+
+.main-form-wrapper .upload-files-wrapper{
+	width:100%;
+}
 .inner-date-wrapper .ant-select-selection--single .ant-select-selection__rendered{
 	/* height:37px; */
 }

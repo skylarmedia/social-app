@@ -6,15 +6,12 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { withFirebase } from '../Firebase';
 import moment from 'moment';
-import TextField from '@material-ui/core/TextField';
 import EmojiField from 'emoji-picker-textfield';
 import 'emoji-mart/css/emoji-mart.css';
 import { Picker } from 'emoji-mart';
 import { Collapse } from 'antd';
-import { Select } from 'antd';
 import ImagePosts from '../ImagePosts';
 import 'antd/dist/antd.css';
-import { Upload, Button, Icon } from 'antd';
 import { Input } from 'antd';
 const { TextArea } = Input;
 const { Panel } = Collapse;
@@ -421,8 +418,6 @@ class SubPost extends Component {
             name="title"
             value={this.state.title}
             onChange={this.handleChange}
-            margin="normal"
-            variant="outlined"
           />
 
           {this.state.metaImageFiles.length > 0 ? (
@@ -455,13 +450,14 @@ class SubPost extends Component {
             </div>
           )}
           <div className="copy-wrapper">
-            <TextField
-              className="outlined-copy"
-              label="Copy"
+            <TextArea
+              className="blue-input mt-30"
+              placeholder="COPY"
               name="copy"
               value={this.state.copy}
               onChange={this.handleChange}
               margin="normal"
+              rows={6}
               variant="outlined"
             />
             <button onClick={this.openIcons} className="smile-wrapper clear-btn" type="button">

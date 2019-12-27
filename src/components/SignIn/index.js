@@ -5,8 +5,7 @@ import { connect } from 'react-redux';
 import './index.css';
 import { Input } from 'antd';
 import { withFirebase } from '../Firebase';
-import Button from '@material-ui/core/Button';
-import CircularProgress from '@material-ui/core/CircularProgress';
+import { Spin, Icon } from 'antd';
 
 import app from 'firebase/app';
 
@@ -20,6 +19,8 @@ const SignInPage = () => (
     </div>
   </React.Fragment>
 );
+
+const antIcon = <Icon type="loading" style={{ fontSize: 24 }} spin />;
 
 const INITIAL_STATE = {
   email: '',
@@ -47,16 +48,14 @@ class SignInFormBase extends Component {
   onSubmit = event => {
     event.preventDefault();
     this.setState({
-      loading: false
+      loading: true
     });
     const { email, password } = this.state;
     this.props.firebase.doSignInWithEmailAndPassword(email, password).then(value => {
-      console.log(`value in console: ${value}`);
       const getUid = this.functions.httpsCallable('getUid');
       const currentEmail = new Object();
       currentEmail.email = email;
       getUid(currentEmail).then(res => {
-        console.log('RES PROPS', res);
         
         if (res.data.customClaims.skylarAdmin === true) {
           localStorage.clear();
@@ -72,6 +71,11 @@ class SignInFormBase extends Component {
           });
         }
       });
+    })
+    .finally(() => {
+      this.setState({
+        loading:false
+      })
     })
     .catch(err => {
       console.log(`There was an err ${err}`)
@@ -117,7 +121,7 @@ class SignInFormBase extends Component {
     return (
       <React.Fragment>
         <img src={require('../assets/skylar_Icon_wingPortion.svg')} id="wing-logo" />
-        Version.8
+        Version.12
         <form onSubmit={this.onSubmit} className="d-flex flex-column align-items-center">
           <Input
             name="email"
@@ -141,19 +145,18 @@ class SignInFormBase extends Component {
             placeholder="PASSWORD"
           />
           <div id="sign-in-button-wrap">
-            <Button
+            <button
               disabled={isInvalid}
               type="submit"
-              variant="contained"
-              color="primary"
+              className="add-date-btn"
               id="sign-in-button"
             >
               Sign In
-            </Button>
+            </button>
           </div>
           {error && <p>{error.message}</p>}
         </form>
-        {this.state.loading && <CircularProgress />}
+        {this.state.loading && <Spin indicator={antIcon} />}
       </React.Fragment>
     );
   }

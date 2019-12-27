@@ -18,16 +18,16 @@ const ImagePosts = props => {
   }
 
   return (
-    <Row gutter={20} className="upload-files-wrapper">
+    <div gutter={20} className="upload-files-wrapper test">
       {imageSrc &&
         imageSrc.map((item, index) => {
           if (getType(item) == 'video') {
             return (
-              <Col key={index} span={6}>
+              <div key={index}>
                 <video height="200" width="200" controls>
                   <source src={item} />
                 </video>
-              </Col>
+              </div >
             );
           } else {
 
@@ -41,7 +41,7 @@ const ImagePosts = props => {
             );
           }
         })}
-    </Row>
+    </div>
   );
 };
 

@@ -5,7 +5,6 @@ import './calendar.css';
 import CalendarSingle from '../CalendarSingle';
 import { withFirebase } from '../Firebase';
 import { compose } from 'redux';
-import CircularProgress from '@material-ui/core/CircularProgress';
 import { Switch } from 'antd';
 import Legend from '../Legend';
 import ListMode from '../ListMode';

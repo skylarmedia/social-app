@@ -3,8 +3,6 @@ import { withFirebase } from '../Firebase';
 import { connect } from 'react-redux';
 import { compose } from 'recompose';
 
-
-
 class ChatBox extends Component {
   constructor(props) {
     super(props);

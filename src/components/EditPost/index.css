@@ -65,14 +65,11 @@
 
 .edit-form-main-wrapper{
     padding-top: 130px;
+    padding-bottom:50px;
 }
 
 .edit-form-main-wrapper .ant-time-picker{
     width:100%;
-}
-
-.edit-social-icons{
-    margin-top:31px;
 }
 
 .edit-social-icons label:nth-child(2){

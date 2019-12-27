@@ -13,28 +13,28 @@ class CalendarImage extends Component {
   }
 
   componentWillMount() {
-    if (this.props.admin == false) {
-      let functionObj = new Object();
-      const readMonths = this.db.httpsCallable('readMonths');
-      functionObj.userId = this.props.userId
-      functionObj.month = this.props.month
-      readMonths(functionObj).then(res => {
-        console.log('res', res)
-        // this.setState({
-        //   size: res.data._size
-        // });
-      });
-    }else{
-      let functionObj = new Object();
-      const readMonthsAdmin = this.db.httpsCallable('readMonthsAdmin');
-      functionObj.userId = this.props.userId
-      functionObj.month = this.props.month
-      readMonthsAdmin(functionObj).then(res => {
-        this.setState({
-          size: res.data._size
-        });
-      });
-    }
+    // if (this.props.admin == false) {
+    //   let functionObj = new Object();
+    //   const readMonths = this.db.httpsCallable('readMonths');
+    //   functionObj.userId = this.props.userId
+    //   functionObj.month = this.props.month
+    //   readMonths(functionObj).then(res => {
+    //     console.log('res', res)
+    //     // this.setState({
+    //     //   size: res.data._size
+    //     // });
+    //   });
+    // }else{
+    //   let functionObj = new Object();
+    //   const readMonthsAdmin = this.db.httpsCallable('readMonthsAdmin');
+    //   functionObj.userId = this.props.userId
+    //   functionObj.month = this.props.month
+    //   readMonthsAdmin(functionObj).then(res => {
+    //     this.setState({
+    //       size: res.data._size
+    //     });
+    //   });
+    // }
   }
 
   render() {

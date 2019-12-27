@@ -7,7 +7,7 @@ import CustomCalendarComponent from '../CustomCalendarComponent';
 import TimePicker from 'antd/es/time-picker';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
-import TextField from '@material-ui/core/TextField';
+import { Input } from 'antd';
 import { Checkbox } from 'antd';
 
 class ListMode extends Component {
@@ -152,10 +152,9 @@ class ListMode extends Component {
                       )}
                     </div>
                     <div class="w-100">
-                      <TextField
-                        className="w-100 margin-border"
+                      <Input
+                        className="w-100 margin-border blue-input"
                         value="POST COPY"
-                        margin="normal"
                       />
                       <p>{innerItem.copy}</p>
                     </div>

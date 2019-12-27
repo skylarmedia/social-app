@@ -15,7 +15,6 @@ import Calendar from '../Calendar';
 import CalendarSingle from '../CalendarSingle';
 import ClientCalendar from '../ClientCalendar';
 import ClientViewPost from '../ClientViewPost';
-import HiddenCalendarSingle from '../HiddenCalendarSingle';
 import AdminViewPost from '../AdminViewPost';
 import * as ROUTES from '../../constants/routes';
 import { withAuthentication } from '../Session';

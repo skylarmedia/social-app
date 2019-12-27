@@ -39,7 +39,7 @@ class EditCategoryForm extends Component {
   }
 
   render() {
-    console.log('PROPS TEST', this.props);
+    
     const options = this.state.categories.map((item, index) => {
       console.log('item', item);
       return (
@@ -47,29 +47,21 @@ class EditCategoryForm extends Component {
           {item.name}
         </option>
       );
-      // if (this.handleText(this.props.category) == item.name) {
-      //   return (
-      //     <option value={`${item.name}|||${item.color}`} selected key={index}>
-      //       {item.name}
-      //     </option>
-      //   );
-      // } else {
-      //   return (
-      //     <option value={`${item.name}|||${item.color}`} key={index}>
-      //       {item.name}
-      //     </option>
-      //   );
-      // }
     });
+
+    const styleSelect = {
+      backgroundColor:this.props.color
+    }
+    
 
     return (
       <React.Fragment>
-        <form className="main-edit-form">
+        <form className="main-edit-form" style={styleSelect}>
           <Select
             name="options"
             style={{ width: 120 }}
             onChange={this.currentCategory.bind(this)}
-            placeholder="CATEGORY"
+            placeholder={ this.props.currentCat ? this.props.currentCat : 'Category' }
             suffixIcon={<img src={require('../assets/arrow.svg')} />}
           >
             {this.props.currentCat ? (
