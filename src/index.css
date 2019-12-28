@@ -127,3 +127,488 @@ h1{
 .blue-p{
   margin-left:10px;
 }
+
+
+/* START SIGN IN */
+
+#sign-in-wrapper{
+  height: 100vh;
+}
+
+#wing-logo{
+  position:fixed;
+  right: 0;
+  top: 6vw;
+}
+
+.fa-caret-down{
+  font-size: 44px;
+  position: absolute;
+  right: 75px;
+  z-index: 11;
+  color: #002D5B;
+  font-weight: 600;
+}
+
+#sign-in-wrapper input{
+  width: 19vw;
+  max-width: 320px;
+  font-size: 16px;
+}
+
+#sign-in-wrapper input[name="password"]{
+  margin-bottom:31px;
+}
+
+.inner-chat-log{
+  border: 2px solid #002D5B;
+  border-radius: 3px;
+  padding-top: 30px;
+}
+
+body .ant-switch-checked {
+  background-color: #002D5B;
+}
+
+.MuiInputBase-input{
+  padding-bottom:15px;
+}
+
+#sign-in-wrapper .MuiInputBase-root{
+  margin-bottom:11px;
+  width:310px;
+  height:50px;
+}
+
+#sign-in-button{
+  height: 48px;
+  width: 149px;
+  border-radius: 11px;
+  text-align: center;
+}
+
+#sign-in-button-wrap{
+  text-align:center;
+}
+
+h2.welcome{
+  margin-top:54px;
+}
+
+.inner-chat-log{
+  width:337px;
+}
+
+.inner-chat-log textarea{
+  width:100%;
+}
+
+.progress-wrapper{
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  margin-top:10vw;
+}
+
+#sign-in-wrapper .MuiButton-containedPrimary{
+  background:#EE273B;
+  margin-bottom:10px;
+}
+
+.MuiInputBase-input[placeholder="email"]{
+  background-color: transparent !important;
+}
+.add-post .anticon.ant-collapse-arrow svg{
+  color:#002D5B;
+}
+
+/* END SIGN IN */
+
+/* START HOME  */
+
+#avatar-upload {
+	height: 178px;
+	width: 261px;
+	text-align: center;
+	border: 3px dashed #ef463b;
+	margin: 0 auto;
+}
+
+#add-new-form-wrapper .ant-input{
+    width: 320px;
+    border-radius: 0;
+    margin-bottom: 11px;
+}
+#add-new-form .MuiInputBase-input {
+	color: #707070;
+	width: 310px;
+	background: #fff;
+}
+
+body .ant-modal-footer{
+	text-align:center;
+	border:none;
+	border:none;
+}
+
+body .ant-modal-mask {
+    background-color: #000;
+}
+
+.ant-modal-close-x{
+	display:none !important;
+}
+
+.ant-modal-close-x{
+	display:none;
+}
+
+#client-list{
+	margin-top:100px;
+}
+
+.gutter-row.client-wrapper.flex-column.d-flex.mb-20{
+	margin-bottom:120px
+}
+
+.ant-icon svg{
+	color: #ef463b;
+    font-size: 25px;
+    font-weight: bold;
+    margin-top: 8px;
+}
+
+.ant-modal-footer{
+	text-align:center !important;
+}
+
+.home-modal .ant-modal-body{
+	padding-bottom:0;
+}
+
+body .ant-btn-primary{
+	background: #ef463b;
+    text-transform: uppercase;
+    color: #fff;
+    border: none;
+    height: 48px;
+    width: 149px;
+    border-radius: 11px;
+}
+
+#client-list img{
+	height:178px;
+	object-fit:cover;
+	width:100%;
+}
+
+#add-new-form-wrapper {
+    display: flex;
+    flex-direction: column;
+    left: 0;
+    align-items: center;
+    justify-content: center;
+}
+
+.home-modal .ant-modal-content{
+	background: transparent;
+    border: none;
+    box-shadow: none;
+}
+
+.margin-border {
+	margin-bottom: 30px;
+}
+
+.post-list-wrapper {
+	margin-bottom: 50px;
+}
+
+.cat-h5 {
+	text-align: center;
+	margin: 50px 0 70px;
+}
+
+.time-string {
+	position: relative;
+	background: #002d5b;
+	color: #fff;
+	font-size: 20px;
+	border-bottom-left-radius: 25px;
+	border-bottom-right-radius: 25px;
+	padding: 11px;
+}
+
+#assign-categories-wrapper {
+	background: #000;
+	position: absolute;
+	width: 100vw;
+	height: 100vh;
+	top: 0;
+	display: flex;
+	align-items: center;
+}
+
+.submit-cat {
+	position: absolute;
+	bottom: 35px;
+}
+
+.mb-40{
+	margin-bottom:40px;
+}
+
+.margin-h2{
+	margin-bottom:35px;
+	margin-top:54px
+}
+
+.p-blue {
+	color: #002d5b;
+}
+
+#x-add-new {
+	z-index: 9999999999;
+	color: #ee463a;
+}
+
+.smile-logo,
+.smile-wrapper {
+	width: 21px;
+	height: 21px;
+}
+
+.date-col input {
+	border: none;
+	font-size: 14px;
+	display: flex;
+	height: 30px;
+	padding-top: 0;
+}
+
+.date-col .ant-time-picker-icon {
+	display: none;
+}
+
+.post-col input {
+	border: none;
+}
+
+.assign-cat label {
+	margin: 0;
+}
+
+.form-cat {
+	height: 70vh;
+}
+
+.list-header {
+	border-bottom: 2px solid #002d5b;
+	color: #002d5b;
+	font-size: 16px;
+	padding-bottom: 7px;
+	margin-bottom: 0;
+}
+
+.main-button {
+	height: 48px;
+	width: 149px;
+	border-radius: 11px;
+	font-size: 16px;
+	border: none;
+	text-transform: uppercase;
+}
+
+.red-button {
+	background: #ef463b;
+	color: #fff;
+	margin-right: 12px;
+}
+
+.white-button {
+	border: 2px solid #ef463b;
+}
+
+.smile-wrapper {
+	position: absolute;
+	right: 0;
+	bottom: 0;
+}
+
+.main-form-wrapper {
+	width: 100%;
+}
+
+#add-new-form .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline {
+	border-color: #fff;
+}
+
+.para-margin {
+	margin-bottom: 78px;
+}
+
+.react-datepicker-popper{
+	z-index:10;
+}
+
+.bm-burger-bars-hover {
+	color: #fff;
+	transform: translateY(-3px);
+	transition: transform 0.3s linear;
+	background: #002d5b;
+}
+
+#add-new-form .MuiInputLabel-outlined {
+	color: #707070;
+}
+
+#add-new-form .MuiInputLabel-outlined {
+}
+
+#add-new-form .MuiInputBase-input::placeholder {
+	/* Chrome, Firefox, Opera, Safari 10.1+ */
+	color: #002d5b;
+	opacity: 1; /* Firefox */
+}
+
+#add-file {
+	margin-top: 13px;
+	width: 260px;
+	margin-top: 13px;
+	width: 260px;
+	position: absolute;
+	bottom: 15px;
+	right: 0;
+	width: 90px;
+	right: 15px;
+}
+
+.mt-10{
+	margin-top:10px;
+}
+
+.archive-x {
+	position: absolute;
+	right: 0;
+	margin-right:15px;
+	margin-top:7px;
+}
+
+.bm-burger-bars {
+	background: #fff;
+	height: 4px !important;
+	width: 43px;
+	border-radius: 3px;
+}
+
+#client-list {
+	margin-top: 61px;
+}
+
+.user-background {
+	height: 178px;
+	width: 100%;
+	object-fit: cover;
+}
+
+.x-wrapper {
+	position: absolute !important;
+	right: 0;
+	left: 0;
+	text-align: center;
+}
+
+.uncomplete.add-date-btn {
+	background: #b2bec3;
+}
+
+.client-wrapper {
+	height: 178px;
+	width: 23%;
+	position: relative;
+}
+
+.delete-button {
+	position: absolute;
+	top: 50px;
+	background: transparent;
+	border: none;
+	padding-left: 20px;
+}
+
+.delete-button button {
+	width: 40px;
+	height: 40px;
+}
+
+.client-wrapper a {
+	text-decoration: none;
+	color: #002d5b;
+	margin-bottom: 10px;
+}
+
+.round-arrow {
+	position: relative;
+	top: -80px;
+}
+
+.dashed {
+	border: 3px dashed #f0f0f0;
+	height: 178px;
+	width: 24%;
+}
+
+.container {
+    max-width: 1440px;
+}
+
+#home-page {
+	position: relative;
+}
+
+.empty-add-date {
+	position: absolute;
+	right: 45px;
+	top: 53px;
+	z-index: 100;
+}
+.empty-state .text-center {
+	margin-top: 14px;
+}
+
+.inner-form-wrapper input[type="checkbox"] {
+	position: absolute;
+	opacity: 0;
+	cursor: pointer;
+	height: 0;
+	width: 0;
+}
+#avatar-upload {
+	position: relative;
+}
+
+.go-post{
+	width: 100%;
+    display: inline-block;
+    text-align: right;
+}
+
+a.d-flex{
+    color:#002D5B;
+    margin-top:15px;
+}
+
+a.save-draft-btn.d-flex{
+	color: #ef463b;	
+}
+
+a.d-flex img{
+    margin-right:15px;
+}
+
+.grey-link{
+    color:#707070;
+}
+
+/* END HOME  */

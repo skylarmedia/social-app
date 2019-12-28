@@ -80,33 +80,6 @@ class SignInFormBase extends Component {
     .catch(err => {
       console.log(`There was an err ${err}`)
     })
-
-    //   if (value.docs[0].data().admin == 1) {
-    //     localStorage.setItem('loggedIn', true);
-    //     this.props.history.push({
-    //       pathname: `/home`,
-    //       state: {
-    //         userId: value.docs[0].data().userId
-    //       }
-    //     })
-    //   }
-    //   else {
-    //     console.log('return value in signIn', value);
-    //     localStorage.setItem('userId', value.docs[0].data().urlName)
-    //     this.props.history.push({
-    //       pathname: `/client/${localStorage.getItem('userId')}/dates`,
-    //       state: {
-    //         userId: value.docs[0].data().urlName
-    //       }
-    //     });
-
-    //   }
-    // })
-    // .catch(error => {
-    //   this.setState({ error });
-    // });
-
-    // event.preventDefault();
   };
 
   onChange = event => {
