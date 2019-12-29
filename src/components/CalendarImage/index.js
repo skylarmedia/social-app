@@ -12,7 +12,7 @@ class CalendarImage extends Component {
     this.db = app.functions();
   }
 
-  componentWillMount() {
+  componentDidMount() {
     // if (this.props.admin == false) {
     //   let functionObj = new Object();
     //   const readMonths = this.db.httpsCallable('readMonths');

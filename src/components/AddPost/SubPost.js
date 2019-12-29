@@ -11,7 +11,6 @@ import 'emoji-mart/css/emoji-mart.css';
 import { Picker } from 'emoji-mart';
 import { Collapse } from 'antd';
 import ImagePosts from '../ImagePosts';
-import 'antd/dist/antd.css';
 import { Input } from 'antd';
 const { TextArea } = Input;
 const { Panel } = Collapse;

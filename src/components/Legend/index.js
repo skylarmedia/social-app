@@ -9,7 +9,7 @@ const Legend = props => {
 
   return (
     <div>
-      <p className="container p-details">Details</p>
+      <p className="container row p-details mx-auto p-0">Details></p>
       <div className="border mb-15"></div>
       <section className="d-flex justify-content-between container mx-auto">
         <div className="row d-flex flex-column">

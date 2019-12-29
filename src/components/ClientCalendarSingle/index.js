@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { withFirebase } from '../Firebase';
 import { compose } from 'recompose';
 import { Link } from 'react-router-dom';
+import Ad from '../Ad';
 import Icons from '../Icons';
 
 // Make this a dumb component
@@ -47,12 +48,6 @@ class ClientCalendarSingle extends Component {
 
       let clientTitleStyles = {
         backgroundColor: selectedCategory,
-        height: '38px',
-        display: 'inline-block',
-        position: 'relative',
-        width: '75%',
-        marginLeft: '10px',
-        paddingLeft: '5px',
         color: '#002D5B'
         /* padding: 10px; */
       };
@@ -60,19 +55,21 @@ class ClientCalendarSingle extends Component {
       console.log('item in filter', item);
 
       return (
+        <div className="d-flex align-items-center">
           <Link
             to={`/view-post/${linkMonth}/${this.props.day}/${item.id}`}
             style={clientTitleStyles}
-            className="d-inline-block h-15"
+            className="label-button label-2"
           >
             {item.data().post[0].title}
             <br />
-            <Icons 
-                approved={item.data().approved} 
-                ad={item.data().postAd} 
-                clientNotification={item.data().clientNotification} 
-            />
           </Link>
+          <Ad ad={item.data().postAd} className="ad-icon" />
+          <Icons
+            approved={item.data().approved}
+            clientNotification={item.data().clientNotification}
+          />
+        </div>  
       );
     });
 

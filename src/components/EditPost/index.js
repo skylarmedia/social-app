@@ -123,7 +123,7 @@ class EditPost extends Component {
       .onSnapshot(snap => {
         const messageArr = [...this.state.messages];
         snap.docChanges().forEach(change => {
-          if (change.type == 'added') {
+          if (change.type === 'added') {
             messageArr.push(change.doc.data());
             this.setState({
               messages: messageArr
@@ -143,7 +143,7 @@ class EditPost extends Component {
     this.props.firebase
       .editPostFirebase(this.props.match.params.clientId, this.props.match.params.postId)
       .then(item => {
-        if (this.state.posts.length == 0) {
+        if (this.state.posts.length === 0) {
           this.setState({
             posts: item.data().post,
             selectedCategoryName: item.data().selectedCategoryName,
@@ -257,7 +257,7 @@ class EditPost extends Component {
   };
 
   toggleChat = () => {
-    if (this.state.updatedMessages == false) {
+    if (this.state.updatedMessages === false) {
     }
 
     this.setState({
@@ -466,7 +466,7 @@ class EditPost extends Component {
     const posts = this.state.posts.map((post, index) => {
       return (
         <div className="edit-form-main-wrapper" key={index}>
-          <Row className="container d-flex row mx-auto" gutter={30}>
+          <Row className="container d-flex row mx-auto p-0" gutter={30}>
             <Col span={12}>
               <Input
                 className="outlined-title blue-input"
@@ -698,7 +698,7 @@ class EditPost extends Component {
                         index={i}
                       />
 
-                      {i == this.state.posts[index].values.length - 1 ? (
+                      {i === this.state.posts[index].values.length - 1 ? (
                         <button
                           type="button"
                           onClick={() => this.addClick(index)}
@@ -761,6 +761,10 @@ class EditPost extends Component {
 
     return (
       <div className="add-post edit-post">
+        <p className="heading text-center add-post-heading p-blue">
+          Client {this.props.match.params.clientId} Calendar
+          <br />
+        </p>
         <div className="">
           <div className="d-flex approval-wrapper">
             <div className="container d-flex align-items-center">

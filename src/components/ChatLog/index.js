@@ -64,18 +64,21 @@ class AdminChatLog extends Component {
                   onClick={() => this.deleteMessage(this.props.adminClient, item.timestamp, i)}
                   key={i}
                 >
-                <i class="fas fa-trash"></i>
+                  <i class="fas fa-trash"></i>
                   <span className="ml-10">DELETE</span>
                 </button>
               );
               return (
                 <div className="admin-message-wrap position-relative w-100">
                   <div className="inner-admin-message w-100">
-                    <Popover placement="topRight" content={content} trigger="click">
-                      <Button className="clear-btn">
-                        <i className="fas fa-ellipsis-v"></i>
-                      </Button>
-                    </Popover>
+                    {localStorage.getItem('skylarAdmin') == 'true' && (
+                      <Popover placement="topRight" content={content} trigger="click">
+                        <Button className="clear-btn">
+                          <i className="fas fa-ellipsis-v"></i>
+                        </Button>
+                      </Popover>
+                    )}
+
                     <div className="admin-mesage">
                       <span className="grey-text">{`${item.date}, ${item.time}`}</span>
                       <span class="color-blue">{item.message}</span>
@@ -92,15 +95,5 @@ class AdminChatLog extends Component {
   }
 }
 
-const mapDispatchToProps = dispatch => ({
-  onSetMessages: messages => dispatch({ type: 'MESSAGES_SET', messages }),
-  onSetMessagesLimit: limit => dispatch({ type: 'MESSAGES_LIMIT_SET', limit })
-});
 
-export default compose(
-  withFirebase,
-  connect(
-    null,
-    mapDispatchToProps
-  )
-)(AdminChatLog);
+export default compose(withFirebase)(AdminChatLog);

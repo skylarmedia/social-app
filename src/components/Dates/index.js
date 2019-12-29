@@ -219,11 +219,8 @@ class Dates extends Component {
   };
 
   render() {
-    const antIcon = () => (
-      <div>Node</div>
-    )
     const renderDates = this.state.date.map((item, index) => (
-      <Col Col span={6} className="position-relative date-map-item" key={index}>
+      <Col span={6} className="position-relative date-map-item" key={index}>
         <Link
           to={`/calendar/${item.year}/${item.month}/${this.props.match.params.id}`}
           className="main-link color-blue"

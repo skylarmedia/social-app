@@ -1,15 +1,16 @@
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import { withFirebase } from '../Firebase';
 import { compose } from 'redux';
 import 'antd/dist/antd.css';
-import './index.css';
+import { Skeleton } from 'antd';
 import { Checkbox } from 'antd';
 import EditCategoryForm from '../EditCategoryForm';
 import moment from 'moment';
-import SubPost from './SubPost';
 
 import EmojiField from 'emoji-picker-textfield';
 import 'emoji-mart/css/emoji-mart.css';
+
+const SubPost = React.lazy(() => import('./SubPost'));
 
 class AddPost extends Component {
   constructor(props) {
@@ -172,7 +173,7 @@ class AddPost extends Component {
     });
   };
 
-  removePlatform(index){
+  removePlatform(index) {
     this.setState({
       subPosts: this.state.subPosts.filter((_, i) => i !== index)
     });
@@ -258,21 +259,27 @@ class AddPost extends Component {
     return this.state.subPosts.map((el, i) => (
       <div className="form-wrapper d-flex" key={i}>
         <div className="main-form-wrapper container">
-          <SubPost
-            i={i}
-            triggerValues={this.triggerValues}
-            completed={this.state.completed}
-            id={this.props.match.params.clientId}
-            month={this.props.match.params.month}
-            day={this.props.match.params.day}
-            year={this.props.match.params.year}
-          />
+          <Suspense falback={<Skeleton active rows={8}/>}>
+            <SubPost
+              i={i}
+              triggerValues={this.triggerValues}
+              completed={this.state.completed}
+              id={this.props.match.params.clientId}
+              month={this.props.match.params.month}
+              day={this.props.match.params.day}
+              year={this.props.match.params.year}
+            />
+          </Suspense>
         </div>
         {i == 1 && (
           <div className="remove-wrapper container">
-            <button type="button" onClick={() => this.removePlatform(i)} className="clear-btn d-flex align-items-center">
+            <button
+              type="button"
+              onClick={() => this.removePlatform(i)}
+              className="clear-btn d-flex align-items-center"
+            >
               <img src={require('../assets/x.png')} />
-              <p className="color-red blue-p">Remove Platform</p>
+              <p className="color-red blue-p mb-0">Remove Platform</p>
             </button>
           </div>
         )}
@@ -281,6 +288,7 @@ class AddPost extends Component {
   }
 
   render() {
+
     if (this.state.subPosts.length === this.state.tempHold.length) {
       this.props.firebase
         .addPost(
@@ -301,6 +309,7 @@ class AddPost extends Component {
           );
         });
     }
+
     return (
       <React.Fragment>
         <div className="add-post">
@@ -325,7 +334,9 @@ class AddPost extends Component {
                     onChange={this.handleApproval}
                     id="approvePost"
                   />
-                  <label className="color-blue" for="approvePost">APPROVE POST</label>
+                  <label className="color-blue" for="approvePost">
+                    APPROVE POST
+                  </label>
                 </div>
               </div>
 
@@ -338,7 +349,7 @@ class AddPost extends Component {
                     type="button"
                   >
                     <img src={require('../assets/select.svg')} />
-                    <p className="color-blue blue-p">Add Platform</p>
+                    <p className="color-blue blue-p mb-0">Add Platform</p>
                   </button>
                 </div>
                 <div className="text-center">

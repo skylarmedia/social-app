@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import { withFirebase } from '../Firebase';
 import { Link } from 'react-router-dom';
 import { compose } from 'recompose';
@@ -7,11 +7,13 @@ import { withAuthorization } from '../Session';
 import { Skeleton } from 'antd';
 import './index.css';
 import { Modal } from 'antd';
-import ClientImage from '../ClientImage';
+// import ClientImage from '../ClientImage';
 import { Row, Col } from 'antd';
 import { Checkbox } from 'antd';
 import { Input } from 'antd';
 import app from 'firebase/app';
+
+const ClientImage = React.lazy(() => import('../ClientImage'));
 
 class Home extends Component {
   constructor(props) {
@@ -236,11 +238,11 @@ class Home extends Component {
             .createUserWithEmailAndPassword(this.state.email, this.state.passwordOne)
             .then(user => {
               user.user.updateProfile({
-                displayName:this.state.username,
-                photoURL:this.state.backgroundUrl
-              })
+                displayName: this.state.username,
+                photoURL: this.state.backgroundUrl
+              });
               console.log(`user Obj`, user);
-              alert(this.state.email)
+              alert(this.state.email);
               this.db
                 .collection('users')
                 .doc(this.state.username)
@@ -351,7 +353,9 @@ class Home extends Component {
                       <p>Are you sure you would like to archive this client?</p>
                     </Modal>
                     <Link to={`/dates/${user.urlName}`}>
-                      <ClientImage logo={user.logo} name={user.name} />
+                      <Suspense fallback={<div>...Loading</div>}>
+                        <ClientImage logo={user.logo} name={user.name} />
+                      </Suspense>
                     </Link>
                     <div className="d-flex align-items-center align-items-center">
                       <div className="position-relative x-wrapper mt-20 d-flex justify-content-center align-items-center w-100">

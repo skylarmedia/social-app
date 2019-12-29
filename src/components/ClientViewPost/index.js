@@ -9,6 +9,8 @@ import 'firebase/auth';
 import 'firebase/firestore';
 import './index.css';
 import ImagePosts from '../ImagePosts';
+import { Picker } from 'emoji-mart';
+import { Row, Col } from 'antd';
 
 class ClientViewPost extends Component {
   constructor(props) {
@@ -30,7 +32,8 @@ class ClientViewPost extends Component {
       color: '#fff',
       openedChat: false,
       updatedMessages: false,
-      clientRead: false
+      clientRead: false,
+      showIcons: true
     };
 
     this.handleCheckbox = this.handleCheckbox.bind(this);
@@ -48,19 +51,22 @@ class ClientViewPost extends Component {
       .collection('posts')
       .doc(this.props.match.params.id)
       .get()
-      .then(res => {
-        console.log('RES IN VIEW POST', res);
-        this.setState({
-          posts: res.data().post,
-          category: res.data().selectedCategoryName,
-          categoryColor: res.data().color,
-          postId: this.props.match.params.id,
-          clientRead: res.data().clientRead,
-          approved: res.data().approved
-        });
-      }, () => {
-        console.log(this.state)
-      });
+      .then(
+        res => {
+          console.log('RES IN VIEW POST', res);
+          this.setState({
+            posts: res.data().post,
+            category: res.data().selectedCategoryName,
+            categoryColor: res.data().color,
+            postId: this.props.match.params.id,
+            clientRead: res.data().clientRead,
+            approved: res.data().approved
+          });
+        },
+        () => {
+          console.log(this.state);
+        }
+      );
 
     // Get Messages
     this.db
@@ -125,6 +131,12 @@ class ClientViewPost extends Component {
 
     this.setState({
       approved: value
+    });
+  };
+
+  toggleIcon = e => {
+    this.setState({
+      showIcons: !this.state.showIcons
     });
   };
 
@@ -203,11 +215,22 @@ class ClientViewPost extends Component {
       adminRead: false
     });
 
-    this.props.firebase.adminSendMessage(localStorage.getItem('clientName'), month, day, title, message, logo);
+    this.props.firebase.adminSendMessage(
+      localStorage.getItem('clientName'),
+      month,
+      day,
+      title,
+      message,
+      logo
+    );
   };
 
   componentWillUnmount() {
-    this.props.firebase.editReadAdmin(localStorage.getItem('clientName'), this.state.postId, this.state.adminRead);
+    this.props.firebase.editReadAdmin(
+      localStorage.getItem('clientName'),
+      this.state.postId,
+      this.state.adminRead
+    );
   }
 
   setMessage = e => {
@@ -234,21 +257,41 @@ class ClientViewPost extends Component {
     };
 
     const posts = this.state.posts.map((item, index) => {
-      console.log('ITEM POST in client', item);
+      console.log('type of values', item)
       const styles = {
         backgroundColor: this.state.categoryColor
       };
       return (
         <div className="d-flex row client-item" key={index}>
-          <div className="container mx-auto row">
-            <div className="col-sm-6">
+          <Row className="container mx-auto" gutter={30}>
+            <Col span={12}>
               <div className="w-100 color-blue p-border">{item.title}</div>
-              <ImagePosts imageSrc={item.images} />
-              <div className="w-100 color-blue p-border copy-margin">POST COPY</div>
-              <p>{item.copy}</p>
-            </div>
-            <div className="col-sm-6">
+              {item.images.length > 0 ? (
+                <ImagePosts imageSrc={item.images} />
+              ) : (
+                <div className="red-main-outter flex-wrap d-flex">
+                  <div id="red-outline-wrapper" className="w-100 mt-30">
+                    <input
+                      type="file"
+                      multiple
+                      onChange={this.addFile}
+                      className="red-dashed-input"
+                    />
+                  </div>
+                  <div className="small-red-wrapper"></div>
+                  <div className="small-red-wrapper"></div>
+                  <div className="small-red-wrapper"></div>
+                </div>
+              )}
+
+              <div className="float-left">
+                <div className="w-100 color-blue p-border copy-margin">POST COPY</div>
+                <p>{item.copy}</p>
+              </div>
+            </Col>
+            <Col span={12}>
               <div>
+                <div className="client-category"></div>
                 <div className="w-100 color-blue p-border">PLATFORMS</div>
                 <div id="client-social" className="d-flex">
                   {item.facebook && <p>Facebook</p>}
@@ -257,27 +300,40 @@ class ClientViewPost extends Component {
                   {item.linkedin && <p>Linkedin</p>}
                   {item.other && <p>Other</p>}
                 </div>
-                <div className="blue-border row">
-                  <p className="col-sm-3">POST DATE</p>
-                  <p className="col-sm-3">POST TIME</p>
-                  <p className="col-sm-3">POST MEDIUM</p>
-                </div>
-                <div className="row">
-                  <p className="col-sm-3">{item.ipDate}</p>
-                  <p className="col-sm-3">POST TIME1</p>
-                  <p className="col-sm-3">POST MEDIUM1</p>
-                </div>
-                <div className="times-border row">
-                  <p className="col-sm-3">POST DATE</p>
-                  <p className="col-sm-3">POST TIME</p>
-                  <p className="col-sm-3">POST MEDIUM</p>
-                </div>
-                <div>
-                  {/* {new Date(item.postDate)} */}
-                </div>
+                <Row className="blue-border pb-10">
+                  <Col span={8} className="p-blue f-16">POST DATE</Col>
+                  <Col span={8} className="p-blue f-16">POST TIME</Col>
+                  <Col span={8} className="p-blue f-16">POST MEDIUM</Col>
+                </Row>
+                <Row>
+                  <Col span={8}>{item.ipDate}</Col>
+                  <Col span={8}>{item.postTime}</Col>
+                  <Col span={8}>{item.postMedium}</Col>
+                </Row>
+                <Row className="blue-border">
+                  <Col span={12} className="p-blue f-16">AD OR SPONSORED POST</Col>
+                </Row>
+                 <Row>
+                  <Col span={18} className="color-grey f-14">{item.budgetStart} - {item.budgetEnd}</Col>
+                  <Col span={6} className="color-grey f-14"><span className="f-16 color-blue">BUDGET:</span>${item.budget}</Col>
+                </Row>
+                <Row className="blue-border">
+                  <Col span={12} className="p-blue f-16">HASHTAGS</Col>
+                </Row>
+                <Row>
+                  <Col span={12} className="color-grey f-14">{item.postHashTag}</Col>
+                </Row>
+                <Row className="blue-border">
+                  <Col span={12} className="p-blue f-16">Links</Col>
+                </Row>
+                <Row>
+                  {item.values.map((innerItem) => (
+                    <Col span={23} className="color-grey f-14"><a className="color-grey" target="_blank" href={`https://www.${innerItem.value}`}>{innerItem.value}</a></Col>
+                  ))}
+                </Row>
               </div>
-            </div>
-          </div>
+            </Col>
+          </Row>
         </div>
       );
     });
@@ -287,18 +343,30 @@ class ClientViewPost extends Component {
         <AuthUserContext.Consumer>
           {authUser => (
             <div>
-              <div className="col-md-5 client-chat">
+              <div className="fixed-bottom container position_relative col-md-4">
                 {this.state.showChat && (
-                  <div>
+                  <div className="inner-chat-log bg-white position-relative">
                     <AdminChatLog
                       messages={this.state.messages}
                       deletePost={this.deletePostParent}
                     />
-                    <textarea
-                      onChange={this.setMessage}
-                      value={this.state.message}
-                      onKeyDown={this.captureKey.bind(this)}
-                    />
+                    <form onSubmit={this.submitMessage} className="d-flex mt-30 position-relative">
+                      <textarea
+                        onChange={this.setMessage}
+                        value={this.state.message}
+                        onKeyDown={this.captureKey.bind(this)}
+                      />
+                    </form>
+                    <button
+                      type="button"
+                      onClick={this.toggleIcon.bind(this)}
+                      className="clear-btn position-absolute happy-btn"
+                    >
+                      <i className="fas fa-smile-beam"></i>
+                    </button>
+                    <span className={this.state.showIcons ? 'hidden' : 'not-hidden'}>
+                      <Picker onSelect={this.addEmoji} />
+                    </span>
                   </div>
                 )}
                 <button onClick={this.toggleChat} type="button" type="button" className="clear-btn">

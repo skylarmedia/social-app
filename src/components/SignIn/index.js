@@ -56,8 +56,8 @@ class SignInFormBase extends Component {
       const currentEmail = new Object();
       currentEmail.email = email;
       getUid(currentEmail).then(res => {
-        
-        if (res.data.customClaims.skylarAdmin === true) {
+        console.log('RRES IN FE EMAIL', res)
+        if (res.data.customClaims !==  null && res.data.customClaims.skylarAdmin === true) {
           localStorage.clear();
           localStorage.setItem('skylarAdmin', true);
           localStorage.setItem('key', password);

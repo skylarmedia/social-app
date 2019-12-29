@@ -167,7 +167,6 @@ class AdminViewPost extends Component {
                         <div className="col-sm-6">
                             <ChatLog incomingMessage={this.state.incomingMessage} id={this.props.match.params.client} month={this.props.match.params.month} day={this.props.match.params.day} messages={this.state.messages} />
                             <ChatBox getMessage={this.getMessage} month={this.props.match.params.month} day={this.props.match.params.day} title={this.props.match.params.title} id={this.props.match.params.client} authUser={authUser} />
-
                         </div>
                     </div>
                 )}

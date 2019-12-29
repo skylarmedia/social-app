@@ -9,7 +9,7 @@ import Ad from '../Ad';
 import { Checkbox } from 'antd';
 import ImagePosts from '../ImagePosts';
 import app from 'firebase/app';
-import { Modal } from 'antd';
+import { Modal, Row, Col } from 'antd';
 
 let timer = 0;
 let delay = 200;
@@ -127,14 +127,14 @@ class HiddenCalendarSingle extends Component {
             {this.props.postTime}
             {date.toString().split('00')[0]} @ {this.props.ipDate}
           </p>
-          <div className="d-flex">
-            <div className="col-md-6 edit-form">
-              <ImagePosts imageSrc={this.props.images} />
+          <Row gutter={55}>
+            <Col className="edit-form" span={12}>
+              <div>
+                <ImagePosts imageSrc={this.props.images} />
+              </div>
               {/* <img src={image} className="w-100" /> */}
-              <p className="props-copy">{this.props.copy.substr(0, 200)}</p>
-              <div>{this.props.hashtags}</div>
-            </div>
-            <div className="col-md-6">
+            </Col>
+            <Col span={12}>
               <div className="d-flex approval-wrapper">
                 <Checkbox
                   name="approved"
@@ -146,8 +146,12 @@ class HiddenCalendarSingle extends Component {
                   APPROVE POST
                 </label>
               </div>
-            </div>
-          </div>
+            </Col>
+            <Col span={24}>
+              <p className="props-copy">{this.props.copy.substr(0, 200)}</p>
+              <div>{this.props.hashtags}</div>
+            </Col>
+          </Row>
           <div className="text-center">
             <Link
               to={`/edit-post/${this.props.postId}/${this.props.clientId}`}
@@ -178,7 +182,14 @@ class HiddenCalendarSingle extends Component {
             adminNotification={this.props.adminNotifcation}
           />
         </div>
-        <Modal className="outter-modal"  footer={null} visible={this.state.visible} onOk={this.handleOk} onCancel={this.handleCancel} cancelButtonProps={{ style: { display: 'none' } }}>
+        <Modal
+          className="outter-modal"
+          footer={null}
+          visible={this.state.visible}
+          onOk={this.handleOk}
+          onCancel={this.handleCancel}
+          cancelButtonProps={{ style: { display: 'none' } }}
+        >
           <div className="hidden-post">{hiddenPost()}</div>
         </Modal>
       </React.Fragment>

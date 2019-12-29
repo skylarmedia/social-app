@@ -9,6 +9,7 @@ import moment from 'moment';
 import { Link } from 'react-router-dom';
 import { Input } from 'antd';
 import { Checkbox } from 'antd';
+import ImagePosts from '../ImagePosts';
 
 class ListMode extends Component {
   constructor(props) {
@@ -89,7 +90,7 @@ class ListMode extends Component {
     this.props.firebase
       .listMode(this.props.user, parseInt(this.props.month), parseInt(this.props.year))
       .then(snapshot => {
-        console.log('Item INUSER ', snapshot)
+        console.log('Item INUSER ', snapshot);
         snapshot.docs.map(item => {
           let postItem = {};
           postItem['post'] = item.data().post;
@@ -138,24 +139,27 @@ class ListMode extends Component {
                       {innerItem.title}
                     </p>
 
-                    <div className="col-sm-10 d-flex flex-wrap inner-images-wrapper mx-auto">
+                    <div className="d-flex flex-wrap inner-images-wrapper mx-auto">
                       {innerItem.images.length > 0 ? (
-                        innerItem.images.map(img => (
-                          <div>
-                            <img src={img} className="w-100 border-image" />
-                          </div>
-                        ))
+                        <ImagePosts imageSrc={innerItem.images} />
                       ) : (
-                        <div id="red-outline-wrapper" className="p-0">
-                          <div class="red-center list-center"></div>
+                        <div className="red-main-outter flex-wrap d-flex">
+                          <div id="red-outline-wrapper" className="w-100">
+                            <input
+                              type="file"
+                              multiple
+                              onChange={this.addFile}
+                              className="red-dashed-input"
+                            />
+                          </div>
+                          <div className="small-red-wrapper"></div>
+                          <div className="small-red-wrapper"></div>
+                          <div className="small-red-wrapper"></div>
                         </div>
                       )}
                     </div>
                     <div class="w-100">
-                      <Input
-                        className="w-100 margin-border blue-input"
-                        value="POST COPY"
-                      />
+                      <Input className="w-100 margin-border blue-input" value="POST COPY" />
                       <p>{innerItem.copy}</p>
                     </div>
                   </div>

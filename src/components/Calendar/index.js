@@ -1,14 +1,14 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
-import './calendar.css';
-import CalendarSingle from '../CalendarSingle';
+// importfrom '../CalendarSingle';
 import { withFirebase } from '../Firebase';
 import { compose } from 'redux';
 import { Switch } from 'antd';
 import Legend from '../Legend';
 import ListMode from '../ListMode';
 import firebase from 'firebase';
+const CalendarSingle = React.lazy(() => import('../CalendarSingle'));
 
 const parts = window.location.search.substr(1).split('&');
 
@@ -368,13 +368,13 @@ class Calendar extends React.Component {
       let currentDay = d == this.currentDay() ? 'today' : '';
       daysInMonth.push(
         <td key={d} className={`calendar-day TEST ${currentDay}`}>
-          <CalendarSingle
-            day={d}
-            posts={this.state.posts}
-            month={this.props.match.params.month}
-            clientId={this.props.match.params.clientId}
-            history={this.props.history}
-          />
+            <CalendarSingle
+              day={d}
+              posts={this.state.posts}
+              month={this.props.match.params.month}
+              clientId={this.props.match.params.clientId}
+              history={this.props.history}
+            />
           <Link
             to={`/add-post/2019/${this.props.match.params.month}/${d}/${this.props.match.params.clientId}`}
             className="add-post-link"
@@ -450,34 +450,34 @@ class Calendar extends React.Component {
                 onChange={this.handleSwitch}
               />
             </div>
-             (
-              <div className="tail-datetime-calendar">
-                <div
-                  className={this.state.grid == true ? 'container calendar-navi mx-auto' : 'hidden'}
-                ></div>
-                <div className="calendar-date">
-                  {this.state.showYearNav && <this.YearTable props={this.year()} />}
-                  {this.state.showMonthTable && <this.MonthList data={moment.months()} />}
-                </div>
-                {this.state.showCalendarTable && this.state.grid && (
-                  <div className="calendar-date container mx-auto">
-                    <table className="calendar-day">
-                      <thead>
-                        <tr id="weekdays">{weekdayshortname}</tr>
-                      </thead>
-                      <tbody>{daysinmonth}</tbody>
-                    </table>
-                  </div>
-                )}
-
-                {!this.state.grid && (
-                  <ListMode
-                    user={this.props.match.params.clientId}
-                    month={this.props.match.params.month}
-                    year={this.props.match.params.year}
-                  />
-                )}
+            (
+            <div className="tail-datetime-calendar container">
+              <div
+                className={this.state.grid == true ? 'container calendar-navi mx-auto' : 'hidden'}
+              ></div>
+              <div className="calendar-date">
+                {this.state.showYearNav && <this.YearTable props={this.year()} />}
+                {this.state.showMonthTable && <this.MonthList data={moment.months()} />}
               </div>
+              {this.state.showCalendarTable && this.state.grid && (
+                <div className="calendar-date container mx-auto">
+                  <table className="calendar-day">
+                    <thead>
+                      <tr id="weekdays">{weekdayshortname}</tr>
+                    </thead>
+                    <tbody>{daysinmonth}</tbody>
+                  </table>
+                </div>
+              )}
+
+              {!this.state.grid && (
+                <ListMode
+                  user={this.props.match.params.clientId}
+                  month={this.props.match.params.month}
+                  year={this.props.match.params.year}
+                />
+              )}
+            </div>
             )}
           </div>
         </div>

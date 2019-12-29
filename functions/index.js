@@ -172,8 +172,10 @@ exports.createAdmin = functions.https.onCall(data => {
 //Get UID
 
 exports.getUid = functions.https.onCall(data => {
+  console.log('DATA EMAIL', data.email)
   return admin.auth().getUserByEmail(data.email)
   .then(res => {
+    console.log('RES', res)
     return res
    
   })
