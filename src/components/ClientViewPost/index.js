@@ -257,7 +257,7 @@ class ClientViewPost extends Component {
     };
 
     const posts = this.state.posts.map((item, index) => {
-      console.log('type of values', item)
+      console.log('type of values', item);
       const styles = {
         backgroundColor: this.state.categoryColor
       };
@@ -301,34 +301,60 @@ class ClientViewPost extends Component {
                   {item.other && <p>Other</p>}
                 </div>
                 <Row className="blue-border pb-10">
-                  <Col span={8} className="p-blue f-16">POST DATE</Col>
-                  <Col span={8} className="p-blue f-16">POST TIME</Col>
-                  <Col span={8} className="p-blue f-16">POST MEDIUM</Col>
+                  <Col span={8} className="p-blue f-16">
+                    POST DATE
+                  </Col>
+                  <Col span={8} className="p-blue f-16">
+                    POST TIME
+                  </Col>
+                  <Col span={8} className="p-blue f-16">
+                    POST MEDIUM
+                  </Col>
                 </Row>
-                <Row>
+                <Row className="mb-30">
                   <Col span={8}>{item.ipDate}</Col>
                   <Col span={8}>{item.postTime}</Col>
                   <Col span={8}>{item.postMedium}</Col>
                 </Row>
                 <Row className="blue-border">
-                  <Col span={12} className="p-blue f-16">AD OR SPONSORED POST</Col>
+                  <Col span={12} className="p-blue f-16 pb-10">
+                    AD OR SPONSORED POST
+                  </Col>
                 </Row>
-                 <Row>
-                  <Col span={18} className="color-grey f-14">{item.budgetStart} - {item.budgetEnd}</Col>
-                  <Col span={6} className="color-grey f-14"><span className="f-16 color-blue">BUDGET:</span>${item.budget}</Col>
+                <Row className="mb-20">
+                  <Col span={18} className="color-grey f-14">
+                    {item.budgetStart} - {item.budgetEnd}
+                  </Col>
+                  <Col span={6} className="color-grey f-14">
+                    <span className="f-16 color-blue">BUDGET:</span>${item.budget}
+                  </Col>
                 </Row>
                 <Row className="blue-border">
-                  <Col span={12} className="p-blue f-16">HASHTAGS</Col>
+                  <Col span={12} className="p-blue f-16 pb-10">
+                    HASHTAGS
+                  </Col>
                 </Row>
                 <Row>
-                  <Col span={12} className="color-grey f-14">{item.postHashTag}</Col>
+                  <Col span={12} className="color-grey f-14 mb-20">
+                    {item.postHashTag}
+                  </Col>
                 </Row>
                 <Row className="blue-border">
-                  <Col span={12} className="p-blue f-16">Links</Col>
+                  <Col span={12} className="p-blue f-16 pb-10">
+                    Links
+                  </Col>
                 </Row>
                 <Row>
-                  {item.values.map((innerItem) => (
-                    <Col span={23} className="color-grey f-14"><a className="color-grey" target="_blank" href={`https://www.${innerItem.value}`}>{innerItem.value}</a></Col>
+                  {item.values.map((innerItem, index) => (
+                    <Col span={23} className="color-grey f-14" key={index}>
+                      <a
+                        className="color-grey"
+                        target="_blank"
+                        href={`https://www.${innerItem.value}`}
+                      >
+                        {innerItem.value}
+                      </a>
+                    </Col>
                   ))}
                 </Row>
               </div>
@@ -340,51 +366,45 @@ class ClientViewPost extends Component {
 
     return (
       <React.Fragment>
-        <AuthUserContext.Consumer>
-          {authUser => (
-            <div>
-              <div className="fixed-bottom container position_relative col-md-4">
-                {this.state.showChat && (
-                  <div className="inner-chat-log bg-white position-relative">
-                    <AdminChatLog
-                      messages={this.state.messages}
-                      deletePost={this.deletePostParent}
-                    />
-                    <form onSubmit={this.submitMessage} className="d-flex mt-30 position-relative">
-                      <textarea
-                        onChange={this.setMessage}
-                        value={this.state.message}
-                        onKeyDown={this.captureKey.bind(this)}
-                      />
-                    </form>
-                    <button
-                      type="button"
-                      onClick={this.toggleIcon.bind(this)}
-                      className="clear-btn position-absolute happy-btn"
-                    >
-                      <i className="fas fa-smile-beam"></i>
-                    </button>
-                    <span className={this.state.showIcons ? 'hidden' : 'not-hidden'}>
-                      <Picker onSelect={this.addEmoji} />
-                    </span>
-                  </div>
-                )}
-                <button onClick={this.toggleChat} type="button" type="button" className="clear-btn">
-                  <img src={require('../assets/chatbox.svg')} />
+        <div>
+          <div className="fixed-bottom container position_relative col-md-4">
+            {this.state.showChat && (
+              <div className="inner-chat-log bg-white position-relative">
+                <AdminChatLog messages={this.state.messages} deletePost={this.deletePostParent} />
+                <form onSubmit={this.submitMessage} className="d-flex mt-30 position-relative">
+                  <textarea
+                    onChange={this.setMessage}
+                    value={this.state.message}
+                    onKeyDown={this.captureKey.bind(this)}
+                  />
+                </form>
+                <button
+                  type="button"
+                  onClick={this.toggleIcon.bind(this)}
+                  className="clear-btn position-absolute happy-btn"
+                >
+                  <i className="fas fa-smile-beam"></i>
                 </button>
+                <span className={this.state.showIcons ? 'hidden' : 'not-hidden'}>
+                  <Picker onSelect={this.addEmoji} />
+                </span>
               </div>
-              {this.state.showPopUp ? (
-                <div style={popUpStyles}>
-                  You have changed the approval of this post
-                  <button onClick={this.showPopUp}>Close</button>
-                </div>
-              ) : (
-                ''
-              )}
-              {this.state.posts && <div className="client-view-post">{posts}</div>}
+            )}
+            <button onClick={this.toggleChat} type="button" type="button" className="clear-btn">
+              <img src={require('../assets/chatbox.svg')} />
+            </button>
+          </div>
+          {this.state.showPopUp ? (
+            <div style={popUpStyles}>
+              You have changed the approval of this post
+              <button onClick={this.showPopUp}>Close</button>
             </div>
+          ) : (
+            ''
           )}
-        </AuthUserContext.Consumer>
+          {this.state.posts && <div className="client-view-post">{posts}</div>}
+        </div>
+        }
       </React.Fragment>
     );
   }

@@ -40,15 +40,10 @@ class ClientDates extends Component {
       });
 
       this.props.firebase.getUserUnusedCategories(localStorage.getItem('clientName')).then(snapshot => {
-        console.log('snapshot in cat,', snapshot);
-        console.log('rpos match parms', this.props.match.params.id);
         const catArr = [...this.state.categories];
-        // console.log('cat arr', catArr)
         snapshot.docs.map((category, index) => {
-          console.log('ID', category.data().categories);
           category.data()['mainId'] = category.id;
           catArr.push(category.data());
-          console.log('catArr', catArr);
         });
         this.setState({
           categories: catArr

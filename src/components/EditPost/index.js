@@ -15,9 +15,11 @@ import { Collapse } from 'antd';
 import { Popover, Button } from 'antd';
 import app from 'firebase/app';
 import ImagePosts from '../ImagePosts';
+import WithAuthenication from '../Session/withAuthentication';
 import { Row, Col } from 'antd';
 const { TextArea } = Input;
 const { Panel } = Collapse;
+
 
 class EditPost extends Component {
   constructor(props) {
@@ -133,6 +135,7 @@ class EditPost extends Component {
       });
 
   componentDidMount() {
+    console.log('props in edit post', this.props)
     const updateAdminMessages = this.functions.httpsCallable('updateAdminMessages');
     let newId = this.props.match.params.id;
     let functionObj = new Object();
@@ -794,11 +797,11 @@ class EditPost extends Component {
             <div>
               <div className="d-flex flex-column align-items-end">
                 <div className="inner-chat-log bg-white position-relative">
-                  <AdminChatLog
-                    deletePost={this.deletePostParent}
-                    adminClient={this.props.match.params.postId}
-                    messages={this.state.messages}
-                  />
+                    <AdminChatLog
+                      deletePost={this.deletePostParent}
+                      adminClient={this.props.match.params.postId}
+                      messages={this.state.messages}
+                    />
                   <form onSubmit={this.submitMessage} className="d-flex mt-30 position-relative">
                     <textarea
                       onChange={this.setMessage}

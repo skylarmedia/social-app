@@ -3,7 +3,8 @@ import { withFirebase } from '../Firebase';
 import { Link } from 'react-router-dom';
 import { compose } from 'recompose';
 import 'firebase/storage';
-import { withAuthorization } from '../Session';
+import { AuthUserContext } from '../Session';
+import withAuthorization from '../Session/withAuthorization';
 import { Skeleton } from 'antd';
 import './index.css';
 import { Modal } from 'antd';
@@ -479,4 +480,4 @@ class Home extends Component {
   }
 }
 
-export default withAuthorization(compose(withFirebase))(Home);
+export default compose(withAuthorization(withFirebase))(Home);

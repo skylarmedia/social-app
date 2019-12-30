@@ -19,8 +19,7 @@ class AdminChatLog extends Component {
   }
 
   componentDidMount() {
-    console.log('item message', this.props.messages);
-    console.log('this db', this.db);
+    console.log('props custom claims', this.props)
   }
 
   deletePostParent = index => {
@@ -64,7 +63,7 @@ class AdminChatLog extends Component {
                   onClick={() => this.deleteMessage(this.props.adminClient, item.timestamp, i)}
                   key={i}
                 >
-                  <i class="fas fa-trash"></i>
+                  <i className="fas fa-trash"></i>
                   <span className="ml-10">DELETE</span>
                 </button>
               );
@@ -81,13 +80,13 @@ class AdminChatLog extends Component {
 
                     <div className="admin-mesage">
                       <span className="grey-text">{`${item.date}, ${item.time}`}</span>
-                      <span class="color-blue">{item.message}</span>
+                      <span className="color-blue">{item.message}</span>
                     </div>
                   </div>
                 </div>
               );
             } else {
-              return <div class="client-message-wrapper">{item.message}</div>;
+              return <div className="client-message-wrapper">{item.message}</div>;
             }
           })}
       </div>
