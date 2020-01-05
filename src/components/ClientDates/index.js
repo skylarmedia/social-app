@@ -5,6 +5,7 @@ import CalendarImage from '../CalendarImage';
 import { Row, Col } from 'antd';
 import app from 'firebase/app';
 import CategoryList from '../CategoryList';
+import { AuthUserContext } from '../Session';
 
 class ClientDates extends Component {
   constructor(props) {
@@ -12,14 +13,14 @@ class ClientDates extends Component {
 
     this.state = {
       dates: [],
-      categories:[]
+      categories: []
     };
     this.functions = app.functions();
     this.db = app.firestore();
   }
 
   componentDidMount() {
-    console.log('ClientDate', this.props);
+    console.log('ClientDate', this.props, this.state);
 
     this.db
       .collection('users')
@@ -39,7 +40,9 @@ class ClientDates extends Component {
         });
       });
 
-      this.props.firebase.getUserUnusedCategories(localStorage.getItem('clientName')).then(snapshot => {
+    this.props.firebase
+      .getUserUnusedCategories(localStorage.getItem('clientName'))
+      .then(snapshot => {
         const catArr = [...this.state.categories];
         snapshot.docs.map((category, index) => {
           category.data()['mainId'] = category.id;
@@ -73,18 +76,18 @@ class ClientDates extends Component {
   };
 
   render() {
-    const dates = this.state.dates.map((item, index )=> {
-      console.log('item mapped', item)
+    const dates = this.state.dates.map((item, index) => {
+      console.log('item mapped', item);
       return (
         <Col span={6} key={index}>
-           <Link to={`/client-calendar/${item.year}/${item.month}`}>
-          <CalendarImage
-            year={item.year}
-            month={item.month}
-            name={item.name}
-            userId={this.props.match.params.id}
-            admin={false}
-          />
+          <Link to={`/client-calendar/${item.year}/${item.month}`}>
+            <CalendarImage
+              year={item.year}
+              month={item.month}
+              name={item.name}
+              userId={this.props.match.params.id}
+              admin={false}
+            />
             <p className="p-blue text-center">
               {item.name} {item.year}
             </p>
@@ -93,20 +96,31 @@ class ClientDates extends Component {
       );
     });
     return (
-      <React.Fragment>
-        <h6 className="f-20 text-center margin-h2">Client {localStorage.getItem('p-blue')} Calendar</h6>
-      <Row gutter={30} className="container mx-auto">
-        
-        <Col span={6}>
-          <span className="f-16 p-blue mb-20 d-inline-block">Categories</span>
-          <CategoryList colors={this.state.categories}/>
-        </Col>
-        <Col span={18}>
-        <p className="mb-40 p-blue">Select a month to view it’s calendar.</p>
-        <Row gutter={30} className="p-blue">{dates}</Row>
-        </Col>
-      </Row>
-      </React.Fragment>
+      <AuthUserContext.Consumer>
+        {authUser => {
+          console.log('auth user', authUser)
+          return (
+          <React.Fragment>
+            {authUser.displayName}
+            <h6 className="f-20 text-center margin-h2">
+              Client {localStorage.getItem('p-blue')} Calendar
+            </h6>
+            <Row gutter={30} className="container mx-auto">
+              <Col span={6}>
+                <span className="f-16 p-blue mb-20 d-inline-block">Categories</span>
+                <CategoryList colors={this.state.categories} />
+              </Col>
+              <Col span={18}>
+                <p className="mb-40 p-blue">Select a month to view it’s calendar.</p>
+                <Row gutter={30} className="p-blue">
+                  {dates}
+                </Row>
+              </Col>
+            </Row>
+          </React.Fragment>
+        )
+        }}
+      </AuthUserContext.Consumer>
     );
   }
 }

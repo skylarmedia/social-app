@@ -9,7 +9,6 @@ import * as ROUTES from '../../constants/routes';
 import { AuthUserContext } from '../Session';
 
 const Navigation = ({ authUser }) => {
-  console.log('auth user', authUser)
   let downCaret = document.querySelector('.anticon-down');
   console.log('down', downCaret);
   return <NavigationAuth authUser={authUser} id="page-wrap" />;
@@ -56,17 +55,5 @@ const NavigationAuth = props => {
   );
 };
 
-const NavigationNonAuth = () => {
-  return (
-    <ul>
-      <li>
-        <Link to={ROUTES.LANDING}>Landing</Link>
-      </li>
-      <li>
-        <Link to={ROUTES.SIGN_IN}>Sign In</Link>
-      </li>
-    </ul>
-  );
-};
 
 export default Navigation;

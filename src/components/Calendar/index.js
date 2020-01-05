@@ -472,7 +472,7 @@ class Calendar extends React.Component {
                 </div>
               )}
             </div>
-            )}
+
             {!this.state.grid && (
               <ListMode
                 user={this.props.match.params.clientId}

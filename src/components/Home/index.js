@@ -261,6 +261,7 @@ class Home extends Component {
               const createAdmin = this.functions.httpsCallable('createAdmin');
 
               // Creates non-admin from there as well
+              console.log('USER UID ', user)
               const currentUser = new Object();
               currentUser.uid = user.user.uid;
               currentUser.isAdmin = this.state.admin;
@@ -480,4 +481,4 @@ class Home extends Component {
   }
 }
 
-export default compose(withAuthorization(withFirebase))(Home);
+export default compose(withFirebase(Home))

@@ -9,6 +9,7 @@ import moment from 'moment';
 import { Link } from 'react-router-dom';
 import { Checkbox, Row, Col } from 'antd';
 import ImagePosts from '../ImagePosts';
+import app from 'firebase/app';
 
 class ListMode extends Component {
   constructor(props) {
@@ -23,6 +24,26 @@ class ListMode extends Component {
     this.approvedPosts = this.approvedPosts.bind(this);
     this.unApprovedPosts = this.unApprovedPosts.bind(this);
     this.allPosts = this.allPosts.bind(this);
+    this.db = app.firestore();
+  }
+
+  changeApp(id, index){
+    console.log('approved list items', this.state.listItems)
+        
+    const listItems = [...this.state.listItems];
+    listItems[index].approved = !listItems[index].approved
+    this.setState({
+      listItems
+    });
+
+    this.db
+    .collection('users')
+    .doc(this.props.user)
+    .collection('posts')
+    .doc(id)
+    .update({
+      approved:listItems[index].approved
+    })
   }
 
   approvedPosts() {
@@ -152,8 +173,9 @@ class ListMode extends Component {
                   {item.name}
                 </div>
                 <div className="align-self-center p-blue">
-                  <Checkbox checked={item.approved} />
-                  <span className="pl-15 d-inline-block">APPROVE POST</span>
+                  <Checkbox checked={item.approved} onChange={() => this.changeApp(item.id, index)} id={`app-check-${index}`}/>
+                  <label for={`app-check-${index}`} className="pl-15 d-inline-block">APPROVE POST</label>
+                  {item.id}
                 </div>
               </div>
             </div>
@@ -164,17 +186,16 @@ class ListMode extends Component {
                   <div className="time-outter-wrapper">
                     <div key={indexInner} className="inner-post">
                       <div className="inner-inner-post">
-                        {indexInner === 0 &&
-                          (
-                            <div className="w-100">
-                              <div className="border-20"></div>
-                              <div className="container mx-auto time-wrapper">
-                                <h5 className="time-string d-inline-block">
-                                  {this.convertTimeString(innerItem.ipDate)}
-                                </h5>
-                              </div>
+                        {indexInner === 0 && (
+                          <div className="w-100">
+                            <div className="border-20"></div>
+                            <div className="container mx-auto time-wrapper">
+                              <h5 className="time-string d-inline-block">
+                                {this.convertTimeString(innerItem.ipDate)}
+                              </h5>
                             </div>
-                          )}
+                          </div>
+                        )}
                         <Row className="row" gutter={30} className="container mx-auto inner-row">
                           <Col span={12} className="col22">
                             <p
@@ -203,129 +224,136 @@ class ListMode extends Component {
                             </div>
                           </Col>
                           <Col span={12} className="col333">
-                            <div className="w-100 align-self-start platform-wrapper">
-                              <Link
-                                to={`/edit-post/${item.id}/${this.props.user}`}
-                                className="go-post p-blue"
-                              >
-                                <u>Go to post</u>
-                              </Link>
-                            </div>
-                            <p className="col-md-12 list-header align-self-center mb-5">
-                              PLATFORMS
-                            </p>
-                            <div className="d-flex">
-                              {innerItem.facebook ? (
-                                <div className="col-md-2 d-flex">
-                                  <label>Facebook</label>{' '}
-                                </div>
-                              ) : (
-                                <div className="mb-20"></div>
-                              )}
+                            {indexInner === 0 && (
+                              <div className="w-100 align-self-start platform-wrapper">
+                                <Link
+                                  to={`/edit-post/${item.id}/${this.props.user}`}
+                                  className="go-post p-blue"
+                                >
+                                  <u>Go to post</u>
+                                </Link>
+                              </div>
+                            )}
 
-                              {innerItem.instagram ? (
-                                <div className="col-md-2 d-flex">
-                                  <label>Instagram</label>
-                                </div>
-                              ) : (
-                                ''
-                              )}
-
-                              {innerItem.twitter ? (
-                                <div className="col-md-2 d-flex">
-                                  <label>Twitter</label>{' '}
-                                </div>
-                              ) : (
-                                ''
-                              )}
-
-                              {innerItem.linkedin ? (
-                                <div className="col-md-2 d-flex">
-                                  <label>LinkedIn</label>{' '}
-                                </div>
-                              ) : (
-                                ''
-                              )}
-
-                              {innerItem.other ? (
-                                <div className="col-md-2 d-flex">
-                                  <label>Other</label>
-                                </div>
-                              ) : (
-                                ''
-                              )}
-                            </div>
                             <div>
-                              <div className="d-flex list-header align-self-center">
-                                <p className="col-sm-4 m-0 align-self-center">POST DATE</p>
-                                <p className="col-sm-4 m-0 align-self-center">POST TIME</p>
-                                <p className="col-sm-4 m-0 align-self-center">POST MEDIUM</p>
-                              </div>
-                              <div className="row col-md-12 ">
-                                <div className="col-sm-4 post-col">
-                                  <DatePicker
-                                    customInput={
-                                      <CustomCalendarComponent
-                                        ipDate={innerItem.ipDate}
-                                        placeholderText="Post Date"
-                                      />
-                                    }
-                                  />
-                                </div>
-                                <div className="col-sm-4">
-                                  {this.convertMoment(innerItem.postTime)}
-                                  <TimePicker
-                                    className="date-col"
-                                    placeholder="Sorry there was no date available"
-                                    defaultValue={moment(innerItem.postTime, 'HH:mm')}
-                                  />
-                                </div>
-                                <div className="col-sm-4">
-                                  {/* <input type="text" value={innerItem.postMedium} className="clear-btn" /> */}
-                                </div>
-                              </div>
-                            </div>
-                            <div className="w-100">
-                              {innerItem.ad && (
-                                <div>
-                                  <p className="col-md-12 list-header align-self-center test1">
-                                    AD OR SPONSORED POST
-                                  </p>
+                              <p className="col-md-12 list-header align-self-center mb-5">
+                                PLATFORMS
+                              </p>
+                              <div className="d-flex">
+                                {innerItem.facebook ? (
+                                  <div className="col-md-2 d-flex">
+                                    <label>Facebook</label>{' '}
+                                  </div>
+                                ) : (
+                                  <div className="mb-20"></div>
+                                )}
 
-                                  {innerItem.ad && (
-                                    <div className="col-md-12 row">
-                                      <DatePicker
-                                        customInput={
-                                          <CustomCalendarComponent ipDate={innerItem.budgetStart} />
-                                        }
-                                      />
-                                      <span>-</span>
-                                      <DatePicker
-                                        customInput={
-                                          <CustomCalendarComponent ipDate={innerItem.budgetEnd} />
-                                        }
-                                      />
-                                    </div>
-                                  )}
+                                {innerItem.instagram ? (
+                                  <div className="col-md-2 d-flex">
+                                    <label>Instagram</label>
+                                  </div>
+                                ) : (
+                                  ''
+                                )}
+
+                                {innerItem.twitter ? (
+                                  <div className="col-md-2 d-flex">
+                                    <label>Twitter</label>{' '}
+                                  </div>
+                                ) : (
+                                  ''
+                                )}
+
+                                {innerItem.linkedin ? (
+                                  <div className="col-md-2 d-flex">
+                                    <label>LinkedIn</label>{' '}
+                                  </div>
+                                ) : (
+                                  ''
+                                )}
+
+                                {innerItem.other ? (
+                                  <div className="col-md-2 d-flex">
+                                    <label>Other</label>
+                                  </div>
+                                ) : (
+                                  ''
+                                )}
+                              </div>
+                              <div>
+                                <div className="d-flex list-header align-self-center">
+                                  <p className="col-sm-4 m-0 align-self-center">POST DATE</p>
+                                  <p className="col-sm-4 m-0 align-self-center">POST TIME</p>
+                                  <p className="col-sm-4 m-0 align-self-center">POST MEDIUM</p>
                                 </div>
-                              )}
-                            </div>
-                            <p className="col-md-12 list-header align-self-center test2">
-                              HashTags
-                            </p>
-                            <div className="col-sm-12">
-                              <p>{innerItem.postHashTag}</p>
-                            </div>
-                            <p className="col-md-12 list-header align-self-center test3">Links</p>
-                            <div className="col-sm-12">
-                              {innerItem.values.map((link, index) => (
-                                <div key={index}>
-                                  <a href={`http://wwww.${link.value}`} className="grey-link">
-                                    {link.value}
-                                  </a>
-                                  <br />
+                                <div className="row col-md-12 ">
+                                  <div className="col-sm-4 post-col">
+                                    <DatePicker
+                                      customInput={
+                                        <CustomCalendarComponent
+                                          ipDate={innerItem.ipDate}
+                                          placeholderText="Post Date"
+                                        />
+                                      }
+                                    />
+                                  </div>
+                                  <div className="col-sm-4">
+                                    {this.convertMoment(innerItem.postTime)}
+                                    <TimePicker
+                                      className="date-col"
+                                      placeholder="Sorry there was no date available"
+                                      defaultValue={moment(innerItem.postTime, 'HH:mm')}
+                                    />
+                                  </div>
+                                  <div className="col-sm-4">
+                                    {/* <input type="text" value={innerItem.postMedium} className="clear-btn" /> */}
+                                  </div>
                                 </div>
-                              ))}
+                              </div>
+                              <div className="w-100">
+                                {innerItem.ad && (
+                                  <div>
+                                    <p className="col-md-12 list-header align-self-center test1">
+                                      AD OR SPONSORED POST
+                                    </p>
+
+                                    {innerItem.ad && (
+                                      <div className="col-md-12 row">
+                                        <DatePicker
+                                          customInput={
+                                            <CustomCalendarComponent
+                                              ipDate={innerItem.budgetStart}
+                                            />
+                                          }
+                                        />
+                                        <span>-</span>
+                                        <DatePicker
+                                          customInput={
+                                            <CustomCalendarComponent ipDate={innerItem.budgetEnd} />
+                                          }
+                                        />
+                                      </div>
+                                    )}
+                                  </div>
+                                )}
+                              </div>
+                              <p className="col-md-12 list-header align-self-center test2">
+                                HashTags
+                              </p>
+                              <div className="col-sm-12">
+                                <p>{innerItem.postHashTag}</p>
+                              </div>
+                              <p className="col-md-12 list-header align-self-center test3">Links</p>
+                              <div className="col-sm-12">
+                                {innerItem.values.map((link, index) => (
+                                  <div key={index}>
+                                    <a href={`http://wwww.${link.value}`} className="grey-link">
+                                      {link.value}
+                                    </a>
+                                    <br />
+                                  </div>
+                                ))}
+                              </div>
                             </div>
                           </Col>
                         </Row>

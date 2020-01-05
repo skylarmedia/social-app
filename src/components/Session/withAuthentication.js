@@ -14,19 +14,26 @@ import { withFirebase } from '../Firebase';
     }
 
     componentDidMount() {
-      console.log('auth', this.props);
+      console.log('auth', this.props, this.state);
 
-      this.listener = this.props.firebase.auth.onAuthStateChanged(
-        authUser => {
-          authUser
-            ? this.setState({ authUser })
-            : this.setState({ authUser: null });
+      this.listener = this.props.firebase.auth.onAuthStateChanged(authUser => {
+          if(authUser){
+            return authUser.getIdTokenResult().then(idTokenResult => {
+              console.log(idTokenResult)
+              console.log('id token', idTokenResult.claims.skylarAdmin)
+              console.log('auth user token', authUser)
+              authUser.skylarAdmin = idTokenResult.claims.skylarAdmin
+              this.setState({ authUser })
+            })
+          }
+
+       
         },
       );
     }
 
     componentWillUnmount() {
-      this.listener();
+      // this.listener();
     }
 
     render() {
