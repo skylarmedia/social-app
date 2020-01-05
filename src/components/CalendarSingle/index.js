@@ -36,7 +36,7 @@ class CalendarSingle extends Component {
             if (item.data().month == this.props.month) {
               if (item.data().day === this.props.day) {
                 return (
-                  <div class="hidden-calendar-wrapper">
+                  <div class="hidden-calendar-wrapper" key={index}>
                     {item.data().draft}
 
                     <HiddenCalendarSingle

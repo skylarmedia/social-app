@@ -168,7 +168,7 @@ class Calendar extends React.Component {
     });
     rows.push(cells);
     let monthlist = rows.map((d, i) => {
-      return <tr>{d}</tr>;
+      return <tr key={i}>{d}</tr>;
     });
 
     return (
@@ -298,7 +298,7 @@ class Calendar extends React.Component {
     });
     rows.push(cells);
     let yearlist = rows.map((d, i) => {
-      return <tr>{d}</tr>;
+      return <tr key={i}>{d}</tr>;
     });
 
     return (
@@ -368,13 +368,13 @@ class Calendar extends React.Component {
       let currentDay = d == this.currentDay() ? 'today' : '';
       daysInMonth.push(
         <td key={d} className={`calendar-day TEST ${currentDay}`}>
-            <CalendarSingle
-              day={d}
-              posts={this.state.posts}
-              month={this.props.match.params.month}
-              clientId={this.props.match.params.clientId}
-              history={this.props.history}
-            />
+          <CalendarSingle
+            day={d}
+            posts={this.state.posts}
+            month={this.props.match.params.month}
+            clientId={this.props.match.params.clientId}
+            history={this.props.history}
+          />
           <Link
             to={`/add-post/2019/${this.props.match.params.month}/${d}/${this.props.match.params.clientId}`}
             className="add-post-link"
@@ -402,7 +402,7 @@ class Calendar extends React.Component {
     });
 
     let daysinmonth = rows.map((d, i) => {
-      return <tr className="days-in-month">{d}</tr>;
+      return <tr className="days-in-month" key={i}>{d}</tr>;
     });
 
     return (
@@ -411,8 +411,8 @@ class Calendar extends React.Component {
           <div className="container">
             <Link
               to={`/home`}
-              class="back-link"
-              class="d-flex align-items-center"
+              className="back-link"
+              className="d-flex align-items-center"
               id="main-backlink"
             >
               <img src={require('../assets/back.svg')} />
@@ -425,18 +425,20 @@ class Calendar extends React.Component {
               {this.month()} {this.year()}
             </p>
           </div>
+          <div id="calendar-wing">
           <img src={require('../assets/skylar_Icon_wingPortion.svg')} id="wing-logo" />
+          </div>
           <div>
-            <div class="d-flex justify-content-between align-items-center mb-10 container row mx-auto p-0">
+            <div className="d-flex justify-content-between align-items-center mb-10 container row mx-auto p-0">
               <div>
-                <button onClick={() => this.listMode()} class="clear-btn">
+                <button onClick={() => this.listMode()} className="clear-btn">
                   {this.state.grid ? (
                     <img src={require('../assets/list-non-active.svg')} />
                   ) : (
                     <img src={require('../assets/listmode.svg')} />
                   )}
                 </button>
-                <button onClick={() => this.gridMode()} class="clear-btn">
+                <button onClick={() => this.gridMode()} className="clear-btn">
                   {this.state.grid ? (
                     <img src={require('../assets/grid.svg')} />
                   ) : (
@@ -469,15 +471,14 @@ class Calendar extends React.Component {
                   </table>
                 </div>
               )}
-
-              {!this.state.grid && (
-                <ListMode
-                  user={this.props.match.params.clientId}
-                  month={this.props.match.params.month}
-                  year={this.props.match.params.year}
-                />
-              )}
             </div>
+            )}
+            {!this.state.grid && (
+              <ListMode
+                user={this.props.match.params.clientId}
+                month={this.props.match.params.month}
+                year={this.props.match.params.year}
+              />
             )}
           </div>
         </div>

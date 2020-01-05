@@ -9,7 +9,7 @@ const Legend = props => {
 
   return (
     <div>
-      <p className="container row p-details mx-auto p-0">Details></p>
+      <p className="container row p-details mx-auto p-0">Details</p>
       <div className="border mb-15"></div>
       <section className="d-flex justify-content-between container mx-auto">
         <div className="row d-flex flex-column">
@@ -41,7 +41,7 @@ const Legend = props => {
                   getClient: props.client
                 }
               }}
-              class="assign-link"
+              className="assign-link"
             >
               Assign Categories
             </Link>
@@ -53,7 +53,7 @@ const Legend = props => {
                   background: item.color
                 };
                 return (
-                  <div>
+                  <div key={index}>
                     <div className="category-color" style={categoryStyle}>
                       {item.name}
                       <button index={index} onClick={() => unassignCategoryChild(item.name, index)}>

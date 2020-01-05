@@ -7,8 +7,7 @@ import CustomCalendarComponent from '../CustomCalendarComponent';
 import TimePicker from 'antd/es/time-picker';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
-import { Input } from 'antd';
-import { Checkbox } from 'antd';
+import { Checkbox, Row, Col } from 'antd';
 import ImagePosts from '../ImagePosts';
 
 class ListMode extends Component {
@@ -18,7 +17,8 @@ class ListMode extends Component {
     this.state = {
       listItems: [],
       innerPosts: [],
-      mainArr: []
+      mainArr: [],
+      approvedList: []
     };
     this.approvedPosts = this.approvedPosts.bind(this);
     this.unApprovedPosts = this.unApprovedPosts.bind(this);
@@ -85,27 +85,35 @@ class ListMode extends Component {
   }
 
   componentDidMount() {
-    console.log('month', this.props.month);
-    console.log('year', this.props.year);
     this.props.firebase
       .listMode(this.props.user, parseInt(this.props.month), parseInt(this.props.year))
       .then(snapshot => {
-        console.log('Item INUSER ', snapshot);
         snapshot.docs.map(item => {
+          console.log('ITEM after map', item.data());
           let postItem = {};
           postItem['post'] = item.data().post;
           postItem['id'] = item.id;
+          postItem['approved'] = item.data().approved;
+          postItem['color'] = item.data().color;
+          postItem['name'] = item.data().selectedCategoryName;
+          console.log('POST ITEM', postItem);
           this.setState(
             {
               mainArr: [...this.state.mainArr, postItem],
               listItems: [...this.state.listItems, postItem]
             },
             () => {
+              console.log('STATE LIST ITEMS', this.state.listItems);
               this.state.listItems.map(item => {
                 item.post.map(inner => {
-                  this.setState({
-                    innerPosts: [...this.state.innerPosts, inner]
-                  });
+                  this.setState(
+                    {
+                      innerPosts: [...this.state.innerPosts, inner]
+                    },
+                    () => {
+                      console.log('inner posts', this.state.innerPosts);
+                    }
+                  );
                 });
               });
             }
@@ -126,200 +134,213 @@ class ListMode extends Component {
 
   render() {
     const renderParent = this.state.listItems.map((item, index) => {
+      console.log('LIST ITMS IN RENDER', this.state.listItems);
+      console.log('map item in 6', item);
+      console.log('inner item index', index);
       return (
-        <React.Fragment>
-          <div class="border-20"></div>
-          <div className="row post-list-wrapper container mx-auto" key={index}>
-            <div className="col-sm-6">
-              {item.post.map(innerItem => {
-                return (
-                  <div>
-                    <h5 class="time-string">{this.convertTimeString(innerItem.ipDate)}</h5>
-                    <p className="w-100 blue-border f-16 color-blue pl-post p-15" margin="normal">
-                      {innerItem.title}
-                    </p>
-
-                    <div className="d-flex flex-wrap inner-images-wrapper mx-auto">
-                      {innerItem.images.length > 0 ? (
-                        <ImagePosts imageSrc={innerItem.images} />
-                      ) : (
-                        <div className="red-main-outter flex-wrap d-flex">
-                          <div id="red-outline-wrapper" className="w-100">
-                            <input
-                              type="file"
-                              multiple
-                              onChange={this.addFile}
-                              className="red-dashed-input"
-                            />
-                          </div>
-                          <div className="small-red-wrapper"></div>
-                          <div className="small-red-wrapper"></div>
-                          <div className="small-red-wrapper"></div>
-                        </div>
-                      )}
-                    </div>
-                    <div class="w-100">
-                      <Input className="w-100 margin-border blue-input" value="POST COPY" />
-                      <p>{innerItem.copy}</p>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-            <div className="col-sm-6 align-self-start">
-              <Link to={`/edit-post/${item.id}/${this.props.user}`} className="go-post">
-                Go to post
-              </Link>
-              <div className="d-flex">
-                <div class="col-sm-6 align-self-center">CATEGORY</div>
-                <div class="col-sm-6 align-self-center">
-                  {item.approved == true ? (
-                    <div>
-                      <Checkbox checked={true} />
-                      Approved
-                    </div>
-                  ) : (
-                    <div>
-                      <Checkbox checked={false} />
-                    </div>
-                  )}
+        <div class="outter-inner-post-wrapper position-relative">
+          <div className="inner-post-wrapper position-relative" key={index}>
+            <div className="container">
+              <div className="d-flex mb-20 justify-content-between col-sm-6 float-right margin-app">
+                <div
+                  className="align-items-center d-flex col-sm-6"
+                  style={{
+                    backgroundColor: item.color,
+                    height: '36px'
+                  }}
+                >
+                  {item.name}
+                </div>
+                <div className="align-self-center p-blue">
+                  <Checkbox checked={item.approved} />
+                  <span className="pl-15 d-inline-block">APPROVE POST</span>
                 </div>
               </div>
-              {item.post.map(innerItem => {
-                return (
-                  <div className="justify-content-between">
-                    <p className="col-md-12 list-header align-self-center">PLATFORMS</p>
-                    <div className="d-flex">
-                      {innerItem.facebook ? (
-                        <div className="col-md-2 d-flex">
-                          <label>Facebook</label>{' '}
-                        </div>
-                      ) : (
-                        ''
-                      )}
-
-                      {innerItem.instagram ? (
-                        <div className="col-md-2 d-flex">
-                          <label>Instagram</label>
-                        </div>
-                      ) : (
-                        ''
-                      )}
-
-                      {innerItem.twitter ? (
-                        <div className="col-md-2 d-flex">
-                          <label>Twitter</label>{' '}
-                        </div>
-                      ) : (
-                        ''
-                      )}
-
-                      {innerItem.linkedin ? (
-                        <div className="col-md-2 d-flex">
-                          <label>LinkedIn</label>{' '}
-                        </div>
-                      ) : (
-                        ''
-                      )}
-
-                      {innerItem.other ? (
-                        <div className="col-md-2 d-flex">
-                          <label>Other</label>
-                        </div>
-                      ) : (
-                        ''
-                      )}
-                    </div>
-                    <div>
-                      <div className="d-flex list-header align-self-center">
-                        <p className="col-sm-4 m-0 align-self-center">POST DATE</p>
-                        <p className="col-sm-4 m-0 align-self-center">POST TIME</p>
-                        <p className="col-sm-4 m-0 align-self-center">POST MEDIUM</p>
-                      </div>
-                      <div className="row col-md-12 ">
-                        <div class="col-sm-4 post-col">
-                          <DatePicker
-                            customInput={
-                              <CustomCalendarComponent
-                                ipDate={innerItem.ipDate}
-                                placeholderText="Post Date"
-                              />
-                            }
-                          />
-                        </div>
-                        <div class="col-sm-4">
-                          {this.convertMoment(innerItem.postTime)}
-                          <TimePicker
-                            className="date-col"
-                            placeholder="Sorry there was no date available"
-                            defaultValue={moment(innerItem.postTime, 'HH:mm')}
-                          />
-                        </div>
-                        <div class="col-sm-4">
-                          <input type="text" value={innerItem.postMedium} class="clear-btn" />
-                        </div>
-                      </div>
-                    </div>
-                    <div className="w-100">
-                      {innerItem.ad ? (
-                        <div>
-                          <p className="col-md-12 list-header align-self-center">
-                            AD OR SPONSORED POST
-                          </p>
-                          {/* <div class="d-flex">
-                          <Checkbox checkbox={innerItem ? true : false} id="checked" />
-
-                          <label>Ad or Sponsored Post</label>
-                        </div> */}
-
-                          {innerItem.ad && (
-                            <div className="col-md-12">
-                              <DatePicker
-                                customInput={
-                                  <CustomCalendarComponent ipDate={innerItem.budgetStart} />
-                                }
-                              />
-                              <span>-</span>
-                              <DatePicker
-                                customInput={
-                                  <CustomCalendarComponent ipDate={innerItem.budgetEnd} />
-                                }
-                              />
+            </div>
+            {item.post.map((innerItem, indexInner) => {
+              console.log('inner item', innerItem, index);
+              return (
+                <React.Fragment>
+                  <div className="time-outter-wrapper">
+                    <div key={indexInner} className="inner-post">
+                      <div className="inner-inner-post">
+                        {indexInner === 0 &&
+                          (
+                            <div className="w-100">
+                              <div className="border-20"></div>
+                              <div className="container mx-auto time-wrapper">
+                                <h5 className="time-string d-inline-block">
+                                  {this.convertTimeString(innerItem.ipDate)}
+                                </h5>
+                              </div>
                             </div>
                           )}
-                        </div>
-                      ) : (
-                        <div class="d-flex">
-                          <input type="checkbox" />
-                          <label>Ad or Sponsored Post</label>
-                        </div>
-                      )}
-                    </div>
-                    <p className="col-md-12 list-header align-self-center">HashTags</p>
-                    <div class="col-sm-12">
-                      <p>{innerItem.postHashTag}</p>
-                    </div>
-                    <p className="col-md-12 list-header align-self-center">Links</p>
-                    <div class="col-sm-12">
-                      {innerItem.values.map((link, index) => (
-                        <div key={index}>
-                          <a href={`http://wwww.${link.value}`} class="grey-link">
-                            {link.value}
-                          </a>
-                          <br />
-                        </div>
-                      ))}
+                        <Row className="row" gutter={30} className="container mx-auto inner-row">
+                          <Col span={12} className="col22">
+                            <p
+                              className="w-100 blue-border f-16 color-blue pl-post p-15"
+                              margin="normal"
+                            >
+                              {innerItem.title}
+                            </p>
+                            <div className="d-flex flex-wrap inner-images-wrapper mx-auto">
+                              {innerItem.images.length > 0 ? (
+                                <ImagePosts imageSrc={innerItem.images} />
+                              ) : (
+                                <div className="red-main-outter flex-wrap d-flex">
+                                  <div id="red-outline-wrapper" className="w-100"></div>
+                                  <div className="small-red-wrapper mb-20"></div>
+                                  <div className="small-red-wrapper mb-20"></div>
+                                  <div className="small-red-wrapper mb-20"></div>
+                                </div>
+                              )}
+                            </div>
+                            <div>
+                              <p className="w-100 blue-border f-16 color-blue pl-post p-15">
+                                POST COPY
+                              </p>
+                              <p>{innerItem.copy}</p>
+                            </div>
+                          </Col>
+                          <Col span={12} className="col333">
+                            <div className="w-100 align-self-start platform-wrapper">
+                              <Link
+                                to={`/edit-post/${item.id}/${this.props.user}`}
+                                className="go-post p-blue"
+                              >
+                                <u>Go to post</u>
+                              </Link>
+                            </div>
+                            <p className="col-md-12 list-header align-self-center mb-5">
+                              PLATFORMS
+                            </p>
+                            <div className="d-flex">
+                              {innerItem.facebook ? (
+                                <div className="col-md-2 d-flex">
+                                  <label>Facebook</label>{' '}
+                                </div>
+                              ) : (
+                                <div className="mb-20"></div>
+                              )}
+
+                              {innerItem.instagram ? (
+                                <div className="col-md-2 d-flex">
+                                  <label>Instagram</label>
+                                </div>
+                              ) : (
+                                ''
+                              )}
+
+                              {innerItem.twitter ? (
+                                <div className="col-md-2 d-flex">
+                                  <label>Twitter</label>{' '}
+                                </div>
+                              ) : (
+                                ''
+                              )}
+
+                              {innerItem.linkedin ? (
+                                <div className="col-md-2 d-flex">
+                                  <label>LinkedIn</label>{' '}
+                                </div>
+                              ) : (
+                                ''
+                              )}
+
+                              {innerItem.other ? (
+                                <div className="col-md-2 d-flex">
+                                  <label>Other</label>
+                                </div>
+                              ) : (
+                                ''
+                              )}
+                            </div>
+                            <div>
+                              <div className="d-flex list-header align-self-center">
+                                <p className="col-sm-4 m-0 align-self-center">POST DATE</p>
+                                <p className="col-sm-4 m-0 align-self-center">POST TIME</p>
+                                <p className="col-sm-4 m-0 align-self-center">POST MEDIUM</p>
+                              </div>
+                              <div className="row col-md-12 ">
+                                <div className="col-sm-4 post-col">
+                                  <DatePicker
+                                    customInput={
+                                      <CustomCalendarComponent
+                                        ipDate={innerItem.ipDate}
+                                        placeholderText="Post Date"
+                                      />
+                                    }
+                                  />
+                                </div>
+                                <div className="col-sm-4">
+                                  {this.convertMoment(innerItem.postTime)}
+                                  <TimePicker
+                                    className="date-col"
+                                    placeholder="Sorry there was no date available"
+                                    defaultValue={moment(innerItem.postTime, 'HH:mm')}
+                                  />
+                                </div>
+                                <div className="col-sm-4">
+                                  {/* <input type="text" value={innerItem.postMedium} className="clear-btn" /> */}
+                                </div>
+                              </div>
+                            </div>
+                            <div className="w-100">
+                              {innerItem.ad && (
+                                <div>
+                                  <p className="col-md-12 list-header align-self-center test1">
+                                    AD OR SPONSORED POST
+                                  </p>
+
+                                  {innerItem.ad && (
+                                    <div className="col-md-12 row">
+                                      <DatePicker
+                                        customInput={
+                                          <CustomCalendarComponent ipDate={innerItem.budgetStart} />
+                                        }
+                                      />
+                                      <span>-</span>
+                                      <DatePicker
+                                        customInput={
+                                          <CustomCalendarComponent ipDate={innerItem.budgetEnd} />
+                                        }
+                                      />
+                                    </div>
+                                  )}
+                                </div>
+                              )}
+                            </div>
+                            <p className="col-md-12 list-header align-self-center test2">
+                              HashTags
+                            </p>
+                            <div className="col-sm-12">
+                              <p>{innerItem.postHashTag}</p>
+                            </div>
+                            <p className="col-md-12 list-header align-self-center test3">Links</p>
+                            <div className="col-sm-12">
+                              {innerItem.values.map((link, index) => (
+                                <div key={index}>
+                                  <a href={`http://wwww.${link.value}`} className="grey-link">
+                                    {link.value}
+                                  </a>
+                                  <br />
+                                </div>
+                              ))}
+                            </div>
+                          </Col>
+                        </Row>
+                      </div>
                     </div>
                   </div>
-                );
-              })}
-            </div>
+                </React.Fragment>
+              );
+            })}
           </div>
-        </React.Fragment>
+        </div>
       );
     });
     return (
-      <div class="position-relative">
+      <div className="position-relative">
         <div id="button-switch" className="text-right container mx-auto row f-16">
           <button onClick={this.allPosts.bind(this)} className="clear-btn p-blue>">
             <u className="p-blue">All POSTS</u>
@@ -331,7 +352,7 @@ class ListMode extends Component {
             <u className="p-blue">APPROVED POSTS</u>
           </button>
         </div>
-        <div>{renderParent}</div>
+        <div id="render-parent">{renderParent}</div>
       </div>
     );
   }

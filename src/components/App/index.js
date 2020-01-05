@@ -83,7 +83,7 @@ class App extends Component {
           <Suspense fallback={isLoading}>
             <Switch>
               <WithAuthentication>
-                <Route path="/no-mobile" component={NoMobile} />
+                {/* <Route path="/no-mobile" component={NoMobile} /> */}
                 <Route exact path={`${process.env.PUBLIC_URL + '/'}`} component={SignInPage} />
                 <Route path={`/add-post/:year/:month/:day/:clientId`} component={AddPost} />
                 <Route path={`/sign-up`} component={SignUpPage} />
