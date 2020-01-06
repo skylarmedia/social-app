@@ -229,7 +229,7 @@ h2.welcome {
 }
 
 .inner-chat-log {
-	width: 337px;
+	width: 431px;
 }
 
 .inner-chat-log textarea {
@@ -763,6 +763,10 @@ a.d-flex img {
 .add-post-heading.heading {
 	margin-top: 40px;
 	margin-bottom: 110px;
+}
+
+.pl-10{
+	padding-left:10px;
 }
 
 .tail-datetime-calendar .calendar-date table tbody tr > *.today:after {
@@ -1684,6 +1688,16 @@ select {
 	margin-bottom: 22px;
 	font-size: 20px;
 	text-align: left !important;
+}
+
+.admin-logged-in.client-message-wrap .color-blue.d-block{
+	text-align:left;
+	padding-left:10px;
+}
+
+.admin-logged-in.client-message-wrap  .client-clear-btn {
+	right: 0;
+    left: auto;
 }
 
 .client-text {

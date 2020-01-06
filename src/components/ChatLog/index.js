@@ -52,13 +52,14 @@ class AdminChatLog extends Component {
     return (
       <AuthUserContext.Consumer>
         {authUser => {
-          console.log('Auth user in props', authUser.claims, authUser.skylarAdmin, authUser)
+          console.log('Auth user in props', authUser.claims, authUser.skylarAdmin, authUser);
           return (
             <div className="d-flex flex-wrap messages-wrapper">
               {messages &&
                 this.props.messages.map((item, i) => {
+                  console.log('ITEM MESSAGE', item);
                   if (authUser.skylarAdmin === true) {
-                    let content = (
+                    var content = (
                       <button
                         type="button"
                         key={i}
@@ -72,27 +73,48 @@ class AdminChatLog extends Component {
                         <span className="ml-10">DELETE</span>
                       </button>
                     );
-                    return (
-                      <div className="admin-message-wrap position-relative w-100">
-                        <div className="inner-admin-message w-100">
-                          {localStorage.getItem('skylarAdmin') == 'true' && (
-                            <Popover placement="topRight" content={content} trigger="click">
-                              <Button className="clear-btn">
-                                <i className="fas fa-ellipsis-v"></i>
-                              </Button>
-                            </Popover>
-                          )}
-
-                          <div className="admin-mesage">
-                            <span className="grey-text">{`${item.date}, ${item.time}`}</span>
-                            <span className="color-blue">{item.message}</span>
+                  }
+                  return (
+                    <React.Fragment>
+                      {item.admin === true ? (
+                        <div className={authUser.skylarAdmin ? 'admin-logged-in admin-message-wrap position-relative w-100' : 'client-logged-in admin-message-wrap position-relative w-100'}>
+                          <div className="inner-admin-message w-100">
+                            {authUser.skylarAdmin === true && (
+                              <Popover placement="topRight" content={content} trigger="click">
+                                <Button className="clear-btn">
+                                  <i className="fas fa-ellipsis-v"></i>
+                                </Button>
+                              </Popover>
+                            )}
+                            <div className="admin-mesage">
+                              <span className="grey-text">{`${item.date}, ${item.time}`}</span>
+                              <span className="color-blue">{item.message}</span>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    );
-                  } else {
-                    return <div className="client-message-wrapper">{item.message}</div>;
-                  }
+                      ) : (
+                        <div className={authUser.skylarAdmin ? 'admin-logged-in client-message-wrap position-relative w-100 client-message-wrap d-flex' : 'client-logged-in client-message-wrap position-relative w-100 client-message-wrap d-flex' }>
+                          <img src={item.photo} alt="client logo" className="client-logo"/>
+                          <div className="inner-admin-message position-relative">
+                            {authUser.skylarAdmin === true && (
+                              <Popover placement="topRight" content={content} trigger="click">
+                                <Button className="clear-btn client-clear-btn position-absolute">
+                                  <i className="fas fa-ellipsis-v"></i>
+                                </Button>
+                              </Popover>
+                            )}
+                            <div className="client-message">
+                              <div className="d-flex align-items-center justify-content-between pl-10">
+                              <span className="p-blue f-16 fw-500">{item.client}</span>
+                              <span className="grey-text">{`${item.date}, ${item.time}`}</span>
+                              </div>
+                              <span className="color-blue d-block">{item.message}</span>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                    </React.Fragment>
+                  );
                 })}
             </div>
           );

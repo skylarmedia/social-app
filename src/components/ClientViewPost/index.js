@@ -43,6 +43,7 @@ class ClientViewPost extends Component {
   }
 
   componentDidMount() {
+    console.log("MOUNTED POST", this.props)
     // Get Post
     app
       .firestore()
@@ -172,9 +173,10 @@ class ClientViewPost extends Component {
     return strTime;
   };
 
-  captureKey = e => {
+  captureKey = (e, photo) => {
+    const d = new Date();
+    const year = d.getFullYear();
     if (e.key === 'Enter') {
-      console.log('CLIENT ID', this.state.userId);
       e.preventDefault();
       this.props.firebase.adminSendMessage(
         false,
@@ -185,7 +187,8 @@ class ClientViewPost extends Component {
         this.props.match.params.id,
         moment().unix(),
         parseInt(this.props.match.params.month), // Month to count messages,
-        2019 // Year to count messages
+        year, // Year to count messages,
+        photo // Photo URL
       );
 
       this.setState({
@@ -271,12 +274,6 @@ class ClientViewPost extends Component {
               ) : (
                 <div className="red-main-outter flex-wrap d-flex">
                   <div id="red-outline-wrapper" className="w-100 mt-30">
-                    <input
-                      type="file"
-                      multiple
-                      onChange={this.addFile}
-                      className="red-dashed-input"
-                    />
                   </div>
                   <div className="small-red-wrapper"></div>
                   <div className="small-red-wrapper"></div>
@@ -368,16 +365,25 @@ class ClientViewPost extends Component {
       <React.Fragment>
         <div>
           <div className="fixed-bottom container position_relative col-md-4">
-            {this.state.showChat && (
-              <div className="inner-chat-log bg-white position-relative">
+              <div className="inner-chat-log bg-white position-relative" hidden={this.state.showChat}>
                 <AdminChatLog messages={this.state.messages} deletePost={this.deletePostParent} />
-                <form onSubmit={this.submitMessage} className="d-flex mt-30 position-relative">
-                  <textarea
-                    onChange={this.setMessage}
-                    value={this.state.message}
-                    onKeyDown={this.captureKey.bind(this)}
-                  />
-                </form>
+                <AuthUserContext.Consumer>
+                  {context => {
+                    console.log("AUTH USER CONTEXT", context)
+                    return (
+                      <form
+                        onSubmit={this.submitMessage}
+                        className="d-flex mt-30 position-relative"
+                      >
+                        <textarea
+                          onChange={this.setMessage}
+                          value={this.state.message}
+                          onKeyDown={(e) => this.captureKey(e, context.photoURL)}
+                        />
+                      </form>
+                    );
+                  }}
+                </AuthUserContext.Consumer>
                 <button
                   type="button"
                   onClick={this.toggleIcon.bind(this)}
@@ -389,7 +395,6 @@ class ClientViewPost extends Component {
                   <Picker onSelect={this.addEmoji} />
                 </span>
               </div>
-            )}
             <button onClick={this.toggleChat} type="button" type="button" className="clear-btn">
               <img src={require('../assets/chatbox.svg')} />
             </button>

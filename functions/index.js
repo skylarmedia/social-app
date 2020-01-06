@@ -164,6 +164,7 @@ exports.clearClientMessages = functions.https.onCall(data => {
 // });
 
 exports.createAdmin = functions.https.onCall(data => {
+  console.log("DATA ADMIn", data)
   return admin.auth().setCustomUserClaims(data.uid, {skylarAdmin: data.isAdmin})
   .then(res => {
     return {

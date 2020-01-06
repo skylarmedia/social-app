@@ -1,5 +1,6 @@
 import React, { Component, Suspense } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { AuthUserContext } from '../Session';
 
 // CSS IMPORTS
 
@@ -76,7 +77,7 @@ const App = () => (
             <Route exact path="/client/dates" component={ClientDates} />
             <Route exact path="/view-post/:month/:day/:id" component={ClientViewPost} />
             <Route
-              path="/admin  -view-post/:month/:day/:title/:client/:itemId"
+              path="/admin -view-post/:month/:day/:title/:client/:itemId"
               component={AdminViewPost}
             />
             <Route path="/logout" component={Logout} />

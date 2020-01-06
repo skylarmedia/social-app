@@ -295,7 +295,8 @@ class EditPost extends Component {
         this.props.match.params.clientId,
         moment().unix(),
         this.state.currentMonth, // Month to count messages,
-        this.state.currentYear // Year to count messages
+        this.state.currentYear, // Year to count messages
+        null
       );
       this.setState({
         message: ''
@@ -793,8 +794,8 @@ class EditPost extends Component {
           {posts}
         </div>
         <div className="fixed-bottom container position_relative col-md-4">
-          {this.state.showChat && (
-            <div>
+          
+            <div hidden={this.state.showChat}>
               <div className="d-flex flex-column align-items-end">
                 <div className="inner-chat-log bg-white position-relative">
                     <AdminChatLog
@@ -834,7 +835,7 @@ class EditPost extends Component {
                 </span>
               </div>
             </div>
-          )}
+   
           <button onClick={this.toggleChat} type="button" className="clear-btn">
             <img src={require('../assets/chatbox.svg')} />
           </button>

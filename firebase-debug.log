@@ -1,0 +1,109 @@
+[debug] [2020-01-05T21:09:25.172Z] ----------------------------------------------------------------------
+[debug] [2020-01-05T21:09:25.175Z] Command:       /usr/local/bin/node /usr/local/bin/firebase deploy --only functions
+[debug] [2020-01-05T21:09:25.175Z] CLI Version:   7.7.0
+[debug] [2020-01-05T21:09:25.175Z] Platform:      darwin
+[debug] [2020-01-05T21:09:25.175Z] Node Version:  v10.15.3
+[debug] [2020-01-05T21:09:25.178Z] Time:          Sun Jan 05 2020 16:09:25 GMT-0500 (Eastern Standard Time)
+[debug] [2020-01-05T21:09:25.178Z] ----------------------------------------------------------------------
+[debug] [2020-01-05T21:09:25.178Z] 
+[debug] [2020-01-05T21:09:25.224Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2020-01-05T21:09:25.225Z] > authorizing via signed-in user
+[debug] [2020-01-05T21:09:25.225Z] [iam] checking project skylar-social-17190 for permissions ["cloudfunctions.functions.create","cloudfunctions.functions.delete","cloudfunctions.functions.get","cloudfunctions.functions.list","cloudfunctions.functions.update","cloudfunctions.operations.get","firebase.projects.get"]
+[debug] [2020-01-05T21:09:25.227Z] > refreshing access token with scopes: ["email","https://www.googleapis.com/auth/cloud-platform","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","openid"]
+[debug] [2020-01-05T21:09:25.227Z] >>> HTTP REQUEST POST https://www.googleapis.com/oauth2/v3/token  
+ <request body omitted>
+[debug] [2020-01-05T21:09:25.771Z] <<< HTTP RESPONSE 200
+[debug] [2020-01-05T21:09:25.791Z] >>> HTTP REQUEST POST https://cloudresourcemanager.googleapis.com/v1/projects/skylar-social-17190:testIamPermissions  
+
+[debug] [2020-01-05T21:09:26.160Z] <<< HTTP RESPONSE 200
+[debug] [2020-01-05T21:09:31.203Z] ----------------------------------------------------------------------
+[debug] [2020-01-05T21:09:31.206Z] Command:       /usr/local/bin/node /usr/local/bin/firebase deploy --only functions
+[debug] [2020-01-05T21:09:31.206Z] CLI Version:   7.7.0
+[debug] [2020-01-05T21:09:31.206Z] Platform:      darwin
+[debug] [2020-01-05T21:09:31.206Z] Node Version:  v10.15.3
+[debug] [2020-01-05T21:09:31.207Z] Time:          Sun Jan 05 2020 16:09:31 GMT-0500 (Eastern Standard Time)
+[debug] [2020-01-05T21:09:31.207Z] ----------------------------------------------------------------------
+[debug] [2020-01-05T21:09:31.207Z] 
+[debug] [2020-01-05T21:09:31.215Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2020-01-05T21:09:31.215Z] > authorizing via signed-in user
+[debug] [2020-01-05T21:09:31.215Z] [iam] checking project skylar-social-17190 for permissions ["cloudfunctions.functions.create","cloudfunctions.functions.delete","cloudfunctions.functions.get","cloudfunctions.functions.list","cloudfunctions.functions.update","cloudfunctions.operations.get","firebase.projects.get"]
+[debug] [2020-01-05T21:09:31.217Z] >>> HTTP REQUEST POST https://cloudresourcemanager.googleapis.com/v1/projects/skylar-social-17190:testIamPermissions  
+
+[debug] [2020-01-05T21:09:31.560Z] <<< HTTP RESPONSE 200
+[info] 
+[info] === Deploying to 'skylar-social-17190'...
+[info] 
+[info] i  deploying functions
+[debug] [2020-01-05T21:09:37.213Z] > [functions] package.json contents: {
+  "name": "functions",
+  "description": "Cloud Functions for Firebase",
+  "scripts": {
+    "serve": "firebase serve --only functions",
+    "shell": "firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "8"
+  },
+  "dependencies": {
+    "firebase-admin": "^8.6.0",
+    "firebase-functions": "^3.3.0"
+  },
+  "devDependencies": {
+    "firebase-functions-test": "^0.1.6"
+  },
+  "private": true
+}
+[info] i  functions: ensuring necessary APIs are enabled...
+[debug] [2020-01-05T21:09:37.215Z] >>> HTTP REQUEST GET https://serviceusage.googleapis.com/v1/projects/skylar-social-17190/services/cloudfunctions.googleapis.com  
+ 
+[debug] [2020-01-05T21:09:37.216Z] >>> HTTP REQUEST GET https://serviceusage.googleapis.com/v1/projects/skylar-social-17190/services/runtimeconfig.googleapis.com  
+ 
+[debug] [2020-01-05T21:09:37.864Z] <<< HTTP RESPONSE 200
+[debug] [2020-01-05T21:09:37.884Z] <<< HTTP RESPONSE 200
+[info] ✔  functions: all necessary APIs are enabled
+[debug] [2020-01-05T21:09:37.885Z] >>> HTTP REQUEST GET https://firebase.googleapis.com/v1beta1/projects/skylar-social-17190/adminSdkConfig  
+ 
+[debug] [2020-01-05T21:09:38.210Z] <<< HTTP RESPONSE 200
+[info] i  functions: preparing functions directory for uploading...
+[debug] [2020-01-05T21:09:38.213Z] >>> HTTP REQUEST GET https://runtimeconfig.googleapis.com/v1beta1/projects/skylar-social-17190/configs  
+ 
+[debug] [2020-01-05T21:09:38.464Z] <<< HTTP RESPONSE 200
+[info] i  functions: packaged functions (26.08 KB) for uploading
+[debug] [2020-01-05T21:09:38.994Z] >>> HTTP REQUEST POST https://cloudfunctions.googleapis.com/v1/projects/skylar-social-17190/locations/us-central1/functions:generateUploadUrl  
+ 
+[debug] [2020-01-05T21:09:39.910Z] <<< HTTP RESPONSE 200
+[debug] [2020-01-05T21:09:39.911Z] >>> HTTP REQUEST PUT https://storage.googleapis.com/gcf-upload-us-central1-13fad88a-a511-4d5c-aa1d-168b38ed74fd/87cd6535-5ef6-4caa-be2b-1e72e2b2ef26.zip?GoogleAccessId=service-861778122764@gcf-admin-robot.iam.gserviceaccount.com&Expires=1578260340&Signature=LXPTlDyO5CiVN2TgsogTf5fiXy%2FReG4KWV2A6%2FH9mk0CqEqR%2BdERphi91bcpthtDH%2FuR2p8xjulKz9m8k66oEe8m66UXWQS88OCX5N%2BDGMKuuxbxosVUlpO%2FiY%2FqHgRDo5TmyFWuyBk5fjS6JaEL8gYgKARTNty2NLOjhLQJRARPp%2BK7AkFZRBjfiRD7O3fqaTFuVZtjBP3%2F9%2Brzwr0bS8%2FW8JDcs6b2MkaQp%2BzLvD5v9Hdoy0QOoeL27RC8gI0f2So3SDzh4QRw6BpIzyHgxUdZdd%2FTYDqL5PnEOGEkVA382H7R1R0nUrZL08OPOWeWoNIXMW3rQI0jF62cObGN1A%3D%3D  
+ <request body omitted>
+[debug] [2020-01-05T21:09:40.204Z] <<< HTTP RESPONSE 200
+[info] ✔  functions: functions folder uploaded successfully
+[debug] [2020-01-05T21:09:40.208Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/projects/skylar-social-17190/locations/-/functions  
+ 
+[debug] [2020-01-05T21:09:40.743Z] <<< HTTP RESPONSE 200
+[info] i  functions: updating Node.js 8 function changeUsername(us-central1)...
+[debug] [2020-01-05T21:09:40.747Z] Trigger is:  {"httpsTrigger":{}}
+[info] i  functions: updating Node.js 8 function clearClientMessages(us-central1)...
+[debug] [2020-01-05T21:09:40.747Z] Trigger is:  {"httpsTrigger":{}}
+[info] i  functions: updating Node.js 8 function createAdmin(us-central1)...
+[debug] [2020-01-05T21:09:40.748Z] Trigger is:  {"httpsTrigger":{}}
+[info] i  functions: updating Node.js 8 function getUid(us-central1)...
+[debug] [2020-01-05T21:09:40.748Z] Trigger is:  {"httpsTrigger":{}}
+[info] i  functions: updating Node.js 8 function deleteByUid(us-central1)...
+[debug] [2020-01-05T21:09:40.749Z] Trigger is:  {"httpsTrigger":{}}
+[info] i  functions: updating Node.js 8 function changeClientPassword(us-central1)...
+[debug] [2020-01-05T21:09:40.749Z] Trigger is:  {"httpsTrigger":{}}
+[info] 
+The following functions are found in your project but do not exist in your local source code:
+	countUnread(us-central1)
+	readClientMessages(us-central1)
+	readMonths(us-central1)
+	readMonthsAdmin(us-central1)
+	updateAdminMessages(us-central1)
+	updateClientMessages(us-central1)
+	updateClientNotification(us-central1)
+	updateHomeClientMessages(us-central1)
+
+If you are renaming a function or changing its region, it is recommended that you create the new function first before deleting the old one to prevent event loss. For more info, visit https://firebase.google.com/docs/functions/manage-functions#modify
+

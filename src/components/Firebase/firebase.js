@@ -228,7 +228,7 @@ class Firebase {
     // });
   };
 
-  adminSendMessage = (role, date, time, client, message, postId, timestamp, month, year) => {
+  adminSendMessage = (role, date, time, client, message, postId, timestamp, month, year, photo) => {
     this.db
       .collection('chats')
       .doc(client)
@@ -244,7 +244,8 @@ class Firebase {
         readByClient: false,
         readByAdmin: false,
         month,
-        year
+        year,
+        photo
       });
   };
 

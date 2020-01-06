@@ -29,23 +29,24 @@ class NavigationWrapper extends Component {
     return(
       <AuthUserContext.Consumer>
           {authUser => {
-            console.log('auth user in header', authUser)
-            return(
-              <React.Fragment>
-                {authUser.skylarAdmin ? <Navigation /> :
+            if(authUser.skylarAdmin === true){
+              return (
+                <Navigation />
+              )
+            }
+            if(authUser.skylarAdmin === false){
+              return (
                 <NavigationNonAuth />
-                }
-              </React.Fragment>
-            )
+              )
+            }
+            else{
+              return(
+                <div></div>
+              )
+            }
           }}
       </AuthUserContext.Consumer>
     )
-
-    // if (localStorage.getItem('skylarAdmin') === 'true') {
-    //   return <Navigation />;
-    // } else {
-    //   return <div></div>;
-    // }
   }
 }
 
