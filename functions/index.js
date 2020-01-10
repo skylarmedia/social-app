@@ -167,6 +167,7 @@ exports.createAdmin = functions.https.onCall(data => {
   console.log("DATA ADMIn", data)
   return admin.auth().setCustomUserClaims(data.uid, {skylarAdmin: data.isAdmin})
   .then(res => {
+    console.log('RES in nodes', res)
     return {
       message: `Success ${res}`
     }

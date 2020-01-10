@@ -230,7 +230,38 @@ h2.welcome {
 
 .inner-chat-log {
 	width: 431px;
+	max-height: 600px;
+    overflow-y: scroll;
 }
+
+.inner-chat-log::-webkit-scrollbar {
+	-webkit-appearance: none;
+	width: 7px;
+}
+.inner-chat-log::-webkit-scrollbar-thumb {
+	border-radius: 4px;
+	background-color: rgba(0,0,0,.5);
+}
+
+.inner-chat-log::-webkit-scrollbar {
+	width: 10px;
+  }
+
+  .inner-chat-log::-webkit-scrollbar-track {
+  background: #fff;
+}
+ 
+/* Handle */
+.inner-chat-log::-webkit-scrollbar-thumb {
+  background:#002d5b;
+  border-radius:0;
+}
+
+/* Handle on hover */
+.inner-chat-log::-webkit-scrollbar-thumb:hover {
+  background:#002d5b;
+}
+  
 
 .inner-chat-log textarea {
 	width: 100%;
@@ -1690,10 +1721,11 @@ select {
 	text-align: left !important;
 }
 
-.admin-logged-in.client-message-wrap .color-blue.d-block{
+.admin-logged-in.client-message-wrap .color-blue.d-block,.client-logged-in.client-message-wrap .color-blue.d-block {
 	text-align:left;
 	padding-left:10px;
 }
+
 
 .admin-logged-in.client-message-wrap  .client-clear-btn {
 	right: 0;

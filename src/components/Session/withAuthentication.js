@@ -23,7 +23,12 @@ import { withFirebase } from '../Firebase';
               console.log('id token', idTokenResult.claims.skylarAdmin)
               console.log('auth user token', authUser)
               authUser.skylarAdmin = idTokenResult.claims.skylarAdmin
-              this.setState({ authUser })
+              this.setState({
+                authUser: authUser
+              }, () => {
+                console.log('set state', this.state.authUser)
+              })
+              return authUser.skylarMin
             })
           }
 
@@ -33,7 +38,7 @@ import { withFirebase } from '../Firebase';
     }
 
     componentWillUnmount() {
-      // this.listener();
+      this.listener();
     }
 
     render() {
