@@ -6,6 +6,7 @@ import './index.css';
 import { Input } from 'antd';
 import { withFirebase } from '../Firebase';
 import { Spin, Icon } from 'antd';
+import { Link } from 'react-router-dom';
 
 import app from 'firebase/app';
 
@@ -96,6 +97,7 @@ class SignInFormBase extends Component {
       <React.Fragment>
         <img src={require('../assets/skylar_Icon_wingPortion.svg')} id="wing-logo" />
         Version.12
+        <Link  to="home">Go test</Link> 
         <form onSubmit={this.onSubmit} className="d-flex flex-column align-items-center">
           <Input
             name="email"

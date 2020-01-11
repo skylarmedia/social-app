@@ -14,8 +14,7 @@ import { withFirebase } from '../Firebase';
     }
 
     componentDidMount() {
-      console.log('auth', this.props, this.state);
-
+      console.log('Ran from withAuthentication')
       this.listener = this.props.firebase.auth.onAuthStateChanged(authUser => {
           if(authUser){
             return authUser.getIdTokenResult().then(idTokenResult => {
@@ -31,8 +30,6 @@ import { withFirebase } from '../Firebase';
               return authUser.skylarMin
             })
           }
-
-       
         },
       );
     }

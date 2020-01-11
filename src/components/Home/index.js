@@ -3,8 +3,9 @@ import { withFirebase } from '../Firebase';
 import { Link } from 'react-router-dom';
 import { compose } from 'recompose';
 import 'firebase/storage';
-import { AuthUserContext } from '../Session';
 import withAuthorization from '../Session/withAuthorization';
+import withAuthentication from '../Session/withAuthentication';
+import { AuthUserContext } from '../Session';
 import { Skeleton } from 'antd';
 import './index.css';
 import { Modal } from 'antd';
@@ -481,4 +482,10 @@ class Home extends Component {
   }
 }
 
-export default compose(withFirebase(Home))
+const condition = authUser => {
+  console.log('Auth Condition', condition)
+}
+
+export default compose(
+  withFirebase(Home)
+  )
