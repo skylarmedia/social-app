@@ -6,24 +6,10 @@ import AuthUserContext from './context';
 import { withFirebase } from '../Firebase';
 import * as ROUTES from '../../constants/routes';
 
-<<<<<<< HEAD
-const withAuthentication = Component => {
-  alert('ran')
-  class WithAuthentication extends React.Component {
-    constructor(props) {
-      super(props);
-
-      this.state = {
-        authUser: null,
-      };
-    }
-
-=======
 const withAuthorization = condition => Component => {
   console.log('condition in render', condition)
   
   class WithAuthorization extends React.Component {
->>>>>>> new_master
     componentDidMount() {
       this.listener = this.props.firebase.onAuthUserListener(
         authUser => {
