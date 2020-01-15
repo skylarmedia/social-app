@@ -77,48 +77,52 @@ class ClientDates extends Component {
 
   render() {
     const dates = this.state.dates.map((item, index) => {
-      console.log('item mapped', item);
       return (
-        <Col span={6} key={index}>
-          <Link to={`/client-calendar/${item.year}/${item.month}`}>
-            <CalendarImage
-              year={item.year}
-              month={item.month}
-              name={item.name}
-              userId={this.props.match.params.id}
-              admin={false}
-            />
-            <p className="p-blue text-center">
-              {item.name} {item.year}
-            </p>
-          </Link>
-        </Col>
+        <AuthUserContext.Consumer>
+          {auth => {
+            console.log('AUTH CALENDAR', auth);
+            return (
+              <Col span={6} key={index}>
+                <Link to={`/client-calendar/${item.year}/${item.month}`}>
+                  <CalendarImage
+                    year={item.year}
+                    month={item.month}
+                    name={item.name}
+                    userId={auth.displayName}
+                    admin={false}
+                  />
+                  <p className="p-blue text-center">
+                    {item.name} {item.year}
+                  </p>
+                </Link>
+              </Col>
+            );
+          }}
+        </AuthUserContext.Consumer>
       );
     });
     return (
       <AuthUserContext.Consumer>
         {authUser => {
-          console.log('auth user', authUser)
           return (
-          <React.Fragment>
-            {authUser.displayName}
-            <h6 className="f-20 text-center margin-h2">
-              Client {localStorage.getItem('p-blue')} Calendar
-            </h6>
-            <Row gutter={30} className="container mx-auto">
-              <Col span={6}>
-                <span className="f-16 p-blue mb-20 d-inline-block">Categories</span>
-                <CategoryList colors={this.state.categories} />
-              </Col>
-              <Col span={18}>
-                <p className="mb-40 p-blue">Select a month to view it’s calendar.</p>
-                <Row gutter={30} className="p-blue">
-                  {dates}
-                </Row>
-              </Col>
-            </Row>
-          </React.Fragment>
-        )
+            <React.Fragment>
+              <h6 className="f-20 text-center margin-h2">
+                Client {localStorage.getItem('p-blue')} Calendar
+              </h6>
+              <Row gutter={30} className="container mx-auto">
+                <Col span={6}>
+                  <span className="f-16 p-blue mb-20 d-inline-block">Categories</span>
+                  <CategoryList colors={this.state.categories} />
+                </Col>
+                <Col span={18}>
+                  <p className="mb-40 p-blue">Select a month to view it’s calendar.</p>
+                  <Row gutter={30} className="p-blue">
+                    {dates}
+                  </Row>
+                </Col>
+              </Row>
+            </React.Fragment>
+          );
         }}
       </AuthUserContext.Consumer>
     );

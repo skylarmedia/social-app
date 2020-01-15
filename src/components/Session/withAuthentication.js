@@ -19,12 +19,9 @@ import { withFirebase } from '../Firebase';
             return authUser.getIdTokenResult().then(idTokenResult => {
               console.log(idTokenResult)
               console.log('id token', idTokenResult.claims.skylarAdmin)
-              console.log('auth user token', authUser)
               authUser.skylarAdmin = idTokenResult.claims.skylarAdmin
               this.setState({
                 authUser: authUser
-              }, () => {
-                console.log('set state', this.state.authUser)
               })
               return authUser.skylarAdmin
             })

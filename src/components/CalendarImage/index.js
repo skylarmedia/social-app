@@ -9,21 +9,25 @@ class CalendarImage extends Component {
     this.state = {
       size: 0
     };
-    this.db = app.functions();
+    this.functions = app.functions();
   }
 
   componentDidMount() {
+    console.log('FUNCTION OBJ EMPTY' );
+      let functionObj = new Object();
+      const readMonths = this.functions.httpsCallable('readMonths');
+      functionObj.userId = this.props.userId;
+      functionObj.month = parseInt(this.props.month);
+      console.log('FUNCTION OBJ', functionObj);
+      readMonths(functionObj).then(res => {
+        console.log('res user client', res);
+        this.setState({
+          size: res.data._size
+        });
+      });
+
     // if (this.props.admin == false) {
-    //   let functionObj = new Object();
-    //   const readMonths = this.db.httpsCallable('readMonths');
-    //   functionObj.userId = this.props.userId
-    //   functionObj.month = this.props.month
-    //   readMonths(functionObj).then(res => {
-    //     console.log('res', res)
-    //     // this.setState({
-    //     //   size: res.data._size
-    //     // });
-    //   });
+
     // }else{
     //   let functionObj = new Object();
     //   const readMonthsAdmin = this.db.httpsCallable('readMonthsAdmin');

@@ -246,34 +246,66 @@ class Home extends Component {
           const createAdmin = this.functions.httpsCallable('createAdmin');
           createAdmin(currentUser).then(user => {
               console.log(`user Obj in current user`, user);
-              // this.db
-              //   .collection('users')
-              //   .doc(this.state.username)
-              //   .set({
-              //     name: this.state.username,
-              //     logo: this.state.backgroundUrl,
-              //     userId: user.user.uid,
-              //     admin: this.state.admin,
-              //     email: this.state.email,
-              //     urlName: this.state.username.toLowerCase().replace(/ /g, '-'),
-              //     archived: false,
-              //     uid: user.user.uid
-              //   });
+              this.db
+              .collection('users')
+              .doc(this.state.username)
+              .set({
+                name: this.state.username,
+                logo: this.state.backgroundUrl,
+                admin: this.state.admin,
+                email: this.state.email,
+                urlName: this.state.username.toLowerCase().replace(/ /g, '-'),
+                archived: false,
+              });
+
+              if(this.state.admin === false){
+                // this.db
+                // .collection('users')
+                // .doc(this.state.username)
+                // .set({
+                //   name: this.state.username,
+                //   logo: this.state.backgroundUrl,
+                //   userId: user.user.uid,
+                //   admin: this.state.admin,
+                //   email: this.state.email,
+                //   urlName: this.state.username.toLowerCase().replace(/ /g, '-'),
+                //   archived: false,
+                //   uid: user.user.uid
+                // });
+                this.setState({
+                  loadSpinner: false,
+                  visible: false,
+                  users: [...this.state.users, userObj],
+                  passwordOne: '',
+                  email: '',
+                  file: null
+                });
+              }else{
+
+                // this.db
+                // .collection('users')
+                // .doc(this.state.username)
+                // .set({
+                //   name: this.state.username,
+                //   logo: this.state.backgroundUrl,
+                //   admin: this.state.admin,
+                //   email: this.state.email,
+                //   urlName: this.state.username.toLowerCase().replace(/ /g, '-'),
+                //   archived: false,
+                // });
+                this.setState({
+                  loadSpinner: false,
+                  visible: false,
+                  users: [...this.state.users, userObj],
+                  passwordOne: '',
+                  email: '',
+                  file: null
+                });
+              }
             });
 
-          this.setState({
-            loadSpinner: false,
-            visible: false,
-            users: [...this.state.users, userObj],
-            passwordOne: '',
-            email: '',
-            file: null
-          });
-        },
-        () => {
-          this.setState({});
-        }
-      );
+       
+        });
   };
 
   render() {

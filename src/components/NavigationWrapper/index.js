@@ -29,7 +29,6 @@ class NavigationWrapper extends Component {
     return(
       <AuthUserContext.Consumer>
           {authUser => {
-            console.log('authUser in admin', authUser)
             if(authUser.skylarAdmin === true){
               return (
                 <Navigation />

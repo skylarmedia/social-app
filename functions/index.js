@@ -27,18 +27,20 @@ admin.initializeApp(functions.config().firestore);
 //     }
 //   });
 
-// Update Client read messages
-// exports.readMonths = functions.https.onCall(data => {
-//   return admin
-//     .firestore()
-//     .collection('chats')
-//     .doc(data.userId)
-//     .collection('messages')
-//     .where('month', '==', data.month)
-//     .where('readByClient', '==', false)
-//     .where('admin', '==', true)
-//     .get();
-// });
+// Update Client read messages on clientside
+exports.readMonths = functions.https.onCall(data => {
+  console.log('DATA IN CLIENT', data);
+  console.log('TYPE OF DATA MONTH', typeof(data.month));
+  return admin
+    .firestore()
+    .collection('chats')
+    .doc(data.userId)
+    .collection('messages')
+    .where('month', '==', data.month)
+    .where('readByClient', '==', false)
+    .where('admin', '==', true)
+    .get();
+});
 
 // exports.readMonthsAdmin = functions.https.onCall(data => {
 //   return admin
@@ -69,15 +71,15 @@ admin.initializeApp(functions.config().firestore);
 // });
 
 // Update Home User Unread Messages
-// exports.updateHomeClientMessages = functions.https.onCall(data => {
-//   return admin
-//   .firestore()
-//   .collection('chats')
-//   .doc(data.userId)
-//   .collection('messages')
-//   .where('readByAdmin', '==', false)
-//   .get()
-// })
+exports.updateHomeClientMessages = functions.https.onCall(data => {
+  return admin
+  .firestore()
+  .collection('chats')
+  .doc(data.userId)
+  .collection('messages')
+  .where('readByAdmin', '==', false)
+  .get();
+});
 
 // Updat notification for Admin from Client
 // exports.updateClientNotification  = functions.https.onCall(data => {
@@ -178,25 +180,22 @@ exports.createAdmin = functions.https.onCall(data => {
       disabled: false
     })
     .then(function(userRecord) {
-      console.log('DATA IN FUNCTION', data);
-      console.log('Successfully Created User', userRecord);
+      var record = userRecord;
+      console.log('RECORD', record)
       if (data.admin === true) {
         return admin
           .auth()
           .setCustomUserClaims(userRecord.uid, { skylarAdmin: true })
-          .then(res => {
-            console.log('Successfully Create Admin', res);
-            return {
-              message: `Successfully Create Admin ${res}`
-            };
+          .then(function(){
+            console.log('record in record', record);
+            return record;
           });
       } else {
-        return admin
-          .auth()
+        return admin.auth()
           .setCustomUserClaims(userRecord.uid, { skylarAdmin: false })
-          .then(() => {
-            console.log('Successfully create non admin', userRecord);
-            return userRecord;
+          .then(function(){
+            console.log('record in record', record);
+            return record;
           });
       }
     })
@@ -299,31 +298,31 @@ exports.changeClientPassword = functions.https.onCall(data => {
 // });
 
 // // Update Admin Messages
-// exports.updateAdminMessages = functions.https.onCall(data => {
-//   return admin
-//     .firestore()
-//     .collection('chats')
-//     .doc(data.userId)
-//     .collection('messages')
-//     .where('postId', '==', data.postId)
-//     .get()
-//     .then(snapshot => {
-//       let batch = admin.firestore().batch();
-//       snapshot.docs.map(item => {
-//         console.log('item ID', item.id)
-//         const messageRef = admin
-//         .firestore()
-//         .collection('chats')
-//         .doc(data.userId)
-//         .collection('messages')
-//         .doc(item.id)
-//         batch.update(messageRef,{readByClient:true})
-//       })
-//       return batch.commit();
-//     }).then(() => {
-//       console.log('SUCCESS')
-//     })
-//     .catch(err => {
-//       console.log(`error ${err}`)
-//     })
-// });
+exports.updateAdminMessages = functions.https.onCall(data => {
+  return admin
+    .firestore()
+    .collection('chats')
+    .doc(data.userId)
+    .collection('messages')
+    .where('postId', '==', data.postId)
+    .get()
+    .then(snapshot => {
+      let batch = admin.firestore().batch();
+      snapshot.docs.map(item => {
+        console.log('item ID', item.id)
+        const messageRef = admin
+        .firestore()
+        .collection('chats')
+        .doc(data.userId)
+        .collection('messages')
+        .doc(item.id)
+        batch.update(messageRef,{readByClient:true})
+      })
+      return batch.commit();
+    }).then(() => {
+      console.log('SUCCESS')
+    })
+    .catch(err => {
+      console.log(`error ${err}`)
+    })
+});

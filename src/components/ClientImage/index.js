@@ -36,12 +36,10 @@ class ClientImage extends Component {
     let functionObj = new Object();
     functionObj.userId = this.props.name;
     updateHomeClientMessages(functionObj).then(res => {
-      console.log('RES IN SIZE', res.data);
-      if (this.state.size !== 0) {
+      console.log('RES IN SIZE', res.data, this.props.name);
         this.setState({
           size: res.data._size
         });
-      }
     });
 
     // this.unsubscribe();
