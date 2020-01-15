@@ -229,52 +229,37 @@ class Home extends Component {
           const encodedUrl = `https://firebasestorage.googleapis.com/v0/b/skylar-social-17190.appspot.com/o/${encodeURIComponent(
             snapshot.metadata.fullPath
           )}?alt=media`;
-          console.log('encoded URL in', encodedUrl);
           const userObj = {};
           userObj.logo = this.state.backgroundUrl;
           userObj.name = this.state.username;
           userObj.urlName = this.state.username.toLowerCase().replace(/ /g, '-');
-          console.log(`URL STATE ${this.state.backgroundUrl}`);
+          console.log(this.state.email);
 
-          this.auth
-            .createUserWithEmailAndPassword(this.state.email, this.state.passwordOne)
-            .then(user => {
-              user.user.updateProfile({
-                displayName: this.state.username,
-                photoURL: this.state.backgroundUrl
-              });
-              console.log(`user Obj`, user);
-              alert(this.state.email);
-              this.db
-                .collection('users')
-                .doc(this.state.username)
-                .set({
-                  name: this.state.username,
-                  logo: this.state.backgroundUrl,
-                  userId: user.user.uid,
-                  admin: this.state.admin,
-                  email: this.state.email,
-                  urlName: this.state.username.toLowerCase().replace(/ /g, '-'),
-                  archived: false,
-                  uid: user.user.uid
-                });
-              console.log('user Uid', user.user.uid);
-              const createAdmin = this.functions.httpsCallable('createAdmin');
-
-              // Creates non-admin from there as well
-              console.log('USER UID ', user)
-              const currentUser = new Object();
-              currentUser.uid = user.user.uid;
-              currentUser.isAdmin = this.state.admin;
-              createAdmin(currentUser);
+          // Admin Object
+          console.log('USER OBJ', this.state);
+          const currentUser = new Object();
+          currentUser.email = this.state.email;
+          currentUser.password = this.state.passwordOne;
+          currentUser.displayName = this.state.username;
+          currentUser.photoURL = this.state.backgroundUrl;
+          currentUser.admin = this.state.admin;
+          const createAdmin = this.functions.httpsCallable('createAdmin');
+          createAdmin(currentUser).then(user => {
+              console.log(`user Obj in current user`, user);
+              // this.db
+              //   .collection('users')
+              //   .doc(this.state.username)
+              //   .set({
+              //     name: this.state.username,
+              //     logo: this.state.backgroundUrl,
+              //     userId: user.user.uid,
+              //     admin: this.state.admin,
+              //     email: this.state.email,
+              //     urlName: this.state.username.toLowerCase().replace(/ /g, '-'),
+              //     archived: false,
+              //     uid: user.user.uid
+              //   });
             });
-
-          // this.props.firebase.addUser(
-          //   this.state.email,
-          //   this.state.passwordOne,
-          //   this.state.username,
-          //   this.state.backgroundUrl
-          // );
 
           this.setState({
             loadSpinner: false,

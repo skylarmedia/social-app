@@ -14,7 +14,6 @@ admin.initializeApp(functions.config().firestore);
 //     });
 // };
 
-
 // exports.countUnread = functions.firestore
 //   .document('chats/{userId}/messages/{message}')
 //   .onCreate(doc => {
@@ -27,7 +26,6 @@ admin.initializeApp(functions.config().firestore);
 //       return updateClientStatus(client, postId);
 //     }
 //   });
-
 
 // Update Client read messages
 // exports.readMonths = functions.https.onCall(data => {
@@ -94,134 +92,181 @@ admin.initializeApp(functions.config().firestore);
 //   })
 // })
 
-
 // Clear Client Messages
 exports.changeUsername = functions.https.onCall(data => {
   console.log('hit here 1');
-  return admin.auth().updateUser(data.uid, {
-    displayName:data.username
-  }).then(() => {
-    console.log('hit here 2');
-    return admin
-    .firestore()
-    .collection('users')
-    .doc(data.oldUsername)
-    .get()
-    .then(doc => {
-      console.log('hit here 3');
-      if(doc && doc.exists){
-        const data = doc.data();
-        return admin.firestore().collection("users").doc(data.username)
-        .set(data)
-        .then(() => {
-          console.log('WE GOT THIS FAR');
-          admin.firestore().collection('users').doc(data.oldUsername).delete()
-        })
-      }
+  return admin
+    .auth()
+    .updateUser(data.uid, {
+      displayName: data.username
     })
-  })
-  .catch(err => {
-    return err
-  })
+    .then(() => {
+      console.log('hit here 2');
+      return admin
+        .firestore()
+        .collection('users')
+        .doc(data.oldUsername)
+        .get()
+        .then(doc => {
+          console.log('hit here 3');
+          if (doc && doc.exists) {
+            const data = doc.data();
+            return admin
+              .firestore()
+              .collection('users')
+              .doc(data.username)
+              .set(data)
+              .then(() => {
+                console.log('WE GOT THIS FAR');
+                admin
+                  .firestore()
+                  .collection('users')
+                  .doc(data.oldUsername)
+                  .delete();
+              });
+          }
+        });
+    })
+    .catch(err => {
+      return err;
+    });
 });
 
 exports.clearClientMessages = functions.https.onCall(data => {
-  console.log(`ran clientMessages clientId:${data.id}, postId: ${data.postId}`)
-  console.log('post id', data)
+  console.log(`ran clientMessages clientId:${data.id}, postId: ${data.postId}`);
+  console.log('post id', data);
   return admin
-  .firestore()
-  .collection('chats')
-  .doc(data.id)
-  .collection('messages')
-  .where('postId', '==', data.postId)
-  .get()
-  .then(snapshot => {
-    let batch = admin.firestore().batch();
-    snapshot.docs.map(item => {
-      const messagesRef = admin
-      .firestore()
-      .collection('chats')
-      .doc(data.id)
-      .collection('messages')
-      .doc(item.id)
-      batch.delete(messagesRef)
+    .firestore()
+    .collection('chats')
+    .doc(data.id)
+    .collection('messages')
+    .where('postId', '==', data.postId)
+    .get()
+    .then(snapshot => {
+      let batch = admin.firestore().batch();
+      snapshot.docs.map(item => {
+        const messagesRef = admin
+          .firestore()
+          .collection('chats')
+          .doc(data.id)
+          .collection('messages')
+          .doc(item.id);
+        batch.delete(messagesRef);
+      });
+      batch.commit();
     })
-    batch.commit()
-  }).then(() => {
-    return {message:'Successfully deleted'}
-  })
-  .catch(err => {
-   return err
-  });
+    .then(() => {
+      return { message: 'Successfully deleted' };
+    })
+    .catch(err => {
+      return err;
+    });
 });
-
 
 //Create Admin
 
-// exports.createAdmin = functions.https.onCall(data => {
-//   console.log('DATA ADMIN', data);
-//   admin.auth().setCustomUserClaims(data.uid, {skylarAdmin: true})
-// });
-
 exports.createAdmin = functions.https.onCall(data => {
-  console.log("DATA ADMIn", data)
-  return admin.auth().setCustomUserClaims(data.uid, {skylarAdmin: data.isAdmin})
-  .then(res => {
-    console.log('RES in nodes', res)
-    return {
-      message: `Success ${res}`
-    }
-  })
-  .catch(err => {
-    return err
-  })
+  console.log('CREATED ADMIN', data);
+  admin
+    .auth()
+    .createUser({
+      email: data.email,
+      emailVerified: false,
+      password: data.password,
+      displayName: data.displayName,
+      photoURL: data.photoURL,
+      disabled: false
+    })
+    .then(function(userRecord) {
+      console.log('DATA IN FUNCTION', data);
+      console.log('Successfully Created User', userRecord);
+      if (data.admin === true) {
+        return admin
+          .auth()
+          .setCustomUserClaims(userRecord.uid, { skylarAdmin: true })
+          .then(res => {
+            console.log('Successfully Create Admin', res);
+            return {
+              message: `Successfully Create Admin ${res}`
+            };
+          });
+      } else {
+        return admin
+          .auth()
+          .setCustomUserClaims(userRecord.uid, { skylarAdmin: false })
+          .then(() => {
+            console.log('Successfully create non admin', userRecord);
+            return userRecord;
+          });
+      }
+    })
+    .catch(function(err) {
+      console.log('There was an error', err);
+      return err;
+    });
 });
 
+// Old create admin
+// exports.createAdmin = functions.https.onCall(data => {
+//   console.log("DATA ADMIn", data)
+//   return admin.auth().setCustomUserClaims(data.uid, {skylarAdmin: data.isAdmin})
+//   .then(res => {
+//     console.log('RES in nodes', res)
+//     return {
+//       message: `Success ${res}`
+//     }
+//   })
+//   .catch(err => {
+//     return err
+//   })
+// });
 
 //Get UID
 
 exports.getUid = functions.https.onCall(data => {
-  console.log('DATA EMAIL', data.email)
-  return admin.auth().getUserByEmail(data.email)
-  .then(res => {
-    console.log('RES', res)
-    return res
-   
-  })
-  .catch(err => {
-    console.log(`There was an err ${err}`)
-  })
+  console.log('DATA EMAIL', data.email);
+  return admin
+    .auth()
+    .getUserByEmail(data.email)
+    .then(res => {
+      console.log('RES', res);
+      return res;
+    })
+    .catch(err => {
+      console.log(`There was an err ${err}`);
+    });
 });
 
-
-// Delete User 
+// Delete User
 
 exports.deleteByUid = functions.https.onCall(data => {
   return admin
-  .firestore()
-  .collection('users')
-  .doc(data.name)
-  .delete()
-  .then(() => {
-    console.log('Successfully Deleted from Firestore')
-    admin.auth().deleteUser(data.uid)
-  })
-  .catch(err => {
-    console.log(`Sorry there was an error: ${err}`)
-  })
+    .firestore()
+    .collection('users')
+    .doc(data.name)
+    .delete()
+    .then(() => {
+      console.log('Successfully Deleted from Firestore');
+      admin.auth().deleteUser(data.uid);
+    })
+    .catch(err => {
+      console.log(`Sorry there was an error: ${err}`);
+    });
 });
 
 // Update Client Password
 
 exports.changeClientPassword = functions.https.onCall(data => {
-  console.log('data', data)
-  return admin.auth().updateUser(data.uid, {
-    password:data.password
-  })
-  .catch(err => {
-    return err
-  })
-})
+  console.log('data', data);
+  return admin
+    .auth()
+    .updateUser(data.uid, {
+      password: data.password
+    })
+    .catch(err => {
+      return err;
+    });
+});
 
 // // Update client messages by month
 // exports.updateClientMessages = functions.https.onCall(data => {
@@ -252,7 +297,6 @@ exports.changeClientPassword = functions.https.onCall(data => {
 //       console.log(`error ${err}`)
 //     })
 // });
-
 
 // // Update Admin Messages
 // exports.updateAdminMessages = functions.https.onCall(data => {
