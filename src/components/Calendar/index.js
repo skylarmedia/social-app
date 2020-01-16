@@ -189,23 +189,6 @@ class Calendar extends React.Component {
     });
   };
 
-  onPrev = () => {
-    let curr = '';
-    if (this.state.showMonthTable == true) {
-      curr = 'year';
-    } else {
-      curr = 'month';
-    }
-    this.setState({
-      dateObject: this.state.dateObject.subtract(1, curr)
-    });
-
-    this.props.history.push(
-      `/calendar/2019/${parseInt(this.props.match.params.month) - 1}/${
-        this.props.match.params.clientId
-      }`
-    );
-  };
   onNext = () => {
     let curr = '';
     if (this.state.showMonthTable == true) {
@@ -215,7 +198,7 @@ class Calendar extends React.Component {
     }
 
     this.props.history.push(
-      `/calendar/2019/${parseInt(this.props.match.params.month) + 1}/${
+      `/calendar/${new Date().getFullYear()}/${parseInt(this.props.match.params.month) + 1}/${
         this.props.match.params.clientId
       }`
     );
@@ -376,7 +359,7 @@ class Calendar extends React.Component {
             history={this.props.history}
           />
           <Link
-            to={`/add-post/2019/${this.props.match.params.month}/${d}/${this.props.match.params.clientId}`}
+            to={`/add-post/${new Date().getFullYear()}/${this.props.match.params.month}/${d}/${this.props.match.params.clientId}`}
             className="add-post-link"
           >
             +

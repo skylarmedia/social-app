@@ -29,7 +29,7 @@ class Dates extends Component {
       showAddDate: false,
       date: [],
       month: 1,
-      year: 2019,
+      year: new Date().getFullYear(),
       chosenMonth: '',
       categories: [],
       chosenYear: '',

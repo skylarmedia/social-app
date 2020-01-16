@@ -281,7 +281,7 @@ class ClientViewPost extends Component {
                 </div>
               )}
 
-              <div className="float-left">
+              <div className="float-left w-100">
                 <div className="w-100 color-blue p-border copy-margin">POST COPY</div>
                 <p>{item.copy}</p>
               </div>

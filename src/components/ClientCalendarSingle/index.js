@@ -55,7 +55,7 @@ class ClientCalendarSingle extends Component {
       console.log('item in filter', item);
 
       return (
-        <div className="d-flex align-items-center">
+        <div className="outter-client-single">
           <Link
             to={`/view-post/${linkMonth}/${this.props.day}/${item.id}`}
             style={clientTitleStyles}
@@ -69,14 +69,16 @@ class ClientCalendarSingle extends Component {
             approved={item.data().approved}
             clientNotification={item.data().clientNotification}
           />
-        </div>  
+        </div>
       );
     });
 
     return (
-      <div className="h-100">
-        <p className="calendar-single-day">{this.props.day}</p>
-        {filteredList}
+      <div className="main-outter-single">
+        <div className="outter-cal-wrap">
+          <p className="calendar-single-day">{this.props.day}</p>
+          {filteredList}
+        </div>
       </div>
     );
   }

@@ -16,7 +16,7 @@ class ClientCalendar extends Component {
         showYearTable: false,
         showMonthTable: false,
         showDateTable: true,
-        dateObject: moment(`2019-${this.props.match.params.month}`),
+        dateObject: moment(`${new Date().getFullYear()}-${this.props.match.params.month}`),
         allmonths: moment.months(),
         selectedDay: null,
         currentMonth: parseInt(moment().format('M')),

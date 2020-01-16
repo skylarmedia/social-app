@@ -304,9 +304,7 @@ class AddPost extends Component {
           this.state.postAd
         )
         .then(() => {
-          this.props.history.push(
-            `/calendar/2019/${this.props.match.params.month}/${this.props.match.params.clientId}`
-          );
+          this.props.history.goBack();
         });
     }
 

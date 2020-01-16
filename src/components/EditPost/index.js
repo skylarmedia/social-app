@@ -809,6 +809,13 @@ class EditPost extends Component {
                       value={this.state.message}
                       onKeyDown={this.captureKey}
                     />
+                    <button
+                    type="button"
+                    onClick={this.toggleIcon.bind(this)}
+                    className="clear-btn position-absolute happy-btn"
+                  >
+                    <i className="fas fa-smile-beam"></i>
+                  </button> 
                     <Popover
                       placement="topRight"
                       content={content}
@@ -822,13 +829,6 @@ class EditPost extends Component {
                       </Button>
                     </Popover>
                   </form>
-                  <button
-                    type="button"
-                    onClick={this.toggleIcon.bind(this)}
-                    className="clear-btn position-absolute happy-btn"
-                  >
-                    <i className="fas fa-smile-beam"></i>
-                  </button>
                 </div>
                 <span className={this.state.showIcons ? 'hidden' : 'not-hidden'}>
                   <Picker onSelect={this.addEmoji} />
