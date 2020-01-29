@@ -11,7 +11,7 @@ class Icons extends Component {
   }
 
   componentWillMount() {
-    let iconState = new Object();
+    let iconState = {};
     iconState.approved = this.props.approved;
     iconState.ad = this.props.ad;
     iconState.clientRead = this.props.clientRead;
@@ -22,16 +22,16 @@ class Icons extends Component {
   }
 
   getIcons = icon => {
-    if (icon.approved == true) {
+    if (icon.approved === true) {
       return <div class="approved-icon icon"></div>;
     }
-    if (icon.clientRead == false) {
+    if (icon.clientRead === false) {
       return <div class="clientRead-icon icon"></div>;
     }
-    if (icon.clientRead == true) {
+    if (icon.clientRead === true) {
       return <div class="clientNotRead-icon icon"></div>;
     }
-    if (icon.adminNotifcation == true) {
+    if (icon.adminNotifcation === true) {
       return <div>RED</div>;
     }
   };

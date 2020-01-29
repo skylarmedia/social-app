@@ -17,7 +17,6 @@ const withAuthorizationAdmin = condition => Component => {
                         : this.props.history.push(`/`);
                 },
             );
-            console.log(this.props, 'props in auth')
         }
 
 

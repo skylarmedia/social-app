@@ -34,11 +34,10 @@ class MediaWrapper extends Component {
                     width: 200,
                     height: 200
                 }
-                console.log(file);
                 switch (check(file)) {
                     case 'image':
                         return (
-                            <img src={file} style={imgStyle} />
+                            <img src={file} style={imgStyle} alt="media file"/>
                         )
                         break;
                     case 'video':

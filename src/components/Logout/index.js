@@ -1,8 +1,6 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { withFirebase } from '../Firebase';
 import { compose } from 'redux';
-
-
 
 class Logout extends React.Component{
     

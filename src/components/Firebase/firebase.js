@@ -84,10 +84,7 @@ class Firebase {
   //     .get();
 
   assignCategories = (id, year, month, categories) => {
-    console.log('main cates', categories);
     categories.forEach(function(item, i) {
-      console.log('item months', item.months);
-      console.log('MAIN ITEM', item);
       app
         .firestore()
         .collection('users')
@@ -551,7 +548,7 @@ class Firebase {
       .delete()
       .then(function() {})
       .catch(err => {
-        console.log('Err', err);
+        
       });
   };
 

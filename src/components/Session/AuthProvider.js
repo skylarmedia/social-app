@@ -10,7 +10,6 @@ class AuthProvider extends Component {
   };
 
   render() {
-    console.log('AuthUserContext')
     return (
       <MyContext.Provider
         value={{

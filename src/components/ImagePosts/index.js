@@ -1,5 +1,5 @@
 import React from 'react';
-import { Row, Col } from 'antd';
+import { Col } from 'antd';
 
 const ImagePosts = props => {
   const { imageSrc, removeImage } = props;
@@ -21,7 +21,7 @@ const ImagePosts = props => {
     <div gutter={20} className="upload-files-wrapper test">
       {imageSrc &&
         imageSrc.map((item, index) => {
-          if (getType(item) == 'video') {
+          if (getType(item) === 'video') {
             return (
               <div key={index}>
                 <video height="200" width="200" controls>

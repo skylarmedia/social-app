@@ -3,7 +3,6 @@ const initState = {
 }
 
 const pushReducer = (state = initState, action) => {
-    console.log('posts',  action)
     if(action.type === 'PUSH POST' && action){
         return{
             ...state,

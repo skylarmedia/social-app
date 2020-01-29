@@ -271,14 +271,14 @@ class AddPost extends Component {
             />
           </Suspense>
         </div>
-        {i == 1 && (
+        {i === 1 && (
           <div className="remove-wrapper container">
             <button
               type="button"
               onClick={() => this.removePlatform(i)}
               className="clear-btn d-flex align-items-center"
             >
-              <img src={require('../assets/x.png')} />
+              <img src={require('../assets/x.png')} alt="remove platform"/>
               <p className="color-red blue-p mb-0">Remove Platform</p>
             </button>
           </div>
@@ -346,7 +346,7 @@ class AddPost extends Component {
                     className="clear-btn add-platform-btn d-flex align-items-center"
                     type="button"
                   >
-                    <img src={require('../assets/select.svg')} />
+                    <img src={require('../assets/select.svg')} alt="select icon"/>
                     <p className="color-blue blue-p mb-0">Add Platform</p>
                   </button>
                 </div>
@@ -359,7 +359,7 @@ class AddPost extends Component {
                   </button>
                 </div>
                 <button onClick={this.openIcons} className="smile-wrapper" type="button">
-                  <img src={require('../assets/happy-face.svg')} className="smile-logo" />
+                  <img src={require('../assets/happy-face.svg')} className="smile-logo" alt="happy face icon"/>
                 </button>
               </form>
             </div>

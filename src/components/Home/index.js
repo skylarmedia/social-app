@@ -58,7 +58,6 @@ class Home extends Component {
       const opened = snapshot.docs;
       let setArr = [...this.state.users];
       opened.map(item => {
-        console.log('snapshot item', snapshot);
         setArr.push(item.data());
       });
 
@@ -126,7 +125,6 @@ class Home extends Component {
         loadSpinner: !this.state.loadSpinner
       },
       () => {
-        console.log('USER ', this.state.username);
         this.state.firestorageRef
           .ref()
           .child(`${this.state.username}/logo/`)
@@ -135,7 +133,6 @@ class Home extends Component {
             const encodedUrl = `https://firebasestorage.googleapis.com/v0/b/skylar-social-17190.appspot.com/o/${encodeURIComponent(
               snapshot.metadata.fullPath
             )}?alt=media`;
-            console.log('encoded URL in', encodedUrl);
             this.setState({
               backgroundUrl: encodedUrl,
               uploadComplete: true,
@@ -177,14 +174,12 @@ class Home extends Component {
   };
 
   handleOk2 = e => {
-    console.log(e);
     this.setState({
       visible2: false
     });
   };
 
   handleCancel2 = e => {
-    console.log(e);
     this.setState({
       visible2: false
     });
@@ -233,10 +228,8 @@ class Home extends Component {
           userObj.logo = this.state.backgroundUrl;
           userObj.name = this.state.username;
           userObj.urlName = this.state.username.toLowerCase().replace(/ /g, '-');
-          console.log(this.state.email);
 
           // Admin Object
-          console.log('USER OBJ', this.state);
           const currentUser = new Object();
           currentUser.email = this.state.email;
           currentUser.password = this.state.passwordOne;
@@ -245,7 +238,6 @@ class Home extends Component {
           currentUser.admin = this.state.admin;
           const createAdmin = this.functions.httpsCallable('createAdmin');
           createAdmin(currentUser).then(user => {
-              console.log(`user Obj in current user`, user);
               this.db
               .collection('users')
               .doc(this.state.username)
@@ -309,7 +301,6 @@ class Home extends Component {
   };
 
   render() {
-    console.log(this.state.backgroundUrl, 'encoded URl');
     const backgroundUrlStyle = {
       backgroundImage: `url(${this.state.backgroundUrl})`,
       backgroundSize: 'cover'
@@ -327,7 +318,7 @@ class Home extends Component {
 
     return (
       <div id="home-page" className="container">
-        <img src={require('../assets/skylar_Icon_wingPortion.svg')} id="wing-logo" />
+        <img src={require('../assets/skylar_Icon_wingPortion.svg')} id="wing-logo" alt="wing-logo"/>
         <h2 className="text-center welcome">Welcome Home!</h2>
 
         {this.state.isLoading && this.state.users.length > 0 ? (
@@ -335,7 +326,6 @@ class Home extends Component {
             <p className="text-center">What client do you want to work on today?</p>
             <Row gutter={30} id="client-list">
               {this.state.users.map((user, index) => {
-                console.log('Loggeged User', user);
                 return (
                   <Col
                     data-id={user.userId}
@@ -423,7 +413,7 @@ class Home extends Component {
                 <div className="dashed" />
 
                 <div className="dashed dashed-wrapper">
-                  <img src={require('../assets/round-arrow.png')} className="round-arrow" />
+                  <img src={require('../assets/round-arrow.png')} className="round-arrow" alt="round arrow icon"/>
                 </div>
               </div>
             </div>
@@ -500,7 +490,7 @@ class Home extends Component {
 }
 
 const condition = authUser => {
-  console.log('Auth Condition', condition)
+
 }
 
 export default compose(

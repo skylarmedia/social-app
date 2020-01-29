@@ -6,9 +6,7 @@ import './index.css';
 import SignOutButton from '../SignOut';
 
 const NavigationNonAuth = () => {
-    const [drawerState, toggleDrawer] = useState(false);
-    var elem = document.querySelector('.anticon-down');
-    console.log(elem);
+  const [drawerState, toggleDrawer] = useState(false);
   return (
     <div>
       <Button type="primary" onClick={() => toggleDrawer(true)} className="burger-button">
@@ -26,7 +24,7 @@ const NavigationNonAuth = () => {
           <div id="auth-nav-wrapper">
             <ul id="nav-id">
               <li>
-                <img src={require('../assets/lock.png')} />
+                <img src={require('../assets/lock.png')} alt="lock icon" />
                 <SignOutButton />
               </li>
             </ul>

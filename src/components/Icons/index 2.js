@@ -24,12 +24,11 @@ class Icons extends Component {
   }
 
   getIcons = (icon) => {
-    console.log('ICON APPROVED', icon.approved)
     if(icon.approved == true){
         return <div class="approved-icon icon"></div>
     }
     if(icon.ad == true){
-        return <div><img src={require('../assets/ad.svg')} /></div>
+        return <div><img src={require('../assets/ad.svg')} alt="ad-svg" /></div>
     }
     if(icon.clientRead == false){
         return <div class="clientRead-icon icon"></div>
@@ -40,7 +39,6 @@ class Icons extends Component {
   };
 
   render() {
-    console.log('this icons', this.state.icon);
     return (
         <div>{this.getIcons(this.state.icon)}Icons</div>
     )

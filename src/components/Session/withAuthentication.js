@@ -17,8 +17,6 @@ import { withFirebase } from '../Firebase';
       this.listener = this.props.firebase.auth.onAuthStateChanged(authUser => {
           if(authUser){
             return authUser.getIdTokenResult().then(idTokenResult => {
-              console.log(idTokenResult)
-              console.log('id token', idTokenResult.claims.skylarAdmin)
               authUser.skylarAdmin = idTokenResult.claims.skylarAdmin
               this.setState({
                 authUser: authUser

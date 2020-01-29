@@ -15,7 +15,6 @@ import { Collapse } from 'antd';
 import { Popover, Button } from 'antd';
 import app from 'firebase/app';
 import ImagePosts from '../ImagePosts';
-import WithAuthenication from '../Session/withAuthentication';
 import { Row, Col } from 'antd';
 const { TextArea } = Input;
 const { Panel } = Collapse;
@@ -101,20 +100,20 @@ class EditPost extends Component {
     });
   };
 
-  getNumberOfMessages = () => {
-    this.props.firebase
-      .countClientMessages(
-        this.props.match.params.clientId,
-        this.state.currentMonth,
-        this.state.currentYear
-      )
-      .then(snapshot => {
-        console.log('snapshot in months', snapshot);
-        snapshot.docs.map(item => {
-          console.log('item month data', item.data());
-        });
-      });
-  };
+  // getNumberOfMessages = () => {
+  //   this.props.firebase
+  //     .countClientMessages(
+  //       this.props.match.params.clientId,
+  //       this.state.currentMonth,
+  //       this.state.currentYear
+  //     )
+  //     .then(snapshot => {
+  //       console.log('snapshot in months', snapshot);
+  //       snapshot.docs.map(item => {
+  //         console.log('item month data', item.data());
+  //       });
+  //     });
+  // };
 
   unsubscribe = () =>
     this.db
@@ -135,10 +134,8 @@ class EditPost extends Component {
       });
 
   componentDidMount() {
-    console.log('props in edit post', this.props)
     const updateAdminMessages = this.functions.httpsCallable('updateAdminMessages');
-    let newId = this.props.match.params.id;
-    let functionObj = new Object();
+    let functionObj = {};
     functionObj.postId = this.props.match.params.clientId;
     functionObj.userId = this.props.match.params.postId;
     updateAdminMessages(functionObj);
@@ -273,12 +270,6 @@ class EditPost extends Component {
   };
 
   handleBudget = e => {
-    console.log('event', e);
-    // let posts = [...this.state.posts];
-    // posts[i].budget = moment(val).format('MM/DD/YYYY');
-    // this.setState({
-    //   posts: posts
-    // });
   };
 
   // Capture Key
@@ -708,7 +699,7 @@ class EditPost extends Component {
                           onClick={() => this.addClick(index)}
                           className="clear-btn"
                         >
-                          <img src={require('../assets/select.svg')} />
+                          <img src={require('../assets/select.svg')} alt="select icon"/>
                         </button>
                       ) : (
                         <button
@@ -716,7 +707,7 @@ class EditPost extends Component {
                           onClick={() => this.removeClick(i)}
                           className="clear-btn"
                         >
-                          <img src={require('../assets/x.png')} />
+                          <img src={require('../assets/x.png')} alt="x-icon"/>
                         </button>
                       )}
                     </div>
@@ -837,7 +828,7 @@ class EditPost extends Component {
             </div>
    
           <button onClick={this.toggleChat} type="button" className="clear-btn">
-            <img src={require('../assets/chatbox.svg')} />
+            <img src={require('../assets/chatbox.svg')} alt="chatbox icon"/>
           </button>
         </div>
       </div>

@@ -76,15 +76,10 @@ class Dates extends Component {
     });
 
     this.props.firebase.getUserUnusedCategories(this.props.match.params.id).then(snapshot => {
-      console.log('snapshot in cat,', snapshot);
-      console.log('rpos match parms', this.props.match.params.id);
       const catArr = [...this.state.categories];
-      // console.log('cat arr', catArr)
       snapshot.docs.map((category, index) => {
-        console.log('ID', category.data().categories);
         category.data()['mainId'] = category.id;
         catArr.push(category.data());
-        console.log('catArr', catArr);
       });
       this.setState({
         categories: catArr,
@@ -100,14 +95,12 @@ class Dates extends Component {
   };
 
   handleOk = e => {
-    console.log(e);
     this.setState({
       visible: false
     });
   };
 
   handleCancel = e => {
-    console.log(e);
     this.setState({
       visible: false
     });
@@ -186,14 +179,12 @@ class Dates extends Component {
   }
 
   handleMonth = e => {
-    console.log(e, 'month event');
     this.setState({
       month: e
     });
   };
 
   handleYear = e => {
-    console.log(e, 'year event');
     this.setState({
       year: e
     });

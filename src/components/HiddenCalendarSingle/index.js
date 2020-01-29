@@ -31,14 +31,12 @@ class HiddenCalendarSingle extends Component {
   }
 
   handleOk = e => {
-    console.log(e);
     this.setState({
       visible: false
     });
   };
 
   handleCancel = e => {
-    console.log(e);
     this.setState({
       visible: false
     });
@@ -132,7 +130,6 @@ class HiddenCalendarSingle extends Component {
               <div>
                 <ImagePosts imageSrc={this.props.images} />
               </div>
-              {/* <img src={image} className="w-100" /> */}
             </Col>
             <Col span={12}>
               <div className="d-flex approval-wrapper">

@@ -1,4 +1,4 @@
-import React, { Component, Suspense } from 'react';
+import React, { Suspense } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import ProtectedRoute from './ProtectedRouteAdmin';
 
@@ -6,20 +6,15 @@ import ProtectedRoute from './ProtectedRouteAdmin';
 
 // Admin Components
 import NoMobile from '../NoMobile';
-// import Settings from '../Settings';
 import SignUpPage from '../SignUp';
 import Clients from '../Clients';
 import Dates from '../Dates';
-// import Calendar from '../Calendar';
-// import CalendarSingle from '../CalendarSingle';
-// import ClientCalendar from '../ClientCalendar';
 import ClientViewPost from '../ClientViewPost';
 import AdminViewPost from '../AdminViewPost';
 import * as ROUTES from '../../constants/routes';
 import WithAuthentication from '../Session/withAuthentication';
 import './index.css';
 import NavigationWrapper from '../NavigationWrapper';
-// import AssignCategories from '../AssignCategories';
 import Logout from '../Logout';
 import ClientDates from '../ClientDates';
 import SignInPage from '../SignIn';

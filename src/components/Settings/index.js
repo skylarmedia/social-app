@@ -105,7 +105,6 @@ class Settings extends Component {
 
   submitDeletion = () => {
     const auth = this.auth;
-    console.log(this.state.username);
     if (
       this.state.password === localStorage.getItem('key') &&
       auth.currentUser.email === this.state.username
@@ -114,9 +113,7 @@ class Settings extends Component {
       let data = new Object();
       data.uid = localStorage.getItem('tempDeleteUserId');
       data.name = localStorage.getItem('tempDeleteUser');
-      deleteByUid(data).then(res => {
-        console.log(`response: ${res}`);
-      });
+      deleteByUid(data);
       this.setState({
         visible: false,
         clients: this.state.clients.filter(

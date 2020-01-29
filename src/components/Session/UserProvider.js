@@ -8,7 +8,6 @@ class UserContextProvider extends Component {
 
   componentDidMount() {
     this.listener = this.props.firebase.auth.onAuthStateChanged(authUser => {
-      console.log('auth user', authUser);
     });
   }
 

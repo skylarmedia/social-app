@@ -43,7 +43,7 @@ class ClientViewPost extends Component {
   }
 
   componentDidMount() {
-    console.log("MOUNTED POST", this.props)
+
     // Get Post
     app
       .firestore()
@@ -54,7 +54,6 @@ class ClientViewPost extends Component {
       .get()
       .then(
         res => {
-          console.log('RES IN VIEW POST', res);
           this.setState({
             posts: res.data().post,
             category: res.data().selectedCategoryName,
@@ -65,7 +64,6 @@ class ClientViewPost extends Component {
           });
         },
         () => {
-          console.log(this.state);
         }
       );
 
@@ -79,19 +77,15 @@ class ClientViewPost extends Component {
         const messageArr = [...this.state.messages];
 
         snap.docChanges().forEach(change => {
-          console.log('CHANGE', change.type);
           if (change.type == 'added') {
-            console.log('CHANGE DETECTED', change);
             messageArr.push(change.doc.data());
             this.setState({
               messages: messageArr
             });
           } else if (change.type == 'removed') {
-            console.log(change.oldIndex);
             this.setState({
               messages: this.state.messages.filter((_, i) => i !== change.oldIndex)
             });
-            console.log('CHANGE REMOVED', change);
           }
         });
       });

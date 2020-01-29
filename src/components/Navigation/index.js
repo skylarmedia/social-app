@@ -10,15 +10,12 @@ import { AuthUserContext } from '../Session';
 
 const Navigation = ({ authUser }) => {
   let downCaret = document.querySelector('.anticon-down');
-  console.log('down', downCaret);
   return <NavigationAuth authUser={authUser} id="page-wrap" />;
 };
 
 const NavigationAuth = props => {
   const [drawerState, toggleDrawer] = useState(false);
   var elem = document.querySelector('.anticon-down');
-  console.log(elem);
-
   return (
     <div>
       <Button type="primary" onClick={() => toggleDrawer(true)} className="burger-button">
@@ -36,15 +33,15 @@ const NavigationAuth = props => {
           <div id="auth-nav-wrapper">
             <ul id="nav-id">
               <li>
-                <img src={require('../assets/people.png')} />
+                <img src={require('../assets/people.png')} alt="people icon"/>
                 <Link to={ROUTES.HOME}>CLIENTS/HOME</Link>
               </li>
               <li>
-                <img src={require('../assets/lock.png')} />
+                <img src={require('../assets/lock.png')} alt="lock icon"/>
                 <SignOutButton />
               </li>
               <li id="settings-btn">
-                <img src={require('../assets/settings.png')} />
+                <img src={require('../assets/settings.png')} alt="settings icon"/>
                 <Link to={ROUTES.SETTINGS}>Settings</Link>
               </li>
             </ul>

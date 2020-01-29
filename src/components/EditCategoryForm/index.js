@@ -15,7 +15,6 @@ class EditCategoryForm extends Component {
   }
 
   currentCategory = e => {
-    console.log('E', e);
     let color = e.split('|||')[1];
     let name = e.split('|||')[0];
     this.props.getSelectedCategory(color, name);
@@ -26,13 +25,13 @@ class EditCategoryForm extends Component {
       .getUserCategories(this.props.clientId, parseInt(this.props.month))
       .then(items => {
         const editCatArr = [];
-        items.docs.map((item, index) => {
+        items.docs.map((item) => {
           let currentCat = {};
           currentCat.color = item.data().color;
           currentCat.name = item.data().name;
           editCatArr.push(currentCat);
         });
-        this.setState({
+        return  this.setState({
           categories: editCatArr
         });
       });
@@ -41,7 +40,6 @@ class EditCategoryForm extends Component {
   render() {
     
     const options = this.state.categories.map((item, index) => {
-      console.log('item', item);
       return (
         <option value={`${item.name}|||${item.color}`} key={index}>
           {item.name}
@@ -62,7 +60,7 @@ class EditCategoryForm extends Component {
             style={{ width: 120 }}
             onChange={this.currentCategory.bind(this)}
             placeholder={ this.props.currentCat ? this.props.currentCat : 'Category' }
-            suffixIcon={<img src={require('../assets/arrow.svg')} />}
+            suffixIcon={<img src={require('../assets/arrow.svg')} alt="arrow icon"/>}
           >
             {this.props.currentCat ? (
               <Option value={`${this.props.currentCat} ||| #fff`} selected>

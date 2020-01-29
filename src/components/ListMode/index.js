@@ -27,9 +27,7 @@ class ListMode extends Component {
     this.db = app.firestore();
   }
 
-  changeApp(id, index){
-    console.log('approved list items', this.state.listItems)
-        
+  changeApp(id, index){  
     const listItems = [...this.state.listItems];
     listItems[index].approved = !listItems[index].approved
     this.setState({
@@ -110,31 +108,24 @@ class ListMode extends Component {
       .listMode(this.props.user, parseInt(this.props.month), parseInt(this.props.year))
       .then(snapshot => {
         snapshot.docs.map(item => {
-          console.log('ITEM after map', item.data());
           let postItem = {};
           postItem['post'] = item.data().post;
           postItem['id'] = item.id;
           postItem['approved'] = item.data().approved;
           postItem['color'] = item.data().color;
           postItem['name'] = item.data().selectedCategoryName;
-          console.log('POST ITEM', postItem);
           this.setState(
             {
               mainArr: [...this.state.mainArr, postItem],
               listItems: [...this.state.listItems, postItem]
             },
             () => {
-              console.log('STATE LIST ITEMS', this.state.listItems);
               this.state.listItems.map(item => {
                 item.post.map(inner => {
                   this.setState(
                     {
                       innerPosts: [...this.state.innerPosts, inner]
-                    },
-                    () => {
-                      console.log('inner posts', this.state.innerPosts);
-                    }
-                  );
+                    });
                 });
               });
             }
@@ -155,9 +146,6 @@ class ListMode extends Component {
 
   render() {
     const renderParent = this.state.listItems.map((item, index) => {
-      console.log('LIST ITMS IN RENDER', this.state.listItems);
-      console.log('map item in 6', item);
-      console.log('inner item index', index);
       return (
         <div class="outter-inner-post-wrapper position-relative">
           <div className="inner-post-wrapper position-relative" key={index}>
@@ -180,7 +168,6 @@ class ListMode extends Component {
               </div>
             </div>
             {item.post.map((innerItem, indexInner) => {
-              console.log('inner item', innerItem, index);
               return (
                 <React.Fragment>
                   <div className="time-outter-wrapper">

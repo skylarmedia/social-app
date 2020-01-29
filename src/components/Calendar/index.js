@@ -1,7 +1,6 @@
-import React, { Suspense } from 'react';
+import React from 'react';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
-// importfrom '../CalendarSingle';
 import { withFirebase } from '../Firebase';
 import { compose } from 'redux';
 import { Switch } from 'antd';
@@ -68,9 +67,8 @@ class Calendar extends React.Component {
       .where('months', 'array-contains', parseInt(this.props.match.params.month))
       .get()
       .then(snapshot => {
-        console.log('SNAP CAT', snapshot, snapshot.size);
         snapshot.docs.map(item => {
-          this.setState({
+          return this.setState({
             selectedCategories: [...this.state.selectedCategories, item.data()]
           });
         });

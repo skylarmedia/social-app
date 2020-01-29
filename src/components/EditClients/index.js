@@ -4,8 +4,6 @@ import { Popover } from 'antd';
 const EditClients = props => {
   const { client, getClient } = props;
   const [popupState, togglePopup] = useState(false)
-  console.log('clients', client);
-
   function runFile (type){
     getClient(client, type);
     togglePopup(false);

@@ -1,6 +1,5 @@
-import React, { Component, useState } from 'react';
+import React, { Component } from 'react';
 import { Modal } from 'antd';
-import MainButton from '../MainButton';
 
 class ClientSingle extends Component {
   constructor(props) {
@@ -33,7 +32,7 @@ class ClientSingle extends Component {
   };
 
   render() {
-    const { logo, name, clientId, index } = this.props;
+    const { logo, name, clientId } = this.props;
     const styles = {
       backgroundImage: `url(${logo})`
     };

@@ -96,21 +96,18 @@ exports.updateHomeClientMessages = functions.https.onCall(data => {
 
 // Clear Client Messages
 exports.changeUsername = functions.https.onCall(data => {
-  console.log('hit here 1');
   return admin
     .auth()
     .updateUser(data.uid, {
       displayName: data.username
     })
     .then(() => {
-      console.log('hit here 2');
       return admin
         .firestore()
         .collection('users')
         .doc(data.oldUsername)
         .get()
         .then(doc => {
-          console.log('hit here 3');
           if (doc && doc.exists) {
             const data = doc.data();
             return admin
@@ -119,7 +116,6 @@ exports.changeUsername = functions.https.onCall(data => {
               .doc(data.username)
               .set(data)
               .then(() => {
-                console.log('WE GOT THIS FAR');
                 admin
                   .firestore()
                   .collection('users')
@@ -135,8 +131,6 @@ exports.changeUsername = functions.https.onCall(data => {
 });
 
 exports.clearClientMessages = functions.https.onCall(data => {
-  console.log(`ran clientMessages clientId:${data.id}, postId: ${data.postId}`);
-  console.log('post id', data);
   return admin
     .firestore()
     .collection('chats')
@@ -168,7 +162,6 @@ exports.clearClientMessages = functions.https.onCall(data => {
 //Create Admin
 
 exports.createAdmin = functions.https.onCall(data => {
-  console.log('CREATED ADMIN', data);
   admin
     .auth()
     .createUser({
@@ -194,7 +187,6 @@ exports.createAdmin = functions.https.onCall(data => {
         return admin.auth()
           .setCustomUserClaims(userRecord.uid, { skylarAdmin: false })
           .then(function(){
-            console.log('record in record', record);
             return record;
           });
       }
@@ -223,12 +215,10 @@ exports.createAdmin = functions.https.onCall(data => {
 //Get UID
 
 exports.getUid = functions.https.onCall(data => {
-  console.log('DATA EMAIL', data.email);
   return admin
     .auth()
     .getUserByEmail(data.email)
     .then(res => {
-      console.log('RES', res);
       return res;
     })
     .catch(err => {
@@ -245,7 +235,6 @@ exports.deleteByUid = functions.https.onCall(data => {
     .doc(data.name)
     .delete()
     .then(() => {
-      console.log('Successfully Deleted from Firestore');
       admin.auth().deleteUser(data.uid);
     })
     .catch(err => {
@@ -256,7 +245,6 @@ exports.deleteByUid = functions.https.onCall(data => {
 // Update Client Password
 
 exports.changeClientPassword = functions.https.onCall(data => {
-  console.log('data', data);
   return admin
     .auth()
     .updateUser(data.uid, {
@@ -309,7 +297,6 @@ exports.updateAdminMessages = functions.https.onCall(data => {
     .then(snapshot => {
       let batch = admin.firestore().batch();
       snapshot.docs.map(item => {
-        console.log('item ID', item.id)
         const messageRef = admin
         .firestore()
         .collection('chats')

@@ -2440,3 +2440,7 @@ h5 {
 .outter-client-single{
 	margin-bottom:5px;
 }
+
+button{
+	cursor:pointer;
+}

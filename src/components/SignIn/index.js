@@ -57,9 +57,7 @@ class SignInFormBase extends Component {
       const currentEmail = new Object();
       currentEmail.email = email;
       getUid(currentEmail).then(res => {
-        console.log('RRES IN FE EMAIL', res)
         if (res.data.customClaims !==  null && res.data.customClaims.skylarAdmin === true) {
-          console.log('return cusotm claims', res)
           localStorage.clear();
           localStorage.setItem('skylarAdmin', true);
           localStorage.setItem('key', password);
@@ -80,7 +78,10 @@ class SignInFormBase extends Component {
       })
     })
     .catch(err => {
-      console.log(`There was an err ${err}`)
+      console.log('err', err);
+      this.setState({
+        error:err
+      })
     })
   };
 
@@ -89,13 +90,12 @@ class SignInFormBase extends Component {
   };
 
   render() {
-    console.log(this.props, 'props for settings user');
     const { email, password, error } = this.state;
     const isInvalid = password === '' || email === '';
 
     return (
       <React.Fragment>
-        <img src={require('../assets/skylar_Icon_wingPortion.svg')} id="wing-logo" />
+        <img src={require('../assets/skylar_Icon_wingPortion.svg')} id="wing-logo" alt="wing logo"/>
         <form onSubmit={this.onSubmit} className="d-flex flex-column align-items-center">
           <Input
             name="email"
@@ -119,6 +119,7 @@ class SignInFormBase extends Component {
             placeholder="PASSWORD"
           />
           <div id="sign-in-button-wrap">
+            {error && <p>{error.message}</p>}
             <button
               disabled={isInvalid}
               type="submit"
@@ -128,7 +129,6 @@ class SignInFormBase extends Component {
               Sign In
             </button>
           </div>
-          {error && <p>{error.message}</p>}
         </form>
         {this.state.loading && <Spin indicator={antIcon} />}
       </React.Fragment>
