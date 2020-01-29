@@ -29,12 +29,15 @@ class AssignCategories extends Component {
         const tempNum = snapshot.size;
         const tempArr = [];
         snapshot.docs.map(item => {
-         tempArr.push(item.data());
-          if (tempNum === tempArr.length)
-            return this.setState(
-              {
-                categories: tempArr
-              });
+
+          if (tempNum === tempArr.length) {
+            this.setState({
+              categories: tempArr
+            });
+            return tempArr.push(item.data());
+          }else{
+            return null;
+          }
         });
       });
   }
@@ -42,10 +45,13 @@ class AssignCategories extends Component {
   handleChange = (name, color, i) => {
     let categoriesNew = [...this.state.categories];
     categoriesNew[i].selected = !categoriesNew[i].selected;
-    categoriesNew[i].months = [...this.state.categories[i].months, parseInt(this.props.match.params.month)]
+    categoriesNew[i].months = [
+      ...this.state.categories[i].months,
+      parseInt(this.props.match.params.month)
+    ];
     this.setState({
-      categories:categoriesNew
-    })
+      categories: categoriesNew
+    });
 
     this.db
       .collection('users')
@@ -56,7 +62,6 @@ class AssignCategories extends Component {
         selected: categoriesNew[i].selected,
         months: categoriesNew[i].months
       });
-  
   };
 
   render() {
@@ -88,9 +93,14 @@ class AssignCategories extends Component {
           <h5 className="cat-h5">Categories</h5>
           {this.state.categories.length > 0 && categories}
           <div className="text-center d-flex justify-content-center">
-          <Link className="align-items-center save-draft-btn submit-cat d-flex justify-content-center color-red fw-16" to={`/calendar/${this.props.match.params.year}/${this.props.match.params.month}/${this.props.match.params.id}`}>SAVE</Link>
+            <Link
+              className="align-items-center save-draft-btn submit-cat d-flex justify-content-center color-red fw-16"
+              to={`/calendar/${this.props.match.params.year}/${this.props.match.params.month}/${this.props.match.params.id}`}
+            >
+              SAVE
+            </Link>
           </div>
-         </form>
+        </form>
       </div>
     );
   }

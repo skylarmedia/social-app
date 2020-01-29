@@ -36,7 +36,6 @@ class ClientImage extends Component {
     let functionObj = {};
     functionObj.userId = this.props.name;
     updateHomeClientMessages(functionObj).then(res => {
-      console.log('RES IN SIZE', res.data, this.props.name);
         this.setState({
           size: res.data._size
         });
@@ -54,7 +53,7 @@ class ClientImage extends Component {
       backgroundSize: "cover"
     }
     return (
-      <div class="position-relative new-home-bg" style={styles}>
+      <div className="position-relative new-home-bg" style={styles}>
         <p className="size-int position-absolute bg-red f-16 d-inline-flex align-items-center justify-content-center">{this.state.size}</p>
       </div>
     );

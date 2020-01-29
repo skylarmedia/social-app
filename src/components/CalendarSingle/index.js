@@ -3,7 +3,6 @@ import { withFirebase } from '../Firebase';
 import { compose } from 'recompose';
 import HiddenCalendarSingle from '../HiddenCalendarSingle';
 import './index.css';
-import Icons from '../Icons';
 
 class CalendarSingle extends Component {
   constructor(props) {
@@ -14,10 +13,6 @@ class CalendarSingle extends Component {
       showCalendarModule: false
     };
   }
-
-  componentDidMount() {}
-
-  toggleShowCalendarModule = () => {};
 
   toggleShowCalendarModule = () => {
     this.setState({
@@ -33,8 +28,9 @@ class CalendarSingle extends Component {
         <p className="calendar-single-day">{this.props.day}</p>
         <div className="calendar-popup-wrapper">
           {this.props.posts.map((item, index) => {
-            if (item.data().month == this.props.month) {
-              if (item.data().day === this.props.day) {
+            console.log('type of', typeof(this.props.month));
+            if (item.data().month === parseInt(this.props.month)) {
+              if (item.data().day === parseInt(this.props.day)) {
                 return (
                   <div class="hidden-calendar-wrapper" key={index}>
                     {item.data().draft}
@@ -69,7 +65,11 @@ class CalendarSingle extends Component {
                     />
                   </div>
                 );
+              }else{
+                return null;
               }
+            }else{
+              return null;
             }
           })}
         </div>

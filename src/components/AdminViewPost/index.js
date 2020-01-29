@@ -30,7 +30,6 @@ class AdminViewPost extends Component {
             selectedCategory: '',
             incomingMessage: {},
             clientRead: null
-
         }
     }
 
@@ -38,7 +37,6 @@ class AdminViewPost extends Component {
 
     componentWillMount() {
         this.props.firebase.getAdminPost(this.props.match.params.client, this.props.match.params.itemId).then(snapshot => {
-
             this.setState({
                 title: snapshot.data().title,
                 copy: snapshot.data().copy,
@@ -72,14 +70,10 @@ class AdminViewPost extends Component {
                 emptyMessageObj.title = item.data().title;
                 emptyMessageObj.time = item.data().time;
 
-                emptyMessage.push(emptyMessageObj);
+                return emptyMessage.push(emptyMessageObj);
             })
 
             emptyMessage.sort((a, b) => (a.time > b.time) ? 1 : -1)
-
-            console.log(emptyMessage, 'sorterd');
-
-
             this.setState({
                 messages: emptyMessage
             })

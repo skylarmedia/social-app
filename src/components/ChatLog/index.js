@@ -52,12 +52,10 @@ class AdminChatLog extends Component {
     return (
       <AuthUserContext.Consumer>
         {authUser => {
-          console.log('Auth user in props', authUser.claims, authUser.skylarAdmin, authUser);
           return (
             <div className="d-flex flex-wrap messages-wrapper">
               {messages &&
                 this.props.messages.map((item, i) => {
-                  console.log('ITEM MESSAGE', item);
                   if (authUser.skylarAdmin === true) {
                     var content = (
                       <button
@@ -67,7 +65,6 @@ class AdminChatLog extends Component {
                         onClick={() =>
                           this.deleteMessage(this.props.adminClient, item.timestamp, i)
                         }
-                        key={i}
                       >
                         <i className="fas fa-trash"></i>
                         <span className="ml-10">DELETE</span>

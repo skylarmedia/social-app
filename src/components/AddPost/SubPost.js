@@ -73,11 +73,10 @@ class SubPost extends Component {
   uploadFiles = fb => {
     this.state.file.map((file, i) => {
       const storageRef = this.props.firebase.storage;
-      const storageParent = this.props.firebase.storageParent;
       const metadata = {
         contentType: file.type
       };
-      storageRef
+      return storageRef
         .child('images/' + file.name)
         .put(file, metadata)
         .then(snapshot => {
@@ -105,10 +104,10 @@ class SubPost extends Component {
 
   addFile = event => {
     const file = Array.from(event.target.files);
-    if (file.length == 1) {
-      var emptyFileArr = [];
+    if (file.length === 1) {
+      const emptyFileArr = [];
       file.map(innerFile => {
-        emptyFileArr.push(innerFile);
+        return emptyFileArr.push(innerFile);
       });
 
       this.setState(
@@ -122,7 +121,7 @@ class SubPost extends Component {
     } else if (file.length > 1) {
       var emptyFileArr = [];
       file.map(innerFile => {
-        emptyFileArr.push(innerFile);
+        return emptyFileArr.push(innerFile);
       });
 
       this.setState(
@@ -407,7 +406,7 @@ class SubPost extends Component {
   };
 
   render() {
-    const genExtra = () => <img src={require('../assets/arrow.svg')} />;
+    const genExtra = () => <img src={require('../assets/arrow.svg')} alt="arrow icon" />;
     return (
       <div className="d-flex row">
         <div className="col-sm-6">
@@ -647,17 +646,17 @@ class SubPost extends Component {
                     variant="outlined"
                   />
 
-                  {i == this.state.values.length - 1 ? (
+                  {i === this.state.values.length - 1 ? (
                     <button
                       type="button"
                       onClick={() => this.addClick()}
                       className="clear-btn ml-7"
                     >
-                      <img src={require('../assets/select.svg')} />
+                      <img src={require('../assets/select.svg')} alt="select icon" />
                     </button>
                   ) : (
                     <button type="button" onClick={() => this.removeClick(i)} className="clear-btn">
-                      <img src={require('../assets/x.png')} />
+                      <img src={require('../assets/x.png')} alt="x icon" />
                     </button>
                   )}
                 </div>

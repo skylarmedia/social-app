@@ -115,6 +115,7 @@ class SignInFormBase extends Component {
             type="password"
             variant="outlined"
             placeholder="PASSWORD"
+            autoComplete="on"
           />
           <div id="sign-in-button-wrap">
             {error && <p>{error.message}</p>}

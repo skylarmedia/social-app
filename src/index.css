@@ -595,6 +595,7 @@ body .ant-btn-primary {
 	height: 178px;
 	width: 23%;
 	position: relative;
+	margin-bottom:90px;
 }
 
 .delete-button {
@@ -2443,4 +2444,12 @@ h5 {
 
 button{
 	cursor:pointer;
+}
+
+.pl-8{
+	padding-left:8px;
+}
+
+.ml-0{
+	margin-left:0;
 }

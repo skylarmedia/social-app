@@ -83,8 +83,8 @@ class Calendar extends React.Component {
       .get()
       .then(snapshot => {
         console.log('privacy', snapshot);
-        snapshot.docs.map(item => {
-          this.setState({
+        snapshot.docs.map(() => {
+          return this.setState({
             private: snapshot.docs[0].data().private,
             privateId: snapshot.docs[0].id
           });
@@ -140,7 +140,7 @@ class Calendar extends React.Component {
   MonthList = props => {
     let months = [];
     props.data.map(data => {
-      months.push(
+      return months.push(
         <td
           key={data}
           className="calendar-month"
@@ -156,7 +156,7 @@ class Calendar extends React.Component {
     let cells = [];
 
     months.forEach((row, i) => {
-      if (i % 3 !== 0 || i == 0) {
+      if (i % 3 !== 0 || i === 0) {
         cells.push(row);
       } else {
         rows.push(cells);
@@ -189,7 +189,7 @@ class Calendar extends React.Component {
 
   onNext = () => {
     let curr = '';
-    if (this.state.showMonthTable == true) {
+    if (this.state.showMonthTable === true) {
       curr = 'year';
     } else {
       curr = 'month';
@@ -227,7 +227,6 @@ class Calendar extends React.Component {
       dateObject: dateObject,
       showMonthTable: !this.state.showMonthTable,
       showYearNav: !this.state.showYearNav,
-      showMonthTable: !this.state.showMonthTable
     });
   };
   onYearChange = e => {
@@ -236,8 +235,8 @@ class Calendar extends React.Component {
   getDates(startDate, stopDate) {
     var dateArray = [];
     var currentDate = moment(startDate);
-    var stopDate = moment(stopDate);
-    while (currentDate <= stopDate) {
+    var stopDateVal = moment(stopDate);
+    while (currentDate <= stopDateVal) {
       dateArray.push(moment(currentDate).format('YYYY'));
       currentDate = moment(currentDate).add(1, 'year');
     }
@@ -253,7 +252,7 @@ class Calendar extends React.Component {
     let tenyear = this.getDates(props, nextten);
 
     tenyear.map(data => {
-      months.push(
+      return months.push(
         <td
           key={data}
           className="calendar-month"
@@ -269,7 +268,7 @@ class Calendar extends React.Component {
     let cells = [];
 
     months.forEach((row, i) => {
-      if (i % 3 !== 0 || i == 0) {
+      if (i % 3 !== 0 || i === 0) {
         cells.push(row);
       } else {
         rows.push(cells);
@@ -346,7 +345,7 @@ class Calendar extends React.Component {
     }
     let daysInMonth = [];
     for (let d = 1; d <= this.daysInMonth(); d++) {
-      let currentDay = d == this.currentDay() ? 'today' : '';
+      let currentDay = d === this.currentDay() ? 'today' : '';
       daysInMonth.push(
         <td key={d} className={`calendar-day TEST ${currentDay}`}>
           <CalendarSingle
@@ -392,7 +391,6 @@ class Calendar extends React.Component {
           <div className="container">
             <Link
               to={`/home`}
-              className="back-link"
               className="d-flex align-items-center"
               id="main-backlink"
             >
@@ -410,7 +408,7 @@ class Calendar extends React.Component {
           <img src={require('../assets/skylar_Icon_wingPortion.svg')} id="wing-logo" alt="wing logo"/>
           </div>
           <div>
-            <div className="d-flex justify-content-between align-items-center mb-10 container row mx-auto p-0">
+            <div className="d-flex justify-content-between align-items-center mb-10 container row mx-auto p-0 pl-8">
               <div>
                 <button onClick={() => this.listMode()} className="clear-btn">
                   {this.state.grid ? (
@@ -436,7 +434,7 @@ class Calendar extends React.Component {
             (
             <div className="tail-datetime-calendar container">
               <div
-                className={this.state.grid == true ? 'container calendar-navi mx-auto' : 'hidden'}
+                className={this.state.grid === true ? 'container calendar-navi mx-auto' : 'hidden'}
               ></div>
               <div className="calendar-date">
                 {this.state.showYearNav && <this.YearTable props={this.year()} />}

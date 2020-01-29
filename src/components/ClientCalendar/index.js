@@ -4,10 +4,7 @@ import "./calendar.css";
 import { withFirebase } from '../Firebase';
 import { compose } from 'recompose';
 import ClientCalendarSingle from '../ClientCalendarSingle';
-import CategoryList from '../CategoryList';
 import Legend from '../Legend';
-
-
 
 class ClientCalendar extends Component {
     weekdayshort = moment.weekdaysShort();
@@ -33,11 +30,12 @@ class ClientCalendar extends Component {
 
         this.props.firebase.getUserCategories(localStorage.getItem('clientName')).then(snapshot => {
             const catArr = [...this.state.categories]
-            snapshot.docs.map(category => {
-                catArr.push(category.data())
-            });
-            this.setState({
-                categories: catArr
+           snapshot.docs.map(category => {
+                return catArr.push(category.data())
+            }, () => {
+                return this.setState({
+                    categories: catArr
+                });
             });
         })
     }
@@ -80,7 +78,7 @@ class ClientCalendar extends Component {
     MonthList = props => {
         let months = [];
         props.data.map(data => {
-            months.push(
+            return months.push(
                 <td
                     key={data}
                     className="calendar-month"
@@ -96,7 +94,7 @@ class ClientCalendar extends Component {
         let cells = [];
 
         months.forEach((row, i) => {
-            if (i % 3 !== 0 || i == 0) {
+            if (i % 3 !== 0 || i === 0) {
                 cells.push(row);
             } else {
                 rows.push(cells);
@@ -138,7 +136,6 @@ class ClientCalendar extends Component {
 
         this.props.history.push(`/client-calendar/2019/${parseInt(this.props.match.params.month) - 1}`);
         this.props.firebase.getUniqueClientPosts(localStorage.getItem('userId'), parseInt(this.props.match.params.month - 1)).then(snapshot => {
-            console.log(snapshot, 'snapshot val prev')
             this.setState({
                 currentPosts: snapshot.docs,
                 dateObject: this.state.dateObject.subtract(1, curr)
@@ -174,10 +171,10 @@ class ClientCalendar extends Component {
         this.setYear(e.target.value);
     };
     getDates(startDate, stopDate) {
-        var dateArray = [];
+        const dateArray = [];
         var currentDate = moment(startDate);
-        var stopDate = moment(stopDate);
-        while (currentDate <= stopDate) {
+        const stopDateVal = moment(stopDate);
+        while (currentDate <= stopDateVal) {
             dateArray.push(moment(currentDate).format("YYYY"));
             currentDate = moment(currentDate).add(1, "year");
         }
@@ -198,7 +195,7 @@ class ClientCalendar extends Component {
         let tenyear = this.getDates(props, nextten);
 
         tenyear.map(data => {
-            months.push(
+            return months.push(
                 <td
                     key={data}
                     className="calendar-month"
@@ -214,7 +211,7 @@ class ClientCalendar extends Component {
         let cells = [];
 
         months.forEach((row, i) => {
-            if (i % 3 !== 0 || i == 0) {
+            if (i % 3 !== 0 || i === 0) {
                 cells.push(row);
             } else {
                 rows.push(cells);
@@ -259,8 +256,7 @@ class ClientCalendar extends Component {
 
         let daysInMonth = [];
         for (let d = 1; d <= this.daysInMonth(); d++) {
-            console.log(this.state.currentPosts, 'current posts')
-            let currentDay = d == this.currentDay() ? "today" : "";
+            let currentDay = d === this.currentDay() ? "today" : "";
             let m = this.month();
             daysInMonth.push(
                 <td key={d} className={`calendar-day ${currentDay}`}>

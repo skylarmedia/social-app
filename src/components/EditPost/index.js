@@ -717,8 +717,7 @@ class EditPost extends Component {
               <Col span={24} className="mt-30 text-center">
                 <button
                   type="button"
-                  className="p-blue"
-                  className="clear-btn"
+                  className="clear-btn p-blue"
                   onClick={this.deletePost}
                 >
                   <u>Delete Post</u>
@@ -745,7 +744,7 @@ class EditPost extends Component {
     return (
       <div className="add-post edit-post">
         <p className="heading text-center add-post-heading p-blue">
-          Client {this.props.match.params.clientId} Calendar
+          Client {this.props.match.params.postId} Calendar
           <br />
         </p>
         <div className="">
@@ -765,7 +764,7 @@ class EditPost extends Component {
                 checked={this.state.approved}
                 id="approvePost"
               />
-              <label className="color-blue m-0" for="approvePost">
+              <label className="color-blue m-0" htmlFor="approvePost">
                 APPROVE POST
               </label>
             </div>

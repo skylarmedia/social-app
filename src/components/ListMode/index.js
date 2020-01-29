@@ -27,21 +27,21 @@ class ListMode extends Component {
     this.db = app.firestore();
   }
 
-  changeApp(id, index){  
+  changeApp(id, index) {
     const listItems = [...this.state.listItems];
-    listItems[index].approved = !listItems[index].approved
+    listItems[index].approved = !listItems[index].approved;
     this.setState({
       listItems
     });
 
     this.db
-    .collection('users')
-    .doc(this.props.user)
-    .collection('posts')
-    .doc(id)
-    .update({
-      approved:listItems[index].approved
-    })
+      .collection('users')
+      .doc(this.props.user)
+      .collection('posts')
+      .doc(id)
+      .update({
+        approved: listItems[index].approved
+      });
   }
 
   approvedPosts() {
@@ -71,9 +71,9 @@ class ListMode extends Component {
         listItems: this.state.mainArr
       },
       () => {
-        this.state.listItems.map(item => {
-          item.post.map(inner => {
-            this.setState({
+        return this.state.listItems.map(item => {
+          return item.post.map(inner => {
+            return this.setState({
               innerPosts: [...this.state.innerPosts, inner]
             });
           });
@@ -93,8 +93,8 @@ class ListMode extends Component {
       },
       () => {
         this.state.listItems.map(item => {
-          item.post.map(inner => {
-            this.setState({
+          return item.post.map(inner => {
+            return this.setState({
               innerPosts: [...this.state.innerPosts, inner]
             });
           });
@@ -114,18 +114,17 @@ class ListMode extends Component {
           postItem['approved'] = item.data().approved;
           postItem['color'] = item.data().color;
           postItem['name'] = item.data().selectedCategoryName;
-          this.setState(
+          return this.setState(
             {
               mainArr: [...this.state.mainArr, postItem],
               listItems: [...this.state.listItems, postItem]
             },
             () => {
               this.state.listItems.map(item => {
-                item.post.map(inner => {
-                  this.setState(
-                    {
-                      innerPosts: [...this.state.innerPosts, inner]
-                    });
+                return item.post.map(inner => {
+                  return this.setState({
+                    innerPosts: [...this.state.innerPosts, inner]
+                  });
                 });
               });
             }
@@ -161,9 +160,14 @@ class ListMode extends Component {
                   {item.name}
                 </div>
                 <div className="align-self-center p-blue">
-                  <Checkbox checked={item.approved} onChange={() => this.changeApp(item.id, index)} id={`app-check-${index}`}/>
-                  <label for={`app-check-${index}`} className="pl-15 d-inline-block">APPROVE POST</label>
-                  {item.id}
+                  <Checkbox
+                    checked={item.approved}
+                    onChange={() => this.changeApp(item.id, index)}
+                    id={`app-check-${index}`}
+                  />
+                  <label for={`app-check-${index}`} className="pl-15 d-inline-block">
+                    APPROVE POST
+                  </label>
                 </div>
               </div>
             </div>
@@ -183,7 +187,7 @@ class ListMode extends Component {
                             </div>
                           </div>
                         )}
-                        <Row className="row" gutter={30} className="container mx-auto inner-row">
+                        <Row gutter={30} className="container mx-auto inner-row">
                           <Col span={12} className="col22">
                             <p
                               className="w-100 blue-border f-16 color-blue pl-post p-15"

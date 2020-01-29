@@ -78,7 +78,7 @@ class Dates extends Component {
       const catArr = [...this.state.categories];
       snapshot.docs.map((category, index) => {
         category.data()['mainId'] = category.id;
-        catArr.push(category.data());
+        return catArr.push(category.data());
       });
       this.setState({
         categories: catArr,
@@ -140,7 +140,7 @@ class Dates extends Component {
 
   submitForm = e => {
     e.preventDefault();
-    let tempDateObj = new Object();
+    let tempDateObj = {};
     tempDateObj.month = this.state.month;
     tempDateObj.year = this.state.year;
 
@@ -243,7 +243,7 @@ class Dates extends Component {
           className="selected-categoryComponent"
           userId={this.props.match.params.clientId}
           getCategories={this.sendCategories}
-          suffixIcon={<img src={require('../assets/arrow.svg')} />}
+          suffixIcon={<img src={require('../assets/arrow.svg')} alt="arrow svg" />}
         />
         <div className="position-absolute cat-outter-list">
           <CategoryList colors={this.state.categories} />
@@ -254,7 +254,7 @@ class Dates extends Component {
       <div className="container row mx-auto date-page">
         <div className="col-sm-3">
           <div className="d-flex  back-wrapper">
-            <Link to={`/home`} className="back-link">
+            <Link to={`/home`}>
               <img src={require('../assets/back.svg')} alt="back icon"/>
               Back To All Clients
             </Link>
@@ -345,11 +345,11 @@ class Dates extends Component {
           </div>
         </div>
       </div>
-    ) : this.state.isLoading && this.state.date.length == 0 ? (
+    ) : this.state.isLoading && this.state.date.length === 0 ? (
       <div className="row justify-content-between container mx-auto date-page">
         <div className="col-md-3">
           <div className="d-flex  back-wrapper">
-            <Link to={`/home`} className="back-link">
+            <Link to={`/home`}>
               <img src={require('../assets/back.svg')}  alt="back svg"/>
               Back To All Clients
             </Link>
@@ -425,7 +425,7 @@ class Dates extends Component {
               src={require('../assets/single-grid.svg')}
               id="no-date-calendar"
               className="col-md-4"
-              alt="grid image"
+              alt="grid"
             />
           </div>
           <div className="text-center arrow-wrapper">

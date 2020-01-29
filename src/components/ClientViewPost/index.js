@@ -91,7 +91,7 @@ class ClientViewPost extends Component {
 
     const updateClientMessages = this.functions.httpsCallable('updateClientMessages');
     let newId = this.props.match.params.id;
-    let functionObj = new Object();
+    let functionObj = {};
     functionObj.postId = newId;
     functionObj.userId = this.state.userId;
     updateClientMessages(functionObj);
@@ -190,7 +190,7 @@ class ClientViewPost extends Component {
 
       const updateClientNotification = this.functions.httpsCallable('updateClientNotification');
       let newId = this.props.match.params.id;
-      let noteObj = new Object();
+      let noteObj = {};
       noteObj.postId = newId;
       noteObj.userId = this.state.userId;
       updateClientNotification(noteObj);
@@ -328,7 +328,6 @@ class ClientViewPost extends Component {
                     <Col span={23} className="color-grey f-14" key={index}>
                       <a
                         className="color-grey"
-                        target="_blank"
                         href={`https://www.${innerItem.value}`}
                       >
                         {innerItem.value}
@@ -377,8 +376,8 @@ class ClientViewPost extends Component {
                   <Picker onSelect={this.addEmoji} />
                 </span>
               </div>
-            <button onClick={this.toggleChat} type="button" type="button" className="clear-btn">
-              <img src={require('../assets/chatbox.svg')} />
+            <button onClick={this.toggleChat} type="button" className="clear-btn">
+              <img src={require('../assets/chatbox.svg')} alt="chatbox" />
             </button>
           </div>
           {this.state.showPopUp ? (

@@ -44,9 +44,9 @@ class ClientDates extends Component {
       .getUserUnusedCategories(localStorage.getItem('clientName'))
       .then(snapshot => {
         const catArr = [...this.state.categories];
-        return snapshot.docs.map((category, index) => {
+        snapshot.docs.map((category, index) => {
           category.data()['mainId'] = category.id;
-          catArr.push(category.data());
+          return catArr.push(category.data());
         }, () => {
           this.setState({
             categories: catArr

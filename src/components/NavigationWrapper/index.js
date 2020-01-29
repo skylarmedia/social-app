@@ -26,27 +26,20 @@ class NavigationWrapper extends Component {
     if (this.state.mobile === true) {
       return <Redirect to="no-mobile" />;
     }
-    return(
+    return (
       <AuthUserContext.Consumer>
-          {authUser => {
-            if(authUser.skylarAdmin === true){
-              return (
-                <Navigation />
-              )
-            }
-            if(authUser.skylarAdmin === false){
-              return (
-                <NavigationNonAuth />
-              )
-            }
-            else{
-              return(
-                <div></div>
-              )
-            }
-          }}
+        {authUser => {
+          if (authUser.skylarAdmin === true) {
+            return <Navigation />;
+          }
+          if (authUser.skylarAdmin === false) {
+            return <NavigationNonAuth />;
+          } else {
+            return;
+          }
+        }}
       </AuthUserContext.Consumer>
-    )
+    );
   }
 }
 

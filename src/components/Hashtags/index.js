@@ -7,7 +7,7 @@ const Hashtags = props => {
         if (props.hashtags) {
             var hashes = props.hashtags.split(' ');
             hashes.map(hash => {
-                console.log(hash, 'hash')
+                // Add Later
             })
         }
 

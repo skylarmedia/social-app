@@ -42,7 +42,7 @@ class HiddenCalendarSingle extends Component {
   };
 
   componentDidMount() {
-    var url_string = window.location.href; //window.location.href
+    var url_string = window.location.href;
     var url = new URL(url_string);
     var c = url.searchParams.get('clientId');
 
@@ -53,9 +53,8 @@ class HiddenCalendarSingle extends Component {
   }
 
   toggleIsHidden = () => {
-    let timer = 0;
     let me = this;
-    timer = setTimeout(function() {
+    setTimeout(function() {
       if (!prevent) {
         me.doClickAction();
       }
@@ -107,7 +106,7 @@ class HiddenCalendarSingle extends Component {
       let string = this.props.copy;
       let maxLength = 200;
       let trimmedString = string.substr(0, maxLength);
-      trimmedString = trimmedString.substr(
+      trimmedString.substr(
         0,
         Math.min(trimmedString.length, trimmedString.lastIndexOf(' '))
       );

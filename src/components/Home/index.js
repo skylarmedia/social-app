@@ -1,4 +1,4 @@
-import React, { Component, Suspense } from 'react';
+import React, { Component } from 'react';
 import { withFirebase } from '../Firebase';
 import { Link } from 'react-router-dom';
 import { compose } from 'recompose';
@@ -10,8 +10,7 @@ import { Row, Col } from 'antd';
 import { Checkbox } from 'antd';
 import { Input } from 'antd';
 import app from 'firebase/app';
-
-const ClientImage = React.lazy(() => import('../ClientImage'));
+import ClientImage from '../ClientImage';
 
 class Home extends Component {
   constructor(props) {
@@ -54,7 +53,7 @@ class Home extends Component {
       const opened = snapshot.docs;
       let setArr = [...this.state.users];
       opened.map(item => {
-        setArr.push(item.data());
+        return setArr.push(item.data());
       });
 
       this.setState({
@@ -215,92 +214,73 @@ class Home extends Component {
       .ref()
       .child(`${this.state.username}/logo/`)
       .put(this.state.file)
-      .then(
-        () => {
-          const userObj = {};
-          userObj.logo = this.state.backgroundUrl;
-          userObj.name = this.state.username;
-          userObj.urlName = this.state.username.toLowerCase().replace(/ /g, '-');
+      .then(() => {
+        const userObj = {};
+        userObj.logo = this.state.backgroundUrl;
+        userObj.name = this.state.username;
+        userObj.urlName = this.state.username.toLowerCase().replace(/ /g, '-');
 
-          // Admin Object
-          const currentUser = {};
-          currentUser.email = this.state.email;
-          currentUser.password = this.state.passwordOne;
-          currentUser.displayName = this.state.username;
-          currentUser.photoURL = this.state.backgroundUrl;
-          currentUser.admin = this.state.admin;
-          const createAdmin = this.functions.httpsCallable('createAdmin');
-          createAdmin(currentUser).then(user => {
-              this.db
-              .collection('users')
-              .doc(this.state.username)
-              .set({
-                name: this.state.username,
-                logo: this.state.backgroundUrl,
-                admin: this.state.admin,
-                email: this.state.email,
-                urlName: this.state.username.toLowerCase().replace(/ /g, '-'),
-                archived: false,
-              });
-
-              if(this.state.admin === false){
-                // this.db
-                // .collection('users')
-                // .doc(this.state.username)
-                // .set({
-                //   name: this.state.username,
-                //   logo: this.state.backgroundUrl,
-                //   userId: user.user.uid,
-                //   admin: this.state.admin,
-                //   email: this.state.email,
-                //   urlName: this.state.username.toLowerCase().replace(/ /g, '-'),
-                //   archived: false,
-                //   uid: user.user.uid
-                // });
-                this.setState({
-                  loadSpinner: false,
-                  visible: false,
-                  users: [...this.state.users, userObj],
-                  passwordOne: '',
-                  email: '',
-                  file: null
-                });
-              }else{
-
-                // this.db
-                // .collection('users')
-                // .doc(this.state.username)
-                // .set({
-                //   name: this.state.username,
-                //   logo: this.state.backgroundUrl,
-                //   admin: this.state.admin,
-                //   email: this.state.email,
-                //   urlName: this.state.username.toLowerCase().replace(/ /g, '-'),
-                //   archived: false,
-                // });
-                this.setState({
-                  loadSpinner: false,
-                  visible: false,
-                  users: [...this.state.users, userObj],
-                  passwordOne: '',
-                  email: '',
-                  file: null
-                });
-              }
+        // Admin Object
+        const currentUser = {};
+        currentUser.email = this.state.email;
+        currentUser.password = this.state.passwordOne;
+        currentUser.displayName = this.state.username;
+        currentUser.photoURL = this.state.backgroundUrl;
+        currentUser.admin = this.state.admin;
+        const createAdmin = this.functions.httpsCallable('createAdmin');
+        createAdmin(currentUser).then(user => {
+          this.db
+            .collection('users')
+            .doc(this.state.username)
+            .set({
+              name: this.state.username,
+              logo: this.state.backgroundUrl,
+              admin: this.state.admin,
+              email: this.state.email,
+              urlName: this.state.username.toLowerCase().replace(/ /g, '-'),
+              archived: false
             });
 
-       
+          if (this.state.admin === false) {
+            // this.db
+            // .collection('users')
+            // .doc(this.state.username)
+            // .set({
+            //   name: this.state.username,
+            //   logo: this.state.backgroundUrl,
+            //   userId: user.user.uid,
+            //   admin: this.state.admin,
+            //   email: this.state.email,
+            //   urlName: this.state.username.toLowerCase().replace(/ /g, '-'),
+            //   archived: false,
+            //   uid: user.user.uid
+            // });
+            this.setState({
+              loadSpinner: false,
+              visible: false,
+              users: [...this.state.users, userObj],
+              passwordOne: '',
+              email: '',
+              file: null
+            });
+          } else {
+            this.setState({
+              loadSpinner: false,
+              visible: false,
+              users: [...this.state.users, userObj],
+              passwordOne: '',
+              email: '',
+              file: null
+            });
+          }
         });
+      });
   };
 
   render() {
     const backgroundUrlStyle = {
       backgroundImage: `url(${this.state.backgroundUrl})`,
       backgroundSize: 'cover'
-    };
-
-    const progressStyles = {
-      color: '#ee463a'
     };
 
     const isInvalid =
@@ -311,7 +291,11 @@ class Home extends Component {
 
     return (
       <div id="home-page" className="container">
-        <img src={require('../assets/skylar_Icon_wingPortion.svg')} id="wing-logo" alt="wing-logo"/>
+        <img
+          src={require('../assets/skylar_Icon_wingPortion.svg')}
+          id="wing-logo"
+          alt="wing-logo"
+        />
         <h2 className="text-center welcome">Welcome Home!</h2>
 
         {this.state.isLoading && this.state.users.length > 0 ? (
@@ -322,7 +306,7 @@ class Home extends Component {
                 return (
                   <Col
                     data-id={user.userId}
-                    className="gutter-row client-wrapper flex-column d-flex mb-20"
+                    className="gutter-row client-wrapper flex-column d-flex"
                     span={6}
                     key={index}
                   >
@@ -356,9 +340,7 @@ class Home extends Component {
                       <p>Are you sure you would like to archive this client?</p>
                     </Modal>
                     <Link to={`/dates/${user.urlName}`}>
-                      <Suspense fallback={<div>...Loading</div>}>
-                        <ClientImage logo={user.logo} name={user.name} />
-                      </Suspense>
+                    <ClientImage logo={user.logo} name={user.name} />
                     </Link>
                     <div className="d-flex align-items-center align-items-center">
                       <div className="position-relative x-wrapper mt-20 d-flex justify-content-center align-items-center w-100">
@@ -382,7 +364,7 @@ class Home extends Component {
               </button>
             </div>
           </div>
-        ) : this.state.isLoading && this.state.users.length == 0 ? (
+        ) : this.state.isLoading && this.state.users.length === 0 ? (
           <div>
             <p className="text-center para-margin">
               You don’t seem to have any client calendars set up yet. Click below to add one and get
@@ -406,7 +388,11 @@ class Home extends Component {
                 <div className="dashed" />
 
                 <div className="dashed dashed-wrapper">
-                  <img src={require('../assets/round-arrow.png')} className="round-arrow" alt="round arrow icon"/>
+                  <img
+                    src={require('../assets/round-arrow.png')}
+                    className="round-arrow"
+                    alt="round arrow icon"
+                  />
                 </div>
               </div>
             </div>
@@ -482,10 +468,4 @@ class Home extends Component {
   }
 }
 
-const condition = authUser => {
-
-}
-
-export default compose(
-  withFirebase(Home)
-  )
+export default compose(withFirebase(Home));

@@ -18,9 +18,6 @@ import NavigationWrapper from '../NavigationWrapper';
 import Logout from '../Logout';
 import ClientDates from '../ClientDates';
 import SignInPage from '../SignIn';
-
-import app from 'firebase/app';
-// const SignInPage = React.lazy(() => import('../SignIn'));
 const HomePage = React.lazy(() => import('../Home'));
 const AddPost = React.lazy(() => import('../AddPost'));
 const EditPost = React.lazy(() => import('../EditPost'));
@@ -29,17 +26,6 @@ const Settings = React.lazy(() => import('../Settings'));
 const Calendar = React.lazy(() => import('../Calendar'));
 const ClientCalendar = React.lazy(() => import('../ClientCalendar'));
 const isLoading = <div>Waiting</div>
-// const SignUpPage = React.lazy(() => import('../SignUp'));
-// const SignInPage = React.lazy(() => import('../SignIn'));
-// const Clients = React.lazy(() => import('../Clients'));
-// const Dates = React.lazy(() => import('../Dates'));
-// const Calendar = React.lazy(() => import('../Calendar'));
-// const CalendarSingle = React.lazy(() => import('../CalendarSingle'));
-// const ClientCalendar = React.lazy(() => import('../ClientCalendar'));
-// const ClientViewPost = React.lazy(() => import('../ClientViewPost'));
-// const AdminViewPost = React.lazy(() => import('../AdminViewPost'));
-// const ClientDates = React.lazy(() => import('../ClientDates'));
-// const AssignCategories = React.lazy(() => import('../AssignCategories'));
 
 const App = () => (
   <WithAuthentication>
@@ -55,19 +41,20 @@ const App = () => (
               src={require('../assets/skylar-logo.svg')}
               id="sky-logo"
               className="align-self-center"
+              alt="skylar logo"
             />
           </div>
         </div>
         <Suspense fallback={isLoading}>
           <Switch>
-            {/* <ProtectedRoutepath="/no-mobile" component={NoMobile} /> */}
+            <Route path="/no-mobile" component={NoMobile}/>
             <Route exact path={`${process.env.PUBLIC_URL + '/'}`} component={SignInPage} />
             <Route path={`/add-post/:year/:month/:day/:clientId`} component={AddPost} />
             <Route path={`/sign-up`} component={SignUpPage} />
             <Route path={ROUTES.SIGN_IN} component={SignInPage} />
-            <ProtectedRoute exact path={ROUTES.HOME} component={HomePage} />
+            <Route exact path={ROUTES.HOME} component={HomePage} />
             <Route path={ROUTES.CLIENTS} component={Clients} />
-            <ProtectedRoute path={ROUTES.DATES} component={Dates} />
+            <Route path={ROUTES.DATES} component={Dates} />
             <Route path="/edit-post/:clientId/:postId" component={EditPost} />
             <Route path="/assign-categories/:year/:month/:id" component={AssignCategories} />
             <Route path="/client-calendar/:year/:month" component={ClientCalendar} />
@@ -78,8 +65,9 @@ const App = () => (
               component={AdminViewPost}
             />
             <ProtectedRoute path="/logout" component={Logout} />
-            <ProtectedRoute path="/calendar/:year/:month/:clientId" component={Calendar} />
-            <ProtectedRoute path="/settings" component={Settings} />
+            <Route path="/calendar/:year/:month/:clientId" component={Calendar} />
+            <Route path="/settings" component={Settings} />
+            <Route component={NoMatch} />
           </Switch>
         </Suspense>
         )
