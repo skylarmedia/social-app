@@ -55,7 +55,6 @@ class ClientSingle extends Component {
                   type="button"
                   onClick={this.handleCancel}
                   className="red-btn delete-btn-main"
-                  type="button"
                 >
                   CANCEL
                 </button>

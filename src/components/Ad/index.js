@@ -2,7 +2,7 @@ import React from 'react';
 
 const Ad = props => {
   return (
-    <React.Fragment>{props.ad ? <img src={require('../assets/ad.svg')} className="image-of-ad"/> : ''}</React.Fragment>
+    <React.Fragment>{props.ad ? <img src={require('../assets/ad.svg')} className="image-of-ad" alt="ad" /> : ''}</React.Fragment>
   );
 };
 

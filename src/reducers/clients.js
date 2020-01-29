@@ -1,25 +1,20 @@
 const INITIAL_STATE = {
-    data: []
-}
+  data: []
+};
 
-const getClients = (state, action) => (
-    console.log(action, 'action in clients'), {
-
-        ...state,
-        data: action.clients
-    })
-
-
+const getClients = (state, action) => ({
+  ...state,
+  data: action.clients
+});
 
 function setClientsReducer(state = INITIAL_STATE, action) {
-
-    switch (action.type) {
-        case 'GET_ALL_CLIENTS': {
-            return getClients(state, action)
-        }
-        default:
-            return state
+  switch (action.type) {
+    case 'GET_ALL_CLIENTS': {
+      return getClients(state, action);
     }
+    default:
+      return state;
+  }
 }
 
 export default setClientsReducer;

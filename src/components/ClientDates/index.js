@@ -30,11 +30,11 @@ class ClientDates extends Component {
       .get()
       .then(res => {
         res.docs.map(item => {
-          let dateObj = new Object();
+          let dateObj = {};
           dateObj.month = item.data().month;
           dateObj.name = this.convertToMonth(item.data().month);
           dateObj.year = item.data().year;
-          this.setState({
+          return this.setState({
             dates: [...this.state.dates, dateObj]
           });
         });
@@ -44,12 +44,13 @@ class ClientDates extends Component {
       .getUserUnusedCategories(localStorage.getItem('clientName'))
       .then(snapshot => {
         const catArr = [...this.state.categories];
-        snapshot.docs.map((category, index) => {
+        return snapshot.docs.map((category, index) => {
           category.data()['mainId'] = category.id;
           catArr.push(category.data());
-        });
-        this.setState({
-          categories: catArr
+        }, () => {
+          this.setState({
+            categories: catArr
+          });
         });
       });
   }

@@ -3,13 +3,9 @@ import { withFirebase } from '../Firebase';
 import { Link } from 'react-router-dom';
 import { compose } from 'recompose';
 import 'firebase/storage';
-import withAuthorization from '../Session/withAuthorization';
-import withAuthentication from '../Session/withAuthentication';
-import { AuthUserContext } from '../Session';
 import { Skeleton } from 'antd';
 import './index.css';
 import { Modal } from 'antd';
-// import ClientImage from '../ClientImage';
 import { Row, Col } from 'antd';
 import { Checkbox } from 'antd';
 import { Input } from 'antd';
@@ -220,17 +216,14 @@ class Home extends Component {
       .child(`${this.state.username}/logo/`)
       .put(this.state.file)
       .then(
-        snapshot => {
-          const encodedUrl = `https://firebasestorage.googleapis.com/v0/b/skylar-social-17190.appspot.com/o/${encodeURIComponent(
-            snapshot.metadata.fullPath
-          )}?alt=media`;
+        () => {
           const userObj = {};
           userObj.logo = this.state.backgroundUrl;
           userObj.name = this.state.username;
           userObj.urlName = this.state.username.toLowerCase().replace(/ /g, '-');
 
           // Admin Object
-          const currentUser = new Object();
+          const currentUser = {};
           currentUser.email = this.state.email;
           currentUser.password = this.state.passwordOne;
           currentUser.displayName = this.state.username;

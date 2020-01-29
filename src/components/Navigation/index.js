@@ -6,16 +6,13 @@ import './index.css';
 
 import SignOutButton from '../SignOut';
 import * as ROUTES from '../../constants/routes';
-import { AuthUserContext } from '../Session';
 
 const Navigation = ({ authUser }) => {
-  let downCaret = document.querySelector('.anticon-down');
   return <NavigationAuth authUser={authUser} id="page-wrap" />;
 };
 
 const NavigationAuth = props => {
   const [drawerState, toggleDrawer] = useState(false);
-  var elem = document.querySelector('.anticon-down');
   return (
     <div>
       <Button type="primary" onClick={() => toggleDrawer(true)} className="burger-button">

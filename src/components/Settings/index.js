@@ -45,7 +45,7 @@ class Settings extends Component {
       .then(snapshot => {
         let allClients = [...this.state.allClients];
         snapshot.docs.map(item => {
-          allClients.push(item.data());
+          return allClients.push(item.data());
         });
         this.setState({
           allClients: allClients
@@ -56,7 +56,7 @@ class Settings extends Component {
       let archivedClients = [...this.state.clients];
       snapshot.docs.filter(item => {
         archivedClients.push(item.data());
-        this.setState({
+        return this.setState({
           clients: archivedClients
         });
       });
@@ -64,7 +64,7 @@ class Settings extends Component {
   }
 
   confirmArchive = e => {
-    if (e.target.value == 'true') {
+    if (e.target.value === 'true') {
       this.props.firebase.deleteClient(this.state.deleteClient);
       this.setState({
         clients: this.state.clients.filter((_, i) => i !== this.state.deleteIndex)
@@ -110,7 +110,7 @@ class Settings extends Component {
       auth.currentUser.email === this.state.username
     ) {
       const deleteByUid = this.functions.httpsCallable('deleteByUid');
-      let data = new Object();
+      let data = {};
       data.uid = localStorage.getItem('tempDeleteUserId');
       data.name = localStorage.getItem('tempDeleteUser');
       deleteByUid(data);
@@ -164,7 +164,7 @@ class Settings extends Component {
   changePassword = e => {
     e.preventDefault();
     const changeClientPassword = this.functions.httpsCallable('changeClientPassword');
-    let functionObj = new Object();
+    let functionObj = {};
     functionObj.uid = this.state.chosenClient.uid;
     functionObj.password = this.state.mainPassword;
     changeClientPassword(functionObj);
@@ -184,11 +184,10 @@ class Settings extends Component {
   changeUser = (e) => {
     e.preventDefault();
     const changeUsername = this.functions.httpsCallable('changeUsername');
-    let functionObj = new Object();
+    let functionObj = {};
     functionObj.uid = this.state.chosenClient.uid;
     functionObj.username = this.state.username;
     functionObj.oldUsername = this.state.chosenClient.name;
-    // console.log('chosen client', this.state.chosenClient);
     changeUsername(functionObj);
     this.setState({
       usernameModal: false,
@@ -196,15 +195,6 @@ class Settings extends Component {
   }
 
   render() {
-    console.log('client uid', this.state);
-    const isValid = () => {
-      if (
-        (this.state.mainPassword =
-          this.state.passwordTwo || this.state.mainPassword !== '' || this.state.passwordTwo !== '')
-      ) {
-        return false;
-      }
-    };
     return (
       <div>
         {/* START PASSWORD MODAL  */}
@@ -270,7 +260,6 @@ class Settings extends Component {
                 type="button"
                 onClick={this.handleCancel}
                 className="red-btn delete-btn-main"
-                type="button"
               >
                 CANCEL
               </button>

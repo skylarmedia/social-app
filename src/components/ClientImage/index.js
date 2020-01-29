@@ -33,7 +33,7 @@ class ClientImage extends Component {
 
   componentWillMount() {
     const updateHomeClientMessages = this.functions.httpsCallable('updateHomeClientMessages');
-    let functionObj = new Object();
+    let functionObj = {};
     functionObj.userId = this.props.name;
     updateHomeClientMessages(functionObj).then(res => {
       console.log('RES IN SIZE', res.data, this.props.name);

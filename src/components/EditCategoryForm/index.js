@@ -25,20 +25,19 @@ class EditCategoryForm extends Component {
       .getUserCategories(this.props.clientId, parseInt(this.props.month))
       .then(items => {
         const editCatArr = [];
-        items.docs.map((item) => {
+        items.docs.map(item => {
           let currentCat = {};
           currentCat.color = item.data().color;
           currentCat.name = item.data().name;
           editCatArr.push(currentCat);
-        });
-        return  this.setState({
-          categories: editCatArr
+          return this.setState({
+            categories: editCatArr
+          });
         });
       });
   }
 
   render() {
-    
     const options = this.state.categories.map((item, index) => {
       return (
         <option value={`${item.name}|||${item.color}`} key={index}>
@@ -48,9 +47,8 @@ class EditCategoryForm extends Component {
     });
 
     const styleSelect = {
-      backgroundColor:this.props.color
-    }
-    
+      backgroundColor: this.props.color
+    };
 
     return (
       <React.Fragment>
@@ -59,8 +57,8 @@ class EditCategoryForm extends Component {
             name="options"
             style={{ width: 120 }}
             onChange={this.currentCategory.bind(this)}
-            placeholder={ this.props.currentCat ? this.props.currentCat : 'Category' }
-            suffixIcon={<img src={require('../assets/arrow.svg')} alt="arrow icon"/>}
+            placeholder={this.props.currentCat ? this.props.currentCat : 'Category'}
+            suffixIcon={<img src={require('../assets/arrow.svg')} alt="arrow icon" />}
           >
             {this.props.currentCat ? (
               <Option value={`${this.props.currentCat} ||| #fff`} selected>

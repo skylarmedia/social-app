@@ -51,7 +51,7 @@ class SelectCategory extends Component {
 
   passCategories = e => {
     e.preventDefault();
-    let catObj = new Object;
+    let catObj = {};
     catObj.name = this.state.name;
     catObj.color = this.state.color
     this.props.getCategories(catObj);
@@ -87,10 +87,6 @@ class SelectCategory extends Component {
           />
           <div className="d-flex flex-column justify-content align-items-center">
             <ul id="selected-categories">{categoryList}</ul>
-            {/* <button onClick={this.submitCategories} className="gen-red-btn">
-              Add Categories
-            </button>
-            <br /> */}
             <button onClick={this.passCategories} className="gen-red-btn">
               Submit
             </button>

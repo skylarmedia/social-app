@@ -36,7 +36,6 @@ class Dates extends Component {
       showCat: true,
       showCalendar: false,
       clientId: '',
-      isLoading: false,
       newColors: [],
       isLoading: false,
       removedCategories: [],
@@ -52,7 +51,7 @@ class Dates extends Component {
   componentDidMount() {
     this.props.firebase.getUID(this.props.match.params.id).then(snapshot => {
       snapshot.docs.map(item => {
-        this.setState({
+        return this.setState({
           clientId: item.data().userId,
           isLoading: !this.state.isLoading
         });
@@ -69,7 +68,7 @@ class Dates extends Component {
         obj['id'] = item.id;
         obj['privacy'] = item.data().privacy;
         dateArr.push(obj);
-        this.setState({
+        return this.setState({
           date: dateArr
         });
       });
@@ -232,7 +231,7 @@ class Dates extends Component {
             <br />
           </Link>
           <button onClick={() => this.deleteDate(item.id, index)} className="delete-date">
-            <img src={require('../assets/xsvg.svg')} />
+            <img src={require('../assets/xsvg.svg')} alt="x icon" />
           </button>
         </div>
       </Col>
@@ -256,7 +255,7 @@ class Dates extends Component {
         <div className="col-sm-3">
           <div className="d-flex  back-wrapper">
             <Link to={`/home`} className="back-link">
-              <img src={require('../assets/back.svg')} />
+              <img src={require('../assets/back.svg')} alt="back icon"/>
               Back To All Clients
             </Link>
           </div>
@@ -273,7 +272,7 @@ class Dates extends Component {
                     onVisibleChange={this.hideCat}
                   >
                     <Button className="d-flex color-blue clear-btn align-items-center p-0">
-                      <img src={require('../assets/select.svg')} />
+                      <img src={require('../assets/select.svg')} alt="select svg" />
                       <p className="ml-10 color-blue">Create Category</p>
                     </Button>
                   </Popover>
@@ -309,7 +308,7 @@ class Dates extends Component {
                   className="select-date"
                   id="month-helper"
                   placeholder="MONTH"
-                  suffixIcon={<img src={require('../assets/arrow.svg')} />}
+                  suffixIcon={<img src={require('../assets/arrow.svg')} alt="arrow svg"/>}
                 >
                   <Select.Option value="1">January</Select.Option>
                   <Select.Option value="2">February</Select.Option>
@@ -330,7 +329,7 @@ class Dates extends Component {
                   className="select-date"
                   id="month-helper"
                   placeholder="YEAR"
-                  suffixIcon={<img src={require('../assets/arrow.svg')} />}
+                  suffixIcon={<img src={require('../assets/arrow.svg')} alt="arrow svg"/>}
                 >
                   <Option value="2019">2019</Option>
                   <Option value="2020">2020</Option>
@@ -351,7 +350,7 @@ class Dates extends Component {
         <div className="col-md-3">
           <div className="d-flex  back-wrapper">
             <Link to={`/home`} className="back-link">
-              <img src={require('../assets/back.svg')} />
+              <img src={require('../assets/back.svg')}  alt="back svg"/>
               Back To All Clients
             </Link>
           </div>
@@ -379,7 +378,7 @@ class Dates extends Component {
                         className="select-date"
                         id="month-helper"
                         placeholder="MONTH"
-                        suffixIcon={<img src={require('../assets/arrow.svg')} />}
+                        suffixIcon={<img src={require('../assets/arrow.svg')} alt="arrow svg"/>}
                         >
                         <Select.Option value="1">January</Select.Option>
                         <Select.Option value="2">February</Select.Option>
@@ -402,7 +401,7 @@ class Dates extends Component {
                         className="select-date"
                         id="month-helper"
                         placeholder="YEAR"
-                        suffixIcon={<img src={require('../assets/arrow.svg')} />}
+                        suffixIcon={<img src={require('../assets/arrow.svg')} alt="arrow svg" />}
                       >
                         <Select.Option value="2019">2019</Select.Option>
                         <Select.Option value="2020">2020</Select.Option>
@@ -426,10 +425,11 @@ class Dates extends Component {
               src={require('../assets/single-grid.svg')}
               id="no-date-calendar"
               className="col-md-4"
+              alt="grid image"
             />
           </div>
           <div className="text-center arrow-wrapper">
-            <img src={require('../assets/curly-arrow.svg')} id="arrow" />
+            <img src={require('../assets/curly-arrow.svg')} id="arrow" alt="curly arrow svg" />
           </div>
         </div>
         <div className="col-md-1 margin-btn">

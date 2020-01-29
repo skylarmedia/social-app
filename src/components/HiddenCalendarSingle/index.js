@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { withFirebase } from '../Firebase';
 import { compose } from 'recompose';
-import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import './index.css';
 import Icons from '../Icons';
 import Ad from '../Ad';
@@ -11,7 +10,7 @@ import ImagePosts from '../ImagePosts';
 import app from 'firebase/app';
 import { Modal, Row, Col } from 'antd';
 
-let timer = 0;
+
 let delay = 200;
 let prevent = false;
 
@@ -54,6 +53,7 @@ class HiddenCalendarSingle extends Component {
   }
 
   toggleIsHidden = () => {
+    let timer = 0;
     let me = this;
     timer = setTimeout(function() {
       if (!prevent) {
@@ -169,7 +169,7 @@ class HiddenCalendarSingle extends Component {
         <div className="d-flex align-items-center">
           <button onClick={this.toggleIsHidden} style={buttonStyle} className="label-button">
             {this.ellipse(this.props.title)}
-            {this.props.adminRead != false ? '' : ''}
+            {this.props.adminRead !== false ? '' : ''}
           </button>
           <Ad ad={this.props.ad} className="ad-icon" />
           <Icons

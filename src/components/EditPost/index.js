@@ -371,7 +371,7 @@ class EditPost extends Component {
 
   clearMessages = (id, postId) => {
     const clearClientMessages = this.functions.httpsCallable('clearClientMessages');
-    const clearObj = new Object();
+    const clearObj = {};
     clearObj.id = id;
     clearObj.postId = this.state.postId;
     clearClientMessages(clearObj);
@@ -409,19 +409,9 @@ class EditPost extends Component {
   }
 
   addClick(i) {
-    // let posts = [...this.state.posts];
-    // posts[index].postTime = this.state.currentTime;
-    // this.setState({
-    //   posts: posts
-    // });
-    // posts[index].linkedin = !posts[index].linkedin;
-
-    console.log('STATE in ad form', i);
-    let posts = [...this.state.posts];
-    posts[i].values = posts[i].values;
-    // this.setState(prevState => ({
-    //   values: [...prevState.posts[i].values, { value: null }]
-    // }));
+    this.setState(prevState => ({
+      values: [...prevState.posts[i].values, { value: null }]
+    }));
   }
 
   saveDraft = () => {
@@ -455,9 +445,7 @@ class EditPost extends Component {
   };
 
   render() {
-    console.log('selected category', this.state.selectedCategory);
-    console.log('this state edit', this.state);
-    const genExtra = () => <img src={require('../assets/arrow.svg')} />;
+    const genExtra = () => <img src={require('../assets/arrow.svg')} alt="arrow icon" />;
     const posts = this.state.posts.map((post, index) => {
       return (
         <div className="edit-form-main-wrapper" key={index}>

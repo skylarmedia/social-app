@@ -27,7 +27,6 @@ class ClientViewPost extends Component {
       showPopUp: false,
       messages: [],
       adminRead: null,
-      clientRead: null,
       category: '',
       color: '#fff',
       openedChat: false,
@@ -77,12 +76,12 @@ class ClientViewPost extends Component {
         const messageArr = [...this.state.messages];
 
         snap.docChanges().forEach(change => {
-          if (change.type == 'added') {
+          if (change.type === 'added') {
             messageArr.push(change.doc.data());
             this.setState({
               messages: messageArr
             });
-          } else if (change.type == 'removed') {
+          } else if (change.type === 'removed') {
             this.setState({
               messages: this.state.messages.filter((_, i) => i !== change.oldIndex)
             });
@@ -98,7 +97,7 @@ class ClientViewPost extends Component {
     updateClientMessages(functionObj);
 
     //update readByClient
-    if (this.state.clientRead == false) {
+    if (this.state.clientRead === false) {
       app
         .firestore()
         .collection('users')
@@ -112,7 +111,7 @@ class ClientViewPost extends Component {
   }
 
   toggleChat = () => {
-    if (this.state.updatedMessages == false) {
+    if (this.state.updatedMessages === false) {
     }
     this.setState({
       showChat: !this.state.showChat,
@@ -238,13 +237,6 @@ class ClientViewPost extends Component {
   };
 
   render() {
-    console.log(this.state, 'read or not read');
-    const approveStyles = {
-      margin: 200,
-      width: 300,
-      height: 300
-    };
-
     const popUpStyles = {
       width: 500,
       height: 500,
@@ -254,10 +246,6 @@ class ClientViewPost extends Component {
     };
 
     const posts = this.state.posts.map((item, index) => {
-      console.log('type of values', item);
-      const styles = {
-        backgroundColor: this.state.categoryColor
-      };
       return (
         <div className="d-flex row client-item" key={index}>
           <Row className="container mx-auto" gutter={30}>

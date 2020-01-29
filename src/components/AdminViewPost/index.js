@@ -53,7 +53,7 @@ class AdminViewPost extends Component {
                 adminRead: snapshot.data().adminRead,
                 postId: snapshot.id
             }, () => {
-                if (this.state.adminRead == false) {
+                if (this.state.adminRead === false) {
                     this.props.firebase.editReadAdmin(this.props.match.params.client, this.state.postId, true);
                 }
             })
@@ -134,15 +134,15 @@ class AdminViewPost extends Component {
 
     render() {
         const media = this.state.metaImageFiles.map((item) => {
-            if (this.getType(item) == 'video') {
+            if (this.getType(item) === 'video') {
                 return (
                     <video height="200" width="200" controls>
                         <source src={item} />
                     </video>
                 )
-            } else if (this.getType(item) == 'image') {
+            } else if (this.getType(item) === 'image') {
                 return (
-                    <img src={item} onError="this.style.display='none'" />
+                    <img src={item} onError="this.style.display='none'" alt="icon" />
                 )
             } else {
                 return (

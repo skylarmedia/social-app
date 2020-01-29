@@ -14,7 +14,6 @@ class AssignCategories extends Component {
       dirty: false
     };
 
-    // this.handleChange = this.handleChange.bind(this);
     this.db = firebase.firestore();
   }
 
@@ -28,12 +27,11 @@ class AssignCategories extends Component {
       .get()
       .then(snapshot => {
         const tempNum = snapshot.size;
-        const tempArr = new Array();
+        const tempArr = [];
         snapshot.docs.map(item => {
-          tempArr.push(item.data());
-          console.log(tempNum, tempArr);
-          if (tempNum == tempArr.length)
-            this.setState(
+         tempArr.push(item.data());
+          if (tempNum === tempArr.length)
+            return this.setState(
               {
                 categories: tempArr
               });
@@ -61,39 +59,7 @@ class AssignCategories extends Component {
   
   };
 
-  // handleChange = i => {
-  //   let categories = [...this.state.categories];
-  //   categories[i].selected = !categories[i].selected;
-  //   // console.log('cats', categories);
-  //   // console.log('HANDLE CHANGE', [
-  //   //   ...this.state.categories[i].month,
-  //   //   parseInt(this.props.match.params.month)
-  //   // ]);
-
-  //   // categories[i].month = [
-  //   //   ...this.state.categories[i].month,
-  //   //   parseInt(this.props.match.params.month)
-  //   // ];
-
-  //   this.setState(
-  //     {
-  //       categories: categories
-  //     });
-  // };'
-
-  // isValid(selected, months) {
-  //   console.log('this months', months, this.props.match.params.month)
-  //   if(selected === true && months.includes(this.props.match.params.month)){
-  //     return true;
-  //   }else{
-  //     return false;
-  //   }
-  // }
-
-
   render() {
-    console.log(this.state.categories, 'CATEGORISE');
-    console.log(this.props, 'categories');
     let categories = this.state.categories.map((item, i) => {
       let style = {
         background: item.color

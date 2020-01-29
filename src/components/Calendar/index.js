@@ -396,7 +396,7 @@ class Calendar extends React.Component {
               className="d-flex align-items-center"
               id="main-backlink"
             >
-              <img src={require('../assets/back.svg')} />
+              <img src={require('../assets/back.svg')} alt="back icon svg"/>
               Back to All Calendar Months
             </Link>
           </div>
@@ -407,23 +407,23 @@ class Calendar extends React.Component {
             </p>
           </div>
           <div id="calendar-wing">
-          <img src={require('../assets/skylar_Icon_wingPortion.svg')} id="wing-logo" />
+          <img src={require('../assets/skylar_Icon_wingPortion.svg')} id="wing-logo" alt="wing logo"/>
           </div>
           <div>
             <div className="d-flex justify-content-between align-items-center mb-10 container row mx-auto p-0">
               <div>
                 <button onClick={() => this.listMode()} className="clear-btn">
                   {this.state.grid ? (
-                    <img src={require('../assets/list-non-active.svg')} />
+                    <img src={require('../assets/list-non-active.svg')} alt="list non active icon"/>
                   ) : (
-                    <img src={require('../assets/listmode.svg')} />
+                    <img src={require('../assets/listmode.svg')} alt="list mode icon"/>
                   )}
                 </button>
                 <button onClick={() => this.gridMode()} className="clear-btn">
                   {this.state.grid ? (
-                    <img src={require('../assets/grid.svg')} />
+                    <img src={require('../assets/grid.svg')} alt="grid icon svg"/>
                   ) : (
-                    <img src={require('../assets/grid-non-active.svg')} />
+                    <img src={require('../assets/grid-non-active.svg')} alt="grid non active svg"/>
                   )}
                 </button>
               </div>

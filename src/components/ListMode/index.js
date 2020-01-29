@@ -55,8 +55,8 @@ class ListMode extends Component {
       },
       () => {
         this.state.listItems.map(item => {
-          item.post.map(inner => {
-            this.setState({
+          return item.post.map(inner => {
+            return this.setState({
               innerPosts: [...this.state.innerPosts, inner]
             });
           });

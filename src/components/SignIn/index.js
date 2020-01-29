@@ -6,8 +6,6 @@ import './index.css';
 import { Input } from 'antd';
 import { withFirebase } from '../Firebase';
 import { Spin, Icon } from 'antd';
-import { Link } from 'react-router-dom';
-
 import app from 'firebase/app';
 
 const SignInPage = () => (
@@ -54,7 +52,7 @@ class SignInFormBase extends Component {
     const { email, password } = this.state;
     this.props.firebase.doSignInWithEmailAndPassword(email, password).then(value => {
       const getUid = this.functions.httpsCallable('getUid');
-      const currentEmail = new Object();
+      const currentEmail = {};
       currentEmail.email = email;
       getUid(currentEmail).then(res => {
         if (res.data.customClaims !==  null && res.data.customClaims.skylarAdmin === true) {

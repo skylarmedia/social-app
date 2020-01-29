@@ -1,6 +1,4 @@
 import React, { Component } from 'react';
-import { withFirebase } from '../Firebase';
-import { compose } from 'recompose';
 import { Link } from 'react-router-dom';
 import Ad from '../Ad';
 import Icons from '../Icons';
@@ -28,17 +26,13 @@ class ClientCalendarSingle extends Component {
   };
 
   render() {
-    console.log('CLIENT POSTS', this.props.posts);
     let linkMonth = this.getMonthFromString(this.props.month);
 
     const filtered = this.props.posts.filter(item => {
-      return item.data().day == this.props.day;
+      return item.data().day === this.props.day;
     });
-    console.log(this.props.posts, 'flitered');
 
     const filteredList = filtered.map(item => {
-      // let friendlyUrl = item.data().title.toLowerCase().replace(/ /g, '-');
-      let itemId = item.id;
       let selectedCategory;
       if (item.data().color !== '') {
         selectedCategory = item.data().color;
@@ -49,11 +43,7 @@ class ClientCalendarSingle extends Component {
       let clientTitleStyles = {
         backgroundColor: selectedCategory,
         color: '#002D5B'
-        /* padding: 10px; */
       };
-
-      console.log('item in filter', item);
-
       return (
         <div className="outter-client-single">
           <Link
