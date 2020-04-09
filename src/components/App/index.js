@@ -18,7 +18,7 @@ import NavigationWrapper from '../NavigationWrapper';
 import Logout from '../Logout';
 import ClientDates from '../ClientDates';
 import SignInPage from '../SignIn';
-const HomePage = React.lazy(() => import('../Home'));
+import Home from '../Home';
 const AddPost = React.lazy(() => import('../AddPost'));
 const EditPost = React.lazy(() => import('../EditPost'));
 const AssignCategories = React.lazy(() => import('../AssignCategories'));
@@ -52,7 +52,7 @@ const App = () => (
             <Route path={`/add-post/:year/:month/:day/:clientId`} component={AddPost} />
             <Route path={`/sign-up`} component={SignUpPage} />
             <Route path={ROUTES.SIGN_IN} component={SignInPage} />
-            <Route exact path={ROUTES.HOME} component={HomePage} />
+            <ProtectedRoute exact path={ROUTES.HOME} component={Home} />
             <Route path={ROUTES.CLIENTS} component={Clients} />
             <Route path={ROUTES.DATES} component={Dates} />
             <Route path="/edit-post/:clientId/:postId" component={EditPost} />
@@ -64,7 +64,7 @@ const App = () => (
               path="/admin-view-post/:month/:day/:title/:client/:itemId"
               component={AdminViewPost}
             />
-            <ProtectedRoute path="/logout" component={Logout} />
+            <Route path="/logout" component={Logout} />
             <Route path="/calendar/:year/:month/:clientId" component={Calendar} />
             <Route path="/settings" component={Settings} />
             <Route component={NoMatch} />
