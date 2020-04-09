@@ -7,6 +7,7 @@ import { Input } from 'antd';
 import { withFirebase } from '../Firebase';
 import { Spin, Icon } from 'antd';
 import app from 'firebase/app';
+import * as auth from 'firebase/auth';
 import { AuthUserContext } from '../Session';
 
 const SignInPage = () => (
@@ -43,6 +44,7 @@ class SignInFormBase extends Component {
     };
 
     this.functions = app.functions();
+    console.log('auth main', auth);
   }
 
   onSubmit = event => {
@@ -58,11 +60,13 @@ class SignInFormBase extends Component {
         const currentEmail = {};
         currentEmail.email = email;
         getUid(currentEmail).then(res => {
+          console.log('res', res);
           if (res.data.customClaims !== null && res.data.customClaims.skylarAdmin === true) {
             localStorage.clear();
             localStorage.setItem('skylarAdmin', true);
             localStorage.setItem('key', password);
             this.props.history.push('/home');
+            localStorage.setItem('uid', res.uid);
           } else {
             localStorage.clear();
             localStorage.setItem('clientUid', res.data.uid);

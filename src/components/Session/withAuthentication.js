@@ -8,14 +8,13 @@ class WithAuthentication extends React.Component {
     super(props);
 
     this.state = {
-      authUser: null
+      authUser: {}
     };
   }
 
   componentDidMount() {
     this.listener = this.props.firebase.auth.onAuthStateChanged(authUser => {
       return authUser.getIdTokenResult().then(idTokenResult => {
-        console.log('TOKEN', idTokenResult);
         authUser.skylarAdmin = idTokenResult.claims.skylarAdmin;
         authUser.checked = true;
         if (idTokenResult.claims.skylarAdmin) {
@@ -23,6 +22,8 @@ class WithAuthentication extends React.Component {
             authUser: authUser
           });
           return authUser.skylarAdmin;
+        }else{
+          return <Redirect to="/" />
         }
       });
     });

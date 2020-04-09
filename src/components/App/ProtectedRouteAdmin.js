@@ -6,19 +6,20 @@ const ProtectedRoute = ({ component: Component, ...rest }) => (
   <AuthUserContext.Consumer>
     {isAuth => {
       if (isAuth.skylarAdmin) {
-        console.log('IS AUTH', isAuth);
-        return (
+        if (isAuth.skylarAdmin === true) {
+          return (
             <Route
               render={props => {
-                if(isAuth.skylarAdmin === true){
-                  return <Component {...props} />;
-                }else{
-                  return <Redirect to="/" />
-                }
+                return <Component {...props} />;
               }}
               {...rest}
             />
           );
+        } else if (isAuth.skylarAdmin === false) {
+          alert('false');
+        }
+      }else{
+        return <div>Loading</div>
       }
     }}
   </AuthUserContext.Consumer>
