@@ -3,13 +3,10 @@ import { withFirebase } from '../Firebase';
 import { Link } from 'react-router-dom';
 import { compose } from 'recompose';
 import 'firebase/storage';
-import { Skeleton } from 'antd';
+import { message, Skeleton, Row, Col, Checkbox, Input, Modal } from 'antd';
 import './index.css';
-import { Modal } from 'antd';
-import { Row, Col } from 'antd';
-import { Checkbox } from 'antd';
-import { Input } from 'antd';
 import app from 'firebase/app';
+import Compressor from 'compressorjs';
 import ClientImage from '../ClientImage';
 
 class Home extends Component {
@@ -49,18 +46,23 @@ class Home extends Component {
   // Component lifecycle methods
 
   componentDidMount() {
-    this.props.firebase.getClients().then(snapshot => {
-      const opened = snapshot.docs;
-      let setArr = [...this.state.users];
-      opened.map(item => {
-        return setArr.push(item.data());
-      });
+    this.db
+      .collection('users')
+      .where('archived', '==', false)
+      .where('admin', '==', false)
+      .get()
+      .then(snapshot => {
+        const opened = snapshot.docs;
+        let setArr = [...this.state.users];
+        opened.map(item => {
+          return setArr.push(item.data());
+        });
 
-      this.setState({
-        users: setArr,
-        isLoading: !this.state.isLoading
+        this.setState({
+          users: setArr,
+          isLoading: !this.state.isLoading
+        });
       });
-    });
   }
 
   handleAdmin = () => {
@@ -114,28 +116,42 @@ class Home extends Component {
   };
 
   addFile = event => {
-    this.setState(
-      {
-        file: event.target.files[0],
-        loadSpinner: !this.state.loadSpinner
+    let fileBlob = event.target.files[0];
+
+    let file = new Compressor(fileBlob, {
+      quality: 0.6,
+      success(result) {
+        return result;
       },
-      () => {
-        this.state.firestorageRef
-          .ref()
-          .child(`${this.state.username}/logo/`)
-          .put(this.state.file)
-          .then(snapshot => {
-            const encodedUrl = `https://firebasestorage.googleapis.com/v0/b/skylar-social-17190.appspot.com/o/${encodeURIComponent(
-              snapshot.metadata.fullPath
-            )}?alt=media`;
-            this.setState({
-              backgroundUrl: encodedUrl,
-              uploadComplete: true,
-              loadSpinner: !this.state.loadSpinner
-            });
-          });
+      error(err) {
+        message.error('Error Uploading File')
       }
-    );
+    });
+
+    setTimeout(() => {
+      this.setState(
+        {
+          file: file.result,
+          loadSpinner: !this.state.loadSpinner
+        },
+        () => {
+          this.state.firestorageRef
+            .ref()
+            .child(`${this.state.username}/logo/`)
+            .put(this.state.file)
+            .then(snapshot => {
+              const encodedUrl = `https://firebasestorage.googleapis.com/v0/b/skylar-social-17190.appspot.com/o/${encodeURIComponent(
+                snapshot.metadata.fullPath
+              )}?alt=media`;
+              this.setState({
+                backgroundUrl: encodedUrl,
+                uploadComplete: true,
+                loadSpinner: !this.state.loadSpinner
+              });
+            });
+        }
+      );
+    }, 200);
   };
 
   // Ant Design
@@ -183,7 +199,7 @@ class Home extends Component {
   // End Archive Modal
 
   confirmArchive = e => {
-    this.props.firebase.archiveClient(localStorage.getItem('archiveId'));
+    this.props.firebase.archiveClient(localStorage.getItem('archiveId')).then(() => {});
     this.setState(
       {
         visible2: false,
@@ -208,6 +224,12 @@ class Home extends Component {
     this.setState({ [event.target.name]: event.target.value });
   };
 
+  // Messages
+
+  successMessage = text => {
+    message.success(text);
+  };
+
   onSubmit = event => {
     event.preventDefault();
     this.state.firestorageRef
@@ -228,52 +250,45 @@ class Home extends Component {
         currentUser.photoURL = this.state.backgroundUrl;
         currentUser.admin = this.state.admin;
         const createAdmin = this.functions.httpsCallable('createAdmin');
-        createAdmin(currentUser).then(user => {
-          this.db
-            .collection('users')
-            .doc(this.state.username)
-            .set({
-              name: this.state.username,
-              logo: this.state.backgroundUrl,
-              admin: this.state.admin,
-              email: this.state.email,
-              urlName: this.state.username.toLowerCase().replace(/ /g, '-'),
-              archived: false
-            });
+        createAdmin(currentUser).then(
+          user => {
+            this.db
+              .collection('users')
+              .doc(this.state.username)
+              .set({
+                name: this.state.username,
+                logo: this.state.backgroundUrl,
+                admin: this.state.admin,
+                email: this.state.email,
+                urlName: this.state.username.toLowerCase().replace(/ /g, '-'),
+                archived: false
+              });
 
-          if (this.state.admin === false) {
-            // this.db
-            // .collection('users')
-            // .doc(this.state.username)
-            // .set({
-            //   name: this.state.username,
-            //   logo: this.state.backgroundUrl,
-            //   userId: user.user.uid,
-            //   admin: this.state.admin,
-            //   email: this.state.email,
-            //   urlName: this.state.username.toLowerCase().replace(/ /g, '-'),
-            //   archived: false,
-            //   uid: user.user.uid
-            // });
-            this.setState({
-              loadSpinner: false,
-              visible: false,
-              users: [...this.state.users, userObj],
-              passwordOne: '',
-              email: '',
-              file: null
-            });
-          } else {
-            this.setState({
-              loadSpinner: false,
-              visible: false,
-              users: [...this.state.users, userObj],
-              passwordOne: '',
-              email: '',
-              file: null
-            });
+            if (this.state.admin === false) {
+              this.successMessage('Successfully Addd Client');
+              this.setState({
+                loadSpinner: false,
+                visible: false,
+                users: [...this.state.users, userObj],
+                passwordOne: '',
+                email: '',
+                file: null
+              });
+            } else {
+              this.setState({
+                loadSpinner: false,
+                visible: false,
+                users: [...this.state.users, userObj],
+                passwordOne: '',
+                email: '',
+                file: null
+              });
+            }
+          },
+          err => {
+            console.log('err', err);
           }
-        });
+        );
       });
   };
 
@@ -340,7 +355,7 @@ class Home extends Component {
                       <p>Are you sure you would like to archive this client?</p>
                     </Modal>
                     <Link to={`/dates/${user.urlName}`}>
-                    <ClientImage logo={user.logo} name={user.name} />
+                      <ClientImage logo={user.logo} name={user.name} />
                     </Link>
                     <div className="d-flex align-items-center align-items-center">
                       <div className="position-relative x-wrapper mt-20 d-flex justify-content-center align-items-center w-100">
@@ -430,12 +445,10 @@ class Home extends Component {
                 <Checkbox
                   onChange={this.handleAdmin}
                   name="admin"
-                  value={this.state.admin}
+                  checked={this.state.admin}
                   id="admin"
                 />
-                <label className="margin-label ml-10 mt-10 color-white" for="admin">
-                  Admin
-                </label>
+                <label className="margin-label ml-10 mt-10 color-white">Admin</label>
               </div>
               <Input
                 name="username"
