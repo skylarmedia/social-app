@@ -2,16 +2,17 @@ import React, { useState } from 'react';
 import { Popover } from 'antd';
 
 const EditClients = props => {
-  const { client, getClient } = props;
+  const { client, getClient, index } = props;
+  console.log('client', client);
   const [popupState, togglePopup] = useState(false)
   function runFile (type){
-    getClient(client, type);
+    getClient(client, type, client.uid, index);
     togglePopup(false);
   }
   return (
     <div className="d-flex flex-column align-items-start">
       <button type="button" onClick={() => togglePopup(true)} className="clear-btn p-0 mb-10 p-blue">
-        <u>{client.name}</u>
+        <u>{client.displayName}</u>
       </button>
       <Popover
         content={

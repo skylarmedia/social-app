@@ -1,6 +1,7 @@
 import React from 'react';
-import { Route, Redirect } from 'react-router-dom';
+import { Route } from 'react-router-dom';
 import { AuthUserContext } from '../Session';
+import { message } from 'antd';
 
 const ProtectedRoute = ({ component: Component, ...rest }) => (
   <AuthUserContext.Consumer>
@@ -16,10 +17,12 @@ const ProtectedRoute = ({ component: Component, ...rest }) => (
             />
           );
         } else if (isAuth.skylarAdmin === false) {
-          alert('false');
         }
       }else{
-        return <div>Loading</div>
+        message.error('You do not have access to view this page, you will be redirected back to the home page');
+        setTimeout(function(){
+          window.location.href = "/";
+        });
       }
     }}
   </AuthUserContext.Consumer>

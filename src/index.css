@@ -1495,7 +1495,7 @@ textarea.blue-input.copy-input {
 }
 
 body .ant-select-selection__placeholder {
-	top: 42%;
+	top: 48%;
 }
 
 .fas {
@@ -2452,4 +2452,8 @@ button{
 
 .ml-0{
 	margin-left:0;
+}
+
+.ant-steps-item-process > .ant-steps-item-container > .ant-steps-item-content > .ant-steps-item-title::after{
+	display:none;
 }

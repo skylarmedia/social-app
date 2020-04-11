@@ -49,24 +49,24 @@ const App = () => (
           <Switch>
             <Route path="/no-mobile" component={NoMobile}/>
             <Route exact path={`${process.env.PUBLIC_URL + '/'}`} component={SignInPage} />
-            <Route path={`/add-post/:year/:month/:day/:clientId`} component={AddPost} />
+            <ProtectedRoute path={`/add-post/:year/:month/:day/:clientId`} component={AddPost} />
             <Route path={`/sign-up`} component={SignUpPage} />
             <Route path={ROUTES.SIGN_IN} component={SignInPage} />
             <ProtectedRoute exact path={ROUTES.HOME} component={Home} />
             <Route path={ROUTES.CLIENTS} component={Clients} />
-            <Route path={ROUTES.DATES} component={Dates} />
-            <Route path="/edit-post/:clientId/:postId" component={EditPost} />
-            <Route path="/assign-categories/:year/:month/:id" component={AssignCategories} />
+            <ProtectedRoute path={ROUTES.DATES} component={Dates} />
+            <ProtectedRoute path="/edit-post/:clientId/:postId" component={EditPost} />
+            <ProtectedRoute path="/assign-categories/:year/:month/:id" component={AssignCategories} />
             <Route path="/client-calendar/:year/:month" component={ClientCalendar} />
             <Route exact path="/client/dates" component={ClientDates} />
             <Route exact path="/view-post/:month/:day/:id" component={ClientViewPost} />
-            <Route
+            <ProtectedRoute
               path="/admin-view-post/:month/:day/:title/:client/:itemId"
               component={AdminViewPost}
             />
             <Route path="/logout" component={Logout} />
-            <Route path="/calendar/:year/:month/:clientId" component={Calendar} />
-            <Route path="/settings" component={Settings} />
+            <ProtectedRoute path="/calendar/:year/:month/:clientId" component={Calendar} />
+            <ProtectedRoute  path="/settings" component={Settings} />
             <Route component={NoMatch} />
           </Switch>
         </Suspense>

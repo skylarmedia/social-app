@@ -148,7 +148,6 @@ class SubPost extends Component {
   };
 
   componentDidUpdate(prevProps) {
-    // Typical usage (don't forget to compare props):
     if (this.props.completed !== prevProps.completed) {
       let postObj = {};
       postObj['title'] = this.state.title;
@@ -412,7 +411,7 @@ class SubPost extends Component {
         <div className="col-sm-6">
           <Input
             className="blue-input"
-            placeholder="POST TITLE"
+            placeholder="POST TITLE *"
             name="title"
             value={this.state.title}
             onChange={this.handleChange}
@@ -423,11 +422,6 @@ class SubPost extends Component {
               <div className="d-flex flex-wrap">
                 <ImagePosts imageSrc={this.state.metaImageFiles} className="upload-files-wrapper" removeImage={this.removeImageParent}/>
               </div>
-              {/* <Upload {...props2}>
-                <Button>
-                  <Icon type="upload" /> Upload
-                </Button>
-              </Upload> */}
               <input type="file" multiple onChange={this.addFile} id="render-input" />
             </div>
           ) : (
@@ -554,7 +548,7 @@ class SubPost extends Component {
               <TimePicker
                 onChange={this.handlePostTime}
                 className="toggle-btn"
-                placeholder="POST TIME"
+                defaultValue={moment('12:00:23', 'HH:mm:ss')} 
               />
             </div>
             <div className="col-sm-4">

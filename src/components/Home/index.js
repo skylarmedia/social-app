@@ -3,7 +3,7 @@ import { withFirebase } from '../Firebase';
 import { Link } from 'react-router-dom';
 import { compose } from 'recompose';
 import 'firebase/storage';
-import { message, Skeleton, Row, Col, Checkbox, Input, Modal } from 'antd';
+import { message, Row, Col, Checkbox, Input, Modal, Spin } from 'antd';
 import './index.css';
 import app from 'firebase/app';
 import Compressor from 'compressorjs';
@@ -31,7 +31,8 @@ class Home extends Component {
       showButton: false,
       visible: false,
       admin: false,
-      visible2: false
+      visible2: false,
+      currentStep: 0
     };
 
     this.baseState = this.state;
@@ -124,7 +125,7 @@ class Home extends Component {
         return result;
       },
       error(err) {
-        message.error('Error Uploading File')
+        message.error('Error Uploading File');
       }
     });
 
@@ -211,6 +212,26 @@ class Home extends Component {
     );
   };
 
+  next() {
+    const current = this.state.currentStep + 1;
+    function ValidateEmail(mail) {
+      if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(mail)) {
+        return true;
+      }
+      return false;
+    }
+    if(ValidateEmail(this.state.email)){
+      this.setState({ currentStep: current });
+    }else{
+      message.error('Invalid Email');
+    }
+  }
+
+  prev() {
+    const current = this.state.currentStep - 1;
+    this.setState({ currentStep: current, backgroundImage: '', backgroundUrl: '' });
+  }
+
   archiveClient = (user, index) => {
     this.setState({
       visible2: true
@@ -252,6 +273,7 @@ class Home extends Component {
         const createAdmin = this.functions.httpsCallable('createAdmin');
         createAdmin(currentUser).then(
           user => {
+            console.log('user', user);
             this.db
               .collection('users')
               .doc(this.state.username)
@@ -265,11 +287,10 @@ class Home extends Component {
               });
 
             if (this.state.admin === false) {
-              this.successMessage('Successfully Addd Client');
+              this.successMessage('Successfully Added Client');
               this.setState({
                 loadSpinner: false,
                 visible: false,
-                users: [...this.state.users, userObj],
                 passwordOne: '',
                 email: '',
                 file: null
@@ -299,25 +320,18 @@ class Home extends Component {
     };
 
     const isInvalid =
-      this.state.passwordOne === '' ||
-      this.state.email === '' ||
-      this.state.username === '' ||
-      this.state.uploadComplete === false;
+      this.state.passwordOne === '' || this.state.email === '' || this.state.username === '';
 
     return (
       <div id="home-page" className="container">
-        <img
-          src={require('../assets/skylar_Icon_wingPortion.svg')}
-          id="wing-logo"
-          alt="wing-logo"
-        />
         <h2 className="text-center welcome">Welcome Home!</h2>
 
         {this.state.isLoading && this.state.users.length > 0 ? (
           <div>
             <p className="text-center">What client do you want to work on today?</p>
             <Row gutter={30} id="client-list">
-              {this.state.users.map((user, index) => {
+              
+              {this.state.users.length > 0 ? this.state.users.map((user, index) => {
                 return (
                   <Col
                     data-id={user.userId}
@@ -335,7 +349,6 @@ class Home extends Component {
                           <button
                             value={false}
                             onClick={this.handleCancel2}
-                            className="main-button red-button"
                             type="button"
                           >
                             CANCEL
@@ -343,7 +356,6 @@ class Home extends Component {
                           <button
                             value={true}
                             onClick={this.confirmArchive}
-                            className="main-button white-button color-red"
                             type="button"
                           >
                             ARCHIVE
@@ -371,7 +383,7 @@ class Home extends Component {
                     </div>
                   </Col>
                 );
-              })}
+              }) : <Spin size="large" />}
             </Row>
             <div id="add-new-btn-wrapper" className="text-center">
               <button type="button" onClick={this.showModal} className="add-date-btn hidden-add">
@@ -420,57 +432,70 @@ class Home extends Component {
           onOk={this.handleOk}
           className="home-modal"
           onCancel={this.handleCancel}
-          footer={[
-            <button
-              onClick={this.onSubmit}
-              disabled={isInvalid}
-              className="add-date-btn"
-              type="button"
-            >
-              Submit
-            </button>
-          ]}
+          footer={[]}
         >
           <div id="add-new-form-wrapper">
             <form onSubmit={this.onSubmit} id="add-new-form" className="d-flex flex-column">
-              <div
-                id="avatar-upload"
-                className="d-flex align-items-end justify-content-center align-items-center"
-                style={backgroundUrlStyle}
-              >
-                <input type="file" onChange={this.addFile} id="add-file" />
-                {this.state.loadSpinner === true ? <Skeleton active /> : ''}
-              </div>
-              <div className="mb-20">
-                <Checkbox
-                  onChange={this.handleAdmin}
-                  name="admin"
-                  checked={this.state.admin}
-                  id="admin"
-                />
-                <label className="margin-label ml-10 mt-10 color-white">Admin</label>
-              </div>
-              <Input
-                name="username"
-                value={this.state.username}
-                onChange={this.onChange}
-                type="text"
-                placeholder="CLIENT_NAME"
-              />
-              <Input
-                name="email"
-                value={this.state.email}
-                onChange={this.onChange}
-                type="text"
-                placeholder="CLIENT_EMAIL"
-              />
-              <Input
-                name="passwordOne"
-                value={this.state.passwordOne}
-                onChange={this.onChange}
-                type="password"
-                placeholder="PASSWORD"
-              />
+              {this.state.currentStep === 0 && (
+                <React.Fragment>
+                  <div className="mb-20">
+                    <Checkbox
+                      onChange={this.handleAdmin}
+                      name="admin"
+                      checked={this.state.admin}
+                      id="admin"
+                    />
+                    <label className="margin-label ml-10 mt-10 color-white">Admin</label>
+                  </div>
+                  <Input
+                    name="username"
+                    value={this.state.username}
+                    onChange={this.onChange}
+                    type="text"
+                    placeholder="CLIENT_NAME"
+                  />
+                  <Input
+                    name="email"
+                    type="email"
+                    value={this.state.email}
+                    onChange={this.onChange}
+                    placeholder="CLIENT_EMAIL"
+                  />
+                  <Input
+                    name="passwordOne"
+                    value={this.state.passwordOne}
+                    onChange={this.onChange}
+                    type="password"
+                    placeholder="PASSWORD"
+                  />
+                  <button disabled={isInvalid} onClick={() => this.next()}>
+                    Next
+                  </button>
+                </React.Fragment>
+              )}
+              {this.state.currentStep === 1 && (
+                <React.Fragment>
+                  <div
+                    id="avatar-upload"
+                    className="d-flex align-items-end justify-content-center align-items-center"
+                    style={backgroundUrlStyle}
+                  >
+                    <input type="file" onChange={this.addFile} id="add-file" />
+                    {this.state.loadSpinner === true ? <Spin size="large" /> : ''}
+                  </div>
+                  <button type="primary" className="mt-10" onClick={() => this.prev()}>
+                    Prev
+                  </button>
+                  <button
+                    onClick={this.onSubmit}
+                    disabled={isInvalid}
+                    className="mt-10"
+                    type="button"
+                  >
+                    Submit
+                  </button>
+                </React.Fragment>
+              )}
 
               {this.state.error && <p>{this.state.error.message}</p>}
             </form>

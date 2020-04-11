@@ -3,12 +3,9 @@ import { Link } from 'react-router-dom';
 import { withFirebase } from '../Firebase';
 import { compose } from 'recompose';
 import Calendar from '../Calendar';
-import { Skeleton } from 'antd';
 import './index.css';
 import CalendarImage from '../CalendarImage';
-import { Modal } from 'antd';
-import { Popover, Button } from 'antd';
-import { Row, Col } from 'antd';
+import { Modal, Spin, Popover, Button, Row, Col } from 'antd';
 
 // Category List
 import SelectCategory from '../SelectCategory';
@@ -255,8 +252,10 @@ class Dates extends Component {
         <div className="col-sm-3">
           <div className="d-flex  back-wrapper">
             <Link to={`/home`}>
-              <img src={require('../assets/back.svg')} alt="back icon"/>
-              Back To All Clients
+              <img src={require('../assets/back.svg')} alt="back icon" />
+              <span>
+                <strong className="color-blue">Back To All Clients</strong>
+              </span>
             </Link>
           </div>
 
@@ -308,7 +307,7 @@ class Dates extends Component {
                   className="select-date"
                   id="month-helper"
                   placeholder="MONTH"
-                  suffixIcon={<img src={require('../assets/arrow.svg')} alt="arrow svg"/>}
+                  suffixIcon={<img src={require('../assets/arrow.svg')} alt="arrow svg" />}
                 >
                   <Select.Option value="1">January</Select.Option>
                   <Select.Option value="2">February</Select.Option>
@@ -329,7 +328,7 @@ class Dates extends Component {
                   className="select-date"
                   id="month-helper"
                   placeholder="YEAR"
-                  suffixIcon={<img src={require('../assets/arrow.svg')} alt="arrow svg"/>}
+                  suffixIcon={<img src={require('../assets/arrow.svg')} alt="arrow svg" />}
                 >
                   <Option value="2019">2019</Option>
                   <Option value="2020">2020</Option>
@@ -350,8 +349,10 @@ class Dates extends Component {
         <div className="col-md-3">
           <div className="d-flex  back-wrapper">
             <Link to={`/home`}>
-              <img src={require('../assets/back.svg')}  alt="back svg"/>
-              Back To All Clients
+              <img src={require('../assets/back.svg')} alt="back svg" />
+              <span>
+                <strong className="color-blue">Back To All Clients</strong>
+              </span>
             </Link>
           </div>
         </div>
@@ -378,8 +379,8 @@ class Dates extends Component {
                         className="select-date"
                         id="month-helper"
                         placeholder="MONTH"
-                        suffixIcon={<img src={require('../assets/arrow.svg')} alt="arrow svg"/>}
-                        >
+                        suffixIcon={<img src={require('../assets/arrow.svg')} alt="arrow svg" />}
+                      >
                         <Select.Option value="1">January</Select.Option>
                         <Select.Option value="2">February</Select.Option>
                         <Select.Option value="3">March</Select.Option>
@@ -393,7 +394,7 @@ class Dates extends Component {
                         <Select.Option value="11">November</Select.Option>
                         <Select.Option value="12">December</Select.Option>
                       </Select>
-                      <i class="fas fa-caret-right"></i>
+                      <i className="fas fa-caret-right"></i>
                     </div>
                     <div className="position-relative">
                       <Select
@@ -403,7 +404,6 @@ class Dates extends Component {
                         placeholder="YEAR"
                         suffixIcon={<img src={require('../assets/arrow.svg')} alt="arrow svg" />}
                       >
-                        <Select.Option value="2019">2019</Select.Option>
                         <Select.Option value="2020">2020</Select.Option>
                       </Select>
                     </div>
@@ -440,7 +440,7 @@ class Dates extends Component {
       </div>
     ) : (
       <div className="progress-wrapper">
-        <Skeleton active />
+        <Spin size="large" />
       </div>
     );
   }

@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import { withFirebase } from '../Firebase';
 import { compose } from 'recompose';
-import { Input } from 'antd';
 import app from 'firebase/app';
 import ClientSingle from '../ClientSingle';
-import { Modal } from 'antd';
+import { Modal, message, Input } from 'antd';
 import './index.css';
 import EditClients from '../EditClients';
 
@@ -26,7 +25,7 @@ class Settings extends Component {
       passwordModal: false,
       mainPassword: '',
       passwordTwo: '',
-      username:''
+      username: ''
     };
 
     this.reactivateClient = this.reactivateClient.bind(this);
@@ -39,18 +38,12 @@ class Settings extends Component {
   }
 
   componentDidMount() {
-    this.db
-      .collection('users')
-      .get()
-      .then(snapshot => {
-        let allClients = [...this.state.allClients];
-        snapshot.docs.map(item => {
-          return allClients.push(item.data());
-        });
-        this.setState({
-          allClients: allClients
-        });
+    const getClients = this.functions.httpsCallable('GetAuthUsers');
+    getClients().then(res => {
+      this.setState({
+        allClients: res.data.users
       });
+    });
 
     this.props.firebase.getArchivedClients().then(snapshot => {
       let archivedClients = [...this.state.clients];
@@ -82,7 +75,7 @@ class Settings extends Component {
     });
   };
 
-  getClientParent = (client, type) => {
+  getClientParent = (client, type, uid) => {
     if (type === 'password') {
       this.setState({
         chosenClient: client,
@@ -90,7 +83,7 @@ class Settings extends Component {
       });
     } else {
       this.setState({
-        chosenClient: client,
+        chosenClient: uid,
         usernameModal: true
       });
     }
@@ -104,11 +97,7 @@ class Settings extends Component {
   };
 
   submitDeletion = () => {
-    const auth = this.auth;
-    if (
-      this.state.password === localStorage.getItem('key') &&
-      auth.currentUser.email === this.state.username
-    ) {
+    if (this.state.username === 'DELETE') {
       const deleteByUid = this.functions.httpsCallable('deleteByUid');
       let data = {};
       data.uid = localStorage.getItem('tempDeleteUserId');
@@ -116,14 +105,14 @@ class Settings extends Component {
       deleteByUid(data);
       this.setState({
         visible: false,
+        username: '',
         clients: this.state.clients.filter(
           (_, i) => i !== parseInt(localStorage.getItem('tempIndex'))
         )
       });
+      message.success('Client deleted');
     } else {
-      this.setState({
-        error: 'Sorry there was an error with your submission'
-      });
+      message.error('Please type DELETE to delete client');
     }
   };
 
@@ -140,7 +129,7 @@ class Settings extends Component {
   };
 
   confirmDeleteParent = (id, name, index) => {
-    // Save user ID in localStorage to send up with
+    // Save user ID in localStorage to set up next modal
     localStorage.setItem('tempDeleteUser', name);
     localStorage.setItem('tempDeleteUserId', id);
     localStorage.setItem('tempIndex', index);
@@ -181,18 +170,19 @@ class Settings extends Component {
     });
   };
 
-  changeUser = (e) => {
+  changeUser = e => {
     e.preventDefault();
     const changeUsername = this.functions.httpsCallable('changeUsername');
     let functionObj = {};
-    functionObj.uid = this.state.chosenClient.uid;
+    alert(this.state.chosenClient);
+    functionObj.uid = this.state.chosenClient;
     functionObj.username = this.state.username;
     functionObj.oldUsername = this.state.chosenClient.name;
     changeUsername(functionObj);
     this.setState({
-      usernameModal: false,
+      usernameModal: false
     });
-  }
+  };
 
   render() {
     return (
@@ -214,7 +204,9 @@ class Settings extends Component {
             placeholder="New Username"
             className="mb-10 blue-input m-320"
           />
-          <button type="button" className="add-date-btn mt-20" onClick={this.changeUser}>Change Username</button>
+          <button type="button" className="mt-20" onClick={this.changeUser}>
+            Change Username
+          </button>
         </Modal>
         {/* START PASSWORD MODAL  */}
         <Modal
@@ -242,7 +234,7 @@ class Settings extends Component {
             placeholder="VERIFY PASSWORD"
             className="mb-10 blue-input m-320"
           />
-          <button type="button" onClick={this.changePassword} className="clear-btn add-date-btn">
+          <button type="button" onClick={this.changePassword}>
             Change Password
           </button>
         </Modal>
@@ -256,11 +248,7 @@ class Settings extends Component {
           wrapClassName="message-modal"
           footer={[
             <div>
-              <button
-                type="button"
-                onClick={this.handleCancel}
-                className="red-btn delete-btn-main"
-              >
+              <button type="button" onClick={this.handleCancel} className="red-btn delete-btn-main">
                 CANCEL
               </button>
               <button
@@ -276,24 +264,15 @@ class Settings extends Component {
           <div>
             <h6 className="f-20 color-blue text-center">Delete Client?</h6>
             <p className="color-blue text-center">
-              To delete this client permanently please enter your credentials. Remember this action
-              cannot be un-done.
+              To delete this client permanently please enter 'DELETE'
             </p>
+            {localStorage.getItem('tempDeleteUser')}
             <Input
               name="username"
               value={this.state.username}
               onChange={this.onChange}
               type="text"
-              placeholder="EMAIL"
               className="mb-10 blue-input m-320"
-            />
-            <Input
-              name="password"
-              value={this.state.password}
-              onChange={this.onChange}
-              type="password"
-              className="mb-10 blue-input m-320"
-              placeholder="PASSWORD"
             />
             {this.state.error && <span className="color-red">{this.state.error}</span>}
           </div>
@@ -307,8 +286,15 @@ class Settings extends Component {
             <p className="p-blue">
               Select a client below to re-set their username and/or password.
             </p>
+
             {this.state.allClients.map((client, index) => (
-              <EditClients client={client} getClient={this.getClientParent} key={index} />
+              <EditClients
+                client={client}
+                getClient={this.getClientParent}
+                key={index}
+                index={index}
+                className="col-md-6"
+              />
             ))}
           </div>
         </div>

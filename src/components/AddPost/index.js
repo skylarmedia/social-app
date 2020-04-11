@@ -2,8 +2,7 @@ import React, { Component, Suspense } from 'react';
 import { withFirebase } from '../Firebase';
 import { compose } from 'redux';
 import 'antd/dist/antd.css';
-import { Skeleton } from 'antd';
-import { Checkbox } from 'antd';
+import { Skeleton, message, Checkbox } from 'antd';
 import EditCategoryForm from '../EditCategoryForm';
 import moment from 'moment';
 
@@ -40,8 +39,6 @@ class AddPost extends Component {
     this.receivedValues = this.receivedValues.bind(this);
     this.saveDraft = this.saveDraft.bind(this);
   }
-
-  componentWillMount() {}
 
   onSubmitForm = e => {
     e.preventDefault();
@@ -122,6 +119,7 @@ class AddPost extends Component {
   }
 
   addPostToFirebase = () => {
+    message.success('Post Successfully Added');
     this.props.firebase.addPost(this.props.match.params.clientId, this.state.postArr);
   };
 
@@ -332,7 +330,7 @@ class AddPost extends Component {
                     onChange={this.handleApproval}
                     id="approvePost"
                   />
-                  <label className="color-blue" for="approvePost">
+                  <label className="color-blue" htmlFor="approvePost">
                     APPROVE POST
                   </label>
                 </div>

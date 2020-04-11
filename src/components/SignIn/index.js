@@ -3,11 +3,9 @@ import { withRouter, Redirect } from 'react-router-dom';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import './index.css';
-import { Input } from 'antd';
+import { Input, message } from 'antd';
 import { withFirebase } from '../Firebase';
-import { Spin, Icon } from 'antd';
 import app from 'firebase/app';
-import * as auth from 'firebase/auth';
 import { AuthUserContext } from '../Session';
 
 const SignInPage = () => (
@@ -20,8 +18,6 @@ const SignInPage = () => (
     </div>
   </React.Fragment>
 );
-
-const antIcon = <Icon type="loading" style={{ fontSize: 24 }} spin />;
 
 const INITIAL_STATE = {
   email: '',
@@ -44,7 +40,6 @@ class SignInFormBase extends Component {
     };
 
     this.functions = app.functions();
-    console.log('auth main', auth);
   }
 
   onSubmit = event => {
@@ -60,7 +55,6 @@ class SignInFormBase extends Component {
         const currentEmail = {};
         currentEmail.email = email;
         getUid(currentEmail).then(res => {
-          console.log('res', res);
           if (res.data.customClaims !== null && res.data.customClaims.skylarAdmin === true) {
             localStorage.clear();
             localStorage.setItem('skylarAdmin', true);
@@ -86,10 +80,7 @@ class SignInFormBase extends Component {
         });
       })
       .catch(err => {
-        console.log('err', err);
-        this.setState({
-          error: err
-        });
+        message.error(err.message);
       });
   };
 
@@ -107,7 +98,6 @@ class SignInFormBase extends Component {
           if (context.skylarAdmin === true) {
             return <Redirect to="home" />;
           } else if (context.skylarAdmin === false) {
-            console.log('new');
           } else {
             return (
               <React.Fragment>
@@ -144,8 +134,9 @@ class SignInFormBase extends Component {
                     <button
                       disabled={isInvalid}
                       type="submit"
-                      className="add-date-btn"
+                      className=""
                       id="sign-in-button"
+                      className={isInvalid === false ? 'add-date-btn' : 'disabled-btn'}
                     >
                       Sign In
                     </button>

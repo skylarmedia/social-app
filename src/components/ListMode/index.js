@@ -7,7 +7,7 @@ import CustomCalendarComponent from '../CustomCalendarComponent';
 import TimePicker from 'antd/es/time-picker';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
-import { Checkbox, Row, Col } from 'antd';
+import { Checkbox, Row, Col, Spin } from 'antd';
 import ImagePosts from '../ImagePosts';
 import app from 'firebase/app';
 
@@ -104,10 +104,12 @@ class ListMode extends Component {
   }
 
   componentDidMount() {
+    console.log('this props', parseInt(this.props.month), parseInt(this.props.year));
     this.props.firebase
       .listMode(this.props.user, parseInt(this.props.month), parseInt(this.props.year))
       .then(snapshot => {
         snapshot.docs.map(item => {
+          console.log('DOCS', item.data())
           let postItem = {};
           postItem['post'] = item.data().post;
           postItem['id'] = item.id;
@@ -165,7 +167,7 @@ class ListMode extends Component {
                     onChange={() => this.changeApp(item.id, index)}
                     id={`app-check-${index}`}
                   />
-                  <label for={`app-check-${index}`} className="pl-15 d-inline-block">
+                  <label htmlFor={`app-check-${index}`} className="pl-15 d-inline-block">
                     APPROVE POST
                   </label>
                 </div>
@@ -173,7 +175,7 @@ class ListMode extends Component {
             </div>
             {item.post.map((innerItem, indexInner) => {
               return (
-                <React.Fragment>
+                <React.Fragment key="indexInner">
                   <div className="time-outter-wrapper">
                     <div key={indexInner} className="inner-post">
                       <div className="inner-inner-post">
@@ -211,7 +213,9 @@ class ListMode extends Component {
                               <p className="w-100 blue-border f-16 color-blue pl-post p-15">
                                 POST COPY
                               </p>
-                              <p>{innerItem.copy}</p>
+                              <p>
+                                {innerItem.copy ? innerItem.copy : 'No Copy Available'}
+                              </p>
                             </div>
                           </Col>
                           <Col span={12} className="col333">
@@ -368,10 +372,10 @@ class ListMode extends Component {
             <u className="p-blue">APPROVED POSTS</u>
           </button>
           <button onClick={this.unApprovedPosts.bind(this)} className="clear-btn p-blue>">
-            <u className="p-blue">APPROVED POSTS</u>
+            <u className="p-blue">UNAPPROVED POSTS</u>
           </button>
         </div>
-        <div id="render-parent">{renderParent}</div>
+        <div id="render-parent">{renderParent.length > 0 ? renderParent : <div className="text-center"><Spin size="large" /></div>}</div>
       </div>
     );
   }

@@ -19,25 +19,21 @@ class AssignCategories extends Component {
 
   componentDidMount() {
     const { id } = this.props.match.params;
-
+    console.log('ID', id);
     this.db
       .collection('users')
       .doc(id)
       .collection('categories')
       .get()
       .then(snapshot => {
-        const tempNum = snapshot.size;
+        console.log('SNAPSHOT CAT', snapshot);
         const tempArr = [];
         snapshot.docs.map(item => {
-
-          if (tempNum === tempArr.length) {
-            this.setState({
-              categories: tempArr
-            });
-            return tempArr.push(item.data());
-          }else{
-            return null;
-          }
+          tempArr.push(item.data());
+          this.setState({
+            categories: tempArr
+          });
+          return null;
         });
       });
   }
@@ -94,10 +90,9 @@ class AssignCategories extends Component {
           {this.state.categories.length > 0 && categories}
           <div className="text-center d-flex justify-content-center">
             <Link
-              className="align-items-center save-draft-btn submit-cat d-flex justify-content-center color-red fw-16"
               to={`/calendar/${this.props.match.params.year}/${this.props.match.params.month}/${this.props.match.params.id}`}
             >
-              SAVE
+              Go Back
             </Link>
           </div>
         </form>

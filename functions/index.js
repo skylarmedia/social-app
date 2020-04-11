@@ -1,7 +1,16 @@
 const functions = require('firebase-functions');
 const admin = require('firebase-admin');
 admin.initializeApp(functions.config().firestore);
+const auth = admin.auth();
 
+
+// Get All Users
+exports.GetAuthUsers = functions.https.onCall(() => {
+    let clients = auth.listUsers();
+    return clients;
+}, err => {
+  return err;
+});
 // const updateClientStatus = (clientId, postId) => {
 //   return admin
 //     .firestore()
@@ -176,13 +185,10 @@ exports.createAdmin = functions.https.onCall(data => {
       var record = userRecord;
       console.log('RECORD', record)
       if (data.admin === true) {
-        return admin
+        admin
           .auth()
           .setCustomUserClaims(userRecord.uid, { skylarAdmin: true })
-          .then(function(){
-            console.log('record in record', record);
-            return record;
-          });
+          return record;
       } else {
         return admin.auth()
           .setCustomUserClaims(userRecord.uid, { skylarAdmin: false })
@@ -196,21 +202,6 @@ exports.createAdmin = functions.https.onCall(data => {
       return err;
     });
 });
-
-// Old create admin
-// exports.createAdmin = functions.https.onCall(data => {
-//   console.log("DATA ADMIn", data)
-//   return admin.auth().setCustomUserClaims(data.uid, {skylarAdmin: data.isAdmin})
-//   .then(res => {
-//     console.log('RES in nodes', res)
-//     return {
-//       message: `Success ${res}`
-//     }
-//   })
-//   .catch(err => {
-//     return err
-//   })
-// });
 
 //Get UID
 
@@ -238,7 +229,7 @@ exports.deleteByUid = functions.https.onCall(data => {
       admin.auth().deleteUser(data.uid);
     })
     .catch(err => {
-      console.log(`Sorry there was an error: ${err}`);
+      return err
     });
 });
 

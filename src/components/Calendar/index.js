@@ -388,24 +388,21 @@ class Calendar extends React.Component {
     return (
       <React.Fragment>
         <div>
-          <div className="container">
+          <div className="container no-padding">
             <Link
               to={`/home`}
               className="d-flex align-items-center"
               id="main-backlink"
             >
               <img src={require('../assets/back.svg')} alt="back icon svg"/>
-              Back to All Calendar Months
+              <strong>Back to All Calendar Months</strong>
             </Link>
           </div>
-          <div className="calendar-heading container mx-auto">
+          <div className="calendar-heading container mx-auto no-padding">
             <h2 className="text-center">Client {this.props.match.params.clientId} Calendar </h2>
             <p className="text-center">
               {this.month()} {this.year()}
             </p>
-          </div>
-          <div id="calendar-wing">
-          <img src={require('../assets/skylar_Icon_wingPortion.svg')} id="wing-logo" alt="wing logo"/>
           </div>
           <div>
             <div className="d-flex justify-content-between align-items-center mb-10 container row mx-auto p-0 pl-8">
@@ -432,7 +429,7 @@ class Calendar extends React.Component {
               />
             </div>
             (
-            <div className="tail-datetime-calendar container">
+            <div className="tail-datetime-calendar container no-padding">
               <div
                 className={this.state.grid === true ? 'container calendar-navi mx-auto' : 'hidden'}
               ></div>
