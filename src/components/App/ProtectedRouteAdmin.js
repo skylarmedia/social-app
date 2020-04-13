@@ -1,7 +1,7 @@
 import React from 'react';
 import { Route } from 'react-router-dom';
 import { AuthUserContext } from '../Session';
-import { message } from 'antd';
+import { message, Spin } from 'antd';
 
 const ProtectedRoute = ({ component: Component, ...rest }) => (
   <AuthUserContext.Consumer>
@@ -19,10 +19,11 @@ const ProtectedRoute = ({ component: Component, ...rest }) => (
         } else if (isAuth.skylarAdmin === false) {
         }
       }else{
-        message.error('You do not have access to view this page, you will be redirected back to the home page');
-        setTimeout(function(){
-          window.location.href = "/";
-        });
+        return (
+          <div className="mt-20 text-center">
+            <Spin size="large" />
+          </div>
+        )
       }
     }}
   </AuthUserContext.Consumer>
