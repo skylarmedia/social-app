@@ -116,6 +116,11 @@ exports.createAdmin = functions.https.onCall(data => {
       photoURL: data.photoURL,
       disabled: false
     })
+    .catch(err => {
+      if(err){
+        return err;
+      }
+    })
     .then(function(userRecord) {
       var record = userRecord;
       console.log('RECORD', record)

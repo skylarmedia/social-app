@@ -9,16 +9,7 @@ class ClientSingle extends Component {
       open: false
     };
   }
-
-  closeDelete = (clientId, name) => {
   
-    this.setState({
-      open: false
-    }, () => {
-      this.props.confirmDelete(clientId, name, this.props.index);
-    });
-  };
-
   showModal = () => {
     this.setState({
       open: true
@@ -61,7 +52,6 @@ class ClientSingle extends Component {
                 <button
                   type="button"
                   className="red-border-btn delete-btn-main"
-                  onClick={() => this.closeDelete(clientId, name)}
                 >
                   DELETE
                 </button>
@@ -76,9 +66,6 @@ class ClientSingle extends Component {
               </p>
             </div>
           </Modal>
-          <button className="clear-btn top-delete color-blue f-16" onClick={() => this.showModal()} type="button">
-            x
-          </button>
         </div>
         <p className="text-center mt-5px mb-10">{name}</p>
       </div>

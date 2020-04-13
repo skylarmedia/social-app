@@ -133,7 +133,6 @@ class SignInFormBase extends Component {
                     <button
                       disabled={isInvalid}
                       type="submit"
-                      className=""
                       id="sign-in-button"
                       className={isInvalid === false ? 'add-date-btn' : 'disabled-btn'}
                     >

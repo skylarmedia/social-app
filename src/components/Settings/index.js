@@ -3,7 +3,7 @@ import { withFirebase } from '../Firebase';
 import { compose } from 'recompose';
 import app from 'firebase/app';
 import ClientSingle from '../ClientSingle';
-import { Modal, message, Input } from 'antd';
+import { Modal, message, Input, Spin } from 'antd';
 import './index.css';
 import EditClients from '../EditClients';
 
@@ -37,7 +37,7 @@ class Settings extends Component {
     this.db = app.firestore();
   }
 
-  componentDidMount() {
+  getAuthClients(){
     const getClients = this.functions.httpsCallable('GetAuthUsers');
     getClients().then(res => {
       this.setState({
@@ -45,9 +45,18 @@ class Settings extends Component {
       });
     });
 
+  }
+
+  componentDidMount() {
+   this.getAuthClients();
+   this.getArchivedClients();
+  }
+
+  getArchivedClients(){
     this.props.firebase.getArchivedClients().then(snapshot => {
       let archivedClients = [...this.state.clients];
       snapshot.docs.filter(item => {
+        console.log('item data', item.data());
         archivedClients.push(item.data());
         return this.setState({
           clients: archivedClients
@@ -63,9 +72,6 @@ class Settings extends Component {
         clients: this.state.clients.filter((_, i) => i !== this.state.deleteIndex)
       });
     }
-    this.setState({
-      showDelete: !this.state.showDelete
-    });
   };
 
   reactivateClient = (id, index) => {
@@ -75,17 +81,39 @@ class Settings extends Component {
     });
   };
 
-  getClientParent = (client, type, uid) => {
-    if (type === 'password') {
-      this.setState({
-        chosenClient: client,
-        passwordModal: true
-      });
-    } else {
-      this.setState({
-        chosenClient: uid,
-        usernameModal: true
-      });
+  getClientParent = (client, type, index) => {
+    switch(type){
+      case 'delete':
+        const deleteByUid = this.functions.httpsCallable('deleteByUid');
+        let data = {};
+        data.uid = client.uid;
+        data.name = client.displayName;
+        deleteByUid(data);
+        this.props.firebase.deleteClient(client.displayName)
+        .then(() => {
+          this.setState({
+            allClients: this.state.allClients.filter((_, i) => i !== index),
+            clients: this.state.clients.filter((item) => {
+              console.log('filter', item);
+             return item.name !== client.displayName && item.Archived === true;
+            })
+          });
+          message.success("Successfully Deleted Client");
+          this.getArchivedClients();
+        });
+        break;
+      case 'username':
+        this.setState({
+          chosenClient: client,
+          usernameModal: true
+        });
+        break;
+      case 'password':
+        this.setState({
+          chosenClient: client,
+          passwordModal: true
+        });
+      break;
     }
   };
 
@@ -94,26 +122,6 @@ class Settings extends Component {
       deleteClient: id,
       deleteIndex: index
     });
-  };
-
-  submitDeletion = () => {
-    if (this.state.username === 'DELETE') {
-      const deleteByUid = this.functions.httpsCallable('deleteByUid');
-      let data = {};
-      data.uid = localStorage.getItem('tempDeleteUserId');
-      data.name = localStorage.getItem('tempDeleteUser');
-      deleteByUid(data);
-      this.setState({
-        visible: false,
-        username: '',
-        clients: this.state.clients.filter(
-          (_, i) => i !== parseInt(localStorage.getItem('tempIndex'))
-        )
-      });
-      message.success('Client deleted');
-    } else {
-      message.error('Please type DELETE to delete client');
-    }
   };
 
   handleCancel = e => {
@@ -174,24 +182,28 @@ class Settings extends Component {
     e.preventDefault();
     const changeUsername = this.functions.httpsCallable('changeUsername');
     let functionObj = {};
-    functionObj.uid = this.state.chosenClient;
+    functionObj.uid = this.state.chosenClient.uid;
     functionObj.username = this.state.username;
-    functionObj.oldUsername = this.state.chosenClient.name;
-    changeUsername(functionObj);
-    this.setState(
-      {
-        usernameModal: false,
-        allClients: []
-      },
-      () => {
-        const getClients = this.functions.httpsCallable('GetAuthUsers');
-        getClients().then(res => {
-          this.setState({
-            allClients: res.data.users
+    functionObj.oldUsername = this.state.chosenClient.displayName;
+    changeUsername(functionObj).then(() => {
+      this.setState(
+        {
+          usernameModal: false,
+          allClients: []
+        },
+        () => {
+          const getClients = this.functions.httpsCallable('GetAuthUsers');
+          getClients().then(res => {
+            this.setState({
+              allClients: res.data.users
+            });
           });
-        });
-      }
-    );
+        }
+      );
+      message.success("Succesfully Changed Username");
+    }, err => {
+      return err;
+    })
   };
 
   render() {
@@ -256,44 +268,6 @@ class Settings extends Component {
         </Modal>
         {/* END PASSWORD MODAL  */}
 
-        {/*  START DELETE MODAL  */}
-        <Modal
-          visible={this.state.visible}
-          onOk={this.handleOk}
-          onCancel={this.handleCancel}
-          wrapClassName="message-modal"
-          footer={[
-            <div>
-              <button type="button" onClick={this.handleCancel} className="red-btn delete-btn-main">
-                CANCEL
-              </button>
-              <button
-                type="button"
-                className="red-border-btn delete-btn-main"
-                onClick={this.submitDeletion}
-              >
-                DELETE
-              </button>
-            </div>
-          ]}
-        >
-          <div>
-            <h6 className="f-20 color-blue text-center">Delete Client?</h6>
-            <p className="color-blue text-center">
-              To delete this client permanently please enter 'DELETE'
-            </p>
-            {localStorage.getItem('tempDeleteUser')}
-            <Input
-              name="username"
-              value={this.state.username}
-              onChange={this.onChange}
-              type="text"
-              className="mb-10 blue-input m-320"
-            />
-            {this.state.error && <span className="color-red">{this.state.error}</span>}
-          </div>
-        </Modal>
-        {/*  END DELETE MODAL  */}
 
         <h4 className="text-center f-20 mb-20 p-blue mt-35">Settings</h4>
         <div className="row container mx-auto">
@@ -303,7 +277,7 @@ class Settings extends Component {
               Select a client below to re-set their username and/or password.
             </p>
 
-            {this.state.allClients.map((client, index) => (
+            {this.state.allClients.length > 0 ? this.state.allClients.map((client, index) => (
               <EditClients
                 client={client}
                 getClient={this.getClientParent}
@@ -311,7 +285,7 @@ class Settings extends Component {
                 index={index}
                 className="col-md-6"
               />
-            ))}
+            )) : <div className="mt-20 text-center"><Spin size="large" /></div>}
           </div>
         </div>
         <h4 className="text-center f-20 mb-20 mt-35">Archived Clients</h4>
@@ -325,7 +299,6 @@ class Settings extends Component {
                   clientId={item.uid}
                   modalState={this.state.modalState}
                   className="w-100"
-                  confirmDelete={this.confirmDeleteParent}
                   index={index}
                 />
                 <button

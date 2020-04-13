@@ -18,14 +18,14 @@ class Firebase {
   }
 
   updateClientNotification = (client, postId) =>
-  this.db
-  .collection('users')
-  .doc(client)
-  .collection('posts')
-  .doc(postId)
-  .update({
-    clientNotification:false
-  })
+    this.db
+      .collection('users')
+      .doc(client)
+      .collection('posts')
+      .doc(postId)
+      .update({
+        clientNotification: false
+      });
 
   getMessagesWithId = (client, month) =>
     this.db
@@ -63,15 +63,19 @@ class Firebase {
       });
   };
 
-  //**** Client Get Dates ****//
+  //***** Archive Client Functions *****//
 
-  // getClientMonths = () =>
-  //   this.db
-  //     .collection('users')
-  //     .doc(localStorage.getItem('clientName'))
-  //     .collection('dates')
-  //     .where('private', '<', 1)
-  //     .get();
+  archiveClient = userId => {
+    this.db
+      .collection('users')
+      .doc(userId)
+      .update({
+        archived: true
+      })
+      .catch(err => {
+        console.log('Err', err);
+      });
+  };
 
   assignCategories = (id, year, month, categories) => {
     categories.forEach(function(item, i) {
@@ -152,12 +156,7 @@ class Firebase {
   getPostImages = () =>
     this.storage.refFromURL('gs://skylar-social-17190.appspot.com/test123/logo');
 
-    getAllClients  = () => 
-      this.db
-      .collection('users')
-      .get();
-    
-
+  getAllClients = () => this.db.collection('users').get();
 
   getArchivedClients = () =>
     this.db
@@ -187,18 +186,18 @@ class Firebase {
       );
 
   sendCategories = (user, category) => {
-
-    app.firestore()
-    .collection('users')
-    .doc(user)
-    .collection('categories')
-    .doc(category.name)
-    .set({
-      color:category.color,
-      name:category.name,
-      selected:false,
-      months:[null]
-    })
+    app
+      .firestore()
+      .collection('users')
+      .doc(user)
+      .collection('categories')
+      .doc(category.name)
+      .set({
+        color: category.color,
+        name: category.name,
+        selected: false,
+        months: [null]
+      });
     // categories.forEach(function(category) {
     //   app
     //     .firestore()
@@ -236,7 +235,6 @@ class Firebase {
       });
   };
 
- 
   getAdminPost = (user, postId) =>
     this.db
       .collection('users')
@@ -537,9 +535,7 @@ class Firebase {
       .doc(name)
       .delete()
       .then(function() {})
-      .catch(err => {
-        
-      });
+      .catch(err => {});
   };
 
   user = uid =>
@@ -547,22 +543,6 @@ class Firebase {
       .collection('users')
       .doc(uid)
       .get();
-
-  //***** Archive Client Functions *****//
-
-  archiveClient = userId =>
-    this.db
-      .collection('users')
-      .doc(userId)
-      .update({
-        archived: true
-      })
-      .then(() => {
-        console.log('success');
-      })
-      .catch(err => {
-        console.log('Err', err);
-      });
 
   updatePrivate = (id, privacy, privateId) =>
     this.db
@@ -580,9 +560,7 @@ class Firebase {
       .doc(id)
       .delete();
 
-      
-
-  // getPrivacy = (id, year, month) => 
+  // getPrivacy = (id, year, month) =>
   //   this.db
   //     .collection('users')
   //     .doc(id)
@@ -591,7 +569,6 @@ class Firebase {
   //     .where('year', '==', year)
   //     .get();
   // };
-
-    }
+}
 
 export default Firebase;

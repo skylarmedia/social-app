@@ -1,7 +1,6 @@
 import React, { Suspense } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import ProtectedRoute from './ProtectedRouteAdmin';
-import { Spin } from 'antd';
+import { Spin, Result } from 'antd';
 
 // CSS IMPORTS
 
@@ -77,6 +76,13 @@ const App = () => (
   </WithAuthentication>
 );
 
-const NoMatch = ({ location }) => <div>Sorry this page at {location.pathname} doesn't exist</div>;
+const NoMatch = ({ location }) =>     {
+  let message = `We could not find a matching page for ${location.pathname}`
+  return <Result
+  status="404"
+  title={message}
+  subTitle="404"
+  />
+};
 
 export default App;

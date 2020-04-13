@@ -31,6 +31,7 @@ class Home extends Component {
       showButton: false,
       visible: false,
       admin: false,
+      currentArchive: null,
       visible2: false,
       currentStep: 0
     };
@@ -118,7 +119,6 @@ class Home extends Component {
 
   addFile = event => {
     let fileBlob = event.target.files[0];
-    console.log("FILE BLOB", fileBlob);
     let file = new Compressor(fileBlob, {
       quality: 0.6,
       success(result) {
@@ -200,9 +200,8 @@ class Home extends Component {
   // End Archive Modal
 
   confirmArchive = e => {
-    this.props.firebase.archiveClient(localStorage.getItem('archiveId')).then(() => {
-      message.success("Successfully Archived Client");
-    });
+    message.success("Successfully Archived Client");
+    this.props.firebase.archiveClient(this.state.currentArchive)
     this.setState(
       {
         visible2: false,
@@ -236,7 +235,8 @@ class Home extends Component {
 
   archiveClient = (user, index) => {
     this.setState({
-      visible2: true
+      visible2: true,
+      currentArchive: user
     });
 
     localStorage.setItem('archiveId', user);
@@ -275,7 +275,6 @@ class Home extends Component {
         const createAdmin = this.functions.httpsCallable('createAdmin');
         createAdmin(currentUser).then(
           user => {
-            console.log('user', user);
             this.db
               .collection('users')
               .doc(this.state.username)
@@ -309,7 +308,7 @@ class Home extends Component {
             }
           },
           err => {
-            console.log('err', err);
+            return err;
           }
         );
       });
@@ -380,7 +379,7 @@ class Home extends Component {
                       <div className="position-relative x-wrapper mt-20 d-flex justify-content-center align-items-center w-100">
                         <Link to={`/dates/${user.urlName}`}>{user.name}</Link>
                         <button
-                          onClick={() => this.archiveClient(user.urlName, index)}
+                          onClick={() => this.archiveClient(user.name, index)}
                           className="archive-x"
                           type="button"
                         >
@@ -452,7 +451,7 @@ class Home extends Component {
                       checked={this.state.admin}
                       id="admin"
                     />
-                    <label className="margin-label ml-10 mt-10 color-white">Admin</label>
+                    <label className="margin-label ml-10 mt-10 color-white" htmlFor="admin">Admin</label>
                   </div>
                   <Input
                     name="username"

@@ -3,28 +3,38 @@ import { Popover } from 'antd';
 
 const EditClients = props => {
   const { client, getClient, index } = props;
-  const [popupState, togglePopup] = useState(false)
-  function runFile (type){
-    getClient(client, type, client.uid, index);
+  const [popupState, togglePopup] = useState(false);
+  function runFile(type) {
+    getClient(client, type, index);
     togglePopup(false);
   }
   return (
     <div className="d-flex flex-column align-items-start">
-      <button type="button" onClick={() => togglePopup(true)} className="clear-btn p-0 mb-10 p-blue">
+      <button
+        type="button"
+        onClick={() => togglePopup(true)}
+        className="clear-btn p-0 mb-10 p-blue"
+      >
         <u>{client.displayName}</u>
       </button>
       <Popover
         content={
           <React.Fragment>
-          <button type="button" onClick={() => runFile('password')} className="clear-btn d-block">Change Password</button>
-          <button type="button" onClick={() => runFile('username')} className="clear-btn d-block">Change Username</button>
+            <button type="button" onClick={() => runFile('delete')} className="clear-btn d-block">
+              Delete User
+            </button>
+            <button type="button" onClick={() => runFile('username')} className="clear-btn d-block">
+              Change Username
+            </button>
+            <button type="button" onClick={() => runFile('password')} className="clear-btn d-block">
+              Change Password
+            </button>
           </React.Fragment>
-          }
+        }
         trigger="click"
         visible={popupState}
         onVisibleChange={() => togglePopup(false)}
-      > 
-      </Popover>
+      ></Popover>
     </div>
   );
 };
