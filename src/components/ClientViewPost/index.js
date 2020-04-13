@@ -349,7 +349,6 @@ class ClientViewPost extends Component {
                 <AdminChatLog messages={this.state.messages} deletePost={this.deletePostParent} />
                 <AuthUserContext.Consumer>
                   {context => {
-                    console.log("AUTH USER CONTEXT", context)
                     return (
                       <form
                         onSubmit={this.submitMessage}

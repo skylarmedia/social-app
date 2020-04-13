@@ -154,7 +154,7 @@ class Settings extends Component {
     e.preventDefault();
     const changeClientPassword = this.functions.httpsCallable('changeClientPassword');
     let functionObj = {};
-    functionObj.uid = this.state.chosenClient.uid;
+    functionObj.uid = this.state.chosenClient;
     functionObj.password = this.state.mainPassword;
     changeClientPassword(functionObj);
     this.setState({
@@ -174,17 +174,28 @@ class Settings extends Component {
     e.preventDefault();
     const changeUsername = this.functions.httpsCallable('changeUsername');
     let functionObj = {};
-    alert(this.state.chosenClient);
     functionObj.uid = this.state.chosenClient;
     functionObj.username = this.state.username;
     functionObj.oldUsername = this.state.chosenClient.name;
     changeUsername(functionObj);
-    this.setState({
-      usernameModal: false
-    });
+    this.setState(
+      {
+        usernameModal: false,
+        allClients: []
+      },
+      () => {
+        const getClients = this.functions.httpsCallable('GetAuthUsers');
+        getClients().then(res => {
+          this.setState({
+            allClients: res.data.users
+          });
+        });
+      }
+    );
   };
 
   render() {
+    const disabledUserChange = this.state.chosenClient.name === '';
     return (
       <div>
         {/* START PASSWORD MODAL  */}
@@ -204,7 +215,12 @@ class Settings extends Component {
             placeholder="New Username"
             className="mb-10 blue-input m-320"
           />
-          <button type="button" className="mt-20" onClick={this.changeUser}>
+          <button
+            type="button"
+            className="mt-20"
+            onClick={this.changeUser}
+            disabled={disabledUserChange}
+          >
             Change Username
           </button>
         </Modal>

@@ -6,7 +6,7 @@ import CustomCalendarComponent from '../CustomCalendarComponent';
 import TimePicker from 'antd/es/time-picker';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
-import { Checkbox, Row, Col, Spin } from 'antd';
+import { Checkbox, Row, Col } from 'antd';
 import ImagePosts from '../ImagePosts';
 import app from 'firebase/app';
 
@@ -103,12 +103,10 @@ class ListMode extends Component {
   }
 
   componentDidMount() {
-    console.log('this props', parseInt(this.props.month), parseInt(this.props.year));
     this.props.firebase
       .listMode(this.props.user, parseInt(this.props.month), parseInt(this.props.year))
       .then(snapshot => {
         snapshot.docs.map(item => {
-          console.log('DOCS', item.data())
           let postItem = {};
           postItem['post'] = item.data().post;
           postItem['id'] = item.id;
@@ -374,7 +372,7 @@ class ListMode extends Component {
             <u className="p-blue">UNAPPROVED POSTS</u>
           </button>
         </div>
-        <div id="render-parent">{renderParent.length > 0 ? renderParent : <div className="text-center"><Spin size="large" /></div>}</div>
+        <div id="render-parent">{renderParent.length > 0 ? renderParent : <div className="text-center"><strong>There are no posts.</strong></div>}</div>
       </div>
     );
   }

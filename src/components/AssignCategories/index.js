@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { withFirebase } from '../Firebase';
-import { Checkbox } from 'antd';
+import { Checkbox, message, Spin } from 'antd';
 import firebase from 'firebase';
 import { Link } from 'react-router-dom';
 
@@ -18,14 +18,12 @@ class AssignCategories extends Component {
 
   componentDidMount() {
     const { id } = this.props.match.params;
-    console.log('ID', id);
     this.db
       .collection('users')
       .doc(id)
       .collection('categories')
       .get()
       .then(snapshot => {
-        console.log('SNAPSHOT CAT', snapshot);
         const tempArr = [];
         snapshot.docs.map(item => {
           tempArr.push(item.data());
@@ -57,6 +55,8 @@ class AssignCategories extends Component {
         selected: categoriesNew[i].selected,
         months: categoriesNew[i].months
       });
+
+      message.success(`${name} Succesfully Added`);
   };
 
   render() {
@@ -86,12 +86,12 @@ class AssignCategories extends Component {
           className="col-sm-6 d-flex flex-column mx-auto bg-white form-cat position-relative"
         >
           <h5 className="cat-h5">Categories</h5>
-          {this.state.categories.length > 0 && categories}
+          {this.state.categories.length > 0 ? categories : <div className="text-center mt-20"><Spin size="large" /></div>}
           <div className="text-center d-flex justify-content-center">
             <Link
               to={`/calendar/${this.props.match.params.year}/${this.props.match.params.month}/${this.props.match.params.id}`}
             >
-              Go Back
+              <strong className="colour-p">Go Back</strong>
             </Link>
           </div>
         </form>

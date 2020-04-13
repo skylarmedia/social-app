@@ -18,10 +18,6 @@ class AdminChatLog extends Component {
     this.db = app.firestore();
   }
 
-  componentDidMount() {
-    console.log('props custom claims', this.props);
-  }
-
   deletePostParent = index => {
     this.setState({
       messages: this.state.messages.filter((_, i) => i !== index)

@@ -15,4 +15,4 @@ class Logout extends React.Component{
     }
 }
 
-export default  withFirebase(Logout)
+export default withFirebase(Logout)

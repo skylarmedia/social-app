@@ -118,7 +118,7 @@ class Home extends Component {
 
   addFile = event => {
     let fileBlob = event.target.files[0];
-
+    console.log("FILE BLOB", fileBlob);
     let file = new Compressor(fileBlob, {
       quality: 0.6,
       success(result) {
@@ -294,6 +294,7 @@ class Home extends Component {
                 loadSpinner: false,
                 visible: false,
                 passwordOne: '',
+                users: [...this.state.users, userObj],
                 email: '',
                 file: null
               });
@@ -301,7 +302,6 @@ class Home extends Component {
               this.setState({
                 loadSpinner: false,
                 visible: false,
-                users: [...this.state.users, userObj],
                 passwordOne: '',
                 email: '',
                 file: null
@@ -323,7 +323,7 @@ class Home extends Component {
 
     let isInvalid;
     
-    if(this.currentStep === 0){
+    if(this.state.currentStep === 0){
       isInvalid = this.state.passwordOne === '' || this.state.email === '' || this.state.username === '';
     }else{
       isInvalid = this.state.passwordOne === '' || this.state.email === '' || this.state.username === '' || this.state.backgroundUrl === '';
@@ -487,7 +487,7 @@ class Home extends Component {
                     className="d-flex align-items-end justify-content-center align-items-center"
                     style={backgroundUrlStyle}
                   >
-                    <input type="file" onChange={this.addFile} id="add-file" />
+                    <input type="file" onChange={this.addFile} id="add-file" accept="image/png"/>
                     {this.state.loadSpinner === true ? <Spin size="large" /> : ''}
                   </div>
                   <button type="primary" className="mt-10" onClick={() => this.prev()}>

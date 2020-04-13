@@ -81,7 +81,6 @@ class Calendar extends React.Component {
       .where('year', '==', this.props.match.params.year)
       .get()
       .then(snapshot => {
-        console.log('privacy', snapshot);
         snapshot.docs.map(() => {
           return this.setState({
             private: snapshot.docs[0].data().private,

@@ -12,20 +12,21 @@ import { Picker } from 'emoji-mart';
 import { Collapse } from 'antd';
 import ImagePosts from '../ImagePosts';
 import { Input } from 'antd';
-import { useForm } from "react-hook-form";
 const { TextArea } = Input;
 const { Panel } = Collapse;
+
 
 class SubPost extends Component {
   constructor(props) {
     super(props);
+
     this.state = {
       title: '',
       copy: '',
       postDate: new Date(),
       currentPost: [],
       showDatePicker: true,
-      postTime: '12:00:00',
+      postTime: "12:00:00",
       postMedium: '',
       ad: false,
       postHashTag: '',
@@ -56,7 +57,7 @@ class SubPost extends Component {
       toggleTime: false
     };
 
-    this.handleSocialCheck = this.handleSocialCheck.bind(this);
+    this.addForm = this.addForm.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.showDate = this.showDate.bind(this);
     this.handlePostTime = this.handlePostTime.bind(this);
@@ -68,7 +69,7 @@ class SubPost extends Component {
 
   // Beginning of upload methods
 
-  uploadFiles = () => {
+  uploadFiles = fb => {
     this.state.file.map((file, i) => {
       const storageRef = this.props.firebase.storage;
       const metadata = {
@@ -218,12 +219,58 @@ class SubPost extends Component {
   textAreaComponent = props => {
     return <EmojiField name="my-textarea" onChange={props.onChange} />;
   };
-
-  handleSocialCheck(e) {
-    const item = e.target.name;
-    const isChecked = e.target.checked;
-    this.setState(prevState => ({ checkedItems: prevState.checkedItems.set(item, isChecked) }));
+  addForm() {
+    let postArr = {};
+    postArr['title'] = this.state.title;
+    postArr['copy'] = this.state.copy;
+    postArr['postTime'] = this.state.postTime;
+    postArr['postMedium'] = this.state.postMedium;
+    postArr['ad'] = this.state.ad;
+    postArr['postHashtag'] = this.state.postHashtag;
+    postArr['values'] = this.state.values;
+    postArr['facebook'] = this.state.facebook;
+    postArr['twitter'] = this.state.twitter;
+    postArr['instagram'] = this.state.instagram;
+    postArr['linkedin'] = this.state.linkedin;
+    postArr['other'] = this.state.other;
+    postArr['postDate'] = this.state.dpDate;
+    postArr['ipDate'] = this.state.ipDate;
+    postArr['budget'] = this.state.budget;
   }
+
+  // BEGINNING OF SOCIAL METHODS
+
+  handleFacebook = () => {
+    this.setState({
+      facebook: !this.state.facebook
+    });
+  };
+
+  handleInstagram = () => {
+    this.setState({
+      instagram: !this.state.instagram
+    });
+  };
+
+  handleTwitter = () => {
+    this.setState({
+      twitter: !this.state.twitter
+    });
+  };
+
+  handleLinkedin = () => {
+    this.setState({
+      linkedin: !this.state.linkedin
+    });
+  };
+
+  handleOther = () => {
+    this.setState({
+      other: !this.state.other
+    });
+  };
+
+  // END OF SOCIAL METHODS
 
   handlePostTime = (time, timeString) => {
     this.setState({
@@ -412,7 +459,7 @@ class SubPost extends Component {
           <div className="d-flex justify-content-between mb-20">
             <div>
               <Checkbox
-                onChange={this.handleSocialCheck}
+                onChange={this.handleFacebook}
                 name="facebook"
                 value={this.state.facebook}
                 id={`facebook-${this.props.i}`}
@@ -423,7 +470,7 @@ class SubPost extends Component {
             </div>
             <div>
               <Checkbox
-                onChange={this.handleSocialCheck}
+                onChange={this.handleInstagram}
                 name="instagram"
                 value={this.state.instagram}
                 id={`instagram-${this.props.i}`}
@@ -434,7 +481,7 @@ class SubPost extends Component {
             </div>
             <div>
               <Checkbox
-                onChange={this.handleSocialCheck}
+                onChange={this.handleTwitter}
                 name="twitter"
                 value={this.state.twitter}
                 id={`twitter-${this.props.i}`}
@@ -446,7 +493,7 @@ class SubPost extends Component {
             </div>
             <div>
               <Checkbox
-                onChange={this.handleSocialCheck}
+                onChange={this.handleLinkedin}
                 name="linkedin"
                 value={this.state.linkedin}
                 id={`linkedin-${this.props.i}`}

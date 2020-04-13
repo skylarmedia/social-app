@@ -12,7 +12,6 @@ export const ProtectedRoute = ({ component: Component, ...rest }) => {
             {...rest}
             render={props => {
               if (authUser.skylarAdmin === true) {
-                console.log('authUser in protected route', authUser)
                 return <Component {...props} />;
               } else {
 
@@ -34,16 +33,3 @@ export const ProtectedRoute = ({ component: Component, ...rest }) => {
     </AuthUserContext.Consumer>
   );
 };
-
-// export const ProtectedRoute = ({ component: Component, ...rest }) => {
-//   return (
-//     <AuthUserContext.Consumer>
-//       {(isAuth) => {
-//         console.log('is Auth', isAuth);
-//         return (
-//           <Route { ...isAuth} render={props => (isAuth ? <Component {...props} /> : <Redirect to="/" />)} />
-//         );
-//       }}
-//     </AuthUserContext.Consumer>
-//   );
-// };

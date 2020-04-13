@@ -181,10 +181,6 @@ class ClientCalendar extends Component {
         return dateArray;
     }
 
-    getState = e => {
-        e.preventDefault();
-        console.log(this.state.currentPosts);
-    }
     YearTable = props => {
         let months = [];
         let nextten = moment()
@@ -239,11 +235,7 @@ class ClientCalendar extends Component {
         this.setState(
             {
                 selectedDay: d
-            },
-            () => {
-                console.log("SELECTED DAY: ", this.state.selectedDay);
-            }
-        );
+            });
     };
     render() {
         let weekdayshortname = this.weekdayshort.map(day => {

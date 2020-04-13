@@ -1,7 +1,6 @@
 import React from 'react';
 import { Route } from 'react-router-dom';
 import { AuthUserContext } from '../Session';
-import { message, Spin } from 'antd';
 
 const ProtectedRoute = ({ component: Component, ...rest }) => (
   <AuthUserContext.Consumer>

@@ -28,7 +28,6 @@ class CalendarSingle extends Component {
         <p className="calendar-single-day">{this.props.day}</p>
         <div className="calendar-popup-wrapper">
           {this.props.posts.map((item, index) => {
-            console.log('type of', typeof(this.props.month));
             if (item.data().month === parseInt(this.props.month)) {
               if (item.data().day === parseInt(this.props.day)) {
                 return (
