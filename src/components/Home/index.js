@@ -323,7 +323,7 @@ class Home extends Component {
     let isInvalid;
     
     if(this.state.currentStep === 0){
-      isInvalid = this.state.passwordOne === '' || this.state.email === '' || this.state.username === '';
+      isInvalid = this.state.passwordOne.length > 5|| this.state.email === '' || this.state.username === '';
     }else{
       isInvalid = this.state.passwordOne === '' || this.state.email === '' || this.state.username === '' || this.state.backgroundUrl === '';
     }
