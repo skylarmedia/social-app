@@ -16,14 +16,9 @@ const ProtectedRoute = ({ component: Component, ...rest }) => (
               {...rest}
             />
           );
-        } else if (isAuth.skylarAdmin === false) {
+        } else {
+          window.location.href = "/";
         }
-      }else{
-        return (
-          <div className="mt-20 text-center">
-            <Spin size="large" />
-          </div>
-        )
       }
     }}
   </AuthUserContext.Consumer>

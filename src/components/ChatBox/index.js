@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { withFirebase } from '../Firebase';
-import { connect } from 'react-redux';
 import { compose } from 'recompose';
 
 class ChatBox extends Component {
@@ -8,7 +7,6 @@ class ChatBox extends Component {
     super(props);
 
     this.state = {
-   
       authUser: ''
     };
 
@@ -50,15 +48,6 @@ class ChatBox extends Component {
 }
 
 
-const mapDispatchToProps = dispatch => ({
-    onSetMessage: message => dispatch({ type: 'MESSAGE_SENT', message }),
-});
-
-
 export default compose(
-    withFirebase,
-    connect(
-        null,
-        mapDispatchToProps
-    )
+    withFirebase
 )(ChatBox)

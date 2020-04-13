@@ -200,7 +200,9 @@ class Home extends Component {
   // End Archive Modal
 
   confirmArchive = e => {
-    this.props.firebase.archiveClient(localStorage.getItem('archiveId')).then(() => {});
+    this.props.firebase.archiveClient(localStorage.getItem('archiveId')).then(() => {
+      message.success("Successfully Archived Client");
+    });
     this.setState(
       {
         visible2: false,
@@ -319,8 +321,13 @@ class Home extends Component {
       backgroundSize: 'cover'
     };
 
-    const isInvalid =
-      this.state.passwordOne === '' || this.state.email === '' || this.state.username === '';
+    let isInvalid;
+    
+    if(this.currentStep === 0){
+      isInvalid = this.state.passwordOne === '' || this.state.email === '' || this.state.username === '';
+    }else{
+      isInvalid = this.state.passwordOne === '' || this.state.email === '' || this.state.username === '' || this.state.backgroundUrl === '';
+    }
 
     return (
       <div id="home-page" className="container">

@@ -1185,10 +1185,10 @@ a:hover,
 
 .add-platform-btn {
 	position: absolute;
-	right: 40%;
 	bottom: 108px;
 	margin-left: 10px;
 	right: 30.5%;
+	bottom: 50px;
 }
 
 /* INPUTS */
@@ -1276,17 +1276,6 @@ label {
 .outter-inner-post-wrapper:nth-child(odd) .inner-inner-post{
 	background:#fff;
 }
-
-/* .outter-inner-post-wrapper .inner-post-wrapper .time-outter-wrapper:nth-child(n + 1) .border-20{
-	display:none;
-} */
-
-/* .outter-inner-post-wrapper .inner-post:nth-child(n + 2) .border-20,
-.outter-inner-post-wrapper .inner-post:nth-child(n + 2) .time-string{
-	display:none;
-} */
-
-
 
 .margin-app{
 	margin-top:100px;

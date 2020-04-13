@@ -5,19 +5,13 @@ import './components/Calendar/calendar.css';
 import './index.css';
 import App from './components/App';
 import * as serviceWorker from './serviceWorker';
-import { Provider } from 'react-redux';
-
-import store from './store';
-
 import Firebase, { FirebaseContext } from './components/Firebase';
 
 ReactDOM.render(
-    <Provider store={store}>
-        <FirebaseContext.Provider value={new Firebase()}>
-            <App name="this is a name" />
-        </FirebaseContext.Provider>
-    </Provider>,
-    document.getElementById('root')
+  <FirebaseContext.Provider value={new Firebase()}>
+    <App name="this is a name" />
+  </FirebaseContext.Provider>,
+  document.getElementById('root')
 );
 
 // If you want your app to work offline and load faster, you can change

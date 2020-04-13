@@ -1,6 +1,7 @@
 import React, { Suspense } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import ProtectedRoute from './ProtectedRouteAdmin';
+import { Spin } from 'antd';
 
 // CSS IMPORTS
 
@@ -25,7 +26,7 @@ const AssignCategories = React.lazy(() => import('../AssignCategories'));
 const Settings = React.lazy(() => import('../Settings'));
 const Calendar = React.lazy(() => import('../Calendar'));
 const ClientCalendar = React.lazy(() => import('../ClientCalendar'));
-const isLoading = <div>Waiting</div>
+const isLoading = <Spin spin="large" />
 
 const App = () => (
   <WithAuthentication>
@@ -49,24 +50,24 @@ const App = () => (
           <Switch>
             <Route path="/no-mobile" component={NoMobile}/>
             <Route exact path={`${process.env.PUBLIC_URL + '/'}`} component={SignInPage} />
-            <ProtectedRoute path={`/add-post/:year/:month/:day/:clientId`} component={AddPost} />
+            <Route path={`/add-post/:year/:month/:day/:clientId`} component={AddPost} />
             <Route path={`/sign-up`} component={SignUpPage} />
             <Route path={ROUTES.SIGN_IN} component={SignInPage} />
-            <ProtectedRoute exact path={ROUTES.HOME} component={Home} />
+            <Route exact path={ROUTES.HOME} component={Home} />
             <Route path={ROUTES.CLIENTS} component={Clients} />
-            <ProtectedRoute path={ROUTES.DATES} component={Dates} />
-            <ProtectedRoute path="/edit-post/:clientId/:postId" component={EditPost} />
-            <ProtectedRoute path="/assign-categories/:year/:month/:id" component={AssignCategories} />
+            <Route path={ROUTES.DATES} component={Dates} />
+            <Route path="/edit-post/:clientId/:postId" component={EditPost} />
+            <Route path="/assign-categories/:year/:month/:id" component={AssignCategories} />
             <Route path="/client-calendar/:year/:month" component={ClientCalendar} />
             <Route exact path="/client/dates" component={ClientDates} />
             <Route exact path="/view-post/:month/:day/:id" component={ClientViewPost} />
-            <ProtectedRoute
+            <Route
               path="/admin-view-post/:month/:day/:title/:client/:itemId"
               component={AdminViewPost}
             />
             <Route path="/logout" component={Logout} />
-            <ProtectedRoute path="/calendar/:year/:month/:clientId" component={Calendar} />
-            <ProtectedRoute  path="/settings" component={Settings} />
+            <Route path="/calendar/:year/:month/:clientId" component={Calendar} />
+            <Route  path="/settings" component={Settings} />
             <Route component={NoMatch} />
           </Switch>
         </Suspense>

@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { withRouter, Redirect } from 'react-router-dom';
 import { compose } from 'recompose';
-import { connect } from 'react-redux';
 import './index.css';
 import { Input, message } from 'antd';
 import { withFirebase } from '../Firebase';
@@ -151,17 +150,9 @@ class SignInFormBase extends Component {
   }
 }
 
-const mapDispatchToProps = dispatch => ({
-  onSetUserId: authUser => dispatch({ type: 'SET_USER_ID', authUser })
-});
-
 const SignInForm = compose(
   withRouter,
   withFirebase,
-  connect(
-    null,
-    mapDispatchToProps
-  )
 )(SignInFormBase);
 
 export default SignInPage;

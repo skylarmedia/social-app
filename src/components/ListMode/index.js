@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { withFirebase } from '../Firebase';
-import { compose } from 'redux';
 import './index.css';
 import DatePicker from 'react-datepicker';
 import CustomCalendarComponent from '../CustomCalendarComponent';
@@ -381,4 +380,4 @@ class ListMode extends Component {
   }
 }
 
-export default compose(withFirebase)(ListMode);
+export default withFirebase(ListMode)

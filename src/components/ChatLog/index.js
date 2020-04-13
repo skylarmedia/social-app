@@ -3,7 +3,7 @@ import { compose } from 'recompose';
 import { withFirebase } from '../Firebase';
 import './index.css';
 import app from 'firebase/app';
-import { Popover, Button } from 'antd';
+import { Popover, Button, message } from 'antd';
 import { AuthUserContext } from '../Session';
 
 class AdminChatLog extends Component {
@@ -41,7 +41,13 @@ class AdminChatLog extends Component {
           .doc(client)
           .collection('messages')
           .doc(res.docs[0].id)
-          .delete();
+          .delete().then(() => {
+            message.success("Message Successfully Deleted")
+          }, err => {
+            if(err){
+              message.error("Message Failed Deletion")
+            }
+          })
       });
 
     this.props.deletePost(i);

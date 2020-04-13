@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { withFirebase } from '../Firebase';
-import { compose } from 'redux';
 import AdminChatLog from '../ChatLog';
 import { AuthUserContext } from '../Session';
 import moment from 'moment';
@@ -396,4 +395,4 @@ class ClientViewPost extends Component {
   }
 }
 
-export default compose(withFirebase(ClientViewPost));
+export default withFirebase(ClientViewPost);

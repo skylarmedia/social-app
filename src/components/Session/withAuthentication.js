@@ -8,7 +8,9 @@ class WithAuthentication extends React.Component {
     super(props);
 
     this.state = {
-      authUser: {}
+      authUser: {
+        skylarAdmin: 'browser'
+      }
     };
   }
 
@@ -20,8 +22,10 @@ class WithAuthentication extends React.Component {
         if (idTokenResult.claims.skylarAdmin) {
           this.setState({
             authUser: authUser
+          }, () => {
+            return authUser.skylarAdmin;
           });
-          return authUser.skylarAdmin;
+          
         }else{
           return <Redirect to="/" />
         }

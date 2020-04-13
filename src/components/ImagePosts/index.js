@@ -19,7 +19,7 @@ const ImagePosts = props => {
 
   return (
     <div gutter={20} className="upload-files-wrapper test">
-      {imageSrc &&
+      {imageSrc.length > 0 ?
         imageSrc.map((item, index) => {
           if (getType(item) === 'video') {
             return (
@@ -40,7 +40,7 @@ const ImagePosts = props => {
               </Col>
             );
           }
-        })}
+        }) : <div className="w-100">No images</div>}
     </div>
   );
 };

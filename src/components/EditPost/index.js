@@ -3,22 +3,17 @@ import EditCategoryForm from '../EditCategoryForm';
 import { Picker } from 'emoji-mart';
 import AdminChatLog from '../ChatLog';
 import './index.css';
-import { Input } from 'antd';
-import { Checkbox } from 'antd';
+import { Input, Spin, Checkbox, Popover, Button, Collapse, Row, Col, message } from 'antd';
 import CustomCalendarComponent from '../CustomCalendarComponent';
 import DatePicker from 'react-datepicker';
 import TimePicker from 'antd/es/time-picker';
 import moment from 'moment';
 import 'emoji-mart/css/emoji-mart.css';
 import { withFirebase } from '../Firebase';
-import { Collapse } from 'antd';
-import { Popover, Button } from 'antd';
 import app from 'firebase/app';
 import ImagePosts from '../ImagePosts';
-import { Row, Col } from 'antd';
 const { TextArea } = Input;
 const { Panel } = Collapse;
-
 
 class EditPost extends Component {
   constructor(props) {
@@ -99,21 +94,6 @@ class EditPost extends Component {
       posts: state
     });
   };
-
-  // getNumberOfMessages = () => {
-  //   this.props.firebase
-  //     .countClientMessages(
-  //       this.props.match.params.clientId,
-  //       this.state.currentMonth,
-  //       this.state.currentYear
-  //     )
-  //     .then(snapshot => {
-  //       console.log('snapshot in months', snapshot);
-  //       snapshot.docs.map(item => {
-  //         console.log('item month data', item.data());
-  //       });
-  //     });
-  // };
 
   unsubscribe = () =>
     this.db
@@ -269,8 +249,7 @@ class EditPost extends Component {
     e.preventDefault();
   };
 
-  handleBudget = e => {
-  };
+  handleBudget = e => {};
 
   // Capture Key
 
@@ -369,7 +348,7 @@ class EditPost extends Component {
     return strTime;
   };
 
-  clearMessages = (id, postId) => {
+  clearMessages = (id) => {
     const clearClientMessages = this.functions.httpsCallable('clearClientMessages');
     const clearObj = {};
     clearObj.id = id;
@@ -379,13 +358,6 @@ class EditPost extends Component {
       messages: []
     });
   };
-
-  handleLinks(event) {
-    console.log('i handle links', event);
-    // let values = [...this.state.values];
-    // values[i].value = event.target.value;
-    // this.setState({ values });
-  }
 
   createUI() {
     return this.state.values.map((el, i) => (
@@ -438,9 +410,12 @@ class EditPost extends Component {
       .doc(this.props.match.params.clientId)
       .delete()
       .then(() => {
+        message.success("Post Successfully Deleted");
         this.props.history.push(
           `/calendar/${this.state.currentYear}/${this.state.currentMonth}/${this.props.match.params.postId}`
         );
+      }, err => {
+        message.success("Failed Deleting Post");
       });
   };
 
@@ -448,284 +423,282 @@ class EditPost extends Component {
     const genExtra = () => <img src={require('../assets/arrow.svg')} alt="arrow icon" />;
     const posts = this.state.posts.map((post, index) => {
       return (
-        <div className="edit-form-main-wrapper" key={index}>
-          <Row className="container d-flex row mx-auto p-0" gutter={30}>
-            <Col span={12}>
-              <Input
-                className="outlined-title blue-input"
-                label="Post Title"
-                name="title"
-                index={index}
-                value={this.state.posts[index].title}
-                onChange={this.handleTitle}
-                margin="normal"
-              />
-              <div>
-                {this.state.posts[index].images.length > 0 ? (
-                  <ImagePosts
-                    imageSrc={this.state.posts[index].images}
-                    className="upload-files-wrapper"
-                  />
-                ) : (
-                  <div id="red-outline-wrapper" className="w-100 mb-20">
-                    <div className="red-center">
-                      <input
-                        type="file"
-                        multiple
-                        onChange={this.addFile}
-                        className="red-dashed-input"
-                      />
+        <React.Fragment key={index}>
+          <div className="edit-form-main-wrapper" key={index}>
+            <Row className="container d-flex row mx-auto p-0" gutter={30}>
+              <Col span={12}>
+                <Input
+                  className="outlined-title blue-input"
+                  label="Post Title"
+                  name="title"
+                  index={index}
+                  value={this.state.posts[index].title}
+                  onChange={this.handleTitle}
+                  margin="normal"
+                />
+                <div>
+                  {this.state.posts[index].images.length > 0 ? (
+                    <ImagePosts
+                      imageSrc={this.state.posts[index].images}
+                      className="upload-files-wrapper"
+                    />
+                  ) : (
+                    <div id="red-outline-wrapper" className="w-100 mb-20">
+                      <div className="red-center">
+                        <input
+                          type="file"
+                          multiple
+                          onChange={this.addFile}
+                          className="red-dashed-input"
+                        />
+                      </div>
                     </div>
+                  )}
+                </div>
+                <TextArea
+                  className="blue-input copy-input"
+                  placeholder="Copy"
+                  name="copy"
+                  value={this.state.posts[index].copy}
+                  onChange={this.handleCopy}
+                  margin="normal"
+                  variant="outlined"
+                  index={index}
+                />
+              </Col>
+              <Col span={12}>
+                <div className="d-flex justify-content-between mb-20 edit-social-icons">
+                  <div>
+                    <Checkbox
+                      type="checkbox"
+                      name="facebook"
+                      value={this.state.posts[index].facebook}
+                      checked={this.state.posts[index].facebook}
+                      onChange={this.handleFacebook}
+                      index={index}
+                      id={`facebook-${index}`}
+                    />
+                    <label for={`facebook-${index}`}>Facebook</label>
                   </div>
-                )}
-              </div>
-              <TextArea
-                className="blue-input copy-input"
-                placeholder="Copy"
-                name="copy"
-                value={this.state.posts[index].copy}
-                onChange={this.handleCopy}
-                margin="normal"
-                variant="outlined"
-                index={index}
-              />
-            </Col>
-            <Col span={12}>
-              <div className="d-flex justify-content-between mb-20 edit-social-icons">
-                <div>
-                  <Checkbox
-                    type="checkbox"
-                    name="facebook"
-                    value={this.state.posts[index].facebook}
-                    checked={this.state.posts[index].facebook}
-                    onChange={this.handleFacebook}
-                    index={index}
-                    id={`facebook-${index}`}
-                  />
-                  <label for={`facebook-${index}`}>Facebook</label>
+                  <div>
+                    <Checkbox
+                      type="checkbox"
+                      name="instagram"
+                      value={this.state.posts[index].instagram}
+                      checked={this.state.posts[index].instagram}
+                      onChange={this.handleInstagram}
+                      index={index}
+                      id={`instagram-${index}`}
+                    />
+                    <label for={`instagram-${index}`}>Instagram</label>
+                  </div>
+                  <div>
+                    <Checkbox
+                      type="checkbox"
+                      name="twitter"
+                      value={this.state.posts[index].twitter}
+                      checked={this.state.posts[index].twitter}
+                      onChange={this.handleTwitter}
+                      index={index}
+                      id={`twitter-${index}`}
+                    />
+                    <label for={`twitter-${index}`}>Twitter</label>
+                  </div>
+                  <div>
+                    <Checkbox
+                      type="checkbox"
+                      name="linkedin"
+                      value={this.state.posts[index].linkedin}
+                      checked={this.state.posts[index].linkedin}
+                      onChange={this.handleLinkedin}
+                      index={index}
+                      id={`linkedin-${index}`}
+                    />
+                    <label for={`linkedin-${index}`}>LinkedIn</label>
+                  </div>
+                  <div>
+                    <Checkbox
+                      type="checkbox"
+                      name="other"
+                      value={this.state.posts[index].other}
+                      checked={this.state.posts[index].other}
+                      onChange={this.handleOther}
+                      index={index}
+                      id={`other-${index}`}
+                    />
+                    <label id={`other-${index}`}>Other</label>
+                  </div>
                 </div>
-                <div>
-                  <Checkbox
-                    type="checkbox"
-                    name="instagram"
-                    value={this.state.posts[index].instagram}
-                    checked={this.state.posts[index].instagram}
-                    onChange={this.handleInstagram}
-                    index={index}
-                    id={`instagram-${index}`}
-                  />
-                  <label for={`instagram-${index}`}>Instagram</label>
+                <div className="date-button-wrapper d-flex row justify-content-between">
+                  <div id="choose-date-wrapper" className="col-sm-4">
+                    <Collapse className="post-collapse">
+                      <Panel header="POST DATE" extra={genExtra()} showArrow={false}>
+                        <DatePicker
+                          selected={this.state.dpDate}
+                          placeholderText="Post Date"
+                          onChange={value => this.handleDPChange(value)}
+                          customInput={
+                            <CustomCalendarComponent
+                              ipDate={this.state.posts[index].ipDate}
+                              placeholderText="Post Date"
+                              handleIpChange={val => this.handleIpChange(val, index)}
+                            />
+                          }
+                          dateFormat={'MM/dd/yyyy'}
+                          showMonthDropdown
+                          showYearDropdown
+                          dropdownMode="select"
+                        />
+                      </Panel>
+                    </Collapse>
+                  </div>
+                  <div className="col-sm-4">
+                    <TimePicker
+                      index={index}
+                      onOpenChange={() => this.handleComplete(index)}
+                      onChange={this.handlePostTime}
+                      placeholder="POST TIME"
+                      defaultValue={moment(`${this.state.posts[index].postTime}`, 'HH:mm:ss')}
+                    />
+                  </div>
+                  <div className="col-sm-4">
+                    <Input
+                      type="text"
+                      placeholder="POST MEDIUM"
+                      name="postMedium"
+                      className="blue-input"
+                      value={this.state.posts[index].postMedium}
+                      onChange={this.handlePostMedium}
+                      index={index}
+                    />
+                  </div>
                 </div>
-                <div>
-                  <Checkbox
-                    type="checkbox"
-                    name="twitter"
-                    value={this.state.posts[index].twitter}
-                    checked={this.state.posts[index].twitter}
-                    onChange={this.handleTwitter}
-                    index={index}
-                    id={`twitter-${index}`}
-                  />
-                  <label for={`twitter-${index}`}>Twitter</label>
-                </div>
-                <div>
-                  <Checkbox
-                    type="checkbox"
-                    name="linkedin"
-                    value={this.state.posts[index].linkedin}
-                    checked={this.state.posts[index].linkedin}
-                    onChange={this.handleLinkedin}
-                    index={index}
-                    id={`linkedin-${index}`}
-                  />
-                  <label for={`linkedin-${index}`}>LinkedIn</label>
-                </div>
-                <div>
-                  <Checkbox
-                    type="checkbox"
-                    name="other"
-                    value={this.state.posts[index].other}
-                    checked={this.state.posts[index].other}
-                    onChange={this.handleOther}
-                    index={index}
-                    id={`other-${index}`}
-                  />
-                  <label id={`other-${index}`}>Other</label>
-                </div>
-              </div>
-              <div className="date-button-wrapper d-flex row justify-content-between">
-                <div id="choose-date-wrapper" className="col-sm-4">
-                  <Collapse className="post-collapse">
-                    <Panel header="POST DATE" extra={genExtra()} showArrow={false}>
-                      <DatePicker
-                        selected={this.state.dpDate}
-                        placeholderText="Post Date"
-                        onChange={value => this.handleDPChange(value)}
-                        customInput={
-                          <CustomCalendarComponent
-                            ipDate={this.state.posts[index].ipDate}
-                            placeholderText="Post Date"
-                            handleIpChange={val => this.handleIpChange(val, index)}
-                          />
-                        }
-                        dateFormat={'MM/dd/yyyy'}
-                        showMonthDropdown
-                        showYearDropdown
-                        dropdownMode="select"
-                      />
-                    </Panel>
-                  </Collapse>
-                </div>
-                <div className="col-sm-4">
-                  <TimePicker
-                    index={index}
-                    onOpenChange={() => this.handleComplete(index)}
-                    onChange={this.handlePostTime}
-                    placeholder="POST TIME"
-                    defaultValue={moment(`${this.state.posts[index].postTime}`, 'HH:mm:ss')}
-                  />
-                </div>
-                <div className="col-sm-4">
-                  <Input
-                    type="text"
-                    placeholder="POST MEDIUM"
-                    name="postMedium"
-                    className="blue-input"
-                    value={this.state.posts[index].postMedium}
-                    onChange={this.handlePostMedium}
-                    index={index}
-                  />
-                </div>
-              </div>
-              <div className="mt-20 edit-ad">
-                <div className="sponsored-label">
-                  <Checkbox
-                    checked={this.state.posts[index].ad}
-                    onChange={this.handleAd}
-                    id={`ad-${index}`}
-                    index={index}
-                  />
+                <div className="mt-20 edit-ad">
+                  <div className="sponsored-label">
+                    <Checkbox
+                      checked={this.state.posts[index].ad}
+                      onChange={this.handleAd}
+                      id={`ad-${index}`}
+                      index={index}
+                    />
 
-                  <label className="color-blue ad-edit" for={`ad-${index}`}>
-                    Ad or Sponsored Post
-                  </label>
-                </div>
-                {this.state.posts[index].ad && (
-                  <div className="col-md-12 row mt-20 mb-20">
-                    <div
-                      className="
+                    <label className="color-blue ad-edit" for={`ad-${index}`}>
+                      Ad or Sponsored Post
+                    </label>
+                  </div>
+                  {this.state.posts[index].ad && (
+                    <div className="col-md-12 row mt-20 mb-20">
+                      <div
+                        className="
                   d-flex justify-content-between date-picker-wrapper flex-85 align-items-center
                   inner-form-wrapper2
                   "
-                    >
-                      <DatePicker
-                        selected={new Date(this.state.posts[index].budgetStart)}
-                        placeholderText="Post Date"
-                        onChange={value => this.handleStartDpChange(value, index)}
-                        dateFormat={'MM/dd/yyyy'}
-                        showMonthDropdown
-                        showYearDropdown
-                        dropdownMode="select"
-                        className="select-edit"
-                      />
-                      <span>-</span>
-                      <DatePicker
-                        selected={new Date(this.state.posts[index].budgetEnd)}
-                        placeholderText="Post Date"
-                        onChange={value => this.handleEndDpChange(value, index)}
-                        dateFormat={'MM/dd/yyyy'}
-                        showMonthDropdown
-                        showYearDropdown
-                        dropdownMode="select"
-                        className="select-edit"
-                      />
+                      >
+                        <DatePicker
+                          selected={new Date(this.state.posts[index].budgetStart)}
+                          placeholderText="Post Date"
+                          onChange={value => this.handleStartDpChange(value, index)}
+                          dateFormat={'MM/dd/yyyy'}
+                          showMonthDropdown
+                          showYearDropdown
+                          dropdownMode="select"
+                          className="select-edit"
+                        />
+                        <span>-</span>
+                        <DatePicker
+                          selected={new Date(this.state.posts[index].budgetEnd)}
+                          placeholderText="Post Date"
+                          onChange={value => this.handleEndDpChange(value, index)}
+                          dateFormat={'MM/dd/yyyy'}
+                          showMonthDropdown
+                          showYearDropdown
+                          dropdownMode="select"
+                          className="select-edit"
+                        />
+                      </div>
+                      <div className="d-flex flex-85 align-items-center mt-20">
+                        <label className="budget-text">Budget</label>
+                        <input
+                          type="text"
+                          value={this.state.posts[index].budget}
+                          placeholder="$0.00"
+                          name="budget"
+                          className="budget-input"
+                          onChange={this.handleBudget}
+                          index={index}
+                        />
+                      </div>
                     </div>
-                    <div className="d-flex flex-85 align-items-center mt-20">
-                      <label className="budget-text">Budget</label>
-                      <input
-                        type="text"
-                        value={this.state.posts[index].budget}
-                        placeholder="$0.00"
-                        name="budget"
-                        className="budget-input"
-                        onChange={this.handleBudget}
-                        index={index}
-                      />
-                    </div>
-                  </div>
-                )}
-              </div>
-              <div>
-                <TextArea
-                  placeholder="Hashtags"
-                  value={this.state.posts[index].postHashTag}
-                  name="postHashTag"
-                  onChange={this.handleHashTags}
-                  index={index}
-                  className="blue-input"
-                />
-              </div>
+                  )}
+                </div>
+                <div>
+                  <TextArea
+                    placeholder="Hashtags"
+                    value={this.state.posts[index].postHashTag}
+                    name="postHashTag"
+                    onChange={this.handleHashTags}
+                    index={index}
+                    className="blue-input"
+                  />
+                </div>
 
-              <div>
-                {this.state.posts[index].values.map((el, i) => (
-                  <div key={i}>
-                    <div className="d-flex align-self-center ant-link">
-                      <Input
-                        className="blue-input"
-                        placeholder="ADD LINKS"
-                        name={`link-${i}`}
-                        value={el.value || ''}
-                        onChange={e => this.handleLinks(e)}
-                        margin="normal"
-                        variant="outlined"
-                        index={i}
-                      />
+                <div>
+                  {this.state.posts[index].values.map((el, i) => (
+                    <div key={i}>
+                      <div className="d-flex align-self-center ant-link">
+                        <Input
+                          className="blue-input"
+                          placeholder="ADD LINKS"
+                          name={`link-${i}`}
+                          value={el.value || ''}
+                          onChange={e => this.handleLinks(e)}
+                          margin="normal"
+                          variant="outlined"
+                          index={i}
+                        />
 
-                      {i === this.state.posts[index].values.length - 1 ? (
-                        <button
-                          type="button"
-                          onClick={() => this.addClick(index)}
-                          className="clear-btn"
-                        >
-                          <img src={require('../assets/select.svg')} alt="select icon"/>
-                        </button>
-                      ) : (
-                        <button
-                          type="button"
-                          onClick={() => this.removeClick(i)}
-                          className="clear-btn"
-                        >
-                          <img src={require('../assets/x.png')} alt="x-icon"/>
-                        </button>
-                      )}
+                        {i === this.state.posts[index].values.length - 1 ? (
+                          <button
+                            type="button"
+                            onClick={() => this.addClick(index)}
+                            className="clear-btn"
+                          >
+                            <img src={require('../assets/select.svg')} alt="select icon" />
+                          </button>
+                        ) : (
+                          <button
+                            type="button"
+                            onClick={() => this.removeClick(i)}
+                            className="clear-btn"
+                          >
+                            <img src={require('../assets/x.png')} alt="x-icon" />
+                          </button>
+                        )}
+                      </div>
                     </div>
-                  </div>
-                ))}
-              </div>
-            </Col>
-            <Row className="edit-btn-wrapper" gutter={10}>
-              <Col>
-                <button onClick={this.saveDraft} className="save-draft-btn color-red">
-                  SAVE DRAFT
-                </button>
+                  ))}
+                </div>
               </Col>
-              <Col>
-                <button onClick={this.submitEdits} className={'add-date-btn'}>
-                  SAVE
-                </button>
-              </Col>
-              <Col span={24} className="mt-30 text-center">
-                <button
-                  type="button"
-                  className="clear-btn p-blue"
-                  onClick={this.deletePost}
-                >
-                  <u>Delete Post</u>
-                </button>
-              </Col>
+              <Row className="edit-btn-wrapper" gutter={10}>
+                <Col>
+                  <button onClick={this.saveDraft} className="save-draft-btn color-red">
+                    SAVE DRAFT
+                  </button>
+                </Col>
+                <Col>
+                  <button onClick={this.submitEdits} className={'add-date-btn'}>
+                    SAVE
+                  </button>
+                </Col>
+                <Col span={24} className="mt-30 text-center">
+                  <button type="button" className="clear-btn p-blue" onClick={this.deletePost}>
+                    <u>Delete Post</u>
+                  </button>
+                </Col>
+              </Row>
             </Row>
-          </Row>
-        </div>
+          </div>
+        </React.Fragment>
       );
     });
     let content = (
@@ -769,53 +742,52 @@ class EditPost extends Component {
               </label>
             </div>
           </div>
-          {posts}
+          {this.state.posts.length > 0 ? posts : <div class="text-center mt-20"><Spin size="large" /></div>}
         </div>
         <div className="fixed-bottom container position_relative col-md-4">
-          
-            <div hidden={this.state.showChat}>
-              <div className="d-flex flex-column align-items-end">
-                <div className="inner-chat-log bg-white position-relative">
-                    <AdminChatLog
-                      deletePost={this.deletePostParent}
-                      adminClient={this.props.match.params.postId}
-                      messages={this.state.messages}
-                    />
-                  <form onSubmit={this.submitMessage} className="d-flex mt-30 position-relative">
-                    <textarea
-                      onChange={this.setMessage}
-                      value={this.state.message}
-                      onKeyDown={this.captureKey}
-                    />
-                    <button
+          <div hidden={this.state.showChat}>
+            <div className="d-flex flex-column align-items-end">
+              <div className="inner-chat-log bg-white position-relative">
+                <AdminChatLog
+                  deletePost={this.deletePostParent}
+                  adminClient={this.props.match.params.postId}
+                  messages={this.state.messages}
+                />
+                <form onSubmit={this.submitMessage} className="d-flex mt-30 position-relative">
+                  <textarea
+                    onChange={this.setMessage}
+                    value={this.state.message}
+                    onKeyDown={this.captureKey}
+                  />
+                  <button
                     type="button"
                     onClick={this.toggleIcon.bind(this)}
                     className="clear-btn position-absolute happy-btn"
                   >
                     <i className="fas fa-smile-beam"></i>
-                  </button> 
-                    <Popover
-                      placement="topRight"
-                      content={content}
-                      trigger="click"
-                      className="position-absolute"
-                      visible={this.state.visible}
-                      onVisibleChange={this.handleVisibleChange}
-                    >
-                      <Button className="clear-btn clear-message-button position-absolute send-clear">
-                        <i className="fas fa-ellipsis-v"></i>
-                      </Button>
-                    </Popover>
-                  </form>
-                </div>
-                <span className={this.state.showIcons ? 'hidden' : 'not-hidden'}>
-                  <Picker onSelect={this.addEmoji} />
-                </span>
+                  </button>
+                  <Popover
+                    placement="topRight"
+                    content={content}
+                    trigger="click"
+                    className="position-absolute"
+                    visible={this.state.visible}
+                    onVisibleChange={this.handleVisibleChange}
+                  >
+                    <Button className="clear-btn clear-message-button position-absolute send-clear">
+                      <i className="fas fa-ellipsis-v"></i>
+                    </Button>
+                  </Popover>
+                </form>
               </div>
+              <span className={this.state.showIcons ? 'hidden' : 'not-hidden'}>
+                <Picker onSelect={this.addEmoji} />
+              </span>
             </div>
-   
+          </div>
+
           <button onClick={this.toggleChat} type="button" className="clear-btn">
-            <img src={require('../assets/chatbox.svg')} alt="chatbox icon"/>
+            <img src={require('../assets/chatbox.svg')} alt="chatbox icon" />
           </button>
         </div>
       </div>

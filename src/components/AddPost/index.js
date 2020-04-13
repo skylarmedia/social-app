@@ -1,14 +1,12 @@
 import React, { Component, Suspense } from 'react';
 import { withFirebase } from '../Firebase';
-import { compose } from 'redux';
 import 'antd/dist/antd.css';
 import { Skeleton, message, Checkbox } from 'antd';
 import EditCategoryForm from '../EditCategoryForm';
 import moment from 'moment';
-
+import { useForm } from "react-hook-form";
 import EmojiField from 'emoji-picker-textfield';
 import 'emoji-mart/css/emoji-mart.css';
-
 const SubPost = React.lazy(() => import('./SubPost'));
 
 class AddPost extends Component {
@@ -119,7 +117,6 @@ class AddPost extends Component {
   }
 
   addPostToFirebase = () => {
-    message.success('Post Successfully Added');
     this.props.firebase.addPost(this.props.match.params.clientId, this.state.postArr);
   };
 
@@ -145,45 +142,6 @@ class AddPost extends Component {
     });
   };
 
-  // BEGINNING OF SOCIAL METHODS
-
-  handleFacebook = () => {
-    this.setState({
-      facebook: !this.state.facebook
-    });
-  };
-
-  handleInstagram = () => {
-    this.setState({
-      instagram: !this.state.instagram
-    });
-  };
-
-  handleTwitter = () => {
-    this.setState({
-      twitter: !this.state.twitter
-    });
-  };
-
-  handleLinkedin = () => {
-    this.setState({
-      linkedin: !this.state.linkedin
-    });
-  };
-
-  removePlatform(index) {
-    this.setState({
-      subPosts: this.state.subPosts.filter((_, i) => i !== index)
-    });
-  }
-
-  handleOther = () => {
-    this.setState({
-      other: !this.state.other
-    });
-  };
-
-  // END OF SOCIAL METHODS
 
   getSelectedCategory = (color, name) => {
     this.setState({
@@ -302,6 +260,11 @@ class AddPost extends Component {
           this.state.postAd
         )
         .then(() => {
+          if(this.state.draft === true){
+            message.success("Successfully Saved Draft");
+          }else{
+            message.success("Successfully Saved Post");
+          }
           this.props.history.goBack();
         });
     }
@@ -368,4 +331,4 @@ class AddPost extends Component {
   }
 }
 
-export default compose(withFirebase(AddPost));
+export default withFirebase(AddPost)

@@ -1,6 +1,5 @@
 import React from 'react';
 import { withFirebase } from '../Firebase';
-import { compose } from 'redux';
 
 class Logout extends React.Component{
     
@@ -16,6 +15,4 @@ class Logout extends React.Component{
     }
 }
 
-export default compose(
-    withFirebase
-)(Logout)
+export default  withFirebase(Logout)

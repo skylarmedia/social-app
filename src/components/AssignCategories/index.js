@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { withFirebase } from '../Firebase';
-import { compose } from 'redux';
 import { Checkbox } from 'antd';
 import firebase from 'firebase';
 import { Link } from 'react-router-dom';
@@ -101,4 +100,4 @@ class AssignCategories extends Component {
   }
 }
 
-export default compose(withFirebase(AssignCategories));
+export default withFirebase(AssignCategories);

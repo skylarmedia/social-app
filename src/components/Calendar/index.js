@@ -2,7 +2,6 @@ import React from 'react';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
 import { withFirebase } from '../Firebase';
-import { compose } from 'redux';
 import { Switch } from 'antd';
 import Legend from '../Legend';
 import ListMode from '../ListMode';
@@ -469,7 +468,4 @@ class Calendar extends React.Component {
     );
   }
 }
-export default compose(
-  withFirebase
-  // ,withAuthorization(condition)
-)(Calendar);
+export default withFirebase(Calendar);
